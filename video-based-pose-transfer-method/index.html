@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>video-based pose transfer method - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="video-based pose transfer method" />
+<meta property="og:description" content="Dance Dance Generation: Motion Transfer for Internet Videos 该文章可以实现在复杂背景下的pose transfer。
+In summary, our contributions include the following.
+  We demonstrate personalized motion transfer on videos from the Internet.
+  We propose a novel two-stage frame-work to synthesize people performing new movements and fuse them seamlessly with background scenes. （主要贡献：实现复杂背景下的姿态转换）
+  We perform qualitative and quantitative evaluations validating the superiority of our method over existing state-of-the-art.
+  method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过阶段进行修正）" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/video-based-pose-transfer-method/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-12-19T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-12-19T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="video-based pose transfer method"/>
+<meta name="twitter:description" content="Dance Dance Generation: Motion Transfer for Internet Videos 该文章可以实现在复杂背景下的pose transfer。
+In summary, our contributions include the following.
+  We demonstrate personalized motion transfer on videos from the Internet.
+  We propose a novel two-stage frame-work to synthesize people performing new movements and fuse them seamlessly with background scenes. （主要贡献：实现复杂背景下的姿态转换）
+  We perform qualitative and quantitative evaluations validating the superiority of our method over existing state-of-the-art.
+  method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过阶段进行修正）"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/video-based-pose-transfer-method/" /><link rel="prev" href="https://shilongshen.github.io/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/" /><link rel="next" href="https://shilongshen.github.io/ubuntu-%E7%BB%99%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACpytorch%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9Acuda%E7%89%88%E6%9C%AC/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "video-based pose transfer method",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/video-based-pose-transfer-method\/"
+        },"genre": "posts","wordcount":  397 ,
+        "url": "https:\/\/shilongshen.github.io\/video-based-pose-transfer-method\/","datePublished": "2020-12-19T13:26:17+08:00","dateModified": "2020-12-19T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">video-based pose transfer method</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-12-19">2020-12-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;397 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>
+              <ul>
+                <li><a href="#dance-dance-generation-motion-transfer-for-internet-videos">Dance Dance Generation: Motion Transfer for Internet Videos</a></li>
+                <li><a href="#transmomo-invariance-driven-unsupervised-video-motion-retargeting">TransMoMo: Invariance-Driven Unsupervised Video Motion Retargeting</a></li>
+                <li><a href="#deep-spatial-transformation-for-pose-guided-person-image-generation-and-animation">Deep Spatial Transformation for Pose-Guided Person Image Generation and Animation</a></li>
+                <li><a href="#first-order-motion-model-for-image-animation">First Order Motion Model for Image Animation</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#method">Method</a>
+          <ul>
+            <li><a href="#local-affine-transformations-for-approximate-motion-description">Local Affine Transformations for Approximate Motion Description</a></li>
+            <li><a href="#occlusion-aware-image-generation">Occlusion-aware Image Generation</a>
+              <ul>
+                <li><a href="#dwnet-dense-warp-based-network-for-pose-guided-human-video-generation">DwNet: Dense warp-based network for pose-guided human video generation</a></li>
+                <li><a href="#cross-identity-motion-transfer-for-arbitrary-objects-through-pose-attentive-video-reassembling">Cross-Identity Motion Transfer for Arbitrary Objects Through Pose-Attentive Video Reassembling</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h4 id="dance-dance-generation-motion-transfer-for-internet-videos">Dance Dance Generation: Motion Transfer for Internet Videos</h4>
+<p>该文章可以实现在复杂背景下的pose transfer。</p>
+<p>In summary, our <strong>contributions</strong> include the following.</p>
+<ol>
+<li>
+<p>We demonstrate personalized motion transfer on videos from the Internet.</p>
+</li>
+<li>
+<p>We propose a novel two-stage frame-work to synthesize people performing new movements and
+<strong>fuse them seamlessly with background scenes</strong>. （主要贡献：实现复杂背景下的姿态转换）</p>
+</li>
+<li>
+<p>We perform qualitative and quantitative evaluations validating the superiority of our method over existing state-of-the-art.</p>
+</li>
+</ol>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222620.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222620.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222620.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222620.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222620.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222620.png" /></p>
+<p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222456.png" style="zoom: 200%;" /></p>
+<p>method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过阶段进行修正）</p>
+<ul>
+<li>利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。</li>
+<li>Human synthesis net：将对齐的body parts与target pose 作为输入，对body parts进行修正，并得到前景mask</li>
+<li>fusion net：将body parts + background +target pose 作为输入，进行前景和背景的融合，实现复杂背景下的pose transfer</li>
+</ul>
+<p>这里需要注意的点;</p>
+<ul>
+<li>
+<p>如何保证生成视频帧在时间上是平滑的？方法: target pose采用多帧的姿态表示作为输入。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219223607.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219223607.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201219223607.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201219223607.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219223607.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219223607.png" /></p>
+</li>
+</ul>
+<p>存在的问题：</p>
+<p>当source person和target person将的body shape 存在较大差异时，可能生成的结果就不那么理想了。</p>
+<h4 id="transmomo-invariance-driven-unsupervised-video-motion-retargeting">TransMoMo: Invariance-Driven Unsupervised Video Motion Retargeting</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220093913.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220093913.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220093913.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220093913.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220093913.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220093913.png" /></p>
+<p>难点：</p>
+<p>1.原图像和目标图像间存在较大的结构和视角变化</p>
+<p>2.难以构建合适的训练对进行训练</p>
+<p>3.human motion的变化是复杂的。</p>
+<p>解决思路:</p>
+<p>三阶段网络：（这使得我们能够更加的关注motion retarget，其中步骤1,步骤3是直接采用现有最好的方法即可）</p>
+<p>1.skeleton extraction</p>
+<p>2.motion retarget（主要贡献处：invariance-driven disentanglement）</p>
+<p>3.skeleton-to-video rendering</p>
+<p>为了解决第2和第3个难点，利用了三个因素的不变性质：structure（表示<strong>体型</strong>），motion（表示<strong>姿态</strong>），view-angle（表示<strong>相机视角</strong>）。具体来说：</p>
+<p>1.当structure 和 view-angle变化时，motion是不变的</p>
+<p>2.当view-angle变化时，structure是不变的，同时structure不会随着时间的变化而变化</p>
+<p>3.当structure变化时，view-angle是不变的，同时view-angle不会随着时间的变化而变化</p>
+<p>这些不变特性使得我们能够设计一些无监督函数来将skeleton解耦成三个正交的隐变量：structure，motion，view-angle。</p>
+<p>可以通过mix来自不同skeleton的structure（原图像的structure，即原人物体型）和motion（目标图像的motion，即目标姿态）来实现motion retarget; 通过在decoder阶段采用不同的view-angle来实现不同视角下的motion retarget</p>
+<p>网络结构：</p>
+<p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220094630.png" style="zoom:200%;" /></p>
+<p>具体的实施步骤：</p>
+<ul>
+<li>通过现有的姿态提取器提取source video中人物姿态（多帧）以及提取target video中人物姿态（多帧）。</li>
+<li>motion retarget network中由encoder 和 decoder组成，encoder将skeleton通过三个独立的解码器进行解码，得到view-angle code 、motion code和structure code。</li>
+<li>[将source video中的motion code和target video 中的 structure code结合以及任取一个view-angle code（用于实现视角变化] 经过decoder进行解码，得到一个3D的，可以具有不同视角的 Retargeted skeleton code ，最后再将这个3D  Retargeted skeleton code映射为2D Retargeted skeleton</li>
+<li>将和 target video中人物的纹理通过skeleton-to-video rendering渲染到Retargeted skeleton 上。实现motion transfer task</li>
+</ul>
+<p>在motion retarget network中的网络细节：</p>
+<p>输入是一个skeleton 序列（多帧）：$x \in \mathbb{R}^{T \times 2N}$ 。$T$表示帧数，$N$表示骨骼点。encoder分为三个部分</p>
+<ul>
+<li>
+<p>motion encoder： 结构：several layers of one dimensional temporal convolution 。输出$E_m(x)=m \in \mathbb{R}^{M \times C_m}$。$M$表示帧数，$C_m$表示通道数</p>
+</li>
+<li>
+<p>structure encoder：结构：several layers of one dimensional temporal convolution+ temporal max pooling。输出：$\bar{E}_s(x)=\bar{s} \in \mathbb{R}^{C_s} =pool(s)$   其中   $E_s(x)=s \in \mathbb{R}^{M \times C_s}$</p>
+</li>
+<li>
+<p>view-angle encoder: 结构：several layers of one dimensional temporal convolution+ temporal max pooling。输出：$\bar{E}_v(x)=\bar{v} \in \mathbb{R}^{C_v} =pool(s)$   其中   $E_v(x)=v \in \mathbb{R}^{M \times C_v}$</p>
+</li>
+<li>
+<p>将$m,\bar{s},\bar{v}$进行组合，经由decoder得到3D  Retargeted skeleton code：${\large{\hat{X}}}=G(m,\bar{s},\bar{v}) \in \mathbb{R}^{T \times 3N}$</p>
+</li>
+</ul>
+<p>本文的<strong><u>关键点</u></strong>在于如何确保通过motion retarget network提取的structure（表示<strong>体型</strong>），motion（表示<strong>姿态</strong>），view-angle（表示<strong>相机视角</strong>）是解耦的。（skeleton -&gt;  structure，motion，view-angle）</p>
+<ul>
+<li>
+<p>结构变化处理：</p>
+<p>将输入的skeleton进行缩放处理。</p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220134534.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220134534.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220134534.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220134534.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220134534.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220134534.png" /></p>
+<ul>
+<li>
+<p>视角变化处理：</p>
+<p>将输入的skeleton进行360度视角转换</p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220135658.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220135658.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220135658.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220135658.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220135658.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220135658.png" /></p>
+<p>现在要通过loss term保证前面提到的三个不变特性：</p>
+<blockquote>
+<p>1.当structure 和 view-angle变化时，motion是不变的</p>
+<p>2.当view-angle变化时，structure是不变的，同时structure不会随着时间的变化而变化</p>
+<p>3.当structure变化时，view-angle是不变的，同时view-angle不会随着时间的变化而变化</p>
+</blockquote>
+<ul>
+<li>
+<p><strong>1. Invariance of motion</strong></p>
+<ul>
+<li>
+<p>Cross Reconstruction Loss</p>
+</li>
+<li>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png" /></p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140312.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140312.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140312.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140312.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140312.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140312.png" /></p>
+<p>​</p>
+<ul>
+<li>Structural Invariance Loss</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140814.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140814.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140814.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140814.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140814.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140814.png" /></p>
+<ul>
+<li>Rotation Invariance Loss</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140847.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140847.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140847.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140847.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140847.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140847.png" /></p>
+</li>
+<li>
+<p><strong>2.Invariance of Structure</strong></p>
+<ul>
+<li>Triplet Loss（确保structure 不随时间变化，这个不太理解）</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141239.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141239.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141239.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141239.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141239.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141239.png" /></p>
+<ul>
+<li>Rotation Invariance Loss</li>
+</ul>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141322.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141322.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141322.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141322.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141322.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220141322.png" /></p>
+<ul>
+<li>
+<p><strong>3.Invariance of View-Angle</strong></p>
+<ul>
+<li>Triplet Loss（确保view-angle不随时间变化，这个不太理解）</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png"
+        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png, /home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png 2x"
+        data-sizes="auto"
+        alt="/home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png"
+        title="image-20201220141410582" /></p>
+<ul>
+<li>Structural Invariance Loss</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png"
+        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png, /home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png 2x"
+        data-sizes="auto"
+        alt="/home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png"
+        title="image-20201220141430954" /></p>
+</li>
+</ul>
+<p>可能存在的一些问题：</p>
+<p>仅仅从skeleton的角度进行处理，并没有显示的考虑纹理信息（即没有考虑skeleton与纹理之间的对齐问题）。从这一角度出发是不是可以进行优化。</p>
+<p>生成结果的时间连续性上的处理是采用多帧的skeleton进行输入。</p>
+<h4 id="deep-spatial-transformation-for-pose-guided-person-image-generation-and-animation">Deep Spatial Transformation for Pose-Guided Person Image Generation and Animation</h4>
+<p>该文首先基于图像设计了一种新颖的网络框架，随后又将其拓展到视频生成（主要加上了skeleton降噪处理时间平滑性处理）</p>
+<p>这里只介绍video-based person generation</p>
+<p><strong>第一部分</strong>为skeleton的降噪处理。</p>
+<p>作者认为通过现有方法（如openpose）提取出来的skeleton的表示并不精确，因此首先对提取出来的skeleton进行降噪处理</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155128.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155128.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155128.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155128.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155128.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155128.png" /></p>
+<p><strong>第二部分</strong>为视频帧时间平滑处理</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png"
+        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png, /home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png 2x"
+        data-sizes="auto"
+        alt="/home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png"
+        title="image-20201221155417583" /></p>
+<ul>
+<li>将source image(将source image根据目标姿态进行warp)和前一帧的输出(将前一帧的输出根据目标姿态进行warp)共同作为当前帧生成网络的输入</li>
+</ul>
+<p>针对source image 和 前一帧的输出使用独立的 模块。最后再将两者的输出相加作为当前帧的输出。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png" /></p>
+<h4 id="first-order-motion-model-for-image-animation">First Order Motion Model for Image Animation</h4>
+<p><a href="https://zhuanlan.zhihu.com/p/269635265" target="_blank" rel="noopener noreffer">参考1</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/136606648" target="_blank" rel="noopener noreffer">参考2</a></p>
+<blockquote>
+<h2 id="method">Method</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic4.zhimg.com/80/v2-947730fe3afaf619392747a3f43570d7_720w.jpg"
+        data-srcset="https://pic4.zhimg.com/80/v2-947730fe3afaf619392747a3f43570d7_720w.jpg, https://pic4.zhimg.com/80/v2-947730fe3afaf619392747a3f43570d7_720w.jpg 1.5x, https://pic4.zhimg.com/80/v2-947730fe3afaf619392747a3f43570d7_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic4.zhimg.com/80/v2-947730fe3afaf619392747a3f43570d7_720w.jpg"
+        title="img" /></p>
+<p>首先因为没有完美的监督信息，所以文章借鉴了monkey-net的训练方法：用同一个视频同时作为source image和driving video来利用本身作为监督信息，这类似于一种自监督的学习机制。然后文章提出的方法大概包括以下三个模块：</p>
+<h3 id="local-affine-transformations-for-approximate-motion-description">Local Affine Transformations for Approximate Motion Description</h3>
+<p>这个部分的理解我们首先需要考虑一个非常简单的问题：如何用一种最naive的方法来借助driving video中的关键点帮助调整source  image中的motion？这个问题的解答可能会让人想到一种简单的映射函数:R2-&gt;R2，也就是将一个帧里的像素映射到另一帧里面去，这种思想非常类似于inpainting里面的examplar的方法：像素迁移，这种映射关系在光流场中被称为后向光流场。</p>
+<p>但是作者没有直接地将D映射到S，而是假设了<strong>一种中间的reference帧来帮助建立过渡关系</strong>，这一篇的独到之处在于用local affine  transformations来逼近运动的表述，也就是用泰勒展开来逼近于关键点在空间的位移，关键点和仿射系数都是由关键点检测的网络来输出。</p>
+<blockquote>
+<p>我对于这一步的理解其实很像光流的计算原理：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic2.zhimg.com/80/v2-0a1512aae984aea1d152b43a55f55cf5_720w.jpg"
+        data-srcset="https://pic2.zhimg.com/80/v2-0a1512aae984aea1d152b43a55f55cf5_720w.jpg, https://pic2.zhimg.com/80/v2-0a1512aae984aea1d152b43a55f55cf5_720w.jpg 1.5x, https://pic2.zhimg.com/80/v2-0a1512aae984aea1d152b43a55f55cf5_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic2.zhimg.com/80/v2-0a1512aae984aea1d152b43a55f55cf5_720w.jpg"
+        title="img" /></p>
+<p>也就是说可以<strong>用关键点的位置加上一个映射的仿射系数和无穷小量来<u>表示运动之后的关键点的位置</u></strong>，其中关键点就是当前的位置信息，然后映射系数就是motion信息，最后无穷小量可以被忽略不计。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg"
+        data-srcset="https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg, https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg 1.5x, https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg"
+        title="img" /></p>
+<p>当然这一步我觉得是需要基于一个物理假设的就是每一个关键点对应的一个刚体，其上的运动是一样的，然后就是可以用泰勒展开的方法来逼近这个刚体部分的运动。（文章提到了monkey-net其实就是只用了零阶的泰勒展开，而本文进一步优化提出了一阶的泰勒展开）</p>
+<h3 id="occlusion-aware-image-generation">Occlusion-aware Image Generation</h3>
+<p>第二步是由上一步预测得到的关键点和仿射系数来预测一个更加dense的光流场变化，并输出一个occlusion mask来指示哪个区域直接transfer哪个区域需要inpainting。</p>
+<p>然后就是生成器首先用上一步预测得到的dense的光流场来warp source图像，并结合那些occlusion的区域进行inpainting得到最终的输出。</p>
+</blockquote>
+<h4 id="dwnet-dense-warp-based-network-for-pose-guided-human-video-generation">DwNet: Dense warp-based network for pose-guided human video generation</h4>
+<p>​	<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221454.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221454.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221454.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221454.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221454.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221454.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221621.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221621.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221621.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221621.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221621.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221621.png" /></p>
+<h4 id="cross-identity-motion-transfer-for-arbitrary-objects-through-pose-attentive-video-reassembling">Cross-Identity Motion Transfer for Arbitrary Objects Through Pose-Attentive Video Reassembling</h4>
+<p>贡献：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100208.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100208.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100208.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100208.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100208.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100208.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100340.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100340.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100340.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100340.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100340.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100340.png" /></p>
+<blockquote>
+<ul>
+<li>
+<p>基于warp的方法能够解决解决较小的形变问题，但是还是存在一下几点问题：</p>
+<p>​	1.难以构建大的、复杂的位移</p>
+<p>​	2.不能够使用多个原图像进行生成(使用多个原图像同时进行生成可以起到相互补充的作用)</p>
+</li>
+<li>
+<p>之前的方法仅仅使用一张原图像进行生成。当原图像和目标图像之间存在较大的形变时，就会出现生成图像和目标图像之间无法存在一一对应的关系，导致生成的结果差；通过使用多张原图像可以起到相互补充的作用(可以利用多张原图像的外观)</p>
+</li>
+<li>
+<p>采用交叉训练的方式，这能够使其进行不同外观物体之间的motion transfer</p>
+</li>
+</ul>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100544.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100544.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100544.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100544.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100544.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100544.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100709.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100709.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100709.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100709.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100709.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100709.png" /></p>
+<p>Pose-Dependent Appearance Embedding</p>
+<p>提取图像的姿态编码和外观编码</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119104800.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119104800.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119104800.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119104800.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119104800.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119104800.png" /></p>
+<p>Pose-Attentive Retrieval Block</p>
+<p>使用注意力机制来融合多个原图像的外观信息</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110400.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110400.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110400.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110400.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110400.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110400.png" /></p>
+<p>Image Generation</p>
+<p>考虑背景的影响，单独使用一个自编码器学习背景信息。最后再将其融合进前景中</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110822.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110822.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110822.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110822.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110822.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119110822.png" /></p>
+<p>训练方式</p>
+<p>训练方式分为了重构训练和交叉训练</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111102.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111102.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111102.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111102.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111102.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111102.png" /></p>
+<p>重构损失</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111245.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111245.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111245.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111245.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111245.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111245.png" /></p>
+<p>交叉损失</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111325.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111325.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111325.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111325.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111325.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111325.png" /></p>
+<p>总的损失函数</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111358.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111358.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111358.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111358.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111358.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111358.png" /></p>
+<p>推理阶段</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111709.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111709.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111709.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111709.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111709.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210119111709.png" /></p>
+<blockquote>
+<p><strong>本文存在的最大的一个问题在于是一张一张的生成图像，并没有考虑帧与帧之间的连续性</strong>,即一帧一帧的生成图像-&gt;可以考虑处理帧与帧之间的连续性</p>
+<p>还有一个问题就是只在一个维度的特征空间中进行attention的融合，可以考虑多维度的融合</p>
+</blockquote>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-12-19</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/video-based-pose-transfer-method/" data-title="video-based pose transfer method"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/video-based-pose-transfer-method/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/video-based-pose-transfer-method/" data-title="video-based pose transfer method" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/video-based-pose-transfer-method/" data-title="video-based pose transfer method"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/video-based-pose-transfer-method/" data-title="video-based pose transfer method"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/video-based-pose-transfer-method/" data-title="video-based pose transfer method" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/video-based-pose-transfer-method/" data-title="video-based pose transfer method" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/video-based-pose-transfer-method/" data-title="video-based pose transfer method"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/" class="prev" rel="prev" title="计算机网络基础"><i class="fas fa-angle-left fa-fw"></i>计算机网络基础</a>
+            <a href="/ubuntu-%E7%BB%99%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACpytorch%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9Acuda%E7%89%88%E6%9C%AC/" class="next" rel="next" title="给不同版本Pytorch指定特定CUDA版本">给不同版本Pytorch指定特定CUDA版本<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

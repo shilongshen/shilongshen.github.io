@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>随笔 - Category - 我的个人博客</title>
+        <link>https://shilongshen.github.io/categories/%E9%9A%8F%E7%AC%94/</link>
+        <description>随笔 - Category - 我的个人博客</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 15 Nov 2020 13:27:44 &#43;0800</lastBuildDate><atom:link href="https://shilongshen.github.io/categories/%E9%9A%8F%E7%AC%94/" rel="self" type="application/rss+xml" /><item>
+    <title>我的第一篇博客</title>
+    <link>https://shilongshen.github.io/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</link>
+    <pubDate>Sun, 15 Nov 2020 13:27:44 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://shilongshen.github.io/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</guid>
+    <description><![CDATA[2020-11-15创建了我的个人博客，并上传了之前做的一些笔记。
+希望能够养成坚持做笔记，坚持更新博客的习惯。
+最重要的是始终坚持独立思考，每天进步一点点！]]></description>
+</item></channel>
+</rss>

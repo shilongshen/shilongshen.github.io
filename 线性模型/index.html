@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>线性模型 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="线性模型" />
+<meta property="og:description" content="线性模型是机器学习中应用最广泛的模型，指通过样本特征的线性组合来进行预测的模型。给定一个D维样本$\pmb{x}=[x_1,&hellip;,x_D]^T$ ,其线下你给组合函数为： $$ f(x;w)=w_1x_1&#43;w_2x_2&#43;&hellip;&#43;w_Dx_D&#43;b=\pmb{w^Tx}&#43;b $$ ​	其中$\pmb{w}=[w_1,&hellip;w_D]^T$为为D维的权重向量。直接用$f(x;w)$来预测输出目标$y=f(x;w)$。在分类问题中，由于输出目标$y$是一些离散的标签，而$f(x;w)$的置于为实数，因此无法直接用$f(x;w)$来进行预测，需要引入一个非线性的决策函数$g(.)$来预测输出目标 $$ y=g(f(x;w)) $$ 其中$f(x;w)$也称为判别函数。典型的二分类问题的结构图如下：
+3.1线性判别函数和决策边界 ​	一个线性分类模型是由一个（或多个）线性的判别函数$f(\pmb{x;w})=\pmb{w^Tx}&#43;b$和非线性的决策函数$g(.)$构成。
+3.1.1二分类 ​	二分类问题的类别标签$y$只有两种取值，通常可以设为{&#43;1,-1}。在二分类问题中，我们只需要一个线性判别函数$f(\pmb{x;w})=\pmb{w^Tx}&#43;b$。特征空间$\cal{R}$中满足$f(\pmb{x;w})=0$的点组成一个分割超平面，称为决策边界。决策边界将特征空间一分为二，划成两个区域，每一个区域对应一个类别。
+​	给定N个样本的训练集$\cal{D}={(x^{(n)},y^{(n)}})^N_{n=1}$.其中$y^{n}\in(&#43;1,-1)$.线性模型视图学习到参数$\pmb{w^*}$，使得对于每个样本$(x^{n},y^n)$尽量满足 $$ f(\pmb{x}^(n);\pmb{w}^*)&gt;0\qquad if \quad y^{(n)}=1\
+f(\pmb{x}^(n);\pmb{w}^*)&gt;0 \qquad	if \quad y^{(n)}=1 $$
+3.1.2多分类 ​	多分类问题是指分类的类别数C大于2.多分类一般需要多个线性判别函数，但是设计这些判别函数有很多种形式。
+假设一个多分类的问题的类别是$\lbrace1,2,&hellip;C\rbrace$。常用的方式有以下三种：
+（1）“一对其余”方式:把多分类问题转换为𝐶 个“一对其余”的二分类问 题．这种方式共需要𝐶 个判别函数，其中第𝑐 个判别函数$f_c$ 是将类别𝑐 的样本和 不属于类别𝑐 的样本分开．
+（2）“一对一方式”：：把多分类问题转换为𝐶(𝐶 − 1)/2 个“一对一”的二分 类问题．这种方式共需要𝐶(𝐶 − 1)/2 个判别函数，其中第(𝑖, 𝑗) 个判别函数是把类 别𝑖 和类别𝑗 的样本分开．
+（3）“argmax”方式：这是一种改进的“一对其余&quot;方式，共需要C个判别函数 $$ f_c(\pmb{x,w_c})=\pmb{w_c^Tx}&#43;b_c \qquad c\in\lbrace1,&hellip;C\rbrace $$ 对于样本𝒙，如果存在一个类别𝑐，相对于所有的其他类别𝑐(̃ 𝑐 ̃ ≠ 𝑐)有𝑓𝑐(𝒙;𝒘𝑐) &gt; 𝑓𝑐̃(𝒙,𝒘𝑐̃)，那么𝒙属于类别𝑐．“argmax”方式的预测函数定义为 $$ y={argmax}_{c=1}^Cf_c(\pmb{x;w}_c) $$" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-15T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-15T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="线性模型"/>
+<meta name="twitter:description" content="线性模型是机器学习中应用最广泛的模型，指通过样本特征的线性组合来进行预测的模型。给定一个D维样本$\pmb{x}=[x_1,&hellip;,x_D]^T$ ,其线下你给组合函数为： $$ f(x;w)=w_1x_1&#43;w_2x_2&#43;&hellip;&#43;w_Dx_D&#43;b=\pmb{w^Tx}&#43;b $$ ​	其中$\pmb{w}=[w_1,&hellip;w_D]^T$为为D维的权重向量。直接用$f(x;w)$来预测输出目标$y=f(x;w)$。在分类问题中，由于输出目标$y$是一些离散的标签，而$f(x;w)$的置于为实数，因此无法直接用$f(x;w)$来进行预测，需要引入一个非线性的决策函数$g(.)$来预测输出目标 $$ y=g(f(x;w)) $$ 其中$f(x;w)$也称为判别函数。典型的二分类问题的结构图如下：
+3.1线性判别函数和决策边界 ​	一个线性分类模型是由一个（或多个）线性的判别函数$f(\pmb{x;w})=\pmb{w^Tx}&#43;b$和非线性的决策函数$g(.)$构成。
+3.1.1二分类 ​	二分类问题的类别标签$y$只有两种取值，通常可以设为{&#43;1,-1}。在二分类问题中，我们只需要一个线性判别函数$f(\pmb{x;w})=\pmb{w^Tx}&#43;b$。特征空间$\cal{R}$中满足$f(\pmb{x;w})=0$的点组成一个分割超平面，称为决策边界。决策边界将特征空间一分为二，划成两个区域，每一个区域对应一个类别。
+​	给定N个样本的训练集$\cal{D}={(x^{(n)},y^{(n)}})^N_{n=1}$.其中$y^{n}\in(&#43;1,-1)$.线性模型视图学习到参数$\pmb{w^*}$，使得对于每个样本$(x^{n},y^n)$尽量满足 $$ f(\pmb{x}^(n);\pmb{w}^*)&gt;0\qquad if \quad y^{(n)}=1\
+f(\pmb{x}^(n);\pmb{w}^*)&gt;0 \qquad	if \quad y^{(n)}=1 $$
+3.1.2多分类 ​	多分类问题是指分类的类别数C大于2.多分类一般需要多个线性判别函数，但是设计这些判别函数有很多种形式。
+假设一个多分类的问题的类别是$\lbrace1,2,&hellip;C\rbrace$。常用的方式有以下三种：
+（1）“一对其余”方式:把多分类问题转换为𝐶 个“一对其余”的二分类问 题．这种方式共需要𝐶 个判别函数，其中第𝑐 个判别函数$f_c$ 是将类别𝑐 的样本和 不属于类别𝑐 的样本分开．
+（2）“一对一方式”：：把多分类问题转换为𝐶(𝐶 − 1)/2 个“一对一”的二分 类问题．这种方式共需要𝐶(𝐶 − 1)/2 个判别函数，其中第(𝑖, 𝑗) 个判别函数是把类 别𝑖 和类别𝑗 的样本分开．
+（3）“argmax”方式：这是一种改进的“一对其余&quot;方式，共需要C个判别函数 $$ f_c(\pmb{x,w_c})=\pmb{w_c^Tx}&#43;b_c \qquad c\in\lbrace1,&hellip;C\rbrace $$ 对于样本𝒙，如果存在一个类别𝑐，相对于所有的其他类别𝑐(̃ 𝑐 ̃ ≠ 𝑐)有𝑓𝑐(𝒙;𝒘𝑐) &gt; 𝑓𝑐̃(𝒙,𝒘𝑐̃)，那么𝒙属于类别𝑐．“argmax”方式的预测函数定义为 $$ y={argmax}_{c=1}^Cf_c(\pmb{x;w}_c) $$"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" /><link rel="prev" href="https://shilongshen.github.io/_____________________cost-volume___correlation_________/" /><link rel="next" href="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "线性模型",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B\/"
+        },"genre": "posts","wordcount":  113 ,
+        "url": "https:\/\/shilongshen.github.io\/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B\/","datePublished": "2020-11-15T13:26:17+08:00","dateModified": "2020-11-15T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">线性模型</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;113 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#31线性判别函数和决策边界">3.1线性判别函数和决策边界</a>
+              <ul>
+                <li><a href="#311二分类">3.1.1二分类</a></li>
+                <li><a href="#312多分类">3.1.2多分类</a></li>
+              </ul>
+            </li>
+            <li><a href="#32-logistic回归">3.2 logistic回归</a>
+              <ul>
+                <li><a href="#321-参数学习">3.2.1 参数学习</a></li>
+              </ul>
+            </li>
+            <li><a href="#33-softmax回归">3.3 softmax回归</a>
+              <ul>
+                <li><a href="#331参数学习">3.3.1参数学习</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>线性模型是机器学习中应用最广泛的模型，指通过样本特征的线性组合来进行预测的模型。给定一个D维样本$\pmb{x}=[x_1,&hellip;,x_D]^T$ ,其线下你给组合函数为：
+$$
+f(x;w)=w_1x_1+w_2x_2+&hellip;+w_Dx_D+b=\pmb{w^Tx}+b
+$$
+​		其中$\pmb{w}=[w_1,&hellip;w_D]^T$为为D维的权重向量。直接用$f(x;w)$来预测输出目标$y=f(x;w)$。在分类问题中，由于输出目标$y$是一些离散的标签，而$f(x;w)$的置于为实数，因此无法直接用$f(x;w)$来进行预测，需要引入一个非线性的<strong>决策函数</strong>$g(.)$来预测输出目标
+$$
+y=g(f(x;w))
+$$
+其中$f(x;w)$也称为<strong>判别函数</strong>。典型的<strong>二分类问题</strong>的结构图如下：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png"
+        title="img" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123630.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123630.png, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123630.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123630.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123630.png"
+        title="img" /></p>
+<h3 id="31线性判别函数和决策边界">3.1线性判别函数和决策边界</h3>
+<p>​		一个线性分类模型是由一个（或多个）线性的判别函数$f(\pmb{x;w})=\pmb{w^Tx}+b$和非线性的决策函数$g(.)$构成。</p>
+<h4 id="311二分类">3.1.1二分类</h4>
+<p>​		二分类问题的类别标签$y$只有两种取值，通常可以设为{+1,-1}。在二分类问题中，我们只需要一个线性判别函数$f(\pmb{x;w})=\pmb{w^Tx}+b$。特征空间$\cal{R}$中满足$f(\pmb{x;w})=0$的点组成一个分割超平面，称为<strong>决策边界</strong>。决策边界将特征空间一分为二，划成两个区域，每一个区域对应一个类别。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132429.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132429.png, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132429.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132429.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132429.png"
+        title="img" /></p>
+<p>​		给定N个样本的训练集$\cal{D}={(x^{(n)},y^{(n)}})^N_{n=1}$.其中$y^{n}\in(+1,-1)$.线性模型视图学习到参数$\pmb{w^*}$，使得对于每个样本$(x^{n},y^n)$尽量满足
+$$
+f(\pmb{x}^(n);\pmb{w}^*)&gt;0\qquad       if \quad y^{(n)}=1\<br>
+f(\pmb{x}^(n);\pmb{w}^*)&gt;0 \qquad		if \quad  y^{(n)}=1
+$$</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514123901.png"
+        title="img" /></p>
+<h4 id="312多分类">3.1.2多分类</h4>
+<p>​		多分类问题是指分类的类别数C大于2.多分类一般需要多个线性判别函数，但是设计这些判别函数有很多种形式。</p>
+<p>假设一个多分类的问题的类别是$\lbrace1,2,&hellip;C\rbrace$。常用的方式有以下三种：</p>
+<p>（1）“一对其余”方式:把多分类问题转换为𝐶 个“一对其余”的二分类问
+题．这种方式共需要𝐶 个判别函数，其中第𝑐 个判别函数$f_c$ 是将类别𝑐 的样本和
+不属于类别𝑐 的样本分开．</p>
+<p>（2）“一对一方式”：：把多分类问题转换为𝐶(𝐶 − 1)/2 个“一对一”的二分
+类问题．这种方式共需要𝐶(𝐶 − 1)/2 个判别函数，其中第(𝑖, 𝑗) 个判别函数是把类
+别𝑖 和类别𝑗 的样本分开．</p>
+<p>（3）“argmax”方式：这是一种改进的“一对其余&quot;方式，共需要C个判别函数
+$$
+f_c(\pmb{x,w_c})=\pmb{w_c^Tx}+b_c \qquad c\in\lbrace1,&hellip;C\rbrace
+$$
+对于样本𝒙，<u>如果存在一个类别𝑐，相对于所有的其他类别𝑐(̃ 𝑐 ̃ ≠ 𝑐)有𝑓𝑐(𝒙;𝒘𝑐) &gt;</u>
+<u>𝑓𝑐̃(𝒙,𝒘𝑐̃)，那么𝒙属于类别𝑐</u>．“argmax”方式的预测函数定义为
+$$
+y={argmax}_{c=1}^Cf_c(\pmb{x;w}_c)
+$$</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132247.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132247.png, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132247.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132247.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514132247.png"
+        title="img" /></p>
+<h3 id="32-logistic回归">3.2 logistic回归</h3>
+<p>​		对于二分类问题，假定$y\in\lbrace0,+1\rbrace$,给定一个输入向量$\pmb{x}$，它可能对应一张图片（假设包含猫），比如你可能想要识别这张图片是否包含一只猫，你想要一个算法能够输出预测$\hat{y}$，也就是对实际值$y$的估计。也就是说你<strong>想要让$\hat{y}$表示$y$等于1的可能性</strong>，前提条件是给定了输入特征$\pmb{x}$。我们引入非线性函数sigmoid函数：$g（.）=\sigma$来预测后验概率$p(y=1|\pmb{x})$。
+$$
+let\quad y\approx\hat{y}=p(y=1|\pmb{x})=g(f(\pmb{x;w}))=g(\pmb{w^Tx}+b)=\sigma(\pmb{w^Tx}+b)
+$$
+其中sigmoid函数（也称为logistics函数）的图像为：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514161934.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514161934.png, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514161934.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/image/20200514161934.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/image/20200514161934.png"
+        title="img" /></p>
+<p>sigmoid函数函数表达式为：$\sigma(z)=\frac1{1+e^{-z}}$.由表达式可知，如果$z$很大的话$\sigma(z)\approx1$。相反的，如果$z$很小，那么$\sigma(z)\approx0$。因此<strong>此时我们的工作就是让机器学习参数$\pmb{w},b$使得$z=\pmb{w^Tx}+b$较大，这样才能使$\hat{y}$成为对$y=1$这一情况的一个很好的估计</strong>。</p>
+<h4 id="321-参数学习">3.2.1 参数学习</h4>
+<p>logistics回归采用交叉熵作为损失函数，并使用梯度下降法来对参数进行更新（优化）。</p>
+<p>损失函数为（最小化损失函数）：
+$$
+\Re(\pmb{w},b)=-\frac1N\sum_{n=1}^N(y^{(n)}log(\hat{y}^{(n)})+(1-y^{n})log(1-\hat{y}^{(n)}))
+$$
+<u>直观的理解</u>：当$y=1$时损失函数为$-log(\hat{y})$,如果想要损失函数尽可能的小，那么$\hat{y}$就要尽可能的大，又因为sigmiod函数的取值范围为[0,1]，所以$\hat{y}$会尽可能的接近1。同理当$y=0$时损失函数为$-log(1-\hat{y})$，如果想要损失函数尽可能的小，就要使$\hat{y}$尽可能接近0。</p>
+<h3 id="33-softmax回归">3.3 softmax回归</h3>
+<p><a href="https://note.youdao.com/ynoteshare1/index.html?id=a15461dfbaf9b46fe22a75dc0ef34b46&amp;type=note">https://note.youdao.com/ynoteshare1/index.html?id=a15461dfbaf9b46fe22a75dc0ef34b46&amp;type=note</a></p>
+<p>​		Softmax 回归（Softmax Regression），也称为多项Multinomial）或多类（Multi-Class）的Logistic 回归，是Logistic 回归在多分类问题上的推广。</p>
+<p>​		对于多分类问题，类别标签$y\in\lbrace1,2,&hellip;C\rbrace$可以有C个可能取值。给定一个样本$\pmb{x}$，softmax回归预测的属于类别c的概率为
+$$
+p(y=c|\pmb{x})=softmax(\pmb{w_c^Tx})=\frac {exp(\pmb{w_c^Tx})}{\sum_\tilde{c}^{C}exp(\pmb{w_\tilde{c}^Tx})}
+$$</p>
+<p>其中$\pmb{w_c}$为第第c类的权重向量。</p>
+<h4 id="331参数学习">3.3.1参数学习</h4>
+<p>​		采用交叉熵损失函数，softmax的损失函数为：
+$$
+\Re(\pmb{w},b)=-\frac1N\sum_{n=1}^Ny^{(n)}log(\hat{y}^{(n)})
+$$</p>
+<p>​</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" data-title="线性模型"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" data-title="线性模型" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" data-title="线性模型"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" data-title="线性模型"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" data-title="线性模型" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" data-title="线性模型" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" data-title="线性模型"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/_____________________cost-volume___correlation_________/" class="prev" rel="prev" title="计算机视觉中的cost volume"><i class="fas fa-angle-left fa-fw"></i>计算机视觉中的cost volume</a>
+            <a href="/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/" class="next" rel="next" title="深度生成模型">深度生成模型<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

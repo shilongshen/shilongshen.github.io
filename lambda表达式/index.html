@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>lambda表达式 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="lambda表达式" />
+<meta property="og:description" content="为什么引入lambda表达式 在Java中是面向对象进行编程，如果你想要调用一个方法，你必须创建一个类，并在类中构造一个方法，方法体中为实现的方法。当你想要调用这个方法时，你必须将类进行实例化才能够调用这个方法。从某种意义上来说，这是比较复杂的，lambda就是为了简化这一过程。
+lambda表达式的语法   lambda表达式的形式为参数，箭头（-&gt;），以及一个表达式。
+  如果代码要完成的计算无法放在一个表达式中，可以将放在{}中
+  {}中可以显式包含return语句：
+1 2 3 4  （String first,Sring second）-&gt;{ if (first.length&gt;second.length) return -1; else return 0; }     即使lambda表达式中没有参数，任要提供空括号，就像空参数一样：
+1 2 3 4  ()-&gt;{ for (int i=0;i&lt;100;i&#43;&#43;) System,out.println(i); }     如果可以推导出一个参数的类型，则可以忽略其类型：
+1 2 3  Comparator&lt;String&gt; Com=(first,second)-&gt;{ first.length-second.length; }     无需指定lambda表达式的返回类型。lambda表达式的返回类型总是能够从上下文推断得到：
+1  （String first,Sring second）-&gt; first.length&gt;second.length //返回类型为int   函数式接口 定义：只具有一个抽象方法的接口称为函数式接口" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-24T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-24T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="lambda表达式"/>
+<meta name="twitter:description" content="为什么引入lambda表达式 在Java中是面向对象进行编程，如果你想要调用一个方法，你必须创建一个类，并在类中构造一个方法，方法体中为实现的方法。当你想要调用这个方法时，你必须将类进行实例化才能够调用这个方法。从某种意义上来说，这是比较复杂的，lambda就是为了简化这一过程。
+lambda表达式的语法   lambda表达式的形式为参数，箭头（-&gt;），以及一个表达式。
+  如果代码要完成的计算无法放在一个表达式中，可以将放在{}中
+  {}中可以显式包含return语句：
+1 2 3 4  （String first,Sring second）-&gt;{ if (first.length&gt;second.length) return -1; else return 0; }     即使lambda表达式中没有参数，任要提供空括号，就像空参数一样：
+1 2 3 4  ()-&gt;{ for (int i=0;i&lt;100;i&#43;&#43;) System,out.println(i); }     如果可以推导出一个参数的类型，则可以忽略其类型：
+1 2 3  Comparator&lt;String&gt; Com=(first,second)-&gt;{ first.length-second.length; }     无需指定lambda表达式的返回类型。lambda表达式的返回类型总是能够从上下文推断得到：
+1  （String first,Sring second）-&gt; first.length&gt;second.length //返回类型为int   函数式接口 定义：只具有一个抽象方法的接口称为函数式接口"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" /><link rel="prev" href="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" /><link rel="next" href="https://shilongshen.github.io/compable%E5%92%8Ccomparator/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "lambda表达式",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F\/"
+        },"genre": "posts","wordcount":  206 ,
+        "url": "https:\/\/shilongshen.github.io\/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F\/","datePublished": "2020-11-24T13:26:17+08:00","dateModified": "2020-11-24T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">lambda表达式</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-24">2020-11-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;206 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#为什么引入lambda表达式">为什么引入lambda表达式</a></li>
+            <li><a href="#lambda表达式的语法">lambda表达式的语法</a></li>
+            <li><a href="#函数式接口">函数式接口</a></li>
+            <li><a href="#方法引用">方法引用</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h3 id="为什么引入lambda表达式">为什么引入lambda表达式</h3>
+<p>在Java中是面向对象进行编程，如果你想要调用一个方法，你必须创建一个类，并在类中构造一个方法，方法体中为实现的方法。当你想要调用这个方法时，你必须将类进行实例化才能够调用这个方法。从某种意义上来说，这是比较复杂的，lambda就是为了简化这一过程。</p>
+<h3 id="lambda表达式的语法">lambda表达式的语法</h3>
+<ul>
+<li>
+<p>lambda表达式的形式为<code>参数，箭头（-&gt;），以及一个表达式</code>。</p>
+</li>
+<li>
+<p>如果代码要完成的计算无法放在一个表达式中，可以将放在<code>{}</code>中</p>
+</li>
+<li>
+<p><code>{}</code>中可以显式包含return语句：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="err">（</span><span class="n">String</span> <span class="n">first</span><span class="o">,</span><span class="n">Sring</span> <span class="n">second</span><span class="err">）</span><span class="o">-</span><span class="o">&gt;</span><span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">first</span><span class="o">.</span><span class="na">length</span><span class="o">&gt;</span><span class="n">second</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="k">return</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
+    <span class="k">else</span> <span class="k">return</span> <span class="n">0</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>即使lambda表达式中没有参数，任要提供空括号，就像空参数一样：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="o">(</span><span class="o">)</span><span class="o">-</span><span class="o">&gt;</span><span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">100</span><span class="o">;</span><span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="o">)</span>
+        <span class="n">System</span><span class="o">,</span><span class="n">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">i</span><span class="o">)</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>如果可以推导出一个参数的类型，则可以忽略其类型：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Comparator</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">Com</span><span class="o">=</span><span class="o">(</span><span class="n">first</span><span class="o">,</span><span class="n">second</span><span class="o">)</span><span class="o">-</span><span class="o">&gt;</span><span class="o">{</span>
+    <span class="n">first</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="n">second</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>无需指定lambda表达式的返回类型。lambda表达式的返回类型总是能够从上下文推断得到：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="err">（</span><span class="n">String</span> <span class="n">first</span><span class="o">,</span><span class="n">Sring</span> <span class="n">second</span><span class="err">）</span><span class="o">-</span><span class="o">&gt;</span>  <span class="n">first</span><span class="o">.</span><span class="na">length</span><span class="o">&gt;</span><span class="n">second</span><span class="o">.</span><span class="na">length</span> <span class="c1">//返回类型为int
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="函数式接口">函数式接口</h3>
+<p>定义：只具有一个抽象方法的接口称为函数式接口</p>
+<p>这里需要注意的一个问题是，我们可能认为接口中的方法可能都是抽象方法，其实不然，因为接口中可以声明非抽象方法，例如默认方法，静态方法，私有方法。判断一个接口是否为函数为：对于Java自带的标准库里的大量单一方法的接口，很多都已经标记为<code>@FunctionalInterface</code>，表明该接口可以作为函数使用。</p>
+<p>例如Comparator接口只具有一个抽象抽象方法compare</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//使用匿名内部类的方式
+</span><span class="c1"></span><span class="n">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">employees</span><span class="o">,</span> <span class="k">new</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Employee</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Employee</span> <span class="n">o1</span><span class="o">,</span> <span class="n">Employee</span> <span class="n">o2</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">Integer</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">o1</span><span class="o">.</span><span class="na">getSalary</span><span class="o">(</span><span class="o">)</span><span class="o">,</span> <span class="n">o2</span><span class="o">.</span><span class="na">getSalary</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span><span class="o">)</span><span class="o">;</span><span class="c1">//对数组进行排序，此时传入的参数为对象数组以及比较器。
+</span><span class="c1"></span>
+
+<span class="c1">//使用lambda表达式
+</span><span class="c1"></span> <span class="n">Arrays</span><span class="o">.</span><span class="na">sort</span>
+                <span class="o">(</span><span class="n">employee1s</span><span class="o">,</span> <span class="o">(</span>
+                                <span class="o">(</span><span class="n">o1</span><span class="o">,</span> <span class="n">o2</span><span class="o">)</span> <span class="o">-</span><span class="o">&gt;</span> <span class="o">{</span>
+                                    <span class="k">return</span> <span class="n">Integer</span><span class="o">.</span><span class="na">compare</span><span class="o">(</span><span class="n">o1</span><span class="o">.</span><span class="na">getSalary</span><span class="o">(</span><span class="o">)</span><span class="o">,</span> <span class="n">o2</span><span class="o">.</span><span class="na">getSalary</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+                                <span class="o">}</span>
+                        <span class="o">)</span>
+                <span class="o">)</span><span class="o">;</span><span class="c1">//对数组进行排序，此时传入的参数为对象数组以及比较器。
+</span><span class="c1"></span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="方法引用">方法引用</h3>
+<p>如果函数式接口的实现恰好可以通过调用<strong>一个</strong>方法来实现，那么我们可以使用方法引用</p>
+<p>方法引用分为</p>
+<ul>
+<li>
+<p>静态方法方法引用</p>
+</li>
+<li>
+<p>非静态方法引用</p>
+</li>
+<li>
+<p>构造函数的方法引用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">  
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Demo</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 静态方法引用--通过类名调用
+</span><span class="c1"></span>        <span class="n">Consumer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">consumerStatic</span> <span class="o">=</span> <span class="n">Java3y</span><span class="o">:</span><span class="o">:</span><span class="n">MyNameStatic</span><span class="o">;</span>
+        <span class="n">consumerStatic</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="s">&#34;3y---static&#34;</span><span class="o">)</span><span class="o">;</span>
+  
+        <span class="c1">//实例方法引用--通过实例调用
+</span><span class="c1"></span>        <span class="n">Java3y</span> <span class="n">java3y</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Java3y</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">Consumer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">java3y</span><span class="o">:</span><span class="o">:</span><span class="n">myName</span><span class="o">;</span>
+        <span class="n">consumer</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="s">&#34;3y---instance&#34;</span><span class="o">)</span><span class="o">;</span>
+  
+        <span class="c1">// 构造方法方法引用--无参数
+</span><span class="c1"></span>        <span class="n">Supplier</span><span class="o">&lt;</span><span class="n">Java3y</span><span class="o">&gt;</span> <span class="n">supplier</span> <span class="o">=</span> <span class="n">Java3y</span><span class="o">:</span><span class="o">:</span><span class="k">new</span><span class="o">;</span><span class="c1">//方法名为new
+</span><span class="c1"></span>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">supplier</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+  
+<span class="kd">class</span> <span class="nc">Java3y</span> <span class="o">{</span>
+    <span class="c1">// 静态方法
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">MyNameStatic</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+  
+    <span class="c1">// 实例方法
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">myName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+  
+    <span class="c1">// 无参构造方法
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="nf">Java3y</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-24</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-title="lambda表达式"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-title="lambda表达式" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-title="lambda表达式"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-title="lambda表达式"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-title="lambda表达式" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-title="lambda表达式" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-title="lambda表达式"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" class="prev" rel="prev" title="Java基础总结"><i class="fas fa-angle-left fa-fw"></i>Java基础总结</a>
+            <a href="/compable%E5%92%8Ccomparator/" class="next" rel="next" title="Comparable和Comparator">Comparable和Comparator<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

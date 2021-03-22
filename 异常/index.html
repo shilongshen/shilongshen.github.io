@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>异常 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="异常" />
+<meta property="og:description" content="异常分类 所有的异常都派生于Throwable,在下一层又分解为Error和Exception。
+Error类层次描述Java运行时系统的内部错误和资源耗尽错误，发生这类错误时，除了通知错误并尽力妥善终止程序外，你几乎无能为力，这一类错误很少发生。
+Exception类又分为Runtime Exception和其他Exception。
+Java将异常进行分类：
+ 非检查型异常（unchecked）：派生于Error类和Runtime Exception类的所有异常 检查型异常（checked）:其他所有异常  需要为所有检查型异常提供异常处理器。
+声明检查型异常 一个方法必须声明所有可能抛出的检查型异常，如果没有声明，编译器就会发出一个错误警告
+声明的方法：在方法首部通过throws 声明这个方法可能抛出的检查型异常，例如
+1 2 3 4 5 6 7  class Test{ public Image LoadImage(String s) throws IOException{ ... } }   这里需要注意的是：
+ 如果子类覆写父类的方法，那么子类的这个方法声明的异常不能比父类更加通用。子类中的方法可以声明更加特殊的异常或不声明异常 如果父类中的方法没有声明任何异常，那么子类的方法也不能声明异常  如何抛出异常 例：
+1 2 3 4 5 6 7 8 9 10 11  String readData(Scanner in) throws EOFException{ while(){ if(!in.hasNext()){ if(n&lt;len){ throw new EOFException;//抛出异常  } } } return s; }   抛出异常的方法：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-25T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-25T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="异常"/>
+<meta name="twitter:description" content="异常分类 所有的异常都派生于Throwable,在下一层又分解为Error和Exception。
+Error类层次描述Java运行时系统的内部错误和资源耗尽错误，发生这类错误时，除了通知错误并尽力妥善终止程序外，你几乎无能为力，这一类错误很少发生。
+Exception类又分为Runtime Exception和其他Exception。
+Java将异常进行分类：
+ 非检查型异常（unchecked）：派生于Error类和Runtime Exception类的所有异常 检查型异常（checked）:其他所有异常  需要为所有检查型异常提供异常处理器。
+声明检查型异常 一个方法必须声明所有可能抛出的检查型异常，如果没有声明，编译器就会发出一个错误警告
+声明的方法：在方法首部通过throws 声明这个方法可能抛出的检查型异常，例如
+1 2 3 4 5 6 7  class Test{ public Image LoadImage(String s) throws IOException{ ... } }   这里需要注意的是：
+ 如果子类覆写父类的方法，那么子类的这个方法声明的异常不能比父类更加通用。子类中的方法可以声明更加特殊的异常或不声明异常 如果父类中的方法没有声明任何异常，那么子类的方法也不能声明异常  如何抛出异常 例：
+1 2 3 4 5 6 7 8 9 10 11  String readData(Scanner in) throws EOFException{ while(){ if(!in.hasNext()){ if(n&lt;len){ throw new EOFException;//抛出异常  } } } return s; }   抛出异常的方法："/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/" /><link rel="prev" href="https://shilongshen.github.io/compable%E5%92%8Ccomparator/" /><link rel="next" href="https://shilongshen.github.io/arraylist%E4%B8%8E%E6%95%B0%E7%BB%84%E9%97%B4%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "异常",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E5%BC%82%E5%B8%B8\/"
+        },"genre": "posts","wordcount":  447 ,
+        "url": "https:\/\/shilongshen.github.io\/%E5%BC%82%E5%B8%B8\/","datePublished": "2020-11-25T13:26:17+08:00","dateModified": "2020-11-25T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">异常</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-25">2020-11-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;447 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#异常分类">异常分类</a></li>
+            <li><a href="#声明检查型异常">声明检查型异常</a></li>
+            <li><a href="#如何抛出异常">如何抛出异常</a></li>
+            <li><a href="#捕获异常">捕获异常</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h3 id="异常分类">异常分类</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201125193625.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201125193625.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201125193625.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201125193625.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201125193625.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201125193625.png" /></p>
+<p>所有的异常都派生于Throwable,在下一层又分解为Error和Exception。</p>
+<p>Error类层次描述Java运行时系统的内部错误和资源耗尽错误，发生这类错误时，除了通知错误并尽力妥善终止程序外，你几乎无能为力，这一类错误很少发生。</p>
+<p>Exception类又分为Runtime Exception和其他Exception。</p>
+<p>Java将异常进行分类：</p>
+<ul>
+<li>非检查型异常（unchecked）：派生于Error类和Runtime Exception类的所有异常</li>
+<li>检查型异常（checked）:其他所有异常</li>
+</ul>
+<p><strong>需要为所有检查型异常提供异常处理器</strong>。</p>
+<h3 id="声明检查型异常">声明检查型异常</h3>
+<p>一个方法<strong>必须</strong>声明所有可能抛出的检查型异常，如果没有声明，编译器就会发出一个错误警告</p>
+<p>声明的方法：在方法首部通过<code>throws</code> 声明这个方法可能抛出的检查型异常，例如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">Test</span><span class="o">{</span>
+    
+    <span class="kd">public</span> <span class="n">Image</span> <span class="nf">LoadImage</span><span class="o">(</span><span class="n">String</span> <span class="n">s</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">{</span>
+        <span class="o">.</span><span class="o">.</span><span class="o">.</span>
+    <span class="o">}</span>
+    
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里需要注意的是：</p>
+<ul>
+<li>如果子类覆写父类的方法，那么子类的这个方法声明的异常不能比父类更加通用。子类中的方法可以声明更加特殊的异常或不声明异常</li>
+<li>如果父类中的方法没有声明任何异常，那么子类的方法也不能声明异常</li>
+</ul>
+<h3 id="如何抛出异常">如何抛出异常</h3>
+<p>例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="nf">readData</span><span class="o">(</span><span class="n">Scanner</span> <span class="n">in</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">EOFException</span><span class="o">{</span>
+    
+    <span class="k">while</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="o">!</span><span class="n">in</span><span class="o">.</span><span class="na">hasNext</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">{</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">n</span><span class="o">&lt;</span><span class="n">len</span><span class="o">)</span><span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="n">EOFException</span><span class="o">;</span><span class="c1">//抛出异常
+</span><span class="c1"></span>            <span class="o">}</span>
+        <span class="o">}</span>    
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>抛出异常的方法：</p>
+<ul>
+<li>找到一个合适的异常类</li>
+<li>创建这个类的一个对象</li>
+<li>将对象抛出</li>
+</ul>
+<p>一旦方法抛出了异常，这个方法就不会返回到调用者。</p>
+<p>或者是通过<code>throws</code>进行抛出，具体的用法和声明异常一样，即在方法首部通过<code>throws</code> 抛出异常</p>
+<p><code>throw</code> 和<code>throws</code>的区别：<a href="https://blog.csdn.net/hhy62011980/article/details/5548278?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.not_use_machine_learn_pai&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.not_use_machine_learn_pai" target="_blank" rel="noopener noreffer">参考</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">throw语句用在方法体内，表示抛出异常，由方法体内的语句处理。
+throws语句用在方法声明后面，表示再抛出异常，由该方法的调用者来处理。
+
+ 
+
+throws主要是声明这个方法会抛出这种类型的异常，使它的调用者知道要捕获这个异常。
+throw是具体向外抛异常的动作，所以它是抛出一个异常实例。
+
+ 
+
+throws说明你有那个可能，倾向。
+throw的话，那就是你把那个倾向变成真实的了。
+
+ 
+
+同时：
+1、throws出现在方法函数头；而throw出现在函数体。
+2、throws表示出现异常的一种可能性，并不一定会发生这些异常；throw则是抛出了异常，执行throw则一定抛出了某种异常。
+3、两者都是消极处理异常的方式（这里的消极并不是说这种方式不好），只是抛出或者可能抛出异常，但是不会由函数去处理异常，真正的处理异常由函数的上层调用处理。
+</code></pre></td></tr></table>
+</div>
+</div><p>例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">void</span> <span class="nf">doA</span><span class="o">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception1</span><span class="o">,</span><span class="n">Exception3</span><span class="o">{</span>
+           <span class="k">try</span><span class="o">{</span>
+                 <span class="o">.</span><span class="o">.</span><span class="o">.</span><span class="o">.</span><span class="o">.</span><span class="o">.</span>
+
+           <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">Exception1</span> <span class="n">e</span><span class="o">)</span><span class="o">{</span>
+              <span class="k">throw</span> <span class="n">e</span><span class="o">;</span>
+           <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">Exception2</span> <span class="n">e</span><span class="o">)</span><span class="o">{</span>
+              <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;出错了！&#34;</span><span class="o">)</span><span class="o">;</span>
+           <span class="o">}</span>
+           <span class="k">if</span><span class="o">(</span><span class="n">a</span><span class="o">!</span><span class="o">=</span><span class="n">b</span><span class="o">)</span>
+              <span class="k">throw</span> <span class="k">new</span>  <span class="n">Exception3</span><span class="o">(</span><span class="s">&#34;自定义异常&#34;</span><span class="o">)</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>代码块中可能会产生3个异常，(Exception1,Exception2,Exception3)。
+如果产生Exception1异常，则捕获之后再抛出，由该方法的调用者去处理。
+如果产生Exception2异常，则该方法自己处理了（即System.out.println(&ldquo;出错了！&quot;);）。所以该方法就不会再向外抛出Exception2异常了，void doA() throws Exception1,Exception3 里面的Exception2也就不用写了。
+而Exception3异常是该方法的某段逻辑出错，程序员自己做了处理，在该段逻辑错误的情况下抛出异常Exception3，则该方法的调用者也要处理此异常。</p>
+<h3 id="捕获异常">捕获异常</h3>
+<p>如果只是声明异常或者是抛出异常而没有捕获异常，当发生异常时，<strong>程序就会终止</strong>，并在控制台上打印出一个消息。</p>
+<p>如果捕获了异常程序不会立即终止，而是会对异常进行相应的处理</p>
+<p>这里需要注意的是</p>
+<ul>
+<li>检查型异常必须声明，而非检查型异常可以不用声明（也可以声明，但是一般是不用声明的）</li>
+<li>检查型异常和非检查型异常都可以被捕获（但是一般都是捕获检查型异常）</li>
+<li>实际上我们非检查型异常的处理是：对于Error异常，描述Java运行时系统的内部错误和资源耗尽错误，对于这类错误是无能为力的；对于Runtime Exception 异常，是<strong>运行时的异常</strong>，例如数组越界等，这是我们在编写程序时就应该避免发生的。而对于检查型异常，例如一个文件是否存在，我们就需要对其进行声明或捕获或抛出</li>
+</ul>
+<p>捕获异常的语句块：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="k">try</span><span class="o">{</span>
+    <span class="n">code</span>
+<span class="o">}</span>
+<span class="k">catch</span><span class="o">(</span><span class="n">ExceptionType</span> <span class="n">e</span><span class="o">)</span><span class="o">{</span>
+    <span class="n">handle</span> <span class="k">for</span> <span class="k">this</span> <span class="n">Type</span>  
+<span class="o">}</span>
+<span class="k">finally</span><span class="o">{</span>
+    <span class="n">must</span> <span class="k">do</span> 
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>执行逻辑</p>
+<ol>
+<li>如果try中某一语句抛出了catch子句指定的异常类，那么</li>
+<li>程序将跳过try语句中的其余代码</li>
+<li>程序执行catch字句中的处理代码</li>
+<li>如果try中语句没有抛出任何异常，那么程序就会跳过catch语句</li>
+<li>如果try中某一语句抛出了catch子句中没有声明的异常类，方法就会结束（应该尽量避免出现这种情况）</li>
+<li>无论前面是什么情况，finally语句中的代码一定会执行</li>
+</ol>
+<p>例子：<a href="https://blog.csdn.net/Alexwym/article/details/81239692?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.not_use_machine_learn_pai&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.not_use_machine_learn_pai#commentBox" target="_blank" rel="noopener noreffer">参考</a></p>
+<p><code>throw</code>,<code>throws</code>和<code>try...catch</code></p>
+<p>1、throws出现在方法函数头；而throw出现在函数体。
+2、throws表示出现异常的一种可能性，并不一定会发生这些异常；throw则是抛出了异常，执行throw则一定抛出了某种异常。
+3、两者都是消极处理异常的方式（这里的消极并不是说这种方式不好），只是抛出或者可能抛出异常，但是不会由函数去处理异常，真正的处理异常由函数的上层调用处理。</p>
+<p>也就是异常处理是会一层层往上抛的，直到遇到了某个方法(try&hellip;catch)处理了这个异常或者最后抛给了JVM.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">abnormalTest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+ 
+<span class="c1">//定义一个测试类，检查JAVA中的异常处理机制
+</span><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+	<span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+	
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">Abnormal</span><span class="o">(</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">{</span>
+		<span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">0</span><span class="o">;</span>
+		<span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="n">5</span><span class="o">/</span><span class="n">i</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">x</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+	
+	<span class="c1">//主函数入口
+</span><span class="c1"></span>	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+		<span class="n">Test</span> <span class="n">t</span><span class="o">=</span><span class="k">new</span> <span class="n">Test</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">t</span><span class="o">.</span><span class="na">Abnormal</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+	
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>分析：我们这里直接使用了JAVA中的IOException对象，由于我们在main函数中没有对这个异常进行处理，所以我们要给main函数加上throws  IOException，指明我不想处理这个异常，请帮我把它抛给上一级。<strong>于是这个异常就被抛给了JAVA虚拟机</strong>，JAVA虚拟机根据IOException所带的异常信息，判断这是一个整数除以0的异常，于是终止程序，并且打印出&rdquo;/ by zero&quot;的报错信息。</p>
+<p>如果我们要对上一级方法中抛出来的异常进行处理，那么必须用到try&hellip;catch的结构。测试样例如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">abnormalTest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+ 
+<span class="c1">//定义一个测试类，检查JAVA中的异常处理机制
+</span><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+	<span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">Abnormal</span><span class="o">(</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+		<span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">0</span><span class="o">;</span>
+		<span class="k">if</span><span class="o">(</span><span class="n">i</span><span class="o">=</span><span class="o">=</span><span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">throw</span> <span class="k">new</span> <span class="n">IOException</span><span class="o">(</span><span class="s">&#34;除以0错误&#34;</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span>
+		<span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="n">5</span><span class="o">/</span><span class="n">i</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">x</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+	
+	<span class="c1">//主函数入口
+</span><span class="c1"></span>	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">Test</span> <span class="n">t</span><span class="o">=</span><span class="k">new</span> <span class="n">Test</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+			<span class="n">t</span><span class="o">.</span><span class="na">Abnormal</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span><span class="o">{</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;出现了IOException异常&#34;</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">NullPointerException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;出现了空指针异常&#34;</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>运行结果如下。这里打印出的是catch中的异常处理信息“出现了IOException”，而没有打印出&quot;除以0错误&rdquo;，说明这个异常在main函数中处理完就终止了，没有继续往上抛给JVM，这和我们前面的分析是一致的。然后我们这里定义两个catch方法分别来处理IOException和NullPointerException两种不同的异常</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://img-blog.csdn.net/20180727191902283?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FsZXh3eW0=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70"
+        data-srcset="https://img-blog.csdn.net/20180727191902283?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FsZXh3eW0=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70, https://img-blog.csdn.net/20180727191902283?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FsZXh3eW0=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70 1.5x, https://img-blog.csdn.net/20180727191902283?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FsZXh3eW0=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70 2x"
+        data-sizes="auto"
+        alt="https://img-blog.csdn.net/20180727191902283?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0FsZXh3eW0=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70"
+        title="img" /></p>
+<p><code>throw/throws把异常一层层地往上抛，直到有人去处理它。而try...catch就是那个劳苦工人，负责获取相应的异常并对它进行处理。</code></p>
+<p>相关问题：</p>
+<p>有关finally语句块说法正确的是（A B C ）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">A 不管catch是否捕获异常，finally语句块都是要被执行的
+B 在try语句块或catch语句块中执行到System.exit(0)直接退出程序
+C finally块中的return语句会覆盖try块中的return返回
+D finally 语句块在 catch语句块中的return语句之前执行
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">结论：
+1、不管有木有出现异常，finally块中代码都会执行；
+2、当try和catch中有return时，finally仍然会执行；
+3、finally是在return后面的表达式运算后执行的（此时并没有返回运算后的值，而是先把要返回的值保存起来，管finally中的代码怎么样，返回的值都不会改变，任然是之前保存的值），所以函数返回值是在finally执行前确定的；
+4、finally中最好不要包含return，否则程序会提前退出，返回值不是try或catch中保存的返回值。
+
+
+举例：
+
+
+情况1：try{} catch(){}finally{} return;
+显然程序按顺序执行。
+
+
+情况2:try{ return; }catch(){} finally{} return;
+程序执行try块中return之前（包括return语句中的表达式运算）代码；
+再执行finally块，最后执行try中return;
+finally块之后的语句return，因为程序在try中已经return所以不再执行。
+
+
+情况3:try{ } catch(){return;} finally{} return;
+程序先执行try，如果遇到异常执行catch块，
+有异常：则执行catch中return之前（包括return语句中的表达式运算）代码，再执行finally语句中全部代码，
+最后执行catch块中return. finally之后也就是4处的代码不再执行。
+无异常：执行完try再finally再return.
+
+
+情况4:try{ return; }catch(){} finally{return;}
+程序执行try块中return之前（包括return语句中的表达式运算）代码；
+再执行finally块，因为finally块中有return所以提前退出。
+
+
+情况5:try{} catch(){return;}finally{return;}
+程序执行catch块中return之前（包括return语句中的表达式运算）代码；
+再执行finally块，因为finally块中有return所以提前退出。
+
+
+情况6:try{ return;}catch(){return;} finally{return;}
+程序执行try块中return之前（包括return语句中的表达式运算）代码；
+有异常：执行catch块中return之前（包括return语句中的表达式运算）代码；
+则再执行finally块，因为finally块中有return所以提前退出。
+无异常：则再执行finally块，因为finally块中有return所以提前退出。
+
+最终结论：任何执行try 或者catch中的return语句之前，都会先执行finally语句，如果finally存在的话。
+如果finally中有return语句，那么程序就return了，所以finally中的return是一定会被return的，
+编译器把finally中的return实现为一个warning。
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-25</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/" data-title="异常"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/" data-title="异常" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/" data-title="异常"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/" data-title="异常"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/" data-title="异常" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/" data-title="异常" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E5%BC%82%E5%B8%B8/" data-title="异常"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/compable%E5%92%8Ccomparator/" class="prev" rel="prev" title="Comparable和Comparator"><i class="fas fa-angle-left fa-fw"></i>Comparable和Comparator</a>
+            <a href="/arraylist%E4%B8%8E%E6%95%B0%E7%BB%84%E9%97%B4%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2/" class="next" rel="next" title="ArrayList与数组之间的相互转换">ArrayList与数组之间的相互转换<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

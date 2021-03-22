@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>各种激活函数 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="各种激活函数" />
+<meta property="og:description" content="参考
+sigmoid $$ f(z)=\frac{1}{1&#43;e^{-z}} $$
+其图像如下:
+特点  能够将输入的连续实值变换为0到1之间的输出  缺点  在深度神经网络中梯度反向传播是容易造成梯度爆炸和梯度消失  sigmoid导数 $$ f&rsquo;(z)=\frac{e^{-z}}{(1&#43;e^{-z})^2} $$
+其导数图像如下:
+tanh $$ tanh(x)=\frac{e^{x}-e^{-x}}{e^{x}&#43;e^{-x}} $$
+其图像如下:
+特点 解决了sigmoid函数不是zero-centered的问题, 但是梯度消失依旧存在
+导数 $$ tanh&rsquo;(x)=1-(\frac{e^{x}-e^{-x}}{e^{x}&#43;e^{-x}})^2 $$
+导数图像
+Relu $$ Relu(x)=max(0,x) $$
+函数图像
+导数 $$ Relu&rsquo;(x)=\left{ \begin{array}{lr} 1 &amp;x&gt;0 \
+0 &amp;x&lt;0
+ \end{array}  \right. $$
+优点  解决了梯度消失问题 计算速度非常快 收敛速度远快于sigmoid和tanh  缺点  输出的不是zero-centered 有些神经元可能永远不会被激活(Dead ReLU)  不好的参数初始化 学习率过高, 导致网络不幸进入这种情况    Leaky Relu(PRelu) $$ f(x)=max(\alpha x,x) $$" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-15T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-15T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="各种激活函数"/>
+<meta name="twitter:description" content="参考
+sigmoid $$ f(z)=\frac{1}{1&#43;e^{-z}} $$
+其图像如下:
+特点  能够将输入的连续实值变换为0到1之间的输出  缺点  在深度神经网络中梯度反向传播是容易造成梯度爆炸和梯度消失  sigmoid导数 $$ f&rsquo;(z)=\frac{e^{-z}}{(1&#43;e^{-z})^2} $$
+其导数图像如下:
+tanh $$ tanh(x)=\frac{e^{x}-e^{-x}}{e^{x}&#43;e^{-x}} $$
+其图像如下:
+特点 解决了sigmoid函数不是zero-centered的问题, 但是梯度消失依旧存在
+导数 $$ tanh&rsquo;(x)=1-(\frac{e^{x}-e^{-x}}{e^{x}&#43;e^{-x}})^2 $$
+导数图像
+Relu $$ Relu(x)=max(0,x) $$
+函数图像
+导数 $$ Relu&rsquo;(x)=\left{ \begin{array}{lr} 1 &amp;x&gt;0 \
+0 &amp;x&lt;0
+ \end{array}  \right. $$
+优点  解决了梯度消失问题 计算速度非常快 收敛速度远快于sigmoid和tanh  缺点  输出的不是zero-centered 有些神经元可能永远不会被激活(Dead ReLU)  不好的参数初始化 学习率过高, 导致网络不幸进入这种情况    Leaky Relu(PRelu) $$ f(x)=max(\alpha x,x) $$"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" /><link rel="prev" href="https://shilongshen.github.io/%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E8%B0%83%E6%95%B4/" /><link rel="next" href="https://shilongshen.github.io/__________________________________________/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "各种激活函数",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0\/"
+        },"genre": "posts","wordcount":  181 ,
+        "url": "https:\/\/shilongshen.github.io\/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0\/","datePublished": "2020-11-15T13:26:17+08:00","dateModified": "2020-11-15T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">各种激活函数</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;181 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#sigmoid">sigmoid</a>
+          <ul>
+            <li><a href="#特点">特点</a></li>
+            <li><a href="#缺点">缺点</a></li>
+            <li><a href="#sigmoid导数">sigmoid导数</a></li>
+          </ul>
+        </li>
+        <li><a href="#tanh">tanh</a>
+          <ul>
+            <li><a href="#特点-1">特点</a></li>
+            <li><a href="#导数">导数</a></li>
+          </ul>
+        </li>
+        <li><a href="#relu">Relu</a>
+          <ul>
+            <li><a href="#导数-1">导数</a></li>
+            <li><a href="#优点">优点</a></li>
+            <li><a href="#缺点-1">缺点</a></li>
+          </ul>
+        </li>
+        <li><a href="#leaky-reluprelu">Leaky Relu(PRelu)</a>
+          <ul>
+            <li><a href="#导数-2">导数</a></li>
+            <li><a href="#特点-2">特点</a></li>
+          </ul>
+        </li>
+        <li><a href="#elu">ELU</a>
+          <ul>
+            <li><a href="#导数-3">导数</a></li>
+            <li><a href="#特点-3">特点</a></li>
+          </ul>
+        </li>
+        <li><a href="#selu">SELU</a>
+          <ul>
+            <li><a href="#导数-4">导数</a></li>
+            <li><a href="#特点-4">特点</a></li>
+          </ul>
+        </li>
+        <li><a href="#softmax">SoftMax</a>
+          <ul>
+            <li><a href="#导数-5">导数</a></li>
+            <li><a href="#特点-5">特点</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p><a href="https://blog.csdn.net/c2861024198/article/details/108192771" target="_blank" rel="noopener noreffer">参考</a></p>
+<h2 id="sigmoid">sigmoid</h2>
+<p>$$
+f(z)=\frac{1}{1+e^{-z}}
+$$</p>
+<p>其图像如下:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly94aWFveGlhYmxvZ3MudG9wL3Vzci91cGxvYWRzLzIwMjAvMDgvNDA3NTAyMDc0NS5wbmc?x-oss-process=image/format,png"
+        data-srcset="https://imgconvert.csdnimg.cn/aHR0cHM6Ly94aWFveGlhYmxvZ3MudG9wL3Vzci91cGxvYWRzLzIwMjAvMDgvNDA3NTAyMDc0NS5wbmc?x-oss-process=image/format%2cpng, https://imgconvert.csdnimg.cn/aHR0cHM6Ly94aWFveGlhYmxvZ3MudG9wL3Vzci91cGxvYWRzLzIwMjAvMDgvNDA3NTAyMDc0NS5wbmc?x-oss-process=image/format%2cpng 1.5x, https://imgconvert.csdnimg.cn/aHR0cHM6Ly94aWFveGlhYmxvZ3MudG9wL3Vzci91cGxvYWRzLzIwMjAvMDgvNDA3NTAyMDc0NS5wbmc?x-oss-process=image/format%2cpng 2x"
+        data-sizes="auto"
+        alt="https://imgconvert.csdnimg.cn/aHR0cHM6Ly94aWFveGlhYmxvZ3MudG9wL3Vzci91cGxvYWRzLzIwMjAvMDgvNDA3NTAyMDc0NS5wbmc?x-oss-process=image/format,png"
+        title="sigmoid" /></p>
+<h3 id="特点">特点</h3>
+<ul>
+<li>能够将输入的连续实值变换为0到1之间的输出</li>
+</ul>
+<h3 id="缺点">缺点</h3>
+<ul>
+<li>在深度神经网络中梯度反向传播是容易造成梯度爆炸和梯度消失</li>
+</ul>
+<h3 id="sigmoid导数">sigmoid导数</h3>
+<p>$$
+f&rsquo;(z)=\frac{e^{-z}}{(1+e^{-z})^2}
+$$</p>
+<p>其导数图像如下:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/1444233458.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/1444233458.png, https://xiaoxiablogs.top/usr/uploads/2020/08/1444233458.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/1444233458.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/1444233458.png"
+        title="d_sigmoid.png" /></p>
+<h2 id="tanh">tanh</h2>
+<p>$$
+tanh(x)=\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}
+$$</p>
+<p>其图像如下:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/1815796145.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/1815796145.png, https://xiaoxiablogs.top/usr/uploads/2020/08/1815796145.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/1815796145.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/1815796145.png"
+        title="tanh.png" /></p>
+<h3 id="特点-1">特点</h3>
+<p>解决了sigmoid函数不是zero-centered的问题, 但是梯度消失依旧存在</p>
+<h3 id="导数">导数</h3>
+<p>$$
+tanh&rsquo;(x)=1-(\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}})^2
+$$</p>
+<p>导数图像</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/3123494289.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/3123494289.png, https://xiaoxiablogs.top/usr/uploads/2020/08/3123494289.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/3123494289.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/3123494289.png"
+        title="d_tanh.png" /></p>
+<h2 id="relu">Relu</h2>
+<p>$$
+Relu(x)=max(0,x)
+$$</p>
+<p>函数图像</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/1778561105.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/1778561105.png, https://xiaoxiablogs.top/usr/uploads/2020/08/1778561105.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/1778561105.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/1778561105.png"
+        title="relu.png" /></p>
+<h3 id="导数-1">导数</h3>
+<p>$$
+Relu&rsquo;(x)=\left{
+\begin{array}{lr}
+1  &amp;x&gt;0
+\<br>
+0 &amp;x&lt;0</p>
+<pre><code>         \end{array}
+</code></pre>
+<p>\right.
+$$</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/3559356907.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/3559356907.png, https://xiaoxiablogs.top/usr/uploads/2020/08/3559356907.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/3559356907.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/3559356907.png"
+        title="d_relu.png" /></p>
+<h3 id="优点">优点</h3>
+<ul>
+<li>解决了梯度消失问题</li>
+<li>计算速度非常快</li>
+<li>收敛速度远快于sigmoid和tanh</li>
+</ul>
+<h3 id="缺点-1">缺点</h3>
+<ul>
+<li>输出的不是zero-centered</li>
+<li>有些神经元可能永远不会被激活(Dead ReLU)
+<ul>
+<li>不好的参数初始化</li>
+<li>学习率过高, 导致网络不幸进入这种情况</li>
+</ul>
+</li>
+</ul>
+<h2 id="leaky-reluprelu">Leaky Relu(PRelu)</h2>
+<p>$$
+f(x)=max(\alpha x,x)
+$$</p>
+<p>函数图像<em>α</em>=0.1</p>
+<p>α=0.1</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/3685549432.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/3685549432.png, https://xiaoxiablogs.top/usr/uploads/2020/08/3685549432.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/3685549432.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/3685549432.png"
+        title="prelu.png" /></p>
+<h3 id="导数-2">导数</h3>
+<p>$$
+f&rsquo;(x)=\left{
+\begin{array}{lr}
+1  &amp;x\ge0
+\<br>
+\alpha &amp;x&lt;0</p>
+<pre><code>         \end{array}
+</code></pre>
+<p>\right.
+$$</p>
+<p>图像</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/763130677.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/763130677.png, https://xiaoxiablogs.top/usr/uploads/2020/08/763130677.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/763130677.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/763130677.png"
+        title="d_prelu.png" /></p>
+<h3 id="特点-2">特点</h3>
+<ul>
+<li>具有ReLU的所有优点</li>
+<li>不会有Dead ReLU问题</li>
+</ul>
+<h2 id="elu">ELU</h2>
+<p>$$
+f(x)=\left{
+\begin{array}{lr}
+x  &amp;x&gt;0
+\<br>
+\alpha(e^x-1) &amp;x \leq0</p>
+<pre><code>         \end{array}
+</code></pre>
+<p>\right.
+$$</p>
+<p>函数图像<em>α</em>=1</p>
+<p>α=1</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/244422543.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/244422543.png, https://xiaoxiablogs.top/usr/uploads/2020/08/244422543.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/244422543.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/244422543.png"
+        title="elu.png" /></p>
+<h3 id="导数-3">导数</h3>
+<p>$$
+f&rsquo;(x)=\left{
+\begin{array}{lr}
+1  &amp;x&gt;0
+\<br>
+\alpha e^x &amp;x \leq0</p>
+<pre><code>         \end{array}
+</code></pre>
+<p>\right.
+$$</p>
+<p>图像<em>α</em>=1</p>
+<p>α=1</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/1843492480.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/1843492480.png, https://xiaoxiablogs.top/usr/uploads/2020/08/1843492480.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/1843492480.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/1843492480.png"
+        title="d_elu.png" /></p>
+<h3 id="特点-3">特点</h3>
+<ul>
+<li>类似于Leaky ReLU</li>
+<li>计算量稍大</li>
+<li>不会有Dead ReLU问题</li>
+<li>均值接近于0</li>
+</ul>
+<h2 id="selu">SELU</h2>
+<p>$$
+f(x)=\lambda\left{
+\begin{array}{lr}
+x  &amp;x&gt;0
+\<br>
+\alpha e^x - \alpha &amp;x \leq0</p>
+<pre><code>         \end{array}
+</code></pre>
+<p>\right.
+$$</p>
+<p><em>λ</em>=1.0507009873554804934193349852946</p>
+<p><em>α</em>=1.6732632423543772848170429916717</p>
+<p>函数图像</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/3785209122.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/3785209122.png, https://xiaoxiablogs.top/usr/uploads/2020/08/3785209122.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/3785209122.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/3785209122.png"
+        title="selu.png" /></p>
+<h3 id="导数-4">导数</h3>
+<p>$$
+f&rsquo;(x)=\lambda \left{
+\begin{array}{lr}
+1  &amp;x&gt;0
+\<br>
+\alpha e^x &amp;\leq0</p>
+<pre><code>         \end{array}
+</code></pre>
+<p>\right.
+$$</p>
+<p>图像:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://xiaoxiablogs.top/usr/uploads/2020/08/3070524930.png"
+        data-srcset="https://xiaoxiablogs.top/usr/uploads/2020/08/3070524930.png, https://xiaoxiablogs.top/usr/uploads/2020/08/3070524930.png 1.5x, https://xiaoxiablogs.top/usr/uploads/2020/08/3070524930.png 2x"
+        data-sizes="auto"
+        alt="https://xiaoxiablogs.top/usr/uploads/2020/08/3070524930.png"
+        title="d_selu.png" /></p>
+<h3 id="特点-4">特点</h3>
+<ul>
+<li>在ELU的基础上求解了最佳的<em>α</em></li>
+</ul>
+<p>α , 并且扩大了<em>λ</em></p>
+<ul>
+<li>λ倍,</li>
+<li>SELU拥有ELU所有的优点</li>
+<li>不存在死区</li>
+</ul>
+<h2 id="softmax">SoftMax</h2>
+<p>$$
+f(x_i)=\frac{e^{x_i}}{\sum_{j=1}^ne^{x_j}}
+$$</p>
+<p>简单地说, 就是当前元素的值就等与e的当前元素次方在所有元素的e的次方和的比例</p>
+<h3 id="导数-5">导数</h3>
+<p>当交叉熵作为损失函数时,$loss=-\sum_it_i \ lny_i$,其中,表$t_i$示真实值当预测第<em>i</em>个时,可以认为,$t_i=1$那么$loss=-\sum_i\ lny_i$因为softmax的和为1,那么$\sum_{i=1}^n(\frac{e^{x_i}}{\sum_{j=1}^ne^{x_j}})$,对loss求导后为:
+$$
+y_i-1
+$$</p>
+<p>当交叉熵作为损失函数时,LOSS=−i∑tilnyi,其中,ti表示真实值当预测第i个时,可以认为ti=1,那么LOSS=−∑lnyi因为softmax的和为1,那么∑j=1nexjexi,对Loss求导后为−(1−∑jnexj∑i=jnexi)=yi−1</p>
+<p>也就是说, 只要求出$y_i$,那么减一就是梯度.</p>
+<h3 id="特点-5">特点</h3>
+<ul>
+<li>Softmax会将整个超空间按照分类个数进行划分</li>
+<li>Softmax会比其他的激活函数更适合多分类问题最后的激活</li>
+</ul>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" data-title="各种激活函数"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" data-title="各种激活函数" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" data-title="各种激活函数"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" data-title="各种激活函数"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" data-title="各种激活函数" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" data-title="各种激活函数" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" data-title="各种激活函数"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E8%B0%83%E6%95%B4/" class="prev" rel="prev" title="学习率的调整"><i class="fas fa-angle-left fa-fw"></i>学习率的调整</a>
+            <a href="/__________________________________________/" class="next" rel="next" title="可控人物图像生成综述">可控人物图像生成综述<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Deep Image Spatial Transformation for Person Image Generation - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="Deep Image Spatial Transformation for Person Image Generation" />
+<meta property="og:description" content="姿态引导下的图像生成研究就是要在保留原图像外观的同时将原图像中人物的姿态转换为目标姿态。这一任务需要对原图像进行空间转换。但实际上基于卷积的神经网络更擅长于特征的提取而不擅长于特征的空间转换，所以单纯的使用卷积神经网络并不能很好的完成这一任务。
+这篇文章提出了一种global-flow local-attention 模型进行姿态应引导下的图像生成研究。具体来说第一步使用全局流场估计器计算原图像和目标图像之间的全局相关性，以此来预测flow fileds。第二步为使用从feature maps提取出来的flowed local patch pairs来计算局部注意力系数。第三步为使用局部注意力机制作为content aware sampling method来进行图像的外观渲染。
+ 该文将注意力机制和流场操作相结合，使得每一个输出位置只与原图像的局部特征块相关
+将目标图像视为原图像的变形结果
+该文的观点是将目标图像视为原图像的变形结果，每一个输出位置只与原图像的局部特征相关。
+ Introduction 图像的空间转换可以用于解决许多输入图像和目标图像空间不对齐的图像生成任务，这些不对齐可能是由于姿态变换或者是视角的变换。这一类任务包括了姿态引导下的图像生成研究
+卷积神经网络使用共享参数的卷积核来计算输出，这也是卷积神经网络的一个重要特性，称为平移等变（equivariance to transformation），这意味着当输入发生平移空间变化时，输出也会发生平移相同的空间变化。这一特性对于输入输出的空间结构是对齐的任务来说是十分有益的，例如图像分割，图像检测以及图像翻译。但是这一特性也限制了卷积神经网络对输入数据进行空间变换。
+ 卷积神经网络具有平移等变得性质，但是并不能够对旋转、缩放等操作具有等变性，特别是对于人体这种非刚体，卷积神经网络并不能对输入数据进行空间变换
+ STN的通过引入空间转换模块来解决这一问题，该模块对全局转换参数进行回归，并通过仿射转换来扭曲输入特征。但是，由于它假定了源和目标之间的全局仿射变换，因此该方法无法处理非刚性对象的变换。
+注意力机制通过利用非局部信息，建立特征之间的长程依赖。但是对于空间转换任务，目标图像和原图像在空间上是不对齐的，每一个输出图像上位置与原图像上的位置有明确的对应关系。因此原图像和目标图像之间的注意力权重矩阵应该是一个稀疏矩阵。
+基于流场的操作通过为每一个输出位置采样一个局部的原图像块会迫使注意力权重矩阵变为稀疏矩阵。这些方法预测二维坐标偏移量，指定可以对源中的哪些位置进行采样以生成目标。
+然而为了稳定训练，大多数的基于流场的方法会在像素级别扭曲数据，这会限制模型生成新的内容。由于需要生成全分辨率流场，因此难以提取大的运动。在特征级别进行输入数据的扭曲能够解决这一问题，然而，这些网络很容易陷入局部最小值由于以下两个原因：（1）输入特征和流场相互限制。没有准确的流场，输入特征无法获得合理的梯度，没有如果没有合理的特征，网络也无法提取相似性以生成正确的流场。（2）常用的双线性采样方法提供的不良梯度传播进一步导致训练中的不稳定。
+Approach 对于姿态引导下的图像生成研究，目标图像是原图像的变形结果，这意味着目标图像中的每一个点是与原图像中的某个特定的局部区域唯一对应。
+该文设计了global-flow local-attention 网络结构来合理的对原图像特征进行采样和重构。网络包含两个部分：全局流场估计器F和局部自然纹理渲染器G。F负责估计原图像和目标图像的运动（差别），其生成全局流场w和二进制掩模m。利用w和m，G利用局部注意力模块将原图像的纹理渲染在目标图像。
+Global Flow Filed Estimator $$ w,m=F(x_s,p_s,p_t) $$
+其中$x_s$表示原图像，$p_s$表示原图像姿态，$p_t$表示目标姿态。$w$包含了原图像和目标图像的坐标偏移量。$m$的值在0至1之间，表示原图像中是否存在目标位置的信息。F为全卷积网络，w和m权重共享。
+由于真实的坐标偏移量是未知的，这里使用了sampling correctness loss来计算$w$。$v_s,v_t$分别表示原图像和目标图像通过预训练的VGG19的特定层提取出来的特征。$v_{s,w}=w(v_s)$表示$v_s$通过$w$转换之后的结果。sampling correctness loss计算$v_{s,w}$和$v_t$之间的余弦相似性。 $$ \mathcal{L}_c=\frac{1}{N}\sum_{l\in \Omega}exp(-\frac{\mu(v_{s,w}^l,v_t^l)}{\mu_{max}^l}) $$ $\mu$表示余弦相似度。$\Omega$表示特征图中的所有的N个点，$l$表示其中的一个点$(x,y)$。$\mu_{max}^l$表示正则项。也就是说需要对**所有的点**计算余弦相似度，然后再求平均值。
+​	sampling correctness loss能够限制流场采样语义相关的区域。由于图像领域之间的变形是高度相关的，如果能够将这种关系提取出来是十分有益的，因此进一步在流场中添加了正则项。令$c_t$表示目标特征的二位坐标。$\mathcal{N}(c_t,l)$表示$c_t$的$n\times n$个领域图像块，假设$\mathcal{N}(c_t,l)$和$\mathcal{N}(c s,l)$之间的变换为仿射变换 $$ T_l=A_l S_l $$ $T_l$表示$\mathcal{N}(C_l,l)$的坐标集合，$S_l$表示$\mathcal{N}(c_s,l)$的坐标集合，$A_l$表示仿射参数，通过最小二乘法计算出来 $$ \hat{A_l}=(S_l^HS_l)^{-1}S_l^HT_l $$ 因此正则损失函数为 $$ \mathcal{L}r=\sum{l\in\Omega}|| T_l-\hat{A}_lS_l ||^2 $$" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-15T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-15T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Deep Image Spatial Transformation for Person Image Generation"/>
+<meta name="twitter:description" content="姿态引导下的图像生成研究就是要在保留原图像外观的同时将原图像中人物的姿态转换为目标姿态。这一任务需要对原图像进行空间转换。但实际上基于卷积的神经网络更擅长于特征的提取而不擅长于特征的空间转换，所以单纯的使用卷积神经网络并不能很好的完成这一任务。
+这篇文章提出了一种global-flow local-attention 模型进行姿态应引导下的图像生成研究。具体来说第一步使用全局流场估计器计算原图像和目标图像之间的全局相关性，以此来预测flow fileds。第二步为使用从feature maps提取出来的flowed local patch pairs来计算局部注意力系数。第三步为使用局部注意力机制作为content aware sampling method来进行图像的外观渲染。
+ 该文将注意力机制和流场操作相结合，使得每一个输出位置只与原图像的局部特征块相关
+将目标图像视为原图像的变形结果
+该文的观点是将目标图像视为原图像的变形结果，每一个输出位置只与原图像的局部特征相关。
+ Introduction 图像的空间转换可以用于解决许多输入图像和目标图像空间不对齐的图像生成任务，这些不对齐可能是由于姿态变换或者是视角的变换。这一类任务包括了姿态引导下的图像生成研究
+卷积神经网络使用共享参数的卷积核来计算输出，这也是卷积神经网络的一个重要特性，称为平移等变（equivariance to transformation），这意味着当输入发生平移空间变化时，输出也会发生平移相同的空间变化。这一特性对于输入输出的空间结构是对齐的任务来说是十分有益的，例如图像分割，图像检测以及图像翻译。但是这一特性也限制了卷积神经网络对输入数据进行空间变换。
+ 卷积神经网络具有平移等变得性质，但是并不能够对旋转、缩放等操作具有等变性，特别是对于人体这种非刚体，卷积神经网络并不能对输入数据进行空间变换
+ STN的通过引入空间转换模块来解决这一问题，该模块对全局转换参数进行回归，并通过仿射转换来扭曲输入特征。但是，由于它假定了源和目标之间的全局仿射变换，因此该方法无法处理非刚性对象的变换。
+注意力机制通过利用非局部信息，建立特征之间的长程依赖。但是对于空间转换任务，目标图像和原图像在空间上是不对齐的，每一个输出图像上位置与原图像上的位置有明确的对应关系。因此原图像和目标图像之间的注意力权重矩阵应该是一个稀疏矩阵。
+基于流场的操作通过为每一个输出位置采样一个局部的原图像块会迫使注意力权重矩阵变为稀疏矩阵。这些方法预测二维坐标偏移量，指定可以对源中的哪些位置进行采样以生成目标。
+然而为了稳定训练，大多数的基于流场的方法会在像素级别扭曲数据，这会限制模型生成新的内容。由于需要生成全分辨率流场，因此难以提取大的运动。在特征级别进行输入数据的扭曲能够解决这一问题，然而，这些网络很容易陷入局部最小值由于以下两个原因：（1）输入特征和流场相互限制。没有准确的流场，输入特征无法获得合理的梯度，没有如果没有合理的特征，网络也无法提取相似性以生成正确的流场。（2）常用的双线性采样方法提供的不良梯度传播进一步导致训练中的不稳定。
+Approach 对于姿态引导下的图像生成研究，目标图像是原图像的变形结果，这意味着目标图像中的每一个点是与原图像中的某个特定的局部区域唯一对应。
+该文设计了global-flow local-attention 网络结构来合理的对原图像特征进行采样和重构。网络包含两个部分：全局流场估计器F和局部自然纹理渲染器G。F负责估计原图像和目标图像的运动（差别），其生成全局流场w和二进制掩模m。利用w和m，G利用局部注意力模块将原图像的纹理渲染在目标图像。
+Global Flow Filed Estimator $$ w,m=F(x_s,p_s,p_t) $$
+其中$x_s$表示原图像，$p_s$表示原图像姿态，$p_t$表示目标姿态。$w$包含了原图像和目标图像的坐标偏移量。$m$的值在0至1之间，表示原图像中是否存在目标位置的信息。F为全卷积网络，w和m权重共享。
+由于真实的坐标偏移量是未知的，这里使用了sampling correctness loss来计算$w$。$v_s,v_t$分别表示原图像和目标图像通过预训练的VGG19的特定层提取出来的特征。$v_{s,w}=w(v_s)$表示$v_s$通过$w$转换之后的结果。sampling correctness loss计算$v_{s,w}$和$v_t$之间的余弦相似性。 $$ \mathcal{L}_c=\frac{1}{N}\sum_{l\in \Omega}exp(-\frac{\mu(v_{s,w}^l,v_t^l)}{\mu_{max}^l}) $$ $\mu$表示余弦相似度。$\Omega$表示特征图中的所有的N个点，$l$表示其中的一个点$(x,y)$。$\mu_{max}^l$表示正则项。也就是说需要对**所有的点**计算余弦相似度，然后再求平均值。
+​	sampling correctness loss能够限制流场采样语义相关的区域。由于图像领域之间的变形是高度相关的，如果能够将这种关系提取出来是十分有益的，因此进一步在流场中添加了正则项。令$c_t$表示目标特征的二位坐标。$\mathcal{N}(c_t,l)$表示$c_t$的$n\times n$个领域图像块，假设$\mathcal{N}(c_t,l)$和$\mathcal{N}(c s,l)$之间的变换为仿射变换 $$ T_l=A_l S_l $$ $T_l$表示$\mathcal{N}(C_l,l)$的坐标集合，$S_l$表示$\mathcal{N}(c_s,l)$的坐标集合，$A_l$表示仿射参数，通过最小二乘法计算出来 $$ \hat{A_l}=(S_l^HS_l)^{-1}S_l^HT_l $$ 因此正则损失函数为 $$ \mathcal{L}r=\sum{l\in\Omega}|| T_l-\hat{A}_lS_l ||^2 $$"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/" /><link rel="prev" href="https://shilongshen.github.io/deep-sketch-guided-cartoon-video-synthesis/" /><link rel="next" href="https://shilongshen.github.io/cross-domain-correspondence-learning-for-exemplar-based-image-translation/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Deep Image Spatial Transformation for Person Image Generation",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/deep-image-spatial-transformation-for-person-image-generation\/"
+        },"genre": "posts","wordcount":  113 ,
+        "url": "https:\/\/shilongshen.github.io\/deep-image-spatial-transformation-for-person-image-generation\/","datePublished": "2020-11-15T13:26:17+08:00","dateModified": "2020-11-15T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Deep Image Spatial Transformation for Person Image Generation</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;113 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>
+              <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#approach">Approach</a>
+                  <ul>
+                    <li><a href="#global-flow-filed-estimator">Global Flow Filed Estimator</a></li>
+                    <li><a href="#local-neural-texture-renderer">Local Neural Texture Renderer</a></li>
+                    <li><a href="#损失函数">损失函数</a></li>
+                    <li><a href="#实验的实施细节">实验的实施细节</a></li>
+                    <li><a href="#总结">总结</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>姿态引导下的图像生成研究就是要在保留原图像外观的同时将原图像中人物的姿态转换为目标姿态。这一任务需要对原图像进行<strong>空间转换</strong>。但实际上基于卷积的神经网络更擅长于特征的提取而不擅长于特征的空间转换，所以单纯的使用卷积神经网络并不能很好的完成这一任务。</p>
+<p>这篇文章提出了一种global-flow local-attention 模型进行姿态应引导下的图像生成研究。具体来说<strong>第一步使用全局流场估计器计算原图像和目标图像之间的全局相关性</strong>，以此来预测flow fileds。第二步为使用从feature maps提取出来的flowed local patch pairs来计算局部注意力系数。第三步为使用局部注意力机制作为content aware sampling method来进行图像的外观渲染。</p>
+<blockquote>
+<p>该文将注意力机制和流场操作相结合，使得每一个输出位置只与原图像的局部特征块相关</p>
+<p>将目标图像视为原图像的变形结果</p>
+<p>该文的观点是将目标图像视为原图像的变形结果，每一个输出位置只与原图像的局部特征相关。</p>
+</blockquote>
+<h4 id="introduction">Introduction</h4>
+<p>图像的空间转换可以用于解决许多输入图像和目标图像空间不对齐的图像生成任务，这些不对齐可能是由于姿态变换或者是视角的变换。这一类任务包括了姿态引导下的图像生成研究</p>
+<p>卷积神经网络使用共享参数的卷积核来计算输出，这也是卷积神经网络的一个重要特性，称为平移等变（equivariance to transformation），这意味着当输入发生平移空间变化时，输出也会发生平移相同的空间变化。这一特性对于输入输出的空间结构是对齐的任务来说是十分有益的，例如图像分割，图像检测以及图像翻译。但是这一特性也限制了卷积神经网络对输入数据进行空间变换。</p>
+<blockquote>
+<p>卷积神经网络具有平移等变得性质，但是并不能够对旋转、缩放等操作具有等变性，特别是对于人体这种非刚体，卷积神经网络并不能对输入数据进行空间变换</p>
+</blockquote>
+<p>STN的通过引入空间转换模块来解决这一问题，该模块对全局转换参数进行回归，并通过仿射转换来扭曲输入特征。但是，由于它假定了源和目标之间的全局仿射变换，因此该方法无法处理非刚性对象的变换。</p>
+<p>注意力机制通过利用非局部信息，建立特征之间的长程依赖。但是对于空间转换任务，目标图像和原图像在空间上是不对齐的，<strong>每一个输出图像上位置与原图像上的位置有明确的对应关系。因此原图像和目标图像之间的注意力权重矩阵应该是一个稀疏矩阵。</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200706151618.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200706151618.png, https://gitee.com/shilongshen/image-bad/raw/master/20200706151618.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200706151618.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200706151618.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200706151618.png" /></p>
+<p><strong>基于流场的操作通过为每一个输出位置采样一个局部的原图像块会迫使注意力权重矩阵变为稀疏矩阵</strong>。这些方法<strong>预测二维坐标偏移量</strong>，<strong>指定可以对源中的哪些位置进行采样以生成目标</strong>。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708220910.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708220910.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708220910.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708220910.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708220910.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708220910.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708220936.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708220936.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708220936.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708220936.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708220936.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708220936.png" /></p>
+<p>然而为了稳定训练，大多数的基于流场的方法会在像素级别扭曲数据，这<u>会限制模型生成新的内容</u>。由于需要生成全分辨率流场，因此难以提取大的运动。在特征级别进行输入数据的扭曲能够解决这一问题，然而，这些网络很容易陷入局部最小值由于以下两个原因：（1）输入特征和流场相互限制。没有准确的流场，输入特征无法获得合理的梯度，没有如果没有合理的特征，网络也无法提取相似性以生成正确的流场。（2）常用的双线性采样方法提供的不良梯度传播进一步导致训练中的不稳定。</p>
+<h4 id="approach">Approach</h4>
+<p>对于姿态引导下的图像生成研究，<strong>目标图像是原图像的变形结果</strong>，这意味着目标图像中的每一个点是与原图像中的某个特定的局部区域唯一对应。</p>
+<p>该文设计了global-flow local-attention 网络结构来合理的对原图像特征进行采样和重构。网络包含两个部分：全局流场估计器F和局部自然纹理渲染器G。F负责估计原图像和目标图像的运动（差别），其生成全局流场w和二进制掩模m。利用w和m，G利用局部注意力模块将原图像的纹理渲染在目标图像。</p>
+<h5 id="global-flow-filed-estimator">Global Flow Filed Estimator</h5>
+<p>$$
+w,m=F(x_s,p_s,p_t)
+$$</p>
+<p>其中$x_s$表示原图像，$p_s$表示原图像姿态，$p_t$表示目标姿态。$w$包含了原图像和目标图像的坐标偏移量。$m$的值在0至1之间，表示原图像中是否存在目标位置的信息。F为全卷积网络，w和m权重共享。</p>
+<p>由于真实的坐标偏移量是未知的，这里使用了sampling correctness loss来计算$w$。$v_s,v_t$分别表示原图像和目标图像通过预训练的VGG19的特定层提取出来的特征。$v_{s,w}=w(v_s)$表示$v_s$通过$w$转换之后的结果。sampling correctness loss计算$v_{s,w}$和$v_t$之间的余弦相似性。
+$$
+\mathcal{L}_c=\frac{1}{N}\sum_{l\in \Omega}exp(-\frac{\mu(v_{s,w}^l,v_t^l)}{\mu_{max}^l})
+$$
+$\mu$表示余弦相似度。$\Omega$表示特征图中的所有的N个点，$l$表示其中的一个点$(x,y)$。$\mu_{max}^l$表示正则项。也就是说需要对**所有的点**计算余弦相似度，然后再求平均值。</p>
+<p>​	sampling correctness loss能够限制流场采样语义相关的区域。由于图像领域之间的变形是高度相关的，如果能够将这种关系提取出来是十分有益的，因此进一步在流场中添加了正则项。令$c_t$表示目标特征的二位坐标。$\mathcal{N}(c_t,l)$表示$c_t$的$n\times n$个领域图像块，假设$\mathcal{N}(c_t,l)$和$\mathcal{N}(c
+<em>s,l)$之间的变换为仿射变换
+$$
+T_l=A_l S_l
+$$
+$T_l$表示$\mathcal{N}(C_l,l)$的坐标集合，$S_l$表示$\mathcal{N}</em>(c_s,l)$的坐标集合，$A_l$表示仿射参数，通过最小二乘法计算出来
+$$
+\hat{A_l}=(S_l^HS_l)^{-1}S_l^HT_l
+$$
+因此正则损失函数为
+$$
+\mathcal{L}<em>r=\sum</em>{l\in\Omega}|| T_l-\hat{A}_lS_l ||^2
+$$</p>
+<h5 id="local-neural-texture-renderer">Local Neural Texture Renderer</h5>
+<p>纹理渲染器的目标是将原图像中的信息进行空间转换，生成图像
+$$
+\hat{x}_t=G(x_s,p_t,w,m)
+$$
+信息转换在局部注意力模块中进行。这一模块的作用是将原图像的纹理渲染在目标姿态上。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200706141718.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200706141718.png, https://gitee.com/shilongshen/image-bad/raw/master/20200706141718.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200706141718.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200706141718.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200706141718.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200706142413.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200706142413.png, https://gitee.com/shilongshen/image-bad/raw/master/20200706142413.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200706142413.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200706142413.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200706142413.png" /></p>
+<p>令$f_t$和$f_s$分别表示$p_t$和$x_s$经过下采样提取出来的特征。首先通过<strong>双线性插值</strong>提取出局部图像块$\mathcal{N}(f_t,l)$和$\mathcal{N}(f_s,l+w^l)$。之后使用核预测网络（就是全连接层）来生成注意力权重矩阵$k_l$。
+$$
+k_l=M(\mathcal{N}(f_t,l),\mathcal{N}(f_s,l+w^l))
+$$
+最后将对应的原图像块$\mathcal{N}(f_s,l+w^l)$与注意力权重矩阵相乘（注意此时只是将坐标$l$处的特征进行了处理）
+$$
+f_{attn}^l=P(k_l\otimes \mathcal{N}(f_s,l+w^l))
+$$
+$P$表示平均池化操作。总的the warped feature map $f_{attn}$ 通过在每一个位置重复上述步骤获得。</p>
+<p>由于遮挡的情况，原图像和目标图像之间并不是每一个位置都能对应。为了使这些不对应的地方生成新的内容，利用了之前获得的掩模$m$。(掩模的作用是当原图像和目标图像的位置对应时就在该位置为1，没有对应就为0)
+$$
+f_{out}=(1-m)*f_t+m*f_{attn}
+$$
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200706150042.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200706150042.png, https://gitee.com/shilongshen/image-bad/raw/master/20200706150042.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200706150042.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200706150042.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200706150042.png" /></p>
+<blockquote>
+<p>此处主要的贡献在于通过<strong>content-aware sampling operation</strong>（即引入了注意力机制）进行source feature的warping（代替了原先的双线性插值方法）</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708224858.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708224858.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708224858.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708224858.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708224858.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708224858.png" /></p>
+</blockquote>
+<h5 id="损失函数">损失函数</h5>
+<p>略</p>
+<hr>
+<h5 id="实验的实施细节">实验的实施细节</h5>
+<p>实验前需要确定的是：局部注意力模块的个数；局部图像块$\mathcal{N}(f_t,l)$和$\mathcal{N}(f_s,l+w^l)$的大小；一个局部图像块要进行几次attention操作，即一个局部图像块要分隔成几部分（进行warped操作的小图像块大小）</p>
+<p>对于Deepfashion，采用两个局部注意力模块；局部图像块的大小分别为64、 32；局部图像块进行warped操作的小图像块大小分别为3,5</p>
+<p>分阶段训练：首先训练$F$,再训练整个模型</p>
+<hr>
+<h5 id="总结">总结</h5>
+<p>1.通过这种仿射操作确实能够生成逼真的图片，但是这样将图像分成一个一个小图像块进行操作，计算量是不是太大了？</p>
+<p>2.之前提到的稀疏注意力我认为指的是进行一个一个小图像块的注意力操作，而不是进行一整个图像的注意力操作</p>
+<p>3.在局部注意力模块中，是以原图像路径作为主路径，因为实际上是将图像与注意力权矩阵进行了相乘，最后得到的是warped后的图像特征。个人认为这和PATN的想法基本上是一致的，不同的是在2中提到的，PATN进行的是一整个图像的注意力操作，而该问进行的是一个一个小图像块的操作。所以可以理解为这是对PATN方法的一个改进。</p>
+<p>4.把local warp做的很细，做到每一个点进行warping（实际上是对小的patch进行warping）</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/" data-title="Deep Image Spatial Transformation for Person Image Generation"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/" data-title="Deep Image Spatial Transformation for Person Image Generation" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/" data-title="Deep Image Spatial Transformation for Person Image Generation"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/" data-title="Deep Image Spatial Transformation for Person Image Generation"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/" data-title="Deep Image Spatial Transformation for Person Image Generation" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/" data-title="Deep Image Spatial Transformation for Person Image Generation" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/deep-image-spatial-transformation-for-person-image-generation/" data-title="Deep Image Spatial Transformation for Person Image Generation"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/deep-sketch-guided-cartoon-video-synthesis/" class="prev" rel="prev" title="Deep Sketch-guided Cartoon Video Synthesis"><i class="fas fa-angle-left fa-fw"></i>Deep Sketch-guided Cartoon Video Synthesis</a>
+            <a href="/cross-domain-correspondence-learning-for-exemplar-based-image-translation/" class="next" rel="next" title="Cross-domain Correspondence Learning for Exemplar-based Image Translation">Cross-domain Correspondence Learning for Exemplar-based Image Translation<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

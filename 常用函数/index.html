@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>常用函数 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="常用函数" />
+<meta property="og:description" content="将字符串转换为字符： 1 2  String str = &#34;42&#34;; char[] chars = str.toCharArray();   去除字符串的空格： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32  String trim //trim()方法移除字符串两侧(头尾)的空白字符(空格、tab键、换行符) String strip 1、trim()方法不足之处 trim()早在Java早期就存在，当时Unicode还没有完全发展到我们今天广泛使用的标准。 trim()方法移除字符串两侧的空白字符(空格、tab键、换行符) 支持Unicode的空白字符的判断应该使用isWhitespace(int)。 此外，开发人员无法专门删除缩进空白或专门删除尾随空白。 简单得说就是，trim()方法无法删除掉Unicode空白字符，但用Character.isWhitespace©方法可以判断出来。 2、strip()方法 JAVA11(JDK11)中的strip()方法，适用于字符首尾空白是Unicode空白字符的情况，通过一段代码来具体看一下， public static void main(String[] args) { String s = “\t abc \n”; System." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-12-27T09:17:30+08:00" />
+<meta property="article:modified_time" content="2020-12-27T09:17:30+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="常用函数"/>
+<meta name="twitter:description" content="将字符串转换为字符： 1 2  String str = &#34;42&#34;; char[] chars = str.toCharArray();   去除字符串的空格： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32  String trim //trim()方法移除字符串两侧(头尾)的空白字符(空格、tab键、换行符) String strip 1、trim()方法不足之处 trim()早在Java早期就存在，当时Unicode还没有完全发展到我们今天广泛使用的标准。 trim()方法移除字符串两侧的空白字符(空格、tab键、换行符) 支持Unicode的空白字符的判断应该使用isWhitespace(int)。 此外，开发人员无法专门删除缩进空白或专门删除尾随空白。 简单得说就是，trim()方法无法删除掉Unicode空白字符，但用Character.isWhitespace©方法可以判断出来。 2、strip()方法 JAVA11(JDK11)中的strip()方法，适用于字符首尾空白是Unicode空白字符的情况，通过一段代码来具体看一下， public static void main(String[] args) { String s = “\t abc \n”; System."/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" /><link rel="prev" href="https://shilongshen.github.io/ubuntu-%E7%BB%99%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACpytorch%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9Acuda%E7%89%88%E6%9C%AC/" /><link rel="next" href="https://shilongshen.github.io/map%E7%9A%84%E9%81%8D%E5%8E%86%E6%96%B9%E5%BC%8F/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "常用函数",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0\/"
+        },"genre": "posts","wordcount":  233 ,
+        "url": "https:\/\/shilongshen.github.io\/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0\/","datePublished": "2020-12-27T09:17:30+08:00","dateModified": "2020-12-27T09:17:30+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">常用函数</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-12-27">2020-12-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;233 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#将字符串转换为字符">将字符串转换为字符：</a></li>
+            <li><a href="#去除字符串的空格">去除字符串的空格：</a></li>
+            <li><a href="#切割字符串">切割字符串：</a></li>
+            <li><a href="#构建字符串">构建字符串：</a></li>
+            <li><a href="#依次读取字符串中的字符">依次读取字符串中的字符：</a></li>
+            <li><a href="#整型的极值">整型的极值：</a></li>
+            <li><a href="#将字符串转换为数字">将字符串转换为数字：</a></li>
+            <li><a href="#将字符转换为字符串">将字符转换为字符串：</a></li>
+            <li><a href="#优先队列堆">优先队列（堆）：</a></li>
+            <li><a href="#打印数组">打印数组：</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h3 id="将字符串转换为字符">将字符串转换为字符：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&#34;42&#34;</span><span class="o">;</span>
+<span class="kt">char</span><span class="o">[</span><span class="o">]</span> <span class="n">chars</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="去除字符串的空格">去除字符串的空格：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="n">trim</span> <span class="c1">//trim()方法移除字符串两侧(头尾)的空白字符(空格、tab键、换行符)
+</span><span class="c1"></span><span class="n">String</span> <span class="n">strip</span>
+    
+    
+    
+<span class="n">1</span><span class="err">、</span><span class="n">trim</span><span class="o">(</span><span class="o">)</span><span class="n">方法不足之处</span>
+
+<span class="nf">trim</span><span class="o">(</span><span class="o">)</span><span class="n">早在Java早期就存在</span><span class="err">，</span><span class="n">当时Unicode还没有完全发展到我们今天广泛使用的标准</span><span class="err">。</span>
+
+<span class="n">trim</span><span class="o">(</span><span class="o">)</span><span class="n">方法移除字符串两侧的空白字符</span><span class="o">(</span><span class="n">空格</span><span class="err">、</span><span class="n">tab键</span><span class="err">、</span><span class="n">换行符</span><span class="o">)</span>
+
+<span class="n">支持Unicode的空白字符的判断应该使用isWhitespace</span><span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="err">。</span>
+
+<span class="n">此外</span><span class="err">，</span><span class="n">开发人员无法专门删除缩进空白或专门删除尾随空白</span><span class="err">。</span>
+
+<span class="n">简单得说就是</span><span class="err">，</span><span class="n">trim</span><span class="o">(</span><span class="o">)</span><span class="n">方法无法删除掉Unicode空白字符</span><span class="err">，</span><span class="n">但用Character</span><span class="o">.</span><span class="na">isWhitespace</span><span class="err">©</span><span class="n">方法可以判断出来</span><span class="err">。</span>
+
+<span class="n">2</span><span class="err">、</span><span class="n">strip</span><span class="o">(</span><span class="o">)</span><span class="n">方法</span>
+
+<span class="nf">JAVA11</span><span class="o">(</span><span class="n">JDK11</span><span class="o">)</span><span class="n">中的strip</span><span class="o">(</span><span class="o">)</span><span class="n">方法</span><span class="err">，</span><span class="n">适用于字符首尾空白是Unicode空白字符的情况</span><span class="err">，</span><span class="n">通过一段代码来具体看一下</span><span class="err">，</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="err">“</span><span class="err">\</span><span class="n">t</span> <span class="n">abc</span> <span class="err">\</span><span class="n">n</span><span class="err">”</span><span class="o">;</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="err">“</span><span class="n">abc</span><span class="err">”</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">trim</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">)</span><span class="o">;</span><span class="c1">//true
+</span><span class="c1"></span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="err">“</span><span class="n">abc</span><span class="err">”</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">trim</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">)</span><span class="o">;</span><span class="c1">//true
+</span><span class="c1"></span><span class="n">Character</span> <span class="n">c</span> <span class="o">=</span> <span class="err">‘</span><span class="err">\</span><span class="n">u2000</span><span class="err">’</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="err">“</span><span class="n">abc</span><span class="err">”</span> <span class="o">+</span> <span class="n">c</span><span class="o">;</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Character</span><span class="o">.</span><span class="na">isWhitespace</span><span class="err">©</span><span class="o">)</span><span class="o">;</span><span class="c1">//true
+</span><span class="c1"></span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s1</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s1</span><span class="o">.</span><span class="na">trim</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">)</span><span class="o">;</span><span class="c1">//true，trim无法删除Unicdoe空白字符
+</span><span class="c1"></span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="err">“</span><span class="n">abc</span><span class="err">”</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">s1</span><span class="o">.</span><span class="na">strip</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">)</span><span class="o">;</span><span class="c1">//true
+</span><span class="c1"></span><span class="o">}</span>
+<span class="n">上面输出结果都是true</span><span class="err">，</span> <span class="n">Character</span> <span class="n">c</span> <span class="o">=</span> <span class="err">‘</span><span class="err">\</span><span class="n">u2000</span><span class="err">’</span><span class="o">;</span><span class="n">中</span><span class="err">’</span><span class="err">\</span><span class="n">u2000</span><span class="err">’</span><span class="n">就是Unicdoe空白字符</span><span class="err">。</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="切割字符串">切割字符串：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="nf">substring</span><span class="o">(</span><span class="kt">int</span> <span class="n">beginIndex</span><span class="o">,</span> <span class="kt">int</span> <span class="n">endIndex</span><span class="o">)</span>
+    
+    <span class="n">得到的字符从beginIndex到endIndex</span><span class="o">-</span><span class="n">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="构建字符串">构建字符串：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">StringBuilder</span> <span class="n">build</span><span class="o">=</span><span class="k">new</span> <span class="n">StringBuilder</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//构造StringBuilder
+</span><span class="c1"></span>
+<span class="n">build</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">String</span> <span class="n">s</span><span class="o">)</span><span class="o">;</span><span class="c1">//向StringBuilder中添加元素，可以是字符串或字符，也可以是其他值，具体请参照API
+</span><span class="c1"></span><span class="n">build</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">)</span><span class="o">;</span>
+
+<span class="n">build</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//将StringBuilder转换为String
+</span><span class="c1"></span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="依次读取字符串中的字符">依次读取字符串中的字符：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">char</span> <span class="nf">charAt</span><span class="o">(</span><span class="kt">int</span> <span class="n">index</span><span class="o">)</span>
+<span class="c1">//例如：
+</span><span class="c1"></span>    <span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&#34;42&#34;</span><span class="o">;</span>
+	<span class="kt">char</span> <span class="n">chars</span><span class="o">=</span><span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">0</span><span class="o">)</span><span class="o">;</span><span class="c1">//&#39;4&#39;
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="整型的极值">整型的极值：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">int</span> <span class="n">max</span><span class="o">=</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">;</span><span class="c1">//2147483647
+</span><span class="c1"></span><span class="kt">int</span> <span class="n">min</span><span class="o">=</span><span class="n">Integer</span><span class="o">.</span><span class="na">MIN_VALUE</span><span class="o">;</span><span class="c1">//-2147483648
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="将字符串转换为数字">将字符串转换为数字：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&#34;42&#34;</span><span class="o">;</span>
+<span class="kt">int</span> <span class="n">a</span><span class="o">=</span><span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="o">;</span><span class="c1">//42
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="将字符转换为字符串">将字符转换为字符串：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">tring</span> <span class="n">str</span><span class="o">=</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="sc">&#39;2&#39;</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">一、string 和int之间的转换
+
+1、string转换成int  :Integer.valueOf(&#34;12&#34;)
+
+2、int转换成string : String.valueOf(12)
+
+二、char和int之间的转换
+
+1、首先将char转换成string
+
+String str=String.valueOf(&#39;2&#39;)
+
+2、转换
+
+Integer.valueof(str) 或者Integer.PaseInt(str)
+
+Integer.valueof返回的是Integer对象，Integer.paseInt返回的是int
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="优先队列堆">优先队列（堆）：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//默认是小顶堆，即最小的值在根结点
+</span><span class="c1"></span><span class="c1">//可以通过重写comparator,作为比较器传入构造函数中，将其修改为大顶堆
+</span><span class="c1"></span><span class="n">PriorityQueue</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">priorityQueue</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PriorityQueue</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="k">new</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Integer</span> <span class="n">o1</span><span class="o">,</span> <span class="n">Integer</span> <span class="n">o2</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">o2</span> <span class="o">-</span> <span class="n">o1</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="打印数组">打印数组：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">int</span><span class="o">[</span><span class="o">]</span> <span class="n">nums</span> <span class="o">=</span> <span class="o">{</span><span class="n">1</span><span class="o">,</span> <span class="n">3</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">,</span> <span class="o">-</span><span class="n">3</span><span class="o">,</span> <span class="n">5</span><span class="o">,</span> <span class="n">3</span><span class="o">,</span> <span class="n">6</span><span class="o">,</span> <span class="n">7</span><span class="o">}</span><span class="o">;</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">a</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-12-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" data-title="常用函数"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" data-title="常用函数" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" data-title="常用函数"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" data-title="常用函数"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" data-title="常用函数" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" data-title="常用函数" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" data-title="常用函数"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/ubuntu-%E7%BB%99%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACpytorch%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9Acuda%E7%89%88%E6%9C%AC/" class="prev" rel="prev" title="给不同版本Pytorch指定特定CUDA版本"><i class="fas fa-angle-left fa-fw"></i>给不同版本Pytorch指定特定CUDA版本</a>
+            <a href="/map%E7%9A%84%E9%81%8D%E5%8E%86%E6%96%B9%E5%BC%8F/" class="next" rel="next" title="Map的遍历方式">Map的遍历方式<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Java基础总结 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="Java基础总结" />
+<meta property="og:description" content="String.getBytes(String decode)方法会根据指定的decode编码返回某字符串在该编码下的byte数组表示，如：
+1 2 3 4 5 6 7 8 9 10  byte[] a= &#34;shen&#34;.getBytes();//java默认的编码方式为unicode  for (byte s:a){ System.out.println(s); } /* 115 104 101 110 */   final，static关键字    final 关键字 表示常量，即变量被赋值后不能被更改。例如：final double number=24; 被final修饰的类不能被继承，被final修饰的方法不能被重写，能被重载。final不能修饰接口和抽象类。     static 关键字 静态字段属于类而不属于对象，通过类名.静态字段来访问；静态方法属于类，通过类名.静态方法来使用。静态方法只能访问静态字段，不能访问实例字段。    this关键字，super关键字    this this指向当前对象     super super指向父类    自动装箱和自动拆箱  装箱：将基本类型用它们对应的引用类型包装起来； 拆箱：将包装类型转换为基本数据类型；  1 2 3 4 5  //自动装箱 //向ArrayList&lt;Integer&gt;中添加int元素 list." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-21T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-21T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Java基础总结"/>
+<meta name="twitter:description" content="String.getBytes(String decode)方法会根据指定的decode编码返回某字符串在该编码下的byte数组表示，如：
+1 2 3 4 5 6 7 8 9 10  byte[] a= &#34;shen&#34;.getBytes();//java默认的编码方式为unicode  for (byte s:a){ System.out.println(s); } /* 115 104 101 110 */   final，static关键字    final 关键字 表示常量，即变量被赋值后不能被更改。例如：final double number=24; 被final修饰的类不能被继承，被final修饰的方法不能被重写，能被重载。final不能修饰接口和抽象类。     static 关键字 静态字段属于类而不属于对象，通过类名.静态字段来访问；静态方法属于类，通过类名.静态方法来使用。静态方法只能访问静态字段，不能访问实例字段。    this关键字，super关键字    this this指向当前对象     super super指向父类    自动装箱和自动拆箱  装箱：将基本类型用它们对应的引用类型包装起来； 拆箱：将包装类型转换为基本数据类型；  1 2 3 4 5  //自动装箱 //向ArrayList&lt;Integer&gt;中添加int元素 list."/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" /><link rel="prev" href="https://shilongshen.github.io/mysql/" /><link rel="next" href="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Java基础总结",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93\/"
+        },"genre": "posts","wordcount":  831 ,
+        "url": "https:\/\/shilongshen.github.io\/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93\/","datePublished": "2020-11-21T13:26:17+08:00","dateModified": "2020-11-21T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Java基础总结</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-21">2020-11-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;831 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#finalstatic关键字">final，static关键字</a></li>
+            <li><a href="#this关键字super关键字">this关键字，super关键字</a></li>
+            <li><a href="#自动装箱和自动拆箱">自动装箱和自动拆箱</a></li>
+            <li><a href="#方法的参数">方法的参数</a></li>
+            <li><a href="#重载和重写的区别">重载和重写的区别</a></li>
+            <li><a href="#成员变量和局部变量的区别">成员变量和局部变量的区别</a></li>
+            <li><a href="#强制对象类型转换">强制对象类型转换</a></li>
+            <li><a href="#面向对象的三大特性">面向对象的三大特性</a>
+              <ul>
+                <li><a href="#继承">继承</a></li>
+                <li><a href="#多态">多态</a></li>
+                <li><a href="#封装">封装</a></li>
+              </ul>
+            </li>
+            <li><a href="#抽象类和接口">抽象类和接口</a></li>
+            <li><a href="#和equals的区别">==和equals的区别</a></li>
+            <li><a href="#hashcode-与-equals">hashCode 与 equals</a></li>
+            <li><a href="#构造函数">构造函数</a></li>
+            <li><a href="#i和i的区别">i++和++i的区别</a></li>
+            <li><a href="#string-s和-new-string的区别">String s和 new String的区别</a></li>
+            <li><a href="#基本数据类型">基本数据类型</a></li>
+            <li><a href="#java类的访问权限">Java类的访问权限</a></li>
+            <li><a href="#深拷贝和浅拷贝">深拷贝和浅拷贝</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>String.getBytes(String decode)方法会根据指定的decode编码返回某<strong>字符串在该编码下的byte数组</strong>表示，如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">byte</span><span class="o">[</span><span class="o">]</span> <span class="n">a</span><span class="o">=</span> <span class="s">&#34;shen&#34;</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//java默认的编码方式为unicode
+</span><span class="c1"></span>        <span class="k">for</span> <span class="o">(</span><span class="kt">byte</span> <span class="n">s</span><span class="o">:</span><span class="n">a</span><span class="o">)</span><span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+<span class="cm">/*
+</span><span class="cm">115
+</span><span class="cm">104
+</span><span class="cm">101
+</span><span class="cm">110
+</span><span class="cm">*/</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="finalstatic关键字">final，static关键字</h3>
+<table>
+<thead>
+<tr>
+<th>final 关键字</th>
+<th>表示常量，即变量被赋值后不能被更改。例如：final double number=24; 被final修饰的类不能被继承，被final修饰的方法不能被重写，能被重载。final不能修饰接口和抽象类。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>static 关键字</td>
+<td>静态字段属于类而不属于对象，通过类名.静态字段来访问；静态方法属于类，通过类名.静态方法来使用。静态方法只能访问静态字段，不能访问实例字段。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="this关键字super关键字">this关键字，super关键字</h3>
+<table>
+<thead>
+<tr>
+<th>this</th>
+<th>this指向当前对象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>super</td>
+<td>super指向父类</td>
+</tr>
+</tbody>
+</table>
+<h3 id="自动装箱和自动拆箱">自动装箱和自动拆箱</h3>
+<ul>
+<li><strong>装箱</strong>：将基本类型用它们对应的引用类型包装起来；</li>
+<li><strong>拆箱</strong>：将包装类型转换为基本数据类型；</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//自动装箱
+</span><span class="c1"></span><span class="c1">//向ArrayList&lt;Integer&gt;中添加int元素
+</span><span class="c1"></span><span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">3</span><span class="o">)</span><span class="o">;</span>
+<span class="c1">//等价于
+</span><span class="c1"></span><span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">3</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//自动拆箱
+</span><span class="c1"></span><span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">3</span><span class="o">)</span><span class="o">;</span>
+<span class="c1">//等价于
+</span><span class="c1"></span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span><span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">3</span><span class="o">)</span><span class="o">.</span><span class="na">intValue</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>  
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="方法的参数">方法的参数</h3>
+<p>两个基本概念：</p>
+<ul>
+<li>按值调用：方法接收调用者提供的值</li>
+<li>按引用调用：方法接收调用者提供的变量地址</li>
+</ul>
+<p><strong>Java语言总是按值调用</strong>。也就是说，方法得到的参数值是一个<strong>副本</strong>。</p>
+<ul>
+<li>如果该参数是基本数据类型（和以String str=&quot;aaa&quot;这种方式创建的字符串）的话，那方法不能修改该参数。</li>
+<li>如果方法参数是对象引用（例如对象和数组）的话，那方法可以改变对象参数。（因为原来的对象引用和这个副本都引用同一个对象）</li>
+</ul>
+<p>例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span>    <span class="nc">test01</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="kt">int</span> <span class="n">num1</span><span class="o">=</span><span class="n">10</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">num2</span><span class="o">=</span><span class="n">20</span><span class="o">;</span>
+        <span class="n">Swap</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span><span class="n">num2</span><span class="o">)</span><span class="o">;</span><span class="c1">//参数是基本数据类型，按值传递
+</span><span class="c1"></span>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;num1=%d\n&#34;</span><span class="o">,</span><span class="n">num1</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;num2=%d\n&#34;</span><span class="o">,</span><span class="n">num2</span><span class="o">)</span><span class="o">;</span>
+
+
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">Swap</span><span class="o">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">,</span><span class="kt">int</span> <span class="n">b</span><span class="o">)</span><span class="o">{</span>
+        <span class="kt">int</span> <span class="n">temp</span><span class="o">=</span><span class="n">a</span><span class="o">;</span>
+        <span class="n">a</span><span class="o">=</span><span class="n">b</span><span class="o">;</span>
+        <span class="n">b</span><span class="o">=</span><span class="n">temp</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;a=%d\n&#34;</span><span class="o">,</span><span class="n">a</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;b=%d\n&#34;</span><span class="o">,</span><span class="n">b</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/*
+</span><span class="cm">a=20
+</span><span class="cm">b=10
+</span><span class="cm">num1=10
+</span><span class="cm">num2=20
+</span><span class="cm">*/</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://camo.githubusercontent.com/8943d6a83be198245233aafea4f5c7bb44fe8beaf24734c4cac105a1fe3cb8f3/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d32372f32323139313334382e6a7067"
+        data-srcset="https://camo.githubusercontent.com/8943d6a83be198245233aafea4f5c7bb44fe8beaf24734c4cac105a1fe3cb8f3/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d32372f32323139313334382e6a7067, https://camo.githubusercontent.com/8943d6a83be198245233aafea4f5c7bb44fe8beaf24734c4cac105a1fe3cb8f3/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d32372f32323139313334382e6a7067 1.5x, https://camo.githubusercontent.com/8943d6a83be198245233aafea4f5c7bb44fe8beaf24734c4cac105a1fe3cb8f3/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d32372f32323139313334382e6a7067 2x"
+        data-sizes="auto"
+        alt="https://camo.githubusercontent.com/8943d6a83be198245233aafea4f5c7bb44fe8beaf24734c4cac105a1fe3cb8f3/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d32372f32323139313334382e6a7067"
+        title="example 1 " /></p>
+<p>在 swap 方法中，a、b 的值进行交换，并不会影响到 num1、num2。因为，a、b 中的值，只是从 num1、num2 的复制过来的。也就是说，a、b 相当于 num1、num2 的副本，副本的内容无论怎么修改，都不会影响到原件本身。</p>
+<hr>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="kt">int</span><span class="o">[</span><span class="o">]</span> <span class="n">arr</span> <span class="o">=</span> <span class="o">{</span> <span class="n">1</span><span class="o">,</span> <span class="n">2</span><span class="o">,</span> <span class="n">3</span><span class="o">,</span> <span class="n">4</span><span class="o">,</span> <span class="n">5</span> <span class="o">}</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">change</span><span class="o">(</span><span class="n">arr</span><span class="o">)</span><span class="o">;</span><span class="c1">//引用传递，
+</span><span class="c1"></span>		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">change</span><span class="o">(</span><span class="kt">int</span><span class="o">[</span><span class="o">]</span> <span class="n">array</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// 将数组的第一个元素变为0
+</span><span class="c1"></span>		<span class="n">array</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="cm">/*
+</span><span class="cm">1
+</span><span class="cm">0
+</span><span class="cm">*/</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中array是arr的副本，两者都指向同一数组对象。</p>
+<p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201119215949.png" style="zoom: 80%;" /></p>
+<h3 id="重载和重写的区别">重载和重写的区别</h3>
+<p>首先定义方法的签名：方法的签名包括方法名和参数类型。注意返回类型不是方法的签名。也就是说不能有两个名字相同，参数类型也相同却有不同返回类型的方法。</p>
+<p>重载（overlode）：如果有多个方法具有相同的方法名，不同的参数，便出现了方法重载。</p>
+<p>重写（override）：当子类继承父类，子类必须对父类的某一个方法进行改变时，就发生了重写。注意重写要求方法签名相同，并且返回类型也要相同。</p>
+<h3 id="成员变量和局部变量的区别">成员变量和局部变量的区别</h3>
+<ul>
+<li>
+<p>成员对象也称为实例变量，成员对象属于对象实例，随着对象的创建而创建，随着对象的消失而消失；局部变量属于方法中定义的变量或方法参数，在方法被调用后自动消失</p>
+</li>
+<li>
+<p>成员变量可以被public ,private ,protected,static 修饰符修饰。而局部变量不能。但两个变量都能被final修饰</p>
+</li>
+</ul>
+<h3 id="强制对象类型转换">强制对象类型转换</h3>
+<p>明确：子类的功能比父类的功能更多。父类有的方法子类都有，但是子类有的方法父类不一定有。</p>
+<p>向上转型：父类引用指向子类对象。这个时候我们用一个功能较弱的类型引用一个功能较强的对象，我们将子类转换为了父类。例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Father</span> <span class="n">father</span> <span class="o">=</span><span class="k">new</span> <span class="n">Son</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>在这里Son 对象实例被向上转型为father了,但是请注意这个Son对象实例在内存中的本质上还是Son类型，只不过它的功能<strong>被临时消弱了</strong>（这时我们只能调用father中的方法）。</p>
+<p>向下转型：</p>
+<p>分为两种情况</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//1
+</span><span class="c1"></span><span class="n">Father</span> <span class="n">father</span> <span class="o">=</span><span class="k">new</span> <span class="n">Son</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="n">Son</span> <span class="n">son</span><span class="o">=</span><span class="o">(</span><span class="n">Son</span><span class="o">)</span> <span class="n">father</span><span class="o">;</span>  <span class="c1">//ok!
+</span><span class="c1"></span>
+<span class="c1">//2
+</span><span class="c1"></span><span class="n">Father</span> <span class="n">father</span> <span class="o">=</span><span class="k">new</span> <span class="n">Father</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="n">Son</span> <span class="n">son</span><span class="o">=</span><span class="o">(</span><span class="n">Son</span><span class="o">)</span> <span class="n">father</span><span class="o">;</span><span class="c1">//error!  //z等价与Son son=new Father();
+</span></code></pre></td></tr></table>
+</div>
+</div><p>对于情况1,即先是父类引用指向子类对象，在将父类引用还原回子类引用。因为我们创建的对象为功能更多的子类对象，子类对象的引用本应该是子类引用。</p>
+<p>对于情况2,我们创建了一个功能更少的父类对象，尝试用子类引用指向父类对象，但是由于父类对象的功能少，所以子类对象不能指向父类对象。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span>    <span class="nc">test01</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Father</span> <span class="n">father</span><span class="o">=</span><span class="k">new</span> <span class="n">Son</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//父类引用指向子类对象，此时的father只能调用method1,method2方法
+</span><span class="c1"></span>        <span class="n">Son</span> <span class="n">son</span> <span class="o">=</span><span class="o">(</span><span class="n">Son</span><span class="o">)</span> <span class="n">father</span><span class="o">;</span><span class="c1">//向下转型，此时son可以调用子类中的全部方法
+</span><span class="c1"></span>        
+        <span class="cm">/*
+</span><span class="cm">        如果是这样调用则会出错
+</span><span class="cm">        Father father=new Father();
+</span><span class="cm">        Son son =(Son) father;
+</span><span class="cm">        */</span>
+<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Father</span><span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method1</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;father&#39;s method 1&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method2</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;father&#39;s method 2&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Son</span> <span class="kd">extends</span> <span class="n">Father</span> <span class="o">{</span>
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method03</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;son&#39;s method 3&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method4</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;father&#39;s method 4&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="面向对象的三大特性">面向对象的三大特性</h3>
+<h4 id="继承"><strong>继承</strong></h4>
+<ul>
+<li>将一般的方法放在父类中，将特殊的方法放在子类中。</li>
+<li>父类中的私有方法和私有属性，子类无法访问  。(保护成员是可以访问的)</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">X</span><span class="o">{</span>
+	<span class="n">Y</span> <span class="n">y</span><span class="o">=</span><span class="k">new</span> <span class="n">Y</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="nf">X</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;X&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">Y</span><span class="o">{</span>
+	<span class="kd">public</span> <span class="nf">Y</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;Y&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Z</span> <span class="kd">extends</span> <span class="n">X</span><span class="o">{</span>
+	<span class="n">Y</span> <span class="n">y</span><span class="o">=</span><span class="k">new</span> <span class="n">Y</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="nf">Z</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&#34;Z&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">new</span> <span class="n">Z</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/*
+</span><span class="cm">YXYZ
+</span><span class="cm">*/</span>
+
+<span class="cm">/*
+</span><span class="cm">初始化过程： 
+</span><span class="cm">1. 初始化父类中的静态成员变量和静态代码块 ； 
+</span><span class="cm">2. 初始化子类中的静态成员变量和静态代码块 ； 
+</span><span class="cm">3.初始化父类的普通成员变量和代码块，再执行父类的构造方法；
+</span><span class="cm">4.初始化子类的普通成员变量和代码块，再执行子类的构造方法； 
+</span><span class="cm"> 
+</span><span class="cm">（1）初始化父类的普通成员变量和代码块，执行  Y y=new Y();  输出Y 
+</span><span class="cm">（2）再执行父类的构造方法；输出X
+</span><span class="cm">（3） 初始化子类的普通成员变量和代码块，执行  Y y=new   Y();  输出Y 
+</span><span class="cm">（4）再执行子类的构造方法；输出Z
+</span><span class="cm"> 所以输出YXYZ
+</span><span class="cm">
+</span><span class="cm">*/</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="多态"><strong>多态</strong></h4>
+<ul>
+<li>
+<p>定义：一个对象变量（对象引用）可以指向多个实际类型的现象称为<strong><u>多态</u></strong>。</p>
+<ul>
+<li>例如：父类引用指向子类对象，父类引用可以指向父类对象。但是子类引用不能指向父类对象</li>
+</ul>
+</li>
+<li>
+<p>对象引用调用的方法究竟属于哪一个对象（实际类型）是在运行期间动态确定的，这称为<strong><u>动态绑定</u></strong>。</p>
+<ul>
+<li>当父类引用指向子类对象。如果子类重写了父类的方法，真正执行的是子类覆盖的方法，如果子类没有覆盖父类的方法，执行的是父类的方法。</li>
+</ul>
+</li>
+</ul>
+<p>例：</p>
+<p>son的实际类型是Son,它是Father的子类。如果Son定义了方法（重写）method1，则调用Son中的method1,否则调用Father中的method1。这是在运行期间动态决定的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span>   <span class="nc">test01</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Son</span> <span class="n">son</span><span class="o">=</span><span class="k">new</span> <span class="n">Son</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">son</span><span class="o">.</span><span class="na">method1</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+
+<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Father</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method1</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;father&#39;s method 1&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method2</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;father&#39;s method 2&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Son</span> <span class="kd">extends</span> <span class="n">Father</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method1</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;son&#39;s method 1&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method03</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;son&#39;s method 3&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method4</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;father&#39;s method 4&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>理解在方法调用时发生了什么？</strong></p>
+<p>虚拟机预先为每一个类创建了一个方法表，其中列出了所有的方法签名和调用的实际方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nl">Father:</span>
+	<span class="n">method1</span><span class="o">(</span><span class="o">)</span><span class="o">-</span><span class="o">&gt;</span><span class="n">Father</span><span class="o">.</span><span class="na">method1</span><span class="o">(</span><span class="o">)</span>
+	<span class="n">method2</span><span class="o">(</span><span class="o">)</span><span class="o">-</span><span class="o">&gt;</span><span class="n">Father</span><span class="o">.</span><span class="na">method2</span><span class="o">(</span><span class="o">)</span>
+<span class="nl">Son:</span>
+	<span class="n">method1</span><span class="o">-</span><span class="o">&gt;</span><span class="n">Son</span><span class="o">.</span><span class="na">method1</span><span class="o">(</span><span class="o">)</span><span class="c1">//重写
+</span><span class="c1"></span>	<span class="n">method2</span><span class="o">(</span><span class="o">)</span><span class="o">-</span><span class="o">&gt;</span><span class="n">Father</span><span class="o">.</span><span class="na">method2</span><span class="o">(</span><span class="o">)</span><span class="c1">//子类拥有父类的非私有方法
+</span><span class="c1"></span>	<span class="n">method3</span><span class="o">-</span><span class="o">&gt;</span><span class="n">Son</span><span class="o">.</span><span class="na">method3</span><span class="o">(</span><span class="o">)</span><span class="c1">//子类新增方法
+</span><span class="c1"></span>	<span class="n">method4</span><span class="o">-</span><span class="o">&gt;</span><span class="n">Son</span><span class="o">.</span><span class="na">method4</span><span class="o">(</span><span class="o">)</span><span class="c1">//子类新增方法
+</span></code></pre></td></tr></table>
+</div>
+</div><p>在调用方法时，如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"> <span class="n">Son</span> <span class="n">son</span><span class="o">=</span><span class="k">new</span> <span class="n">Son</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+ <span class="n">son</span><span class="o">.</span><span class="na">method1</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>首先根据son的<strong>实际类型</strong>来获取方法表：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Son:
+	method1-&gt;Son.method1()
+	method2()-&gt;Father.method2()//子类拥有父类的非私有方法
+	method3-&gt;Son.method3()
+	method4-&gt;Son.method4()
+</code></pre></td></tr></table>
+</div>
+</div><p>虚拟机在方法表中查找定义了method1()签名的类。确定应该调用的方法:Son.method1()。</p>
+<p>在调用方法：如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"> <span class="n">Father</span> <span class="n">father</span><span class="o">=</span><span class="k">new</span> <span class="n">Son</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+ <span class="n">father</span><span class="o">.</span><span class="na">method1</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>根据father的<strong>实际类型</strong>来获取方法表：这里father的实际类型为Father。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Father:
+	method1()-&gt;Father.method1()
+	method2()-&gt;Father.method2()
+</code></pre></td></tr></table>
+</div>
+</div><p>虚拟机在方法表中查找定义了method1()签名的类。确定应该调用的方法:Father.method1()。但是由于Son已经将method1()进行重写了，所以实际上调用的是Son.method1()</p>
+<p>小结：</p>
+<p>多态存在的条件：</p>
+<ul>
+<li>继承-&gt;父类和子类</li>
+<li>子类重写父类中的方法-&gt;</li>
+<li>父类引用指向子类对象</li>
+</ul>
+<p>当父类引用指向子类对象时，原则上来说只能调用父类中的方法，但是一旦子类重写了父类的方法，就可以调用子类中的方法。这就是多态</p>
+<p>再举个例子</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span>    <span class="nc">test01</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Father</span> <span class="n">father</span><span class="o">=</span><span class="k">new</span> <span class="n">Son</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">father</span><span class="o">.</span><span class="na">method1</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Father</span><span class="o">{</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method1</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;father&#39;s method 1&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Son</span> <span class="kd">extends</span> <span class="n">Father</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method1</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;son&#39;s method 1&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>这里输出的是son&rsquo;s method 1。这里满足了多态的三个条件：继承，父类引用指向子类对象，子类重写父类方法。因此在调用father.method1();时，实际上是动态绑定到了子类的method1方法上。</p>
+<p><strong>多态的特点:</strong></p>
+<ul>
+<li>对象类型和引用类型之间具有继承（类）/实现（接口）的关系；</li>
+<li>对象类型不可变，引用类型可变；</li>
+<li>方法具有多态性，属性不具有多态性；</li>
+<li>引用类型变量发出的方法调用的到底是哪个类中的方法，必须在程序运行期间才能确定；</li>
+<li><u>多态不能调用“只在子类存在但在父类不存在”的方法</u>；</li>
+<li>如果子类重写了父类的方法，真正执行的是子类覆盖的方法，如果子类没有覆盖父类的方法，执行的是父类的方法。</li>
+</ul>
+<hr>
+<h4 id="封装"><strong>封装</strong></h4>
+<p>将对象的字段（field）隐藏在对象内部，不让外部直接操作，而是通过一些公有方法来间接的操作</p>
+<h3 id="抽象类和接口">抽象类和接口</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>抽象类（abstract修饰）</td>
+<td>抽象方法（用abstract修饰）相当于占位，继承抽象类的类必须重写抽象方法</td>
+<td>抽象类可以有字段和具体方法；抽象类可以有构造方法。</td>
+<td>抽象类不能实例化</td>
+<td>抽象类不能多继承（extends）</td>
+</tr>
+<tr>
+<td>接口（interface修饰）</td>
+<td>实现接口的类必须重写接口中的方法。在实现方法时，必须把方法声明为public。接口中的所有方法都自动是public方法。</td>
+<td>接口不能有字段和具体方法，但可以有静态常量；接口不可以有构造方法</td>
+<td>接口不能实例化</td>
+<td>可以实现多个接口（implements）</td>
+</tr>
+</tbody>
+</table>
+<p>补充：<strong>JDK8开始，接口中可以定义有方法体的方法，方法必须被default和static修饰。除此之外，其他方法都是抽象方法。</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316214101.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316214101.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316214101.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316214101.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316214101.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316214101.png" /></p>
+<h3 id="和equals的区别">==和equals的区别</h3>
+<ul>
+<li>== 它的作用是判断两个对象的地址是不是相等。即，判断两个对象是不是同一个对象。如果为基本数据类型==比较的是值。如果是引用数据类型，比较的是内存地址。</li>
+<li>equals 分为两种情况
+<ul>
+<li>类没有重写equals,则通过Object类的equals方法进行比较，用来比较两个对象的引用是否相等。</li>
+<li>类重写了equals方法，一般我们重写equals方法来比较对象<strong>内容</strong>是否相等，若相等则返回true。</li>
+</ul>
+</li>
+</ul>
+<h3 id="hashcode-与-equals">hashCode 与 equals</h3>
+<ul>
+<li>
+<p>hashCode()的作用是获得哈希码，返回的是一个int整型，用于确定该对象在哈希表中的索引位置。hashCode()在哈希表中才有用！</p>
+<p>注意：</p>
+</li>
+<li>
+<p>如果两个对象相等，那么哈希码一定相等</p>
+</li>
+</ul>
+<p>所以</p>
+<ul>
+<li>重写equals方法时必须重写hashCode方法，如果equals方法返回true,哈希码一定相等</li>
+</ul>
+<h3 id="构造函数">构造函数</h3>
+<p>构造函数的作用是完成对象的初始化。</p>
+<p>下面的对象创建方法中哪些会调用构造方法 ：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">new语句创建对象
+java反射机制使用java.lang.Class或java.lang.reflect.Constructor的newInstance()方法
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="i和i的区别">i++和++i的区别</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">int</span> <span class="n">m</span><span class="o">=</span><span class="n">7</span><span class="o">;</span>
+<span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">7</span><span class="o">;</span>
+<span class="kt">int</span> <span class="n">a</span><span class="o">=</span><span class="n">2</span><span class="o">*</span> <span class="o">+</span><span class="o">+</span><span class="n">m</span>  <span class="o">(</span><span class="n">此时a</span><span class="o">=</span><span class="n">16</span><span class="o">,</span><span class="n">m</span><span class="o">=</span><span class="n">8</span><span class="o">)</span>  <span class="o">-</span><span class="o">-</span><span class="o">&gt;</span><span class="n">先进行加法运再进行乘法</span>
+<span class="kt">int</span> <span class="n">b</span><span class="o">=</span><span class="n">2</span><span class="o">*</span> <span class="o">+</span><span class="o">+</span><span class="n">n</span>  <span class="o">(</span><span class="n">此时a</span><span class="o">=</span><span class="n">14</span><span class="o">,</span><span class="n">n</span><span class="o">=</span><span class="n">8</span><span class="o">)</span>  <span class="o">-</span><span class="o">-</span><span class="o">&gt;</span><span class="n">先进行乘法运算再进行加法</span>    
+</code></pre></td></tr></table>
+</div>
+</div><p>i&ndash;和&ndash;i同理</p>
+<h3 id="string-s和-new-string的区别">String s和 new String的区别</h3>
+<p>String s1 = &ldquo;a&rdquo; 时，首先会在<strong>字符串常量池</strong>中查找有无 “a” 这个对象。 若没找到，就创建一个 &ldquo;a&rdquo; 对象。然后，以 s1 为它的引用。若在字符串常量池中找到了“a”这个对象， 同样也将s1作为它的引用。若再执行一次 String s2 = &ldquo;a&rdquo; , 那么 s1 和 s2 都是同一个对象的引用，即 逻辑判断 s1 == s2 的结果是 true。</p>
+<p>String s3 = new String(&ldquo;a&rdquo;) 时，将在<strong>字符串常量池外的堆</strong>里，创建一个 &ldquo;a&rdquo; 对象。然后，以 s3 为它的引用。这时，s3 对应的是字符串常量池外的一个对象。因此，无论 s3 == s2，还是 s3 ==s1，其结果都是 false。但是s3.equals( s2) ，结果为true，因为内容是相同的。</p>
+<p>Q: String str=new String(&ldquo;hello&rdquo;);我只想问下这个hello是放在堆里面还是放在字符串常量中？</p>
+<p>A: 如果字符串常量池里存在hello这个字符串的话，则只在堆中创建一个hello对象，否则也要在字符串常量池中也创建一个hello常量，前者是新建了一个对象，后者是两个对象。</p>
+<p><a href="https://www.nowcoder.com/test/question/done?tid=42152683&amp;qid=3450#summary" target="_blank" rel="noopener noreffer">参考题</a></p>
+<h3 id="基本数据类型">基本数据类型</h3>
+<p>1、整数类型byte（1个字节）short（2个字节）int（4个字节）long（8个字节）</p>
+<p>2、字符类型char（2个字节）</p>
+<p>3、浮点类型float（4个字节）double（8个字节）</p>
+<h3 id="java类的访问权限">Java类的访问权限</h3>
+<p>Java有四种访问权限， 其中三种有访问权限修饰符，分别为private，public和protected，还有一种不带任何修饰符。</p>
+<ol>
+<li>private: Java语言中对访问权限限制的最窄的修饰符，一般称之为“私有的”。被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问。</li>
+<li>default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，只允许在同一个包中进行访问。</li>
+<li>protect: 介于public 和 private 之间的一种访问修饰符，一般称之为“保护形”。被其修饰的类、属性以及方法只能被类本身的方法及子类访问，即使子类在不同的包中也可以访问。</li>
+<li>public： Java语言中访问限制最宽的修饰符，一般称之为“公共的”。被其修饰的类、属性以及方法不仅可以跨类访问，而且允许跨包（package）访问。</li>
+</ol>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210317230809.png" style="zoom:80%;" /></p>
+<h3 id="深拷贝和浅拷贝">深拷贝和浅拷贝</h3>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-21</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" data-title="Java基础总结"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" data-title="Java基础总结" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" data-title="Java基础总结"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" data-title="Java基础总结"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" data-title="Java基础总结" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" data-title="Java基础总结" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" data-title="Java基础总结"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/mysql/" class="prev" rel="prev" title="MySQL"><i class="fas fa-angle-left fa-fw"></i>MySQL</a>
+            <a href="/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="next" rel="next" title="lambda表达式">lambda表达式<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

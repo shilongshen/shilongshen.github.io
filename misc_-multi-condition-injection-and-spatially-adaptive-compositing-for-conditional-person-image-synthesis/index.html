@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis" />
+<meta property="og:description" content="该文章实现了不同背景下多条件人物图像生成。
+该文提出了一个概念：图像生成（image generation）和图像合成（image compositing）
+Introduction 条件人物图像生成可以分为两个阶段：
+ conditional generation phase : 在几何条件的基础上，生成人物的细粒度纹理 adaptive compositing phase : 根据不同的背景调整生成人物的色调，使得生成的人物能够和背景更加的融合。  对于conditional generation phase，以三个条件作为输入：geometry、pattern（灰度纹理）和color，对应到具体的输入为parsing mask、Gaussian noise以及multi-valued color attributes。其中patteern 和 color是抽象的并且与geometry相关。因此条件人物图像生成可以视为抽象条件的视觉具体化。
+另一方面，adaptive compositing phase 需要将生成的人物图像更好的与背景相融合。
+ ​	MISC包含两个模块：
+ conditional person generation model spatially-adaptive image composition model  其中conditional person generation model ：
+对于pattern condition ，将它视为Gaussian noise，引入一个条件归一化层：GAIN，通过Gaussian 来调剂激活值。
+对于color condition，使用bipartite network project method 来讲attribute 映射到人物相应的几何位置上，并使用预训练的cross-modality similarity model 来增强attribute embedding的语义意义。
+ 而对于spatially-adaptive image composition model：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-15T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-15T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis"/>
+<meta name="twitter:description" content="该文章实现了不同背景下多条件人物图像生成。
+该文提出了一个概念：图像生成（image generation）和图像合成（image compositing）
+Introduction 条件人物图像生成可以分为两个阶段：
+ conditional generation phase : 在几何条件的基础上，生成人物的细粒度纹理 adaptive compositing phase : 根据不同的背景调整生成人物的色调，使得生成的人物能够和背景更加的融合。  对于conditional generation phase，以三个条件作为输入：geometry、pattern（灰度纹理）和color，对应到具体的输入为parsing mask、Gaussian noise以及multi-valued color attributes。其中patteern 和 color是抽象的并且与geometry相关。因此条件人物图像生成可以视为抽象条件的视觉具体化。
+另一方面，adaptive compositing phase 需要将生成的人物图像更好的与背景相融合。
+ ​	MISC包含两个模块：
+ conditional person generation model spatially-adaptive image composition model  其中conditional person generation model ：
+对于pattern condition ，将它视为Gaussian noise，引入一个条件归一化层：GAIN，通过Gaussian 来调剂激活值。
+对于color condition，使用bipartite network project method 来讲attribute 映射到人物相应的几何位置上，并使用预训练的cross-modality similarity model 来增强attribute embedding的语义意义。
+ 而对于spatially-adaptive image composition model："/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/" /><link rel="prev" href="https://shilongshen.github.io/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" /><link rel="next" href="https://shilongshen.github.io/kl%E6%95%A3%E5%BA%A6/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis\/"
+        },"genre": "posts","wordcount":  256 ,
+        "url": "https:\/\/shilongshen.github.io\/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis\/","datePublished": "2020-11-15T13:26:17+08:00","dateModified": "2020-11-15T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;256 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#conditional-person-image-synthesis">Conditional person image synthesis</a>
+      <ul>
+        <li><a href="#conditional-generation">Conditional generation</a>
+          <ul>
+            <li><a href="#pattern-injection">Pattern injection</a></li>
+            <li><a href="#color-injection">Color injection</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>该文章实现了不同背景下多条件人物图像生成。</p>
+<p>该文提出了一个概念：图像生成（image generation）和图像合成（image compositing）</p>
+<h1 id="introduction">Introduction</h1>
+<p>条件人物图像生成可以分为两个阶段：</p>
+<ul>
+<li>conditional generation phase : 在几何条件的基础上，生成人物的细粒度纹理</li>
+<li>adaptive compositing phase :   根据不同的背景调整生成人物的色调，使得生成的人物能够和背景更加的融合。</li>
+</ul>
+<p>对于conditional generation phase，以三个条件作为输入：geometry、pattern（灰度纹理）和color，对应到具体的输入为parsing mask、Gaussian noise以及multi-valued color attributes。其中patteern 和 color是抽象的并且与geometry相关。因此条件人物图像生成可以视为抽象条件的视觉具体化。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906182946.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906182946.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906182946.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906182946.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906182946.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906182946.png" /></p>
+<p>另一方面，adaptive compositing phase 需要将生成的人物图像更好的与背景相融合。</p>
+<hr>
+<p>​	MISC包含两个模块：</p>
+<ul>
+<li>conditional person generation model</li>
+<li>spatially-adaptive image composition model</li>
+</ul>
+<p>其中conditional person generation model ：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906183727.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906183727.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906183727.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906183727.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906183727.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906183727.png" /></p>
+<p>对于pattern condition ，将它视为Gaussian noise，引入一个条件归一化层：GAIN，通过Gaussian 来调剂激活值。</p>
+<p>对于color condition，使用bipartite network project method 来讲attribute 映射到人物相应的几何位置上，并使用预训练的cross-modality similarity model 来增强attribute embedding的语义意义。</p>
+<hr>
+<p>而对于spatially-adaptive image composition model：</p>
+<p>利用生成的人物图像和提供背景的图像，来为前景人物图像推断出每一个像素的颜色转换参数，</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906185117.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906185117.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906185117.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906185117.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906185117.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906185117.png" /></p>
+<h1 id="conditional-person-image-synthesis">Conditional person image synthesis</h1>
+<p>conditional person generation model：
+$$
+\hat{y}=F^G(x)
+$$
+其中$x$表示输入的条件。生成的$\hat{y}$可以被解耦为$\hat{y}^f$和$\hat{y}^b$</p>
+<p>spatially-adaptive image composition model：
+$$
+(\rho ,\tau)=F^C(\hat{y}^f,y^b)
+$$
+其中$y^b$是背景图像。</p>
+<p>通过仿射参数$(\rho , \tau)$可以将$\hat{y}^f$与$y^b$进行更好的融合（将生成的人物图像与背景更好的融合）：
+$$
+y=m \odot y^f+(1-m)y^b
+$$</p>
+<h2 id="conditional-generation">Conditional generation</h2>
+<p>$F^G$的输入$x$包括了geometry $x^g$、pattern $x^p$以及color $x^c$。</p>
+<ul>
+<li>$x^g \in \mathbb{L}^{N_g \times H \times W}$ 表示body part parsing mask 。其中$\mathbb{L}\in { 0,1}$</li>
+<li>$x^p \sim \mathcal{N}(0,1)$ 表示Gaussian noise vector。</li>
+<li><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906205410.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906205410.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906205410.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906205410.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906205410.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906205410.png" /></li>
+<li>$x^c \in \mathbb{L}^{N_c \times N_v}$ 表示multi-valued attributes, 其中$\mathbb{L}\in { 0,1}$，$N_c$和$N_v$表示the number of attributes</li>
+</ul>
+<p>$F^G$是多模块的叠加：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906204902.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906204902.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906204902.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200906204902.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906204902.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200906204902.png" /></p>
+<p>$$
+h_{i+1}=F^G_{i+1}(h_i,x_i^g,e^p,e^c)
+$$
+$F^G$的目标是实现抽象条件$x^p,x^c$的视觉具体化，为了实现这一目标需要实现合理的条件注入机制。</p>
+<h3 id="pattern-injection">Pattern injection</h3>
+<p><strong>GAIN</strong>：结合了AdaIN和SPADE的优势。希望GAIN能够在$x_g$的指导下自适应的控制不同身体部位的texture uniformity 。</p>
+<p>令$\hat{h}=\in \mathbb{R}^{K\times \hat{H} \times \hat{W}}$ 表示AdaIN的输入特征，该特征被分为两个部分$k_1-th$和$k_2-th$，分别通过两组参数来控制：$\gamma[k_1],\beta[k_1]$以及$\gamma[k_2],\beta[k_2]$ 。如果这两个部分属于相同的身体部分，我们希望这两个部分有uniform textures，也就是有限制：
+$$
+(\gamma[k_1]\sim \gamma[k_2])\land (\beta[k_1]\sim\beta[k_2])
+$$
+注意到这种限制不应该影响到无关身体部位的激活值，所以一个限制应该以空间自适应的方式应用到每一个通道上。因此引入了两个空间自适应门：
+$$
+g^\gamma\in \mathbb{M}^{K \times \tilde{H} \times \tilde{W}}   \ for \ \gamma\in \mathbb{R}^K \<br>
+g^\beta\in \mathbb{M}^{K \times \tilde{H} \times \tilde{W}} \ for \ \beta\in \mathbb{R}^K
+$$
+其中$\mathbb{M}\in [0,1]$,通过“门”操作将$\gamma$，$\beta$变为：
+$$
+\bar{\gamma}\in \mathbb{R}^{K \times \tilde{H} \times \tilde{W}} \<br>
+\bar{\beta}\in \mathbb{R}^{K \times \tilde{H} \times \tilde{W}}
+$$</p>
+<p>采用SPADE来计算$g^\gamma$和$g^\beta$。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091753.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091753.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091753.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091753.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091753.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091753.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091905.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091905.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091905.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091905.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091905.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907091905.png" /></p>
+<h3 id="color-injection">Color injection</h3>
+<p>为了减轻由uniform injection 带来的”learning burdens“，我们需要准备和注入一个spatially-specific attribute condition $e^{gc}\in \mathbb{R}^{K \times H \times W}$,这可以分为两个部分：</p>
+<ul>
+<li>每一个身体部位专有属性嵌入，例如$e^c\in \mathbb{R}^{K \times N_g}$,其中$K$表示嵌入的维度，$N_g$表示身体部位的个数。</li>
+<li>geometry condition $x^g \in \mathbb{N }^{N_g\times H\times W}$ 表示身体部位和空间位置的相关性</li>
+</ul>
+<p>随后可以通过bipartie network 获取$e^{gc}$ :<br>
+$$
+e^{gc}=e^c \otimes x^g
+$$
+通过在每一阶段将$e^{g,c}$和输入的特征相叠加来惊醒color injection。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907095742.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907095742.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907095742.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907095742.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907095742.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907095742.png" /></p>
+<hr>
+<p>如何获取$e^c$ :</p>
+<ul>
+<li>
+<p>根据二进制属性内在关联将二进制颜色属性变为multi-valued attributes $x^c\in \mathbb{L}^{N_c\times N_v}$</p>
+</li>
+<li>
+<p>利用$Enc^C$ 将每一个multi-valued attributes编码为向量，$\hat{e}^c\in \mathbb{R}^{K\times N_c}$ 。</p>
+</li>
+<li>
+<p>确定身体部位和属性间的关联矩阵 $A\in \mathbb{L}^{N_g\times N_c}  $</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101318.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101318.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101318.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101318.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101318.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101318.png" /></p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101422.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101422.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101422.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101422.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101422.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200907101422.png" /></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/" data-title="MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/" data-title="MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/" data-title="MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/" data-title="MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/" data-title="MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/" data-title="MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/" data-title="MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="prev" rel="prev" title="python学习笔记"><i class="fas fa-angle-left fa-fw"></i>python学习笔记</a>
+            <a href="/kl%E6%95%A3%E5%BA%A6/" class="next" rel="next" title="KL散度">KL散度<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>ClothFlow A Folw-Based Model for Clothed Person Generation - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="ClothFlow A Folw-Based Model for Clothed Person Generation" />
+<meta property="og:description" content="该文提出了基于外观流（clothflow）的生成模型来进行姿态引导下的人物图像生成研究（以及虚拟试衣）。
+通过估计source clothing 和target clothing之间的光流，能够的建立两者之间的几何变换。
+ 共分为三个阶段:
+第一阶段： 以条件姿态为指导，来生成target person semantic layout 来对生成过程提供丰富的指导。将姿态和外观进行解耦，使得clothflow生成更加空间相关的结果。
+阶段二： 阶段二为clothflow flow 估计阶段（flow的作用是什么：用于表示原图像中的哪些像素可以被用于生成目标图像的二维坐标向量）。
+使用上一阶段得到的target person semantic layout作为输入来得到cloth flow。source cloth region之后通过cloth flow进行warping，以解决几何变形。 预测的外观流提供了视觉对应关系的准确估计，并有助于无缝转移源衣服区域以合成目标图像。
+阶段三： 生成模型以warped clothing region作为输入来对target pose进行渲染。
+ introduction 受到image-to-image translation工作的启发，一些工作直接将原图像和目标姿态作为输入，来生成目标图像。但是这些工作并没有考虑由于人体非刚性的特征引起的变形和遮挡问题，这导致了不能够生成精细的纹理细节。
+为了解决geometric deformation问题以更好的进行appearance transfer，提出了两种不同的方法：deformation-based methods and DensePose-based methods.
+deformation-based methods estimate a transformation，包括了使用affine和TPS来对source image pixel或者是feature map进行deform，以解决由于姿态变化引起的不对齐问题。尽管通过这两种几何建模方法已经取得了很大的进步，但是这种方法的自由度不够高，不能够准确的进行deform。
+DensePose-based methods能够将2Dpixel映射到3D body surface，这能够更容易的获得纹理信息。但是基于dense pose的方法生成的图像引入artifacts，例如在原图像和目标图像中有不对应的部分，生成的图像产生空洞。除此之外，基于dense pose的方法的计算量较大。
+ related work Warping-based Image Matching and Synthesis 在这篇文章中，我们的目标是将source cloth warp 成 target cloth。cloth region是非刚性的，source和target之间没有明确的对应关系。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-15T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-15T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="ClothFlow A Folw-Based Model for Clothed Person Generation"/>
+<meta name="twitter:description" content="该文提出了基于外观流（clothflow）的生成模型来进行姿态引导下的人物图像生成研究（以及虚拟试衣）。
+通过估计source clothing 和target clothing之间的光流，能够的建立两者之间的几何变换。
+ 共分为三个阶段:
+第一阶段： 以条件姿态为指导，来生成target person semantic layout 来对生成过程提供丰富的指导。将姿态和外观进行解耦，使得clothflow生成更加空间相关的结果。
+阶段二： 阶段二为clothflow flow 估计阶段（flow的作用是什么：用于表示原图像中的哪些像素可以被用于生成目标图像的二维坐标向量）。
+使用上一阶段得到的target person semantic layout作为输入来得到cloth flow。source cloth region之后通过cloth flow进行warping，以解决几何变形。 预测的外观流提供了视觉对应关系的准确估计，并有助于无缝转移源衣服区域以合成目标图像。
+阶段三： 生成模型以warped clothing region作为输入来对target pose进行渲染。
+ introduction 受到image-to-image translation工作的启发，一些工作直接将原图像和目标姿态作为输入，来生成目标图像。但是这些工作并没有考虑由于人体非刚性的特征引起的变形和遮挡问题，这导致了不能够生成精细的纹理细节。
+为了解决geometric deformation问题以更好的进行appearance transfer，提出了两种不同的方法：deformation-based methods and DensePose-based methods.
+deformation-based methods estimate a transformation，包括了使用affine和TPS来对source image pixel或者是feature map进行deform，以解决由于姿态变化引起的不对齐问题。尽管通过这两种几何建模方法已经取得了很大的进步，但是这种方法的自由度不够高，不能够准确的进行deform。
+DensePose-based methods能够将2Dpixel映射到3D body surface，这能够更容易的获得纹理信息。但是基于dense pose的方法生成的图像引入artifacts，例如在原图像和目标图像中有不对应的部分，生成的图像产生空洞。除此之外，基于dense pose的方法的计算量较大。
+ related work Warping-based Image Matching and Synthesis 在这篇文章中，我们的目标是将source cloth warp 成 target cloth。cloth region是非刚性的，source和target之间没有明确的对应关系。"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/" /><link rel="prev" href="https://shilongshen.github.io/controllable-person-image-synthesis-with-attribute-decomposed-gan/" /><link rel="next" href="https://shilongshen.github.io/arbitrary-style-transfer-in-real-time-with-adaptive-instance-normalization/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "ClothFlow A Folw-Based Model for Clothed Person Generation",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/clothflow-a-flow-based-model-for-clothed-person-generation\/"
+        },"genre": "posts","wordcount":  146 ,
+        "url": "https:\/\/shilongshen.github.io\/clothflow-a-flow-based-model-for-clothed-person-generation\/","datePublished": "2020-11-15T13:26:17+08:00","dateModified": "2020-11-15T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">ClothFlow A Folw-Based Model for Clothed Person Generation</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;146 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>
+              <ul>
+                <li>
+                  <ul>
+                    <li>
+                      <ul>
+                        <li><a href="#第一阶段">第一阶段：</a></li>
+                        <li><a href="#阶段二">阶段二：</a></li>
+                        <li><a href="#阶段三">阶段三：</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li><a href="#introduction">introduction</a></li>
+                <li><a href="#related-work">related work</a>
+                  <ul>
+                    <li>
+                      <ul>
+                        <li><a href="#warping-based-image-matching-and-synthesis">Warping-based Image Matching and Synthesis</a></li>
+                        <li><a href="#optical-flow-estimation">Optical Flow Estimation</a></li>
+                        <li><a href="#conditional-layout-generation">Conditional Layout Generation</a></li>
+                        <li><a href="#cascaded-clothing-flow-estimation">Cascaded Clothing Flow Estimation</a></li>
+                        <li><a href="#clothing-preserving-rendering">Clothing Preserving Rendering</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>该文提出了基于外观流（clothflow）的生成模型来进行姿态引导下的人物图像生成研究（以及虚拟试衣）。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708080730.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708080730.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708080730.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708080730.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708080730.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708080730.png" /></p>
+<p>通过估计source clothing 和target clothing之间的光流，能够的建立两者之间的几何变换。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708100339.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708100339.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708100339.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708100339.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708100339.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708100339.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708100429.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708100429.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708100429.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708100429.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708100429.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708100429.png" /></p>
+<hr>
+<p>共分为三个阶段:</p>
+<h6 id="第一阶段">第一阶段：</h6>
+<p>以条件姿态为指导，来生成target person semantic layout 来对生成过程提供丰富的指导。将姿态和外观进行解耦，使得clothflow生成更加空间相关的结果。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708093043.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708093043.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708093043.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708093043.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708093043.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708093043.png" /></p>
+<h6 id="阶段二">阶段二：</h6>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708081228.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708081228.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708081228.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708081228.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708081228.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708081228.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708093507.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708093507.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708093507.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708093507.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708093507.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708093507.png" /></p>
+<p>阶段二为clothflow flow 估计阶段（flow的作用是什么：<strong>用于表示原图像中的哪些像素可以被用于生成目标图像的二维坐标向量）。</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708110124.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708110124.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708110124.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708110124.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708110124.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708110124.png" /></p>
+<p>使用上一阶段得到的target person semantic layout作为输入来得到cloth flow。source cloth region之后通过cloth flow进行warping，以解决几何变形。 预测的外观流提供了视觉对应关系的准确估计，并有助于无缝转移源衣服区域以合成目标图像。</p>
+<h6 id="阶段三">阶段三：</h6>
+<p>生成模型以warped clothing region作为输入来对target pose进行渲染。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708095425.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708095425.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708095425.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708095425.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708095425.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708095425.png" /></p>
+<hr>
+<h4 id="introduction">introduction</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708081808.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708081808.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708081808.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708081808.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708081808.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708081808.png" /></p>
+<p>受到image-to-image translation工作的启发，一些工作直接将原图像和目标姿态作为输入，来生成目标图像。但是这些工作并没有考虑由于人体非刚性的特征引起的变形和遮挡问题，这导致了不能够生成精细的纹理细节。</p>
+<p>为了解决geometric deformation问题以更好的进行appearance transfer，提出了两种不同的方法：<strong>deformation-based methods</strong> and <strong>DensePose-based methods</strong>.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708083409.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708083409.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708083409.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708083409.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708083409.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708083409.png" /></p>
+<p><strong>deformation-based methods</strong> estimate a transformation，包括了使用affine和TPS来对source image pixel或者是feature map进行deform，以解决由于姿态变化引起的不对齐问题。尽管通过这两种几何建模方法已经取得了很大的进步，但是这种方法的自由度不够高，不能够准确的进行deform。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708084433.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708084433.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708084433.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708084433.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708084433.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708084433.png" /></p>
+<p><strong>DensePose-based methods</strong>能够将2Dpixel映射到3D body surface，这能够更容易的获得纹理信息。但是基于dense pose的方法生成的图像引入artifacts，例如在原图像和目标图像中有不对应的部分，生成的图像产生空洞。除此之外，基于dense pose的方法的计算量较大。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708090112.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708090112.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708090112.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708090112.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708090112.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708090112.png" /></p>
+<hr>
+<h4 id="related-work">related work</h4>
+<h6 id="warping-based-image-matching-and-synthesis">Warping-based Image Matching and Synthesis</h6>
+<p>在这篇文章中，我们的目标是将source cloth  warp 成 target cloth。cloth region是非刚性的，source和target之间没有明确的对应关系。</p>
+<h6 id="optical-flow-estimation">Optical Flow Estimation</h6>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708104606.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708104606.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708104606.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708104606.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708104606.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708104606.png" /></p>
+<p>光流法常用于视频处理中，以两个连续的视频帧作为孪生神经网络的输入，之后将第一帧的pixel或feature warp成第二帧。</p>
+<hr>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708105325.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708105325.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708105325.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708105325.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708105325.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708105325.png" /></p>
+<h6 id="conditional-layout-generation">Conditional Layout Generation</h6>
+<p>生成目标图像的语义布局图来对外观生成进行指导（限制）。
+$$
+\hat{s}<em>t=G</em>{layout}(I_s,s_s,p_t)
+$$
+$s_t,s_s$分别表示目标图像和原图像的segmentation map，$\hat{s}_t$表示生成目标图像的segmentation map。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708112528.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708112528.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708112528.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708112528.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708112528.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708112528.png" /></p>
+<blockquote>
+<p>为什么不直接用$s_t$？</p>
+</blockquote>
+<h6 id="cascaded-clothing-flow-estimation">Cascaded Clothing Flow Estimation</h6>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708154120.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708154120.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708154120.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708154120.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708154120.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708154120.png" /></p>
+<p>双金字塔结构：source feature pyramid以及target feature pyramid</p>
+<p>source feature pyramid：输入为$c_s:source \ cloth;s_s$,通过下采样得到特征${ S_1,S2,S3,S4 }$</p>
+<p>target feature pyramid：输入为$target \ seg: \ s_t$通过下采样得到特征${ T_1,T2,T3,T4 }$</p>
+<p>通过级联的方式计算clothing flow $F_1,F_2,F_3,F_4$。计算方式如下
+$$
+F_4=E_4([S_4,T_4])\<br>
+F_3=\mathcal{U}（F_4)+E_3(\ [\mathcal{W}\ (S_3,\mathcal{U}(F_4)\ ),T_3]\ )\<br>
+F_2=\mathcal{U}（F_3)+E_2(\ [\mathcal{W}\ (S_2,\mathcal{U}(F_3)\ ),T_2]\ )\<br>
+F_1=\mathcal{U}（F_2)+E_1(\ [\mathcal{W}\ (S_1,\mathcal{U}(F_2)\ ),T_1]\ )
+$$
+其中$E_N$表示卷积层，$\mathcal{U}(\ .)$表示$a \times 2$ nearest-neighbor upsampling。$\mathcal{W}(S,F)$表示根据$F$使用双线性插值将feature map $S$进行warping，这使得网络能够通过反向传播进行训练。最后利用$F_1$将source cloth $c_s$进行warping：$c_s^&quot;=\mathcal{W}\ (c_s,\mathcal{U}(F_1)\ )$。最终的目标：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708160704.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708160704.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708160704.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708160704.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708160704.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708160704.png" /></p>
+<h6 id="clothing-preserving-rendering">Clothing Preserving Rendering</h6>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708162113.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708162113.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708162113.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708162113.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708162113.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708162113.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200708163038.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200708163038.png, https://gitee.com/shilongshen/image-bad/raw/master/20200708163038.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200708163038.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200708163038.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200708163038.png" /></p>
+<blockquote>
+<p>既然有I_t了为什么得不到s_t？</p>
+</blockquote>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/" data-title="ClothFlow A Folw-Based Model for Clothed Person Generation"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/" data-title="ClothFlow A Folw-Based Model for Clothed Person Generation" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/" data-title="ClothFlow A Folw-Based Model for Clothed Person Generation"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/" data-title="ClothFlow A Folw-Based Model for Clothed Person Generation"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/" data-title="ClothFlow A Folw-Based Model for Clothed Person Generation" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/" data-title="ClothFlow A Folw-Based Model for Clothed Person Generation" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/clothflow-a-flow-based-model-for-clothed-person-generation/" data-title="ClothFlow A Folw-Based Model for Clothed Person Generation"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/controllable-person-image-synthesis-with-attribute-decomposed-gan/" class="prev" rel="prev" title="Controllable Person Image Synthesis with Attribute-Decomposed GAN"><i class="fas fa-angle-left fa-fw"></i>Controllable Person Image Synthesis with Attribute-Decomposed GAN</a>
+            <a href="/arbitrary-style-transfer-in-real-time-with-adaptive-instance-normalization/" class="next" rel="next" title="Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization">Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Towards Fine-grained Human Pose Transfer with Detail Replenishing Network - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network" />
+<meta property="og:description" content="现有的姿态引导下图像生成方法存在着三个问题：细节缺失，内容模糊以及风格不一致，这严重降低可图像的质量以及真实性。本文提出了一种细粒度姿态引导下图像生成方法，该方法更加注重于语义的完整性以及细节的补充，该方法将内容合成(local warping)和特征转移(style transfer)的概念以相互引导的方式结合在一起。并提出了一个细节补充网络（DRN）。此外还提出了一套细粒度评估方法，包括了语义分析、结构检测和感知质量评估。HPT和FHPT的比较如下图：
+A. HPT Methods 基于特征转换机制，我们可以将已有的HPT方法分为三类：global predictive methods、local warping methods 以及 hybrid methods。
+该图展示了三种方法不同。我们可以从输出的结果分析出这三种方法存在的两个缺陷：保存原图片语义和外观细节的能力以及在遮挡区域合成新的内容的能力。
+Global predictive methods 该方法将HPT视为多模态image-to-image translation问题，使用具有跳跃连接的U-net网络进行特征的前向传播。通过将提取的姿态表示与原图像叠加来将“姿态引导”引入。例如上图中（a）将原姿态$I_s$和目标姿态$I_t$进行编码并与原图像$I_s$进行叠加，直接生成具有目标姿态的图像$\bar{I_t}$。然而，由于缺乏准确的变形建模，这些工作往往不能可靠地解决[35]不同姿态之间的结构不对齐问题。通常来说，global predictive methods 会缺乏捕获相应局部特征的能力，这会导致生成图像中细节缺失，例如模糊的细节和失真,过于平滑的衣服。
+Local warping methods 该方法受到了spatial transformer networks的启发，将deformation构建在特征的前向传播中。例如DSC中使用part-wise 仿射变换，PATN中使用注意力机制来增加deformation modeling的灵活性。
+不同姿态之间的变形映射通常是通过相应有限的姿态关键点的插值实现的。假设原图像\目标图像中人体的区域为$\Omega_s$ \ $\Omega_t$.将deformation 视为一个函数：$T_{st}:\Omega_s \rightarrow \Omega_t$,将区域用关键点表示，则有$T_{st}(p_s)=p_t$.通常来说这样的映射不是唯一的，需要通过额外的正则项（blending energy）来减缓warped contents的失真。
+由于视角变化和自遮挡的情况，无法保证estimated warping 覆盖整个target human body ,也就是说$\Omega_t-T_{st}\neq \phi$.因此**local warping network很难恢复原图像中没有精确对应的underlying content，这会导致内容的模棱两可**。
+ 由于视角变化和自遮挡的情况，无法保证estimated warping 覆盖整个target human body 的理解：
+我们建立warping 最终的目的就是将原图像进行形变操作。实际是可以将目标图像看作是原图像的形变版本（由于姿态的变化）。
+建立的warping， 例如光流法，实际上就是寻找原图像和目标图像之间的关系。具体来说就是目标图像中像素点对应的是原图像的哪一个像素点，如上图中红点所示，或者更准确的说应该是：目标图像的像素点是根据原图像中的像素点采样而来的。
+但是存在的一个问题是。在pose-guided person generation 任务中，由于姿态的变化，可能会导致目标图像中的像素点在原图像中找不到对应的像素点。如上图中蓝点所示。换个说法就是无法保证estimated warping 覆盖整个target human body。这个时候生成图像中的某一些部位可能就会产生内容的模棱两可。或者说是产生hole或者说明unable to generate new contents。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-21T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-21T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network"/>
+<meta name="twitter:description" content="现有的姿态引导下图像生成方法存在着三个问题：细节缺失，内容模糊以及风格不一致，这严重降低可图像的质量以及真实性。本文提出了一种细粒度姿态引导下图像生成方法，该方法更加注重于语义的完整性以及细节的补充，该方法将内容合成(local warping)和特征转移(style transfer)的概念以相互引导的方式结合在一起。并提出了一个细节补充网络（DRN）。此外还提出了一套细粒度评估方法，包括了语义分析、结构检测和感知质量评估。HPT和FHPT的比较如下图：
+A. HPT Methods 基于特征转换机制，我们可以将已有的HPT方法分为三类：global predictive methods、local warping methods 以及 hybrid methods。
+该图展示了三种方法不同。我们可以从输出的结果分析出这三种方法存在的两个缺陷：保存原图片语义和外观细节的能力以及在遮挡区域合成新的内容的能力。
+Global predictive methods 该方法将HPT视为多模态image-to-image translation问题，使用具有跳跃连接的U-net网络进行特征的前向传播。通过将提取的姿态表示与原图像叠加来将“姿态引导”引入。例如上图中（a）将原姿态$I_s$和目标姿态$I_t$进行编码并与原图像$I_s$进行叠加，直接生成具有目标姿态的图像$\bar{I_t}$。然而，由于缺乏准确的变形建模，这些工作往往不能可靠地解决[35]不同姿态之间的结构不对齐问题。通常来说，global predictive methods 会缺乏捕获相应局部特征的能力，这会导致生成图像中细节缺失，例如模糊的细节和失真,过于平滑的衣服。
+Local warping methods 该方法受到了spatial transformer networks的启发，将deformation构建在特征的前向传播中。例如DSC中使用part-wise 仿射变换，PATN中使用注意力机制来增加deformation modeling的灵活性。
+不同姿态之间的变形映射通常是通过相应有限的姿态关键点的插值实现的。假设原图像\目标图像中人体的区域为$\Omega_s$ \ $\Omega_t$.将deformation 视为一个函数：$T_{st}:\Omega_s \rightarrow \Omega_t$,将区域用关键点表示，则有$T_{st}(p_s)=p_t$.通常来说这样的映射不是唯一的，需要通过额外的正则项（blending energy）来减缓warped contents的失真。
+由于视角变化和自遮挡的情况，无法保证estimated warping 覆盖整个target human body ,也就是说$\Omega_t-T_{st}\neq \phi$.因此**local warping network很难恢复原图像中没有精确对应的underlying content，这会导致内容的模棱两可**。
+ 由于视角变化和自遮挡的情况，无法保证estimated warping 覆盖整个target human body 的理解：
+我们建立warping 最终的目的就是将原图像进行形变操作。实际是可以将目标图像看作是原图像的形变版本（由于姿态的变化）。
+建立的warping， 例如光流法，实际上就是寻找原图像和目标图像之间的关系。具体来说就是目标图像中像素点对应的是原图像的哪一个像素点，如上图中红点所示，或者更准确的说应该是：目标图像的像素点是根据原图像中的像素点采样而来的。
+但是存在的一个问题是。在pose-guided person generation 任务中，由于姿态的变化，可能会导致目标图像中的像素点在原图像中找不到对应的像素点。如上图中蓝点所示。换个说法就是无法保证estimated warping 覆盖整个target human body。这个时候生成图像中的某一些部位可能就会产生内容的模棱两可。或者说是产生hole或者说明unable to generate new contents。"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" /><link rel="prev" href="https://shilongshen.github.io/%E5%8C%BF%E5%90%8D%E5%86%85%E9%83%A8%E7%B1%BB/" /><link rel="next" href="https://shilongshen.github.io/mysql/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Towards Fine-grained Human Pose Transfer with Detail Replenishing Network",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network\/"
+        },"genre": "posts","wordcount":  265 ,
+        "url": "https:\/\/shilongshen.github.io\/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network\/","datePublished": "2020-11-21T13:26:17+08:00","dateModified": "2020-11-21T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Towards Fine-grained Human Pose Transfer with Detail Replenishing Network</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-21">2020-11-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;265 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#a-hpt-methods">A. HPT Methods</a>
+              <ul>
+                <li><a href="#global-predictive-methods">Global predictive methods</a></li>
+                <li><a href="#local-warping--methods">Local warping  methods</a></li>
+                <li><a href="#hybrid-methods">Hybrid methods</a></li>
+              </ul>
+            </li>
+            <li><a href="#c-fhpt-network">C. FHPT Network</a>
+              <ul>
+                <li><a href="#pose-represention">pose represention</a></li>
+                <li><a href="#pose-transfer-branch">pose transfer branch</a></li>
+                <li><a href="#detail-replenishing-branch">detail replenishing branch</a></li>
+                <li><a href="#detail-replenishing-module">detail replenishing module</a></li>
+                <li><a href="#loss-function">loss function</a></li>
+                <li><a href="#optimization">optimization</a></li>
+              </ul>
+            </li>
+            <li><a href="#d-experiments">D. Experiments</a>
+              <ul>
+                <li><a href="#a-ablation-study">A. Ablation Study</a></li>
+                <li><a href="#b-comparisons-with-previous-works">B. Comparisons with Previous Works</a>
+                  <ul>
+                    <li><a href="#qualitative-comparison">Qualitative Comparison</a></li>
+                    <li><a href="#perceptual-evaluation">Perceptual Evaluation</a></li>
+                    <li><a href="#structural-evaluation">Structural Evaluation</a></li>
+                    <li><a href="#semantic-evaluation">Semantic Evaluation</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>现有的姿态引导下图像生成方法存在着三个问题：细节缺失，内容模糊以及风格不一致，这严重降低可图像的质量以及真实性。本文提出了一种<strong>细粒度</strong>姿态引导下图像生成方法，该方法更加注重于语义的完整性以及细节的补充，该方法将<strong>内容合成(local warping)和特征转移(style transfer)的概念以相互引导的方式结合在一起</strong>。并提出了一个细节补充网络（DRN）。此外还提出了一套细粒度评估方法，包括了语义分析、结构检测和感知质量评估。HPT和FHPT的比较如下图：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200613111643.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200613111643.png, https://gitee.com/shilongshen/image-bad/raw/master/20200613111643.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200613111643.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200613111643.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200613111643.png" /></p>
+<h3 id="a-hpt-methods">A. HPT Methods</h3>
+<p>基于特征转换机制，我们可以将已有的HPT方法分为三类：global predictive methods、local warping methods 以及 hybrid methods。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/image/20200610075036.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/image/20200610075036.png, https://gitee.com/shilongshen/image-bad/raw/master/image/20200610075036.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/image/20200610075036.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/image/20200610075036.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/image/20200610075036.png" /></p>
+<p>该图展示了三种方法不同。我们可以从输出的结果分析出这三种方法存在的两个缺陷：保存原图片语义和外观细节的能力以及在遮挡区域合成新的内容的能力。</p>
+<h4 id="global-predictive-methods">Global predictive methods</h4>
+<p>该方法将HPT视为多模态image-to-image translation问题，使用具有跳跃连接的U-net网络进行特征的前向传播。通过将提取的姿态表示与原图像叠加来将“姿态引导”引入。例如上图中（a）将原姿态$I_s$和目标姿态$I_t$进行编码并与原图像$I_s$进行叠加，直接生成具有目标姿态的图像$\bar{I_t}$。然而，由于缺乏准确的变形建模，这些工作往往不能可靠地解决[35]不同姿态之间的结构不对齐问题。通常来说，<strong>global predictive methods 会缺乏捕获相应局部特征的能力</strong>，这会导致生成图像中细节缺失，例如模糊的细节和失真,过于平滑的衣服。</p>
+<h4 id="local-warping--methods">Local warping  methods</h4>
+<p>该方法受到了spatial transformer networks的启发，将deformation构建在特征的前向传播中。例如<a href="" rel="">DSC</a>中使用part-wise 仿射变换，<a href="" rel="">PATN</a>中使用注意力机制来增加deformation modeling的灵活性。</p>
+<p>不同姿态之间的变形映射通常是通过相应有限的姿态关键点的插值实现的。假设原图像\目标图像中人体的区域为$\Omega_s$ \ $\Omega_t$.将deformation 视为一个函数：$T_{st}:\Omega_s \rightarrow \Omega_t$,将区域用关键点表示，则有$T_{st}(p_s)=p_t$.通常来说这样的映射不是唯一的，需要通过额外的正则项（blending energy）来减缓warped contents的失真。</p>
+<p>由于视角变化和自遮挡的情况，无法保证estimated warping 覆盖整个target human body ,也就是说$\Omega_t-T_{st}\neq \phi$.因此**local warping network很难恢复原图像中没有精确对应的underlying content，这会导致内容的模棱两可**。</p>
+<hr>
+<p><code>由于视角变化和自遮挡的情况，无法保证estimated warping 覆盖整个target human body </code>的理解：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201121101914.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201121101914.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201121101914.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201121101914.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201121101914.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201121101914.png" /></p>
+<p>我们建立warping 最终的目的就是将原图像进行形变操作。实际是可以将目标图像看作是原图像的形变版本（由于姿态的变化）。</p>
+<p>建立的warping， 例如光流法，实际上就是寻找原图像和目标图像之间的关系。具体来说就是目标图像中像素点对应的是原图像的哪一个像素点，如上图中红点所示，或者更准确的说应该是：目标图像的像素点是根据原图像中的像素点采样而来的。</p>
+<p>但是存在的一个问题是。在pose-guided person generation 任务中，由于姿态的变化，可能会导致目标图像中的像素点在原图像中找不到对应的像素点。如上图中蓝点所示。换个说法就是<code>无法保证estimated warping 覆盖整个target human body</code>。这个时候生成图像中的某一些部位可能就会产生<code>内容的模棱两可</code>。或者说是产生<code>hole</code>或者说明<code>unable to generate new contents</code>。</p>
+<p><a href="openaccess.thecvf.com/content_CVPR_2020/papers/Ren_Deep_Image_Spatial_Transformation_for_Person_Image_Generation_CVPR_2020_paper.pdf" rel="">论文</a>中的描述：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201121104603.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201121104603.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201121104603.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201121104603.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201121104603.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201121104603.png" /></p>
+<hr>
+<h4 id="hybrid-methods">Hybrid methods</h4>
+<p>利用另一个global predictive branch在uncovered rigions来生成（hallucinate）新的内容，最后再将global和local生成结果进行结合（包含global branch和local branch）according to an estimated composition mask。这种方法常用于视频帧预测框架中。然而现有的hybrid methods通常将image-level的生成结果进行结合，intermediate-level 的特征是很少被研究的。通常来说，global branch和local branch通常是分离的。这会导致hallucinated和warped contents之间的style inconsistency。</p>
+<h3 id="c-fhpt-network">C. FHPT Network</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200613110130.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200613110130.png, https://gitee.com/shilongshen/image-bad/raw/master/20200613110130.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200613110130.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200613110130.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200613110130.png" /></p>
+<p>该文提出的FHPT与其他方法的对比如上图.</p>
+<p>FHPT存在的根本问题是保存和补充细粒度语义和外观特征，这一问题之前是采用两种方法来解决的。其中一种是基于high-level 语义指导、用global predictive method来生成new contents。另一种方法是利用warping flow或注意力机制，将原图像的low-level特征进行local warping。而 hybrid methods则将两种方法进行了整合，但是由于该方法生成的图像会存在style inconsistency。针对以上问题，该问题提出了available image content的转换和new content的生成应该以一种相互指导的方式来共同保证style consistency和生成图像的逼真的细节。</p>
+<p>该文提出了Detail Replenishing Network (DRN)来验证FHPT方法的有效性：1)detail replenishing module来使得style consistency。2）intermediate feature module pathway来促进相互指导。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200612212456.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200612212456.png, https://gitee.com/shilongshen/image-bad/raw/master/20200612212456.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200612212456.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200612212456.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200612212456.png" /></p>
+<p>DRN包含两个branch：pose transfer branch和detail replenishing branch。</p>
+<h4 id="pose-represention">pose represention</h4>
+<p>提取原图像$I_S$的姿态$P_s$和目标图像$I_t$的姿态$P_t$。提取原图像的面部图像$B$,以及目标图像的面部姿态$H_F$。</p>
+<h4 id="pose-transfer-branch">pose transfer branch</h4>
+<p>$$
+\hat{I_c}=G_p(I_s.P_s.P_t)
+$$</p>
+<p>其中$I_c$为粗糙的图像。这里的生成器采用了<a href="" rel="">PATN</a>的级联模块。feature map $F_t$被用于detail replenishing module的spatial guidance。transfer branch应该提供有用的引导“where to add what kind  of details&rdquo;.</p>
+<h4 id="detail-replenishing-branch">detail replenishing branch</h4>
+<p>detail replenishing branch包含几个detail replenishing module（DRM),具体来说，使用了两种类型的DRM来分别修正整张图片和面部图片。global module通过$F_t$和$I_s$来生成residual map$R_t$,并将其添加到$\hat{I_c}$.regional module通过面部图片$I_F$和目标面部姿态$H_F$来生成目标面部图片$\hat{I}<em>F$，通过这种方式能够生成更加逼真的面部图片。为了将两个module的输出进行结合，采用了具有高斯混合权重掩模的alpha blending。$M_F=g(\sigma)*1</em>{BF}$,*表示卷积操作，$g(\sigma)$表示离散2D卷积核，$1_{BF}$表示指示函数，当相应的pixel属于$B_F$时等于1，否则等于0.
+$$
+\hat{I}_t=(1-M_F)(\hat{I}_c+R_t)+M_F\hat{I}_F
+$$</p>
+<h4 id="detail-replenishing-module">detail replenishing module</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200613085221.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200613085221.png, https://gitee.com/shilongshen/image-bad/raw/master/20200613085221.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200613085221.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200613085221.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200613085221.png" /></p>
+<p>利用残差下采样卷积块对原图片$I_s$的appearance and style information进行提取，为了获得更加鲁棒性的表示，采用了adaptive average pooling将encoderd feature 转换为style code $z_s$,并使用3-layer FC,通过style code，来计算AdaIN的参数，假设第i层的参数为$s^i=(s_w^i,s_b^i)$,则AdaIN的计算为
+$$
+AdaIN(F_t^i,s^i)=s_w^i\frac{F_t^i-\mu_t^i}{\sigma_t^i}+s_b^i
+$$</p>
+<p>使用AdaIN将style information整合入相应的姿态信息中。注意到$z_s$在这里起到了style-guild的作用，其控制不同区域的合成细节。(从风格迁移的角度来看，此处将中间特征作为了content)</p>
+<h4 id="loss-function">loss function</h4>
+<p>$$
+\mathcal{L}<em>1=\lambda</em>{recon}\mathcal{L}<em>{recon}+\lambda</em>{per}\mathcal{L}_{per}
+$$</p>
+<p>其中$\mathcal{L}<em>{recon}$为L1损失，$\mathcal{L}</em>{per}$ 为感知损失。
+$$
+\mathcal{L}<em>2=\lambda</em>{recon}\mathcal{L}<em>{recon}+\lambda</em>{per}\mathcal{L}<em>{per}+\lambda</em>{sty}\mathcal{L}<em>{sty}+\lambda</em>{GAN}\mathcal{L}<em>{GAN}
+$$
+其中$\mathcal{L}</em>{sty}$为Gram-matrix based style loss。</p>
+<p>$\mathcal{L}<em>{GAN}$使用了两个判别器$D_A$和$D_S$来分别判别外观和姿态。
+$$
+\mathcal{L}</em>{GAN}=\mathbb{E}[\log (D_A(I_s,\hat{I}_t))]+\mathbb{E}[\log (1-D_A(I_s,{I}_t))]+\mathbb{E}[\log (D_S(P_t,\hat{I}_t))]+\mathbb{E}[\log (1-D_S(P_t,{I}_t))]
+$$</p>
+<h4 id="optimization">optimization</h4>
+<p>首先使用$\mathcal{L}_1$对pose branch进行更新，以生成$\hat{I}_c$以及$F_t$，其中$F_t$与target pose 大致对齐。</p>
+<p>之后进行细粒度挖掘。使用$\mathcal{L}_2$对detail replenishing branch进行更新，以生成$\hat{I}_t$.注意这一过程中pose branch也通过$F_t$进行更新。</p>
+<p>最后判别器更新3次。（生成器更新1次，判别器更新3次）</p>
+<h3 id="d-experiments">D. Experiments</h3>
+<h4 id="a-ablation-study">A. Ablation Study</h4>
+<h4 id="b-comparisons-with-previous-works">B. Comparisons with Previous Works</h4>
+<h5 id="qualitative-comparison">Qualitative Comparison</h5>
+<p>定性实验评价</p>
+<h5 id="perceptual-evaluation">Perceptual Evaluation</h5>
+<p>定量实验评价，评价指标：IS，SSIM，FID，LPIPS</p>
+<p>这评价的是整个生成</p>
+<h5 id="structural-evaluation">Structural Evaluation</h5>
+<p>评价的 是各个身体部位的生成质量</p>
+<h5 id="semantic-evaluation">Semantic Evaluation</h5>
+<p>For retrieval, we utilize generated images to query from the database of all corresponding source images, and calculate the retrieval scores using ground truth annotations provided in [24]. Specifically,</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-21</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" data-title="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" data-title="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" data-title="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" data-title="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" data-title="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" data-title="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" data-title="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E5%8C%BF%E5%90%8D%E5%86%85%E9%83%A8%E7%B1%BB/" class="prev" rel="prev" title="匿名内部类"><i class="fas fa-angle-left fa-fw"></i>匿名内部类</a>
+            <a href="/mysql/" class="next" rel="next" title="MySQL">MySQL<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

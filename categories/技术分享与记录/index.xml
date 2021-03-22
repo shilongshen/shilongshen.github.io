@@ -1,0 +1,33 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>技术分享与记录 - Category - 我的个人博客</title>
+        <link>https://shilongshen.github.io/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/</link>
+        <description>技术分享与记录 - Category - 我的个人博客</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 25 Dec 2020 13:27:05 &#43;0800</lastBuildDate><atom:link href="https://shilongshen.github.io/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/" rel="self" type="application/rss+xml" /><item>
+    <title>给不同版本Pytorch指定特定CUDA版本</title>
+    <link>https://shilongshen.github.io/ubuntu-%E7%BB%99%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACpytorch%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9Acuda%E7%89%88%E6%9C%AC/</link>
+    <pubDate>Fri, 25 Dec 2020 13:27:05 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://shilongshen.github.io/ubuntu-%E7%BB%99%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACpytorch%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9Acuda%E7%89%88%E6%9C%AC/</guid>
+    <description><![CDATA[参考
+在服务器上安装不同版本的pytorch
+先创建一个虚拟环境
+1  conda create -n pytorch1.0 python=3.7   切换到该虚拟环境(这样就不会影响原有的环境了)
+1  conda activate pytorch1.0   方法一：
+1  conda install pytorch=1.0.0 torchvision -c pytorch   这样就会安装
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41  Collecting package metadata (current_repodata.]]></description>
+</item><item>
+    <title>基于hugo的个人博客搭建</title>
+    <link>https://shilongshen.github.io/%E5%9F%BA%E4%BA%8Ehugo%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
+    <pubDate>Sun, 15 Nov 2020 13:27:05 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://shilongshen.github.io/%E5%9F%BA%E4%BA%8Ehugo%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
+    <description><![CDATA[本文是基于ubuntu16.04进行搭建 下载安装hugo 1 2  下载地址：https://github.com/gohugoio/hugo/releases/download/v0.56.0/hugo_0.56.0_Linux-64bit.deb 安装：sudo dpkg -i hugo_0.56.0_Linux-64bit.deb   注意如果直接使用
+1  sudo apt install hugo   进行安装，安装的版本可能过低，导致一些主题不能够使用。要尽可能下载新版本！
+安装完成后可以使用
+1  hugo version   来检查是否安装成功。
+生成站点 1  hugo new site /path   /path站点表示路径，我这里设为了‘myblog’ , myblog中的结构
+ archetypes config.toml content data layouts static themes  创建文章 1  hugo new post/about.md   这是会在content/post文件夹下生成一个about.md文件
+安装皮肤 1 2  cd theme git clone https://github.com/vaga/hugo-theme-m10c.git   hugo提供的皮肤可以在这里找到]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On" />
+<meta property="og:description" content="two-stage spatial-transformer - to capture fine details in the geometric iwarping stage conditional segmentation mask generation module - to prevent garment textures from bleeding onto skin and other areas. perceptual geometric matching loss - to impove warping output duelling triplet loss strategy - to improve output from the translation network  inputs   $I_P$ : try-on cloth image
+  $I_{priors}$ : 19 channel pose and body-shape map" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-15T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-15T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On"/>
+<meta name="twitter:description" content="two-stage spatial-transformer - to capture fine details in the geometric iwarping stage conditional segmentation mask generation module - to prevent garment textures from bleeding onto skin and other areas. perceptual geometric matching loss - to impove warping output duelling triplet loss strategy - to improve output from the translation network  inputs   $I_P$ : try-on cloth image
+  $I_{priors}$ : 19 channel pose and body-shape map"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/" /><link rel="prev" href="https://shilongshen.github.io/soft-gatedwarping-gan-for-pose-guided-person-image-synthesis/" /><link rel="next" href="https://shilongshen.github.io/semantic-image-synthesis-with-spatially-adaptive-normalization/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on\/"
+        },"genre": "posts","wordcount":  277 ,
+        "url": "https:\/\/shilongshen.github.io\/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on\/","datePublished": "2020-11-15T13:26:17+08:00","dateModified": "2020-11-15T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;277 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#inputs">inputs</a></li>
+        <li><a href="#coarse2fine-warping">Coarse2Fine Warping</a>
+          <ul>
+            <li><a href="#tackling-occlusion-and-pose-variation">Tackling Occlusion and Pose-variation</a></li>
+            <li><a href="#perceptual-geometric-matching-loss">Perceptual Geometric Matching Loss</a></li>
+          </ul>
+        </li>
+        <li><a href="#texture-transfer">Texture Transfer</a>
+          <ul>
+            <li><a href="#conditional-segmentation-mask-prediction">Conditional Segmentation Mask Prediction</a></li>
+            <li><a href="#segmentation-assisted-texture-translation">Segmentation Assisted Texture Translation</a></li>
+            <li><a href="#duelling-triplet-loss-strategy">Duelling Triplet Loss Strategy</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161443.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161443.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161443.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161443.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161443.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161443.png" /></p>
+<hr>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161830.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161830.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161830.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161830.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161830.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161830.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161945.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161945.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161945.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161945.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161945.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200914161945.png" /></p>
+<ul>
+<li>two-stage spatial-transformer  - to capture fine details in the geometric iwarping stage</li>
+<li>conditional segmentation mask generation module - to prevent garment textures from bleeding onto skin and other areas.</li>
+<li>perceptual geometric matching loss - to impove warping output</li>
+<li>duelling triplet loss strategy - to improve output from the translation network</li>
+</ul>
+<h2 id="inputs">inputs</h2>
+<ul>
+<li>
+<p>$I_P$ : try-on cloth image</p>
+</li>
+<li>
+<p>$I_{priors}$ : 19 channel pose and body-shape map</p>
+</li>
+<li>
+<p>$I_m$ : target model image</p>
+</li>
+</ul>
+<h2 id="coarse2fine-warping">Coarse2Fine Warping</h2>
+<p>目标：将$I_p$进行warp操作，与$I_m$的姿态和形状进行对齐。</p>
+<p>基于STN进行warp操作</p>
+<h3 id="tackling-occlusion-and-pose-variation">Tackling Occlusion and Pose-variation</h3>
+<p>作者认为若要进行准确的warping 操作需要考虑一下两点：</p>
+<ol>
+<li>Large variations in shape or pose between the try-
+on cloth image and the corresponding regions in the
+model image.</li>
+<li>Occlusions in the model image. For example, the long
+hair of a person may occlude part of the garment near
+the top.</li>
+</ol>
+<p><strong>基于STN进行warp操作</strong>:</p>
+<p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915111247.png" style="zoom:200%;" /></p>
+<p>第一阶段（Coarse）以$I_p$和$I_{priors}$作为输入，产生的参数$\theta$,对$I_p$进行warp操作，产生$I_{stn}^0$</p>
+<p>第二阶段（fine）以$I_{stn}^0$和$I_{priors}$作为输入，产生参数$\Delta \theta$，以$\theta+\Delta\theta$对$I_p$进行warp操作，产生$I_{stn}^1$</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915112059.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915112059.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915112059.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915112059.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915112059.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915112059.png" /></p>
+<hr>
+<h3 id="perceptual-geometric-matching-loss">Perceptual Geometric Matching Loss</h3>
+<p>$$
+L_{warp}=\lambda_1L_s^0+\lambda_2L_s^1+\lambda_3L_{pgm}
+$$</p>
+<p>其中：
+$$
+L_S^0=|  I_{gt}-I_{stn}^0 |  \<br>
+L_S^1=|  I_{gt}-I_{stn}^1 |
+$$</p>
+<p>$$
+L_{pgm}=\lambda_4L_{push}+\lambda_5L_{align}
+$$</p>
+<p>又
+$$
+L_{push}=k*L_s^1-| I_{stn}^1-I_{stn}^0 |
+$$
+这是为了确保$I_{stn}^1$比$I_{stn}^0$更加接近$I_{gt}$,$I_{gt}$表示目标服装。
+$$
+V^0=VGG(I_{stn}^0)-VGG(I_{gt})\<br>
+V^1=VGG(I_{stn}^1)-VGG(I_{gt})\<br>
+\<br>
+L_{align}=(CosineSimilarity(V^0,V^1)-1)^2
+$$
+实际上是采用了余弦距离进行度量，目的是保证向量$V^0$和$V^1$更加的接近。同时最小化$L_{align}$能够促进最小化$L_{push}$。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915144448.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915144448.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915144448.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915144448.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915144448.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915144448.png" /></p>
+<h2 id="texture-transfer">Texture Transfer</h2>
+<h3 id="conditional-segmentation-mask-prediction">Conditional Segmentation Mask Prediction</h3>
+<p>现有方法的关键问题是不能够准确的遵守clothing product 和skin的界限。会出现clothing product pixels<strong>渗色</strong>到skin pixel，或者是skin pixel渗色到clothing product pixels。在自遮挡的情况下，skin pixels可能会被完全的替代掉。当try-on image和clothing in the model image上的形状不一致时，这种情况尤为严重。同时当target model有复杂的姿势时也会这种情况。</p>
+<p>输入为$I_{priors}$、$I_p$</p>
+<p>输出为$M_{exp}$ &ndash;&gt;  “expected ” segmentation mask.target model is wearing the try-on cloth.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915151111.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915151111.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915151111.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915151111.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915151111.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915151111.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915153725.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915153725.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915153725.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915153725.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915153725.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915153725.png" /></p>
+<p>注意损失函数的使用。</p>
+<p>损失函数为加权交叉熵损失函数。在skin和background处增加了权重。在skin处增加权重能够更好的解决自遮挡问题。在background处增加权重能够阻止skin pixels渗色到background。</p>
+<h3 id="segmentation-assisted-texture-translation">Segmentation Assisted Texture Translation</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915163822.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915163822.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915163822.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915163822.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915163822.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915163822.png" /></p>
+<p>输入为：</p>
+<ul>
+<li>The warped product image $I_{stn}^1$</li>
+<li>The expected seg. mask $M_{exp}$</li>
+<li>Pixels of $I_m$ for the unaffected regions, (Texture Trans-
+lation Priors in Figure 3). E.g. face and bottom cloth,
+if a top garment is being tried-on.</li>
+</ul>
+<p>输出：</p>
+<ul>
+<li>an RGB rendered person image $I_{rp}$</li>
+<li>a composition mask $M_{cm}$  -&gt;</li>
+</ul>
+<p>最终的try-on image:
+$$
+I_{try-on}=M_{cm}*I_{stn}^1+(1-M_{cm})*I_{rp}
+$$
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915155651.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915155651.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915155651.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915155651.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915155651.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915155651.png" /></p>
+<p>损失函数：
+$$
+L_{tt}=L_{l1}+L_{percep}+L_{mask}\<br>
+L_{l1}=| I_{try-on}-I_m |\<br>
+L_{percep}=| VGG(I_{try-on})-VGG(I_m) |\<br>
+L_{mask}=| M_{cm}-M_{gt}^{cloth} |
+$$
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915160116.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915160116.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915160116.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915160116.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915160116.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915160116.png" /></p>
+<p>注意此处的训练策略：</p>
+<p>前K步使用$L_{tt}$进行训练，得到一个较为合理的结果。</p>
+<p>之后再用$L_{tt}$加上triplet loss进行细粒度挖掘。</p>
+<h3 id="duelling-triplet-loss-strategy">Duelling Triplet Loss Strategy</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915162501.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915162501.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915162501.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20200915162501.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915162501.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20200915162501.png" /></p>
+<p>其中$I_{try-on}^{i_{prev}}$表示上一步的输出，其作为negative</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/" data-title="SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/" data-title="SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/" data-title="SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/" data-title="SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/" data-title="SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/" data-title="SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/" data-title="SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/soft-gatedwarping-gan-for-pose-guided-person-image-synthesis/" class="prev" rel="prev" title="Soft-GatedWarping-GAN for Pose-Guided Person Image Synthesis"><i class="fas fa-angle-left fa-fw"></i>Soft-GatedWarping-GAN for Pose-Guided Person Image Synthesis</a>
+            <a href="/semantic-image-synthesis-with-spatially-adaptive-normalization/" class="next" rel="next" title="Semantic Image Synthesis with Spatially-Adaptive Normalization">Semantic Image Synthesis with Spatially-Adaptive Normalization<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

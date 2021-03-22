@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>回溯算法 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="回溯算法" />
+<meta property="og:description" content="参考
+ 「回溯算法」与「深度优先遍历」都有「不撞南墙不回头」的意思。我个人的理解是：「回溯算法」强调了「深度优先遍历」思想的用途，用一个 不断变化 的变量，在尝试各种可能的过程中，搜索需要的结果。强调了 回退 操作对于搜索的合理性。
+ 递归之后需要做和递归之前相同的逆向操作   问题1 给定一个 没有重复 数字的序列，返回其所有可能的全排列。
+我们尝试在纸上写 333 个数字、444 个数字、555 个数字的全排列，相信不难找到这样的方法。以数组 [1, 2, 3] 的全排列为例。
+先写以 111 开头的全排列，它们是：[1, 2, 3], [1, 3, 2]，即 1 &#43; [2, 3] 的全排列（注意：递归结构体现在这里）； 再写以 222 开头的全排列，它们是：[2, 1, 3], [2, 3, 1]，即 2 &#43; [1, 3] 的全排列； 最后写以 333 开头的全排列，它们是：[3, 1, 2], [3, 2, 1]，即 3 &#43; [1, 2] 的全排列。  总结搜索的方法：按顺序枚举每一位可能出现的情况，已经选择的数字在 当前 要选择的数字中不能出现。按照这种策略搜索就能够做到 不重不漏。这样的思路，可以用一个树形结构表示。
+  每一个结点表示了求解全排列问题的不同的阶段，这些阶段通过变量的「不同的值」体现，这些变量的不同的值，称之为「状态」； 使用深度优先遍历有「回头」的过程，在「回头」以后， 状态变量需要设置成为和先前一样 ，因此在回到上一层结点的过程中，需要撤销上一次的选择，这个操作称之为「状态重置」；" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2021-02-04T09:17:30+08:00" />
+<meta property="article:modified_time" content="2021-02-04T09:17:30+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="回溯算法"/>
+<meta name="twitter:description" content="参考
+ 「回溯算法」与「深度优先遍历」都有「不撞南墙不回头」的意思。我个人的理解是：「回溯算法」强调了「深度优先遍历」思想的用途，用一个 不断变化 的变量，在尝试各种可能的过程中，搜索需要的结果。强调了 回退 操作对于搜索的合理性。
+ 递归之后需要做和递归之前相同的逆向操作   问题1 给定一个 没有重复 数字的序列，返回其所有可能的全排列。
+我们尝试在纸上写 333 个数字、444 个数字、555 个数字的全排列，相信不难找到这样的方法。以数组 [1, 2, 3] 的全排列为例。
+先写以 111 开头的全排列，它们是：[1, 2, 3], [1, 3, 2]，即 1 &#43; [2, 3] 的全排列（注意：递归结构体现在这里）； 再写以 222 开头的全排列，它们是：[2, 1, 3], [2, 3, 1]，即 2 &#43; [1, 3] 的全排列； 最后写以 333 开头的全排列，它们是：[3, 1, 2], [3, 2, 1]，即 3 &#43; [1, 2] 的全排列。  总结搜索的方法：按顺序枚举每一位可能出现的情况，已经选择的数字在 当前 要选择的数字中不能出现。按照这种策略搜索就能够做到 不重不漏。这样的思路，可以用一个树形结构表示。
+  每一个结点表示了求解全排列问题的不同的阶段，这些阶段通过变量的「不同的值」体现，这些变量的不同的值，称之为「状态」； 使用深度优先遍历有「回头」的过程，在「回头」以后， 状态变量需要设置成为和先前一样 ，因此在回到上一层结点的过程中，需要撤销上一次的选择，这个操作称之为「状态重置」；"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" /><link rel="prev" href="https://shilongshen.github.io/redis/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "回溯算法",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95\/"
+        },"genre": "posts","wordcount":  503 ,
+        "url": "https:\/\/shilongshen.github.io\/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95\/","datePublished": "2021-02-04T09:17:30+08:00","dateModified": "2021-02-04T09:17:30+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">回溯算法</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>算法</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-02-04">2021-02-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;503 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#问题1httpsleetcode-cncomproblemspermutations">问题1</a></li>
+    <li><a href="#问题2httpsleetcode-cncomproblemspermutations-ii">问题2</a></li>
+    <li><a href="#问题3httpsleetcode-cncomproblemser-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof">问题3</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p><a href="https://leetcode-cn.com/problems/permutations/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liweiw/" target="_blank" rel="noopener noreffer">参考</a></p>
+<blockquote>
+<p>「回溯算法」与「深度优先遍历」都有「不撞南墙不回头」的意思。我个人的理解是：「回溯算法」强调了「深度优先遍历」思想的用途，用一个 <strong>不断变化</strong> 的变量，在尝试各种可能的过程中，搜索需要的结果。强调了 回退 操作对于搜索的合理性。</p>
+<ul>
+<li><strong>递归之后需要做和递归之前相同的逆向操作</strong></li>
+</ul>
+</blockquote>
+<h1 id="问题1httpsleetcode-cncomproblemspermutations"><a href="https://leetcode-cn.com/problems/permutations/" target="_blank" rel="noopener noreffer">问题1</a></h1>
+<p>给定一个 <strong>没有重复</strong> 数字的序列，返回其所有可能的全排列。</p>
+<p>我们尝试在纸上写 333 个数字、444 个数字、555 个数字的全排列，相信不难找到这样的方法。以数组 [1, 2, 3] 的全排列为例。</p>
+<pre><code>先写以 111 开头的全排列，它们是：[1, 2, 3], [1, 3, 2]，即 1 + [2, 3] 的全排列（注意：递归结构体现在这里）；
+再写以 222 开头的全排列，它们是：[2, 1, 3], [2, 3, 1]，即 2 + [1, 3] 的全排列；
+最后写以 333 开头的全排列，它们是：[3, 1, 2], [3, 2, 1]，即 3 + [1, 2] 的全排列。
+</code></pre>
+<p>总结搜索的方法：按顺序枚举每一位可能出现的情况，已经选择的数字在 当前 要选择的数字中不能出现。按照这种策略搜索就能够做到 不重不漏。这样的思路，可以用一个树形结构表示。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114093647.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114093647.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210114093647.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210114093647.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114093647.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114093647.png" /></p>
+<ul>
+<li>
+<p>每一个结点表示了求解全排列问题的不同的阶段，这些阶段通过<strong>变量</strong>的「不同的值」体现，这些变量的不同的值，称之为「状态」；
+使用深度优先遍历有「回头」的过程，在「回头」以后， 状态变量需要设置成为和先前一样 ，因此在回到上一层结点的过程中，需要撤销上一次的选择，这个操作称之为「状态重置」；</p>
+</li>
+<li>
+<p>深度优先遍历，借助系统栈空间，保存所需要的状态变量，在编码中只需要注意遍历到相应的结点的时候，状态变量的值是正确的，具体的做法是：<u>往下走一层的时候，path 变量在尾部追加，而往回走的时候，需要撤销上一次的选择，也是在尾部操作，因此 path 变量是一个栈；</u></p>
+</li>
+<li>
+<p>深度优先遍历通过「回溯」操作，实现了<strong>全局使用一份状态变量的效果</strong>。</p>
+</li>
+</ul>
+<p><strong>设计状态变量</strong>(重要，必须明确状态变量)</p>
+<pre><code>首先这棵树除了根结点和叶子结点以外，每一个结点做的事情其实是一样的，即：在已经选择了一些数的前提下，在剩下的还没有选择的数中，依次选择一个数，这显然是一个 递归 结构；
+
+递归的终止条件是： 一个排列中的数字已经选够了 ，因此我们需要一个变量来表示当前程序递归到第几层，我们把这个变量叫做 depth，或者命名为 index ，表示当前要确定的是某个全排列中下标为 index 的那个数是多少；
+
+布尔数组 used，初始化的时候都为 false 表示这些数还没有被选择，当我们选定一个数的时候，就将这个数组的相应位置设置为 true ，这样在考虑下一个位置的时候，就能够以 O(1)的时间复杂度判断这个数是否被选择过，这是一种「以空间换时间」的思想。
+</code></pre>
+<p>这些变量称为「状态变量」，它们表示了在求解一个问题的时候所处的阶段。需要根据问题的场景设计合适的状态变量。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">状态变量：表示求解一个问题所处的阶段
+depth:表示当前递归到了第几层,用于判断递归是否可以终止
+used:表示哪几个数被使用过；初始化都为false,表示这些数都没有被选择过，当选定一个数的时候就将这个数组的相应位置设置为true
+path:使用栈，往下走一层的时候，在末尾添加一个数，往回走的时候，撤销上一次的操作。
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span>  <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span>  <span class="nf">permute</span><span class="o">(</span><span class="kt">int</span><span class="o">[</span><span class="o">]</span> <span class="n">nums</span><span class="o">)</span><span class="o">{</span>
+        <span class="kt">int</span> <span class="n">len</span><span class="o">=</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span> <span class="n">res</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">len</span><span class="o">=</span><span class="o">=</span><span class="n">0</span><span class="o">)</span> <span class="k">return</span> <span class="n">res</span><span class="o">;</span>
+
+        <span class="n">Deque</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayDeque</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="n">len</span><span class="o">)</span><span class="o">;</span>
+        <span class="kt">boolean</span><span class="o">[</span><span class="o">]</span> <span class="n">used</span><span class="o">=</span><span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">len</span><span class="o">]</span><span class="o">;</span><span class="c1">//boolean数组初始化为false
+</span><span class="c1"></span>        <span class="n">dfs</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span><span class="n">len</span><span class="o">,</span><span class="n">0</span><span class="o">,</span><span class="n">path</span><span class="o">,</span><span class="n">used</span><span class="o">,</span><span class="n">res</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/*
+</span><span class="cm">    状态变量：表示求解一个问题所处的阶段
+</span><span class="cm">    * depth:表示当前递归到了第几层,用于判断递归是否可以终止
+</span><span class="cm">    * used:表示哪几个数被使用过；初始化都为false,表示这些数都没有被选择过，当选定一个数的时候就将这个数组的相应位置设置为true
+</span><span class="cm">    * path:使用栈，往下走一层的时候，在末尾添加一个数，往回走的时候，撤销上一次的操作。
+</span><span class="cm">    * */</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">dfs</span><span class="o">(</span><span class="kt">int</span><span class="o">[</span><span class="o">]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">len</span><span class="o">,</span> <span class="kt">int</span> <span class="n">depth</span><span class="o">,</span> <span class="n">Deque</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">,</span> <span class="kt">boolean</span><span class="o">[</span><span class="o">]</span> <span class="n">used</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span> <span class="n">res</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">depth</span><span class="o">=</span><span class="o">=</span><span class="n">len</span><span class="o">)</span> <span class="o">{</span><span class="c1">//当depth==len表示此时递归可以终止，将路径添加当res中然后返回。
+</span><span class="c1"></span>            <span class="n">res</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="n">path</span><span class="o">)</span><span class="o">)</span><span class="o">;</span><span class="c1">//注意变量 path 所指向的列表 在深度优先遍历的过程中只有一份
+</span><span class="c1"></span>            <span class="c1">//在 Java 中，参数传递是 值传递，对象类型变量在传参的过程中，复制的是变量的地址。这些地址被添加到 res 变量，但实际上指向的是同一块内存地址，因此我们会看到 6空的列表对象
+</span><span class="c1"></span>            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+<span class="c1">//        在非叶子节点处产生不同的分支；即在还未选择的数中选择一个元素作为下一个元素
+</span><span class="c1"></span>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="o">;</span><span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="o">)</span><span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="o">!</span><span class="n">used</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="o">)</span><span class="o">{</span><span class="c1">//如果当前数字还未被选择
+</span><span class="c1"></span>                <span class="n">path</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="o">)</span><span class="o">;</span><span class="c1">//则将该数字添加入路径中,即添加在栈的尾部
+</span><span class="c1"></span>                <span class="n">used</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="o">=</span><span class="kc">true</span><span class="o">;</span><span class="c1">//将该数字的状态设置为true，表示该数字已经被使用过了
+</span><span class="c1"></span>
+                <span class="n">dfs</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">len</span><span class="o">,</span> <span class="n">depth</span><span class="o">+</span><span class="n">1</span><span class="o">,</span> <span class="n">path</span><span class="o">,</span> <span class="n">used</span><span class="o">,</span> <span class="n">res</span><span class="o">)</span><span class="o">;</span><span class="c1">//往下一层进行搜索，直到depth==len
+</span><span class="c1"></span>
+
+                <span class="n">used</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span><span class="c1">//状态[回溯]，将尾部的数字设置为未被使用           //这一部分与往尾部添加元素的形式是对称的
+</span><span class="c1"></span>                <span class="n">path</span><span class="o">.</span><span class="na">removeLast</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//将尾部数字移除
+</span><span class="c1"></span>            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="问题2httpsleetcode-cncomproblemspermutations-ii"><a href="https://leetcode-cn.com/problems/permutations-ii/" target="_blank" rel="noopener noreffer">问题2</a></h1>
+<p><a href="https://leetcode-cn.com/problems/permutations-ii/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liwe-2/" target="_blank" rel="noopener noreffer">参考</a></p>
+<p>给定一个<strong>可包含重复数字</strong>的序列 <code>nums</code> ，按任意顺序 返回所有不重复的全排列。</p>
+<p><code>注意这里与问题1的不同之处在于，给定的数组是可能包含重复数字的。因此还需要考虑如何将重复的排列消除</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112506.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112506.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112506.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112506.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112506.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112506.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112549.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112549.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112549.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112549.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112549.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210114112549.png" /></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span> <span class="nf">permuteUnique</span><span class="o">(</span><span class="kt">int</span><span class="o">[</span><span class="o">]</span> <span class="n">nums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">len</span><span class="o">=</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span> <span class="n">res</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//保存最终结果的变量
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">len</span><span class="o">=</span><span class="o">=</span><span class="n">0</span><span class="o">)</span> <span class="k">return</span> <span class="n">res</span><span class="o">;</span>
+
+        <span class="n">Deque</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayDeque</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//保存路径的状态变量
+</span><span class="c1"></span>        <span class="kt">boolean</span><span class="o">[</span><span class="o">]</span> <span class="n">used</span><span class="o">=</span><span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="n">len</span><span class="o">]</span><span class="o">;</span><span class="c1">//表示该数字是否被使用过
+</span><span class="c1"></span>
+        <span class="n">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">nums</span><span class="o">)</span><span class="o">;</span><span class="c1">//先对数组进行排序，以便判断是否重复的排列
+</span><span class="c1"></span>        <span class="n">dfs</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span><span class="n">len</span><span class="o">,</span><span class="n">0</span><span class="o">,</span><span class="n">path</span><span class="o">,</span><span class="n">used</span><span class="o">,</span><span class="n">res</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">dfs</span><span class="o">(</span><span class="kt">int</span><span class="o">[</span><span class="o">]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">len</span><span class="o">,</span> <span class="kt">int</span> <span class="n">depth</span><span class="o">,</span> <span class="n">Deque</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">,</span> <span class="kt">boolean</span><span class="o">[</span><span class="o">]</span> <span class="n">used</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span> <span class="n">res</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//终止条件
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">depth</span><span class="o">=</span><span class="o">=</span><span class="n">len</span><span class="o">)</span><span class="o">{</span>
+            <span class="n">res</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="n">path</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="o">;</span><span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="o">)</span><span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="o">!</span><span class="n">used</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="o">)</span><span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">i</span><span class="o">&gt;</span><span class="n">0</span><span class="o">&amp;</span><span class="o">&amp;</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="o">=</span><span class="o">=</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="n">1</span><span class="o">]</span><span class="o">&amp;</span><span class="o">&amp;</span><span class="o">!</span><span class="n">used</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="n">1</span><span class="o">]</span><span class="o">)</span><span class="o">{</span><span class="c1">//用于排除重复排序
+</span><span class="c1"></span>                    <span class="k">continue</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="n">used</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="o">=</span><span class="kc">true</span><span class="o">;</span>
+                <span class="n">path</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="o">)</span><span class="o">;</span>
+
+                <span class="n">dfs</span><span class="o">(</span><span class="n">nums</span><span class="o">,</span> <span class="n">len</span><span class="o">,</span> <span class="n">depth</span><span class="o">+</span><span class="n">1</span><span class="o">,</span> <span class="n">path</span><span class="o">,</span> <span class="n">used</span><span class="o">,</span> <span class="n">res</span><span class="o">)</span><span class="o">;</span>
+
+                <span class="n">path</span><span class="o">.</span><span class="na">removeLast</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+                <span class="n">used</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="问题3httpsleetcode-cncomproblemser-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof"><a href="https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/" target="_blank" rel="noopener noreffer">问题3</a></h1>
+<p>输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm"> * Definition for a binary tree node.
+</span><span class="cm"> * public class TreeNode {
+</span><span class="cm"> *     int val;
+</span><span class="cm"> *     TreeNode left;
+</span><span class="cm"> *     TreeNode right;
+</span><span class="cm"> *     TreeNode(int x) { val = x; }
+</span><span class="cm"> * }
+</span><span class="cm"> */</span>
+<span class="kd">class</span> <span class="nc">Solution</span> <span class="o">{</span>
+    <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+    <span class="n">Deque</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayDeque</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//path,使用栈结构保存状态变量
+</span><span class="c1"></span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span> <span class="nf">pathSum</span><span class="o">(</span><span class="n">TreeNode</span> <span class="n">root</span><span class="o">,</span> <span class="kt">int</span> <span class="n">sum</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">recur</span><span class="o">(</span><span class="n">root</span><span class="o">,</span> <span class="n">sum</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kt">void</span> <span class="nf">recur</span><span class="o">(</span><span class="n">TreeNode</span> <span class="n">root</span><span class="o">,</span> <span class="kt">int</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+<span class="c1">//采用先序遍历的方式计算-&gt;根左右
+</span><span class="c1"></span><span class="c1">//采用减法的方式，每一次减去root.val，
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">root</span> <span class="o">=</span><span class="o">=</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span><span class="o">;</span>
+        <span class="n">path</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">val</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">root</span><span class="o">.</span><span class="na">val</span><span class="o">;</span>
+        
+        <span class="c1">//使用target与root共同判断递归是否结束
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">target</span> <span class="o">=</span><span class="o">=</span> <span class="n">0</span> <span class="o">&amp;</span><span class="o">&amp;</span> <span class="n">root</span><span class="o">.</span><span class="na">left</span> <span class="o">=</span><span class="o">=</span> <span class="kc">null</span> <span class="o">&amp;</span><span class="o">&amp;</span> <span class="n">root</span><span class="o">.</span><span class="na">right</span> <span class="o">=</span><span class="o">=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span><span class="c1">//如果target==0，并且该节点为叶子结点，就添加入路径中
+</span><span class="c1"></span>            <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="n">path</span><span class="o">)</span><span class="o">)</span><span class="o">;</span><span class="c1">//要保证已添加的路径不被破坏，所以需要重新构造一个List
+</span><span class="c1"></span>        <span class="o">}</span>
+        <span class="n">recur</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">left</span><span class="o">,</span><span class="n">target</span><span class="o">)</span><span class="o">;</span><span class="c1">//采用递归的方式，遍历左子树
+</span><span class="c1"></span>        <span class="n">recur</span><span class="o">(</span><span class="n">root</span><span class="o">.</span><span class="na">right</span><span class="o">,</span><span class="n">target</span><span class="o">)</span><span class="o">;</span>
+        
+        <span class="c1">//#################
+</span><span class="c1"></span>        <span class="c1">//回溯：递归后需要做与递归前对称的操作
+</span><span class="c1"></span>        
+        <span class="n">path</span><span class="o">.</span><span class="na">removeLast</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//如果该节点是叶子节点，并且此时target！=0，则将该结点删除，以便于更新结点
+</span><span class="c1"></span>        
+        <span class="c1">//为什么tar不需要在返回上一层之前恢复一下 比如我在这层减掉了root.val ， 为什么在最后不把它加回来？
+</span><span class="c1"></span>        <span class="c1">//值类型如基本数据类型传递给方法的是值的拷贝而不是实际的存储值变量的地址；而引用类型如对象引用传递给方法的是引用的拷贝。 这里int值是深拷贝 list是浅拷贝 这样最后要new 一下那里也解释通了
+</span><span class="c1"></span>        
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="参考">参考</h1>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-02-04</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" data-title="回溯算法"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" data-title="回溯算法" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" data-title="回溯算法"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" data-title="回溯算法"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" data-title="回溯算法" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" data-title="回溯算法" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" data-title="回溯算法"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/redis/" class="prev" rel="prev" title="Redis"><i class="fas fa-angle-left fa-fw"></i>Redis</a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

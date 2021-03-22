@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>MySQL - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="MySQL" />
+<meta property="og:description" content="1. 编写一个 SQL 查询，来删除 Person 表中所有重复的电子邮箱，重复的邮箱里只保留 Id 最小 的那个。链接    id email     1 john@example.com   2 bob@example.com   3 john@example.com    Id 是这个表的主键。
+例如，在运行你的查询语句之后，上面的 Person 表应返回以下几行:
+   id email     1 john@example.com   2 bob@example.com    我的解法1：
+1 2 3 4 5 6 7 8 9  delete from Person where id= (select id from ( select max(id) as id from Person where email in ( select email from Person group by email having count(email)&gt;1 ) ) as a );   我的思路是这样的：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/mysql/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-21T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-21T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="MySQL"/>
+<meta name="twitter:description" content="1. 编写一个 SQL 查询，来删除 Person 表中所有重复的电子邮箱，重复的邮箱里只保留 Id 最小 的那个。链接    id email     1 john@example.com   2 bob@example.com   3 john@example.com    Id 是这个表的主键。
+例如，在运行你的查询语句之后，上面的 Person 表应返回以下几行:
+   id email     1 john@example.com   2 bob@example.com    我的解法1：
+1 2 3 4 5 6 7 8 9  delete from Person where id= (select id from ( select max(id) as id from Person where email in ( select email from Person group by email having count(email)&gt;1 ) ) as a );   我的思路是这样的："/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/mysql/" /><link rel="prev" href="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" /><link rel="next" href="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "MySQL",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/mysql\/"
+        },"genre": "posts","wordcount":  1179 ,
+        "url": "https:\/\/shilongshen.github.io\/mysql\/","datePublished": "2020-11-21T13:26:17+08:00","dateModified": "2020-11-21T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">MySQL</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-21">2020-11-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1179 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading"></a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1-编写一个-sql-查询来删除-person-表中所有重复的电子邮箱重复的邮箱里只保留-id-最小-的那个链接httpsleetcode-cncomproblemsdelete-duplicate-emails">1. 编写一个 SQL 查询，来删除 Person 表中所有重复的电子邮箱，重复的邮箱里只保留 Id 最小 的那个。链接</a></li>
+            <li><a href="#2-编写一个-sql-查询查找-person-表中所有重复的电子邮箱">2. 编写一个 SQL 查询，查找 Person 表中所有重复的电子邮箱。</a></li>
+            <li><a href="#3编写一个-sql-查询获取-employee-表中第二高的薪水salary-">3.编写一个 SQL 查询，获取 Employee 表中第二高的薪水（Salary） 。</a></li>
+            <li><a href="#某网站包含两个表customers-表和-orders-表编写一个-sql-查询找出所有从不订购任何东西的客户">某网站包含两个表，Customers 表和 Orders 表。编写一个 SQL 查询，找出所有从不订购任何东西的客户。</a></li>
+            <li><a href="#多表连接">多表连接：</a></li>
+            <li><a href="#收入超过经理的员工">收入超过经理的员工</a></li>
+            <li><a href="#编写一个-sql-查询来查找与之前昨天的日期相比温度更高的所有日期的-id-">编写一个 SQL 查询，来查找与之前（昨天的）日期相比温度更高的所有日期的 id 。</a></li>
+            <li><a href="#重新格式化部门表httpsleetcode-cncomproblemsreformat-department-table">重新格式化部门表</a></li>
+            <li><a href="#if语句">if语句</a></li>
+            <li><a href="#group-by语句">group by语句</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="heading"></h1>
+<h3 id="1-编写一个-sql-查询来删除-person-表中所有重复的电子邮箱重复的邮箱里只保留-id-最小-的那个链接httpsleetcode-cncomproblemsdelete-duplicate-emails">1. 编写一个 SQL 查询，来删除 <code>Person</code> 表中所有重复的电子邮箱，重复的邮箱里只保留 <strong>Id</strong> <em>最小</em> 的那个。<a href="https://leetcode-cn.com/problems/delete-duplicate-emails/" target="_blank" rel="noopener noreffer">链接</a></h3>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>email</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="mailto:john@example.com">john@example.com</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="mailto:bob@example.com">bob@example.com</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="mailto:john@example.com">john@example.com</a></td>
+</tr>
+</tbody>
+</table>
+<p>Id 是这个表的主键。</p>
+<p>例如，在运行你的查询语句之后，上面的 Person 表应返回以下几行:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>email</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="mailto:john@example.com">john@example.com</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="mailto:bob@example.com">bob@example.com</a></td>
+</tr>
+</tbody>
+</table>
+<p>我的解法1：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"> <span class="k">delete</span> <span class="k">from</span> <span class="n">Person</span> <span class="k">where</span> <span class="n">id</span><span class="o">=</span>
+ <span class="p">(</span><span class="k">select</span> <span class="n">id</span> <span class="k">from</span> 
+  <span class="p">(</span>
+     <span class="k">select</span> <span class="nf">max</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">as</span> <span class="n">id</span> <span class="k">from</span> <span class="n">Person</span> <span class="k">where</span> <span class="n">email</span> <span class="k">in</span>
+     <span class="p">(</span>
+         <span class="k">select</span> <span class="n">email</span> <span class="k">from</span> <span class="n">Person</span> <span class="k">group</span> <span class="k">by</span> <span class="n">email</span> <span class="k">having</span> <span class="nf">count</span><span class="p">(</span><span class="n">email</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span>
+     <span class="p">)</span>
+  <span class="p">)</span> <span class="k">as</span> <span class="n">a</span>
+ <span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>我的思路是这样的：</p>
+<ul>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"> <span class="k">select</span> <span class="n">email</span> <span class="k">from</span> <span class="n">Person</span> <span class="k">group</span> <span class="k">by</span> <span class="n">email</span> <span class="k">having</span> <span class="nf">count</span><span class="p">(</span><span class="n">email</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>首先按照email进行分组，挑选出重复的email，即通过count(email)&gt;1判断-&gt;<strong>这一方法适用于挑选出表中重复的元素</strong></p>
+</li>
+<li>
+<p>然后在重复的eamil中找到id最大的那一行，进行删除即可</p>
+</li>
+<li>
+<p>注意：<strong>MySQL每一个派生出来的表都必须有一个自己的别名</strong></p>
+</li>
+</ul>
+<p>但是该方法碰到有三个或三个以上的重复email时就会失效。因为在删除的时候值删除了重复email中最大id的那一行，而中间大的没有被删除。</p>
+<p>那我们换一个思路：能不能之间将重复email中最小id的那一行挑选出来，就行保留，其余的删除即可。这就是解法2：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">delete</span> <span class="k">from</span> <span class="n">Person</span> <span class="k">where</span> <span class="n">id</span> <span class="k">not</span> <span class="k">in</span> 
+<span class="p">(</span><span class="k">select</span> <span class="n">id</span> <span class="k">from</span>
+ 		<span class="p">(</span>
+            <span class="k">select</span> <span class="nf">min</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">as</span> <span class="n">id</span>  <span class="p">,</span><span class="n">email</span> <span class="k">from</span> <span class="n">Person</span> <span class="k">group</span> <span class="k">by</span> <span class="n">email</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">t</span>
+<span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>思路：</p>
+<ul>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="nf">min</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">as</span> <span class="n">id</span>  <span class="p">,</span><span class="n">email</span> <span class="k">from</span> <span class="n">Person</span> <span class="k">group</span> <span class="k">by</span> <span class="n">email</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>按照email进行分组，如果email是重复的，则只保留id最小的那一行，如果email是不重复的，即id最小的那一行就是它本身。</p>
+</li>
+<li>
+<p>如果id不在派生出来的表中，则将对应行进行删除。</p>
+</li>
+</ul>
+<h3 id="2-编写一个-sql-查询查找-person-表中所有重复的电子邮箱">2. 编写一个 SQL 查询，查找 <code>Person</code> 表中所有重复的电子邮箱。</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="n">Email</span> <span class="k">from</span> <span class="n">Person</span> <span class="k">group</span> <span class="k">by</span> <span class="n">Email</span> <span class="k">having</span> <span class="nf">count</span><span class="p">(</span><span class="n">Email</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="3编写一个-sql-查询获取-employee-表中第二高的薪水salary-">3.编写一个 SQL 查询，获取 <code>Employee</code> 表中第二高的薪水（Salary） 。</h3>
+<p>解法1</p>
+<p>利用自查询的特性：</p>
+<p>子查询可以在任意地方使用。相当于查询的列。在oracle中只写查询列没有查询表需要加上 from dual（伪表）。而mysql不用写</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="p">(</span><span class="k">select</span> <span class="k">distinct</span> <span class="n">salary</span> <span class="k">from</span> <span class="n">employee</span> <span class="k">order</span> <span class="k">by</span> <span class="n">salary</span> <span class="k">desc</span> <span class="k">limit</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="k">as</span> <span class="n">second</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>解法2：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="nf">ifnull</span><span class="p">(</span><span class="p">(</span><span class="k">select</span> <span class="k">distinct</span> <span class="n">salary</span> <span class="k">from</span> <span class="n">employee</span> <span class="k">order</span> <span class="k">by</span> <span class="n">salary</span> <span class="k">desc</span> <span class="k">limit</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="p">,</span><span class="no">null</span><span class="p">)</span> <span class="k">as</span> <span class="n">second</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>IFNULL(expression, alt_value)
+<strong>如果第一个参数的表达式 expression 为 NULL，则返回第二个参数的备用值(此题中是返回null)</strong>。
+expression是table的时候要加括号</p>
+<p>distinct：
+去重一样的Salary</p>
+<p>limit：限时返回的个数
+offset：跳过几个
+limit 1 offset 1:返回一个结果，跳过一个
+例如返回第三高就是：limit 1 offset 2</p>
+<h3 id="某网站包含两个表customers-表和-orders-表编写一个-sql-查询找出所有从不订购任何东西的客户">某网站包含两个表，<code>Customers</code> 表和 <code>Orders</code> 表。编写一个 SQL 查询，找出所有从不订购任何东西的客户。</h3>
+<p><code>Customers</code> 表：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+----+-------+
+| Id | Name  |
++----+-------+
+| 1  | Joe   |
+| 2  | Henry |
+| 3  | Sam   |
+| 4  | Max   |
++----+-------+
+
+</code></pre></td></tr></table>
+</div>
+</div><p><code>Orders</code> 表：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="o">+</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">+</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">+</span>
+<span class="o">|</span> <span class="n">Id</span> <span class="o">|</span> <span class="n">CustomerId</span> <span class="o">|</span>
+<span class="o">+</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">+</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">+</span>
+<span class="o">|</span> <span class="mi">1</span>  <span class="o">|</span> <span class="mi">3</span>          <span class="o">|</span>
+<span class="o">|</span> <span class="mi">2</span>  <span class="o">|</span> <span class="mi">1</span>          <span class="o">|</span>
+<span class="o">+</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">+</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">-</span><span class="o">+</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="n">Name</span> <span class="k">as</span> <span class="n">Customers</span> <span class="k">from</span> <span class="n">Customers</span> <span class="k">where</span> <span class="n">Id</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="k">select</span> <span class="n">CustomerId</span> <span class="k">as</span> <span class="n">Id</span> <span class="k">from</span> <span class="n">Orders</span><span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="多表连接">多表连接：</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="err">字</span><span class="err">段</span><span class="err">列</span><span class="err">表</span> <span class="k">from</span> <span class="err">表</span><span class="mi">1</span> <span class="k">inner</span> <span class="o">|</span> <span class="k">left</span> <span class="o">|</span><span class="k">right</span> <span class="k">join</span> <span class="err">表</span><span class="mi">2</span> <span class="k">on</span> <span class="err">条</span><span class="err">件</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>1）内联结（inner join），取两表的公共数据</p>
+<p>2）左联结（left join），联结结果保留左表的全部数据 -&gt; 在inner join的基础上，增加左边表有右边没有的内容 -&gt;</p>
+<p>3）右联结（right join），联结结果保留右表的全部数据</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic.leetcode-cn.com/ad3df1c4ecc7d2dbe85f92cdde8ec9a731fdd20dc4c5629ecb372b21de26c682-1.jpg"
+        data-srcset="https://pic.leetcode-cn.com/ad3df1c4ecc7d2dbe85f92cdde8ec9a731fdd20dc4c5629ecb372b21de26c682-1.jpg, https://pic.leetcode-cn.com/ad3df1c4ecc7d2dbe85f92cdde8ec9a731fdd20dc4c5629ecb372b21de26c682-1.jpg 1.5x, https://pic.leetcode-cn.com/ad3df1c4ecc7d2dbe85f92cdde8ec9a731fdd20dc4c5629ecb372b21de26c682-1.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic.leetcode-cn.com/ad3df1c4ecc7d2dbe85f92cdde8ec9a731fdd20dc4c5629ecb372b21de26c682-1.jpg"
+        title="1.jpg" /></p>
+<p><a href="https://leetcode-cn.com/problems/combine-two-tables/" target="_blank" rel="noopener noreffer">链接</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="n">FirstName</span><span class="p">,</span> <span class="n">LastName</span><span class="p">,</span> <span class="n">City</span><span class="p">,</span> <span class="n">State</span>  <span class="k">from</span> <span class="n">Person</span> <span class="k">left</span> <span class="k">join</span> <span class="n">Address</span> <span class="k">on</span> <span class="n">Person</span><span class="p">.</span><span class="n">PersonId</span><span class="o">=</span><span class="n">Address</span><span class="p">.</span><span class="n">PersonId</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="收入超过经理的员工">收入超过经理的员工</h3>
+<p><a href="https://leetcode-cn.com/problems/employees-earning-more-than-their-managers/" target="_blank" rel="noopener noreffer">链接</a></p>
+<p>Employee 表包含所有员工，他们的经理也属于员工。每个员工都有一个 Id，此外还有一列对应员工的经理的 Id。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+----+-------+--------+-----------+
+| Id | Name  | Salary | ManagerId |
++----+-------+--------+-----------+
+| 1  | Joe   | 70000  | 3         |
+| 2  | Henry | 80000  | 4         |
+| 3  | Sam   | 60000  | NULL      |
+| 4  | Max   | 90000  | NULL      |
++----+-------+--------+-----------+
+</code></pre></td></tr></table>
+</div>
+</div><p>给定 Employee 表，编写一个 SQL 查询，该查询可以获取收入超过他们经理的员工的姓名。在上面的表格中，Joe 是唯一一个收入超过他的经理的员工。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+----------+
+| Employee |
++----------+
+| Joe      |
++----------+
+</code></pre></td></tr></table>
+</div>
+</div><p>解法1：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="n">name</span> <span class="k">as</span> <span class="n">Employee</span> <span class="k">from</span> 
+<span class="p">(</span>
+    <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">Employee</span> <span class="k">where</span> <span class="n">managerid</span> <span class="k">is</span> <span class="k">not</span> <span class="no">null</span> <span class="c1">#挑选出managerid不为null的行
+</span><span class="c1"></span><span class="p">)</span> <span class="k">as</span> <span class="n">t</span>
+    <span class="k">where</span> <span class="n">salary</span><span class="o">&gt;</span>  <span class="c1">#进行比较
+</span><span class="c1"></span><span class="p">(</span>
+    <span class="k">select</span> <span class="n">salary</span> <span class="k">from</span> <span class="n">Employee</span> <span class="k">where</span> <span class="n">id</span><span class="o">=</span><span class="n">t</span><span class="p">.</span><span class="n">managerid</span>
+<span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>解法2：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">SELECT</span>
+    <span class="n">a</span><span class="p">.</span><span class="n">Name</span> <span class="k">AS</span> <span class="n">Employee</span>
+<span class="k">FROM</span>
+    <span class="n">Employee</span> <span class="k">AS</span> <span class="n">a</span><span class="p">,</span>
+    <span class="n">Employee</span> <span class="k">AS</span> <span class="n">b</span>
+<span class="k">WHERE</span>
+    <span class="n">a</span><span class="p">.</span><span class="n">ManagerId</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">Id</span>
+        <span class="k">AND</span> <span class="n">a</span><span class="p">.</span><span class="n">Salary</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">.</span><span class="n">Salary</span>
+<span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="编写一个-sql-查询来查找与之前昨天的日期相比温度更高的所有日期的-id-">编写一个 SQL 查询，来查找与之前（昨天的）日期相比温度更高的所有日期的 <code>id</code> 。</h3>
+<p>返回结果 <strong>不要求顺序</strong> 。</p>
+<p>我的解法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="n">id</span> <span class="k">from</span> <span class="n">Weather</span> <span class="k">as</span> <span class="n">w1</span> 
+<span class="k">where</span> 
+<span class="n">Temperature</span> <span class="o">&gt;</span><span class="p">(</span><span class="k">select</span> <span class="n">Temperature</span> <span class="k">from</span> <span class="n">Weather</span> <span class="n">w2</span> <span class="k">where</span> <span class="n">recordDate</span><span class="o">=</span><span class="p">(</span><span class="n">w1</span><span class="p">.</span><span class="n">recordDate</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="c1">#挑选出前一天日期的温度
+</span><span class="c1"></span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>但是运行的时候会出错，原因在：比较两个日期的时候不能做差，而要使用datediff函数。datediff函数返回两个日期的时间差</p>
+<p>例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1">#DATEDIFF(date1,date2)
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="nf">DATEDIFF</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">2008-12-30</span><span class="s1">&#39;</span><span class="p">,</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">2008-12-29</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="c1">#返回1,data1-data2
+</span></code></pre></td></tr></table>
+</div>
+</div><p>改正后：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="n">id</span> <span class="k">from</span> <span class="n">Weather</span> <span class="k">as</span> <span class="n">w1</span> 
+<span class="k">where</span> 
+<span class="n">Temperature</span> <span class="o">&gt;</span><span class="p">(</span><span class="k">select</span> <span class="n">Temperature</span> <span class="k">from</span> <span class="n">Weather</span> <span class="n">w2</span> <span class="k">where</span> <span class="nf">DATEDIFF</span><span class="p">(</span><span class="n">w1</span><span class="p">.</span><span class="n">recordDate</span><span class="p">,</span><span class="n">w2</span><span class="p">.</span><span class="n">recordDate</span><span class="p">)</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span> <span class="c1">#挑选出前一天日期的温度
+</span><span class="c1"></span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>或</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">SELECT</span> <span class="n">w2</span><span class="p">.</span><span class="n">Id</span>
+<span class="k">FROM</span> <span class="n">Weather</span> <span class="n">w1</span><span class="p">,</span> <span class="n">Weather</span> <span class="n">w2</span>
+<span class="k">WHERE</span> <span class="nf">DATEDIFF</span><span class="p">(</span><span class="n">w2</span><span class="p">.</span><span class="n">RecordDate</span><span class="p">,</span> <span class="n">w1</span><span class="p">.</span><span class="n">RecordDate</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">AND</span> <span class="n">w1</span><span class="p">.</span><span class="n">Temperature</span> <span class="o">&lt;</span> <span class="n">w2</span><span class="p">.</span><span class="n">Temperature</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="重新格式化部门表httpsleetcode-cncomproblemsreformat-department-table"><a href="https://leetcode-cn.com/problems/reformat-department-table/" target="_blank" rel="noopener noreffer">重新格式化部门表</a></h3>
+<p>原表为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+------+---------+-------+
+| id   | revenue | month |
++------+---------+-------+
+| 1    | 8000    | Jan   |
+| 2    | 9000    | Jan   |
+| 3    | 10000   | Feb   |
+| 1    | 7000    | Feb   |
+| 1    | 6000    | Mar   |
++------+---------+-------+
+</code></pre></td></tr></table>
+</div>
+</div><p>通过语句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Jan</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Jan_Revenue</span><span class="p">,</span> <span class="c1">#对于原表中的第一行，其month=jan,所以该位置返回8000
+</span><span class="c1"></span><span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Feb</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Feb_Revenue</span><span class="p">,</span> <span class="c1">#因为month!=feb,返回null
+</span><span class="c1"></span><span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Mar</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Mar_Revenue</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Apr</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Apr_Revenue</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">May</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">May_Revenue</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Jun</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Jun_Revenue</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Jul</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Jul_Revenue</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Aug</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Aug_Revenue</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Sep</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Sep_Revenue</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Oct</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Oct_Revenue</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Nov</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Nov_Revenue</span><span class="p">,</span>
+<span class="k">IF</span><span class="p">(</span><span class="o">`</span><span class="n">month</span><span class="o">`</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Dec</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">revenue</span><span class="p">,</span><span class="no">NULL</span><span class="p">)</span> <span class="n">Dec_Revenue</span>
+<span class="k">FROM</span> <span class="n">Department</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>或</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Jan</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Jan_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Feb</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Feb_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Mar</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Mar_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Apr</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Apr_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">May</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">May_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Jun</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Jun_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Jul</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Jul_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Aug</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Aug_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Sep</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Sep_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Oct</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Oct_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Nov</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Nov_Revenue</span><span class="p">,</span>
+<span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Dec</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span> <span class="n">Dec_Revenue</span>
+<span class="k">FROM</span> <span class="n">Department</span><span class="p">;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>得到虚拟表1,如下所示</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+------+-------------+-------------+-------------+-----+-------------+
+| id   | Jan_Revenue | Feb_Revenue | Mar_Revenue | ... | Dec_Revenue |
++------+-------------+-------------+-------------+-----+-------------+
+
+| 1    | 8000        | null        | null        | ... | null        |
++------+-------------+-------------+-------------+-----+-------------+
+| 2    | 9000        | null        | null        | ... | null        |
++------+-------------+-------------+-------------+-----+-------------+
+| 3    | null        | 10000       | null        | ... | null        |
++------+-------------+-------------+-------------+-----+-------------+
+| 1    | null        | null        | 6000        | ... | null        |
++------+-------------+-------------+-------------+-----+-------------+
+| 1    | null        | 7000        | null        | ... | null        |
++------+-------------+-------------+-------------+-----+-------------+
+
+</code></pre></td></tr></table>
+</div>
+</div><p>通过group by id语句可以得到得到一个虚拟表2，如下所示。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+------+-------------+-------------+-------------+-----+-------------+
+| id   | Jan_Revenue | Feb_Revenue | Mar_Revenue | ... | Dec_Revenue |
++------+-------------+-------------+-------------+-----+-------------+
+|      | 8000        | null        | null        | ... | null        |
+|  1   | null        | null        | 6000        | ... | null        |
+|      | null        | 7000        | null        | ... | null        |
+-------+-------------+-------------+-------------------+--------------
+| 2    | 9000        | null        | null        | ... | null        |
++------+-------------+-------------+-------------+-----+-------------+
+| 3    | null        | 10000       | null        | ... | null        |
++------+-------------+-------------+-------------+-----+-------------+
+</code></pre></td></tr></table>
+</div>
+</div><p>该虚拟表按id分组，其中对于id=1的组中，Jan_Revenue，Feb_Revenue，&hellip;，Dec_Revenue等列中有多个数值，因此需要一个聚合函数将多个数值进行整合，输出为一个数值。例如sum或max函数。</p>
+<p>因此总的语句为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Jan</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Jan_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Feb</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Feb_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Mar</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Mar_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Apr</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Apr_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">May</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">May_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Jun</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Jun_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Jul</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Jul_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Aug</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Aug_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Sep</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Sep_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Oct</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Oct_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Nov</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Nov_Revenue</span><span class="p">,</span>
+<span class="nf">SUM</span><span class="p">(</span><span class="k">CASE</span> <span class="o">`</span><span class="n">month</span><span class="o">`</span> <span class="k">WHEN</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">Dec</span><span class="s1">&#39;</span> <span class="k">THEN</span> <span class="n">revenue</span> <span class="n">END</span><span class="p">)</span> <span class="n">Dec_Revenue</span>
+<span class="k">FROM</span> <span class="n">Department</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">id</span><span class="p">;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>最终的结果：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+------+-------------+-------------+-------------+-----+-------------+
+| id   | Jan_Revenue | Feb_Revenue | Mar_Revenue | ... | Dec_Revenue |
++------+-------------+-------------+-------------+-----+-------------+
+|  1   | 8000        | 7000        | 6000        | ... | null        |
+-------+-------------+-------------+-------------------+--------------
+|  2   | 9000        | null        | null        | ... | null        |
++------+-------------+-------------+-------------+-----+-------------+
+|  3   | null        | 10000       | null        | ... | null        |
++------+-------------+-------------+-------------+-----+-------------+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="if语句">if语句</h3>
+<p>在mysql中if()函数的用法类似于java中的三目表达式，其用处也比较多，具体语法如下：</p>
+<p>IF(expr1,expr2,expr3)，如果expr1的值为true，则返回expr2的值，如果expr1的值为false，</p>
+<p>则返回expr3的值。</p>
+<h3 id="group-by语句">group by语句</h3>
+<p><a href="https://blog.csdn.net/u014717572/article/details/80687042" target="_blank" rel="noopener noreffer">参考</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-21</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/mysql/" data-title="MySQL"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/mysql/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/mysql/" data-title="MySQL" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/mysql/" data-title="MySQL"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/mysql/" data-title="MySQL"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/mysql/" data-title="MySQL" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/mysql/" data-title="MySQL" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/mysql/" data-title="MySQL"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" class="prev" rel="prev" title="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network"><i class="fas fa-angle-left fa-fw"></i>Towards Fine-grained Human Pose Transfer with Detail Replenishing Network</a>
+            <a href="/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" class="next" rel="next" title="Java基础总结">Java基础总结<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>深度学习的基本概念 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="深度学习的基本概念" />
+<meta property="og:description" content="1绪论 ​	基本的深度学习相当于函数逼近问题，即函数或曲面的拟合 ，所不同的是，这里用作基函数的是非线性的神经网络函数，而原来数学中的用的则是多项式、三角不等式等。
+​	由于神经网络的非线性和复杂性，它有更强的表达能力，即能够从给定的神经网络函数族中可能找到对特定数据集拟合得更好的神经网络。这里既涉及设计合适的神经网络类型，也涉及从该类型中的神经网络中找出好的（即拟合误差小的）特定神经网络的方法。后者正是数学中最优化分支所研究的问题。从数学角度来说，目前深度学习中所用的优化算法还是属于比较简单的梯度下降法。
+​	但是恰恰由于神经网络的非线性复杂性，使得能够通过大量的标注数据经过深度学习可以得到一个误差结果很小的神经网络，但是要用它来解释却十分的困难。近来也有学者发现，一个精度很高的神经网络，改变它的几个参数，就会使该网络的精度明显下降。换言之，深度学习方法的鲁棒性也有待研究。
+2.机器学习、深度学习和人工神经网络的关系 ​	深度学习以神经网络为主要模型。深度学习一开始用来解决机器学习中的表示学习问题。但是由于其强大的能力，深度学习越来越多的用来解决一些通用的人工智能问题，比如决策、推理等。
+​	从根源上来说，**深度学习是机器学习的一个分支，**是指一类问题以及解决这类问题的方法。指从有限样例中通过算法总结出一般性的规律，并可应用到新的未知数据上。
+​	其次，深度学习采用的模型一般比较复杂，指样本的原始输入到输出目标 之间的数据流经过多个线性或非线性的组件（component）．因为每个组件都会对信息进行加工，并进而影响后续的组件，所以当我们最后得到输出结果时，我们并不清楚其中每个组件的贡献是多少．这个问题叫作贡献度分配问题（Credit Assignment Problem，CAP）[Minsky, 1961]． 贡献度分配问题也经 常翻译为信用分配问题或功劳分配问题．在深度学习中，贡献度分配问题是 一个很关键的问题，这关系到如何学习每个组件中的参数。
+​	目前，一种可以比较好解决贡献度分配问题的模型是人工神经网络。神经网络和深度学习并不等价，深度学习可以采用神经网络模型，也可以采用其他模型（比如深度信念网络是一种概率图模型）.但是由于神经网络模型可以比较容易地解决贡献度分配问题，因此神经网络模型成为深度学习中主要采用的模型。
+2.1人工智能 ​	人工智能是计算机科学的一个分支，主要研究、开发用于模拟、延伸和扩展人类智能的理论、方法、技术及应用系统等．和很多其他学科不同，人工智能这个学科的诞生有着明确的标志性事件，就是1956 年的达特茅斯（Dartmouth）会议．在这次会议上，“人工智能”被提出并作为本研究领域的名称．同时，人工智能研究的使命也得以确定．John McCarthy 提出了人工智能的定义：人工智能就是要让机器的行为看起来就像是人所表现出的智能行为一样．
+​	目前，人工智能的主要领域大体上可以分为以下几个方面：
+（1）感知：：模拟人的感知能力，对外部刺激信息（视觉和语音等）进行感 知和加工．主要研究领域包括语音信息处理和计算机视觉等．
+（2）学习:模拟人的学习能力，主要研究如何从样例或从与环境的交互中 进行学习．主要研究领域包括监督学习、无监督学习和强化学习等．
+（3）认知:模拟人的认知能力，主要研究领域包括知识表示、自然语言理 解、推理、规划、决策等．
+2.2深度学习 ​	深度学习是将原始的数据特征通过多步的特征转换得到一种特征表示，并进一步输入到预测函数得到最终结果．和“浅层学习”不同，深度学习需要解决的关键问题是贡献度分配问题（Credit Assignment Problem，CAP）[Minsky, 1961]，即一个系统中不同的组件（component）或其参数对最终系统输出结果的贡献或影响．以下围棋为例，每当下完一盘棋，最后的结果要么赢要么输．我们会思考哪几步棋导致了最后的胜利，或者又是哪几步棋导致了最后的败局．如何判断每一步棋的贡献就是贡献度分配问题，这是一个非常困难的问题．从某种意义上讲，深度学习可以看作一种强化学习（Reinforcement Learning，RL），每个内部组件并不能直接得到监督信息，需要通过整个模型的最终监督信息（奖励）得到，并且有一定的延时性。
+​	目前，深度学习采用的模型主要是神经网络模型，其主要原因是神经网络模型可以使用误差反向传播算法，从而可以比较好地解决贡献度分配问题．只要是超过一层的神经网络都会存在贡献度分配问题，因此可以将超过一层的神经网络都看作深度学习模型．随着深度学习的快速发展，模型深度也从早期的5 ∼ 10层增加到目前的数百层．随着模型深度的不断增加，其特征表示的能力也越来越强，从而使后续的预测更加容易。
+​" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-15T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-15T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="深度学习的基本概念"/>
+<meta name="twitter:description" content="1绪论 ​	基本的深度学习相当于函数逼近问题，即函数或曲面的拟合 ，所不同的是，这里用作基函数的是非线性的神经网络函数，而原来数学中的用的则是多项式、三角不等式等。
+​	由于神经网络的非线性和复杂性，它有更强的表达能力，即能够从给定的神经网络函数族中可能找到对特定数据集拟合得更好的神经网络。这里既涉及设计合适的神经网络类型，也涉及从该类型中的神经网络中找出好的（即拟合误差小的）特定神经网络的方法。后者正是数学中最优化分支所研究的问题。从数学角度来说，目前深度学习中所用的优化算法还是属于比较简单的梯度下降法。
+​	但是恰恰由于神经网络的非线性复杂性，使得能够通过大量的标注数据经过深度学习可以得到一个误差结果很小的神经网络，但是要用它来解释却十分的困难。近来也有学者发现，一个精度很高的神经网络，改变它的几个参数，就会使该网络的精度明显下降。换言之，深度学习方法的鲁棒性也有待研究。
+2.机器学习、深度学习和人工神经网络的关系 ​	深度学习以神经网络为主要模型。深度学习一开始用来解决机器学习中的表示学习问题。但是由于其强大的能力，深度学习越来越多的用来解决一些通用的人工智能问题，比如决策、推理等。
+​	从根源上来说，**深度学习是机器学习的一个分支，**是指一类问题以及解决这类问题的方法。指从有限样例中通过算法总结出一般性的规律，并可应用到新的未知数据上。
+​	其次，深度学习采用的模型一般比较复杂，指样本的原始输入到输出目标 之间的数据流经过多个线性或非线性的组件（component）．因为每个组件都会对信息进行加工，并进而影响后续的组件，所以当我们最后得到输出结果时，我们并不清楚其中每个组件的贡献是多少．这个问题叫作贡献度分配问题（Credit Assignment Problem，CAP）[Minsky, 1961]． 贡献度分配问题也经 常翻译为信用分配问题或功劳分配问题．在深度学习中，贡献度分配问题是 一个很关键的问题，这关系到如何学习每个组件中的参数。
+​	目前，一种可以比较好解决贡献度分配问题的模型是人工神经网络。神经网络和深度学习并不等价，深度学习可以采用神经网络模型，也可以采用其他模型（比如深度信念网络是一种概率图模型）.但是由于神经网络模型可以比较容易地解决贡献度分配问题，因此神经网络模型成为深度学习中主要采用的模型。
+2.1人工智能 ​	人工智能是计算机科学的一个分支，主要研究、开发用于模拟、延伸和扩展人类智能的理论、方法、技术及应用系统等．和很多其他学科不同，人工智能这个学科的诞生有着明确的标志性事件，就是1956 年的达特茅斯（Dartmouth）会议．在这次会议上，“人工智能”被提出并作为本研究领域的名称．同时，人工智能研究的使命也得以确定．John McCarthy 提出了人工智能的定义：人工智能就是要让机器的行为看起来就像是人所表现出的智能行为一样．
+​	目前，人工智能的主要领域大体上可以分为以下几个方面：
+（1）感知：：模拟人的感知能力，对外部刺激信息（视觉和语音等）进行感 知和加工．主要研究领域包括语音信息处理和计算机视觉等．
+（2）学习:模拟人的学习能力，主要研究如何从样例或从与环境的交互中 进行学习．主要研究领域包括监督学习、无监督学习和强化学习等．
+（3）认知:模拟人的认知能力，主要研究领域包括知识表示、自然语言理 解、推理、规划、决策等．
+2.2深度学习 ​	深度学习是将原始的数据特征通过多步的特征转换得到一种特征表示，并进一步输入到预测函数得到最终结果．和“浅层学习”不同，深度学习需要解决的关键问题是贡献度分配问题（Credit Assignment Problem，CAP）[Minsky, 1961]，即一个系统中不同的组件（component）或其参数对最终系统输出结果的贡献或影响．以下围棋为例，每当下完一盘棋，最后的结果要么赢要么输．我们会思考哪几步棋导致了最后的胜利，或者又是哪几步棋导致了最后的败局．如何判断每一步棋的贡献就是贡献度分配问题，这是一个非常困难的问题．从某种意义上讲，深度学习可以看作一种强化学习（Reinforcement Learning，RL），每个内部组件并不能直接得到监督信息，需要通过整个模型的最终监督信息（奖励）得到，并且有一定的延时性。
+​	目前，深度学习采用的模型主要是神经网络模型，其主要原因是神经网络模型可以使用误差反向传播算法，从而可以比较好地解决贡献度分配问题．只要是超过一层的神经网络都会存在贡献度分配问题，因此可以将超过一层的神经网络都看作深度学习模型．随着深度学习的快速发展，模型深度也从早期的5 ∼ 10层增加到目前的数百层．随着模型深度的不断增加，其特征表示的能力也越来越强，从而使后续的预测更加容易。
+​"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" /><link rel="prev" href="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/" /><link rel="next" href="https://shilongshen.github.io/%E6%B1%A0%E5%8C%96%E5%B1%82%E7%9A%84%E4%BD%9C%E7%94%A8/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "深度学习的基本概念",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5\/"
+        },"genre": "posts","wordcount":  50 ,
+        "url": "https:\/\/shilongshen.github.io\/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5\/","datePublished": "2020-11-15T13:26:17+08:00","dateModified": "2020-11-15T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">深度学习的基本概念</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;50 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#1绪论">1绪论</a></li>
+            <li><a href="#2机器学习深度学习和人工神经网络的关系">2.机器学习、深度学习和人工神经网络的关系</a>
+              <ul>
+                <li><a href="#21人工智能">2.1人工智能</a></li>
+                <li><a href="#22深度学习">2.2深度学习</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h3 id="1绪论">1绪论</h3>
+<p>​		<strong>基本的深度学习相当于函数逼近问题</strong>，即函数或曲面的拟合 ，所不同的是，这里用作基函数的是非线性的神经网络函数，而原来数学中的用的则是多项式、三角不等式等。</p>
+<p>​		由于神经网络的非线性和复杂性，它有更强的表达能力，即能够从给定的神经网络函数族中可能找到对特定数据集拟合得更好的神经网络。这里既涉及<strong>设计合适的神经网络类型</strong>，也涉及<strong>从该类型中的神经网络中找出好的（即拟合误差小的）特定神经网络的方法</strong>。后者正是数学中最优化分支所研究的问题。从数学角度来说，目前深度学习中所用的优化算法还是属于比较简单的<strong>梯度下降法</strong>。</p>
+<p>​		但是恰恰由于神经网络的非线性复杂性，使得能够通过大量的标注数据经过深度学习可以得到一个误差结果很小的神经网络，但是要用<strong>它来解释却十分的困难</strong>。近来也有学者发现，一个精度很高的神经网络，改变它的几个参数，就会使该网络的精度明显下降。换言之，<strong>深度学习方法的鲁棒性也有待研究</strong>。</p>
+<h3 id="2机器学习深度学习和人工神经网络的关系">2.机器学习、深度学习和人工神经网络的关系</h3>
+<p>​		深度学习以神经网络为<strong>主要</strong>模型。深度学习一开始用来解决机器学习中的表示学习问题。但是由于其强大的能力，深度学习越来越多的用来解决一些通用的人工智能问题，比如决策、推理等。</p>
+<p>​		从根源上来说，**深度学习是机器学习的一个分支，**是指一类问题以及解决这类问题的方法。指从有限样例中通过算法总结出一般性的规律，并可应用到新的未知数据上。</p>
+<p>​		其次，深度学习采用的模型一般比较复杂，指样本的原始输入到输出目标
+之间的数据流经过多个线性或非线性的组件（component）．因为每个组件都会对信息进行加工，并进而影响后续的组件，所以当我们最后得到输出结果时，我们并不清楚其中每个组件的贡献是多少．这个问题叫作<strong>贡献度分配问题</strong>（Credit Assignment Problem，CAP）[Minsky, 1961]． 贡献度分配问题也经
+常翻译为信用分配问题或功劳分配问题．在深度学习中，贡献度分配问题是
+一个很关键的问题，这关系到如何学习每个组件中的参数。</p>
+<p>​		目前，一种可以比较好解决贡献度分配问题的模型是人工神经网络。<strong>神经网络和深度学习并不等价，深度学习可以采用神经网络模型，也可以采用其他模型（比如深度信念网络是一种概率图模型）</strong>.但是由于神经网络模型可以比较容易地解决贡献度分配问题，因此<strong>神经网络模型成为深度学习中主要采用的模型</strong>。</p>
+<h4 id="21人工智能">2.1人工智能</h4>
+<p>​		人工智能是计算机科学的一个分支，主要研究、开发用于模拟、延伸和扩展人类智能的理论、方法、技术及应用系统等．和很多其他学科不同，人工智能这个学科的诞生有着明确的标志性事件，就是1956 年的达特茅斯（Dartmouth）会议．在这次会议上，“人工智能”被提出并作为本研究领域的名称．同时，人工智能研究的使命也得以确定．John McCarthy 提出了人工智能的定义：人工智能就是要让机器的行为看起来就像是人所表现出的智能行为一样．</p>
+<p>​		目前，人工智能的主要领域大体上可以分为以下几个方面：</p>
+<p>（1）感知：：模拟人的感知能力，对外部刺激信息（视觉和语音等）进行感
+知和加工．主要研究领域包括语音信息处理和计算机视觉等．</p>
+<p>（2）学习:模拟人的学习能力，主要研究如何从样例或从与环境的交互中
+进行学习．主要研究领域包括监督学习、无监督学习和强化学习等．</p>
+<p>（3）认知:模拟人的认知能力，主要研究领域包括知识表示、自然语言理
+解、推理、规划、决策等．</p>
+<h4 id="22深度学习">2.2深度学习</h4>
+<p>​	深度学习是将原始的数据特征通过多步的特征转换得到一种特征表示，并进一步输入到预测函数得到最终结果．和“浅层学习”不同，深度学习需要解决的关键问题是贡献度分配问题（Credit Assignment Problem，CAP）[Minsky,
+1961]，即一个系统中不同的组件（component）或其参数对最终系统输出结果的贡献或影响．以下围棋为例，每当下完一盘棋，最后的结果要么赢要么输．我们会思考哪几步棋导致了最后的胜利，或者又是哪几步棋导致了最后的败局．<strong>如何判断每一步棋的贡献就是贡献度分配问题</strong>，这是一个非常困难的问题．从某种意义上讲，深度学习可以看作一种强化学习（Reinforcement Learning，RL），每个内部组件并不能直接得到监督信息，需要通过整个模型的最终监督信息（奖励）得到，并且有一定的延时性。</p>
+<p>​	目前，深度学习采用的模型主要是神经网络模型，<strong>其主要原因是神经网络模型可以使用误差反向传播算法</strong>，从而可以比较好地解决贡献度分配问题．只要是超过一层的神经网络都会存在贡献度分配问题，因此可以将超过一层的神经网络都看作深度学习模型．随着深度学习的快速发展，模型深度也从早期的5 ∼ 10层增加到目前的数百层．随着模型深度的不断增加，其特征表示的能力也越来越强，从而使后续的预测更加容易。</p>
+<p>​</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/image/Saved%20PicturesI01019477.jpg"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/image/Saved%20PicturesI01019477.jpg, https://gitee.com/shilongshen/image-bad/raw/master/image/Saved%20PicturesI01019477.jpg 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/image/Saved%20PicturesI01019477.jpg 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/image/Saved%20PicturesI01019477.jpg"
+        title="img" /></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" data-title="深度学习的基本概念"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" data-title="深度学习的基本概念" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" data-title="深度学习的基本概念"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" data-title="深度学习的基本概念"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" data-title="深度学习的基本概念" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" data-title="深度学习的基本概念" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" data-title="深度学习的基本概念"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/" class="prev" rel="prev" title="深度生成模型"><i class="fas fa-angle-left fa-fw"></i>深度生成模型</a>
+            <a href="/%E6%B1%A0%E5%8C%96%E5%B1%82%E7%9A%84%E4%BD%9C%E7%94%A8/" class="next" rel="next" title="池化层的作用">池化层的作用<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
