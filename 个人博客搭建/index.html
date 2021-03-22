@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>个人博客搭建 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="个人博客搭建" />
+<meta property="og:description" content="技术组合：
+ 后端：Spring Boot，JPA，thymeleaf模板 数据库:MySQL 前端UI：Semantic UI框架  工具与环境：
+ IDEA Maven 3 JDK 8 Axure RP8 &ndash;&gt;页面原型设计工具  异常处理 拦截异常：自定义400，500, error异常页面
+1 2 3 4 5 6 7 8 9 10  &lt;!DOCTYPEhtml&gt;&lt;html lang=&#34;en&#34;&gt;&lt;head&gt;&lt;meta charset=&#34;UTF-8&#34;&gt;&lt;title&gt;404&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;404&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;  1 2 3 4 5 6 7 8 9 10 11  &lt;!DOCTYPEhtml&gt;&lt;html lang=&#34;en&#34;&gt;&lt;head&gt;&lt;meta charset=&#34;UTF-8&#34;&gt;&lt;title&gt;500&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;500&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25  &lt;!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2021-02-10T09:54:48+08:00" />
+<meta property="article:modified_time" content="2021-02-10T09:54:48+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="个人博客搭建"/>
+<meta name="twitter:description" content="技术组合：
+ 后端：Spring Boot，JPA，thymeleaf模板 数据库:MySQL 前端UI：Semantic UI框架  工具与环境：
+ IDEA Maven 3 JDK 8 Axure RP8 &ndash;&gt;页面原型设计工具  异常处理 拦截异常：自定义400，500, error异常页面
+1 2 3 4 5 6 7 8 9 10  &lt;!DOCTYPEhtml&gt;&lt;html lang=&#34;en&#34;&gt;&lt;head&gt;&lt;meta charset=&#34;UTF-8&#34;&gt;&lt;title&gt;404&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;404&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;  1 2 3 4 5 6 7 8 9 10 11  &lt;!DOCTYPEhtml&gt;&lt;html lang=&#34;en&#34;&gt;&lt;head&gt;&lt;meta charset=&#34;UTF-8&#34;&gt;&lt;title&gt;500&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;500&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25  &lt;!"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" /><link rel="prev" href="https://shilongshen.github.io/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" /><link rel="next" href="https://shilongshen.github.io/springboot%E8%BF%90%E8%A1%8C%E6%97%B6%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "个人博客搭建",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA\/"
+        },"genre": "posts","wordcount":  940 ,
+        "url": "https:\/\/shilongshen.github.io\/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA\/","datePublished": "2021-02-10T09:54:48+08:00","dateModified": "2021-02-10T09:54:48+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">个人博客搭建</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>项目学习</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-02-10">2021-02-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;940 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#异常处理">异常处理</a></li>
+    <li><a href="#日志处理">日志处理</a></li>
+    <li><a href="#页面处理">页面处理</a></li>
+    <li><a href="#实体设计">实体设计</a></li>
+    <li><a href="#分类管理">分类管理</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>技术组合：</p>
+<ul>
+<li>后端：Spring Boot，JPA，thymeleaf模板</li>
+<li>数据库:MySQL</li>
+<li>前端UI：Semantic UI框架</li>
+</ul>
+<p>工具与环境：</p>
+<ul>
+<li>IDEA</li>
+<li>Maven 3</li>
+<li>JDK 8</li>
+<li>Axure RP8  &ndash;&gt;页面原型设计工具</li>
+</ul>
+<h1 id="异常处理">异常处理</h1>
+<p>拦截异常：自定义400，500, error异常页面</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">&lt;!DOCTYPE<span class="w"> </span>html<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;html lang=&#34;en&#34;&gt;</span><span class="w">
+</span><span class="w"></span>&lt;head<span class="sd">&gt;
+</span><span class="sd">   </span><span class="sd"> </span><span class="sd">&lt;meta charset=&#34;UTF-8&#34;&gt;</span><span class="w">
+</span><span class="w">    </span>&lt;title&gt;<span class="m">404</span>&lt;/title<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;/head&gt;</span><span class="w">
+</span><span class="w"></span>&lt;body<span class="sd">&gt;
+</span><span class="sd">   </span><span class="sd"> </span><span class="sd">&lt;h1&gt;404&lt;/h1&gt;</span><span class="w">
+</span><span class="w"></span>&lt;/body<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;/html&gt;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">&lt;!DOCTYPE<span class="w"> </span>html<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;html lang=&#34;en&#34;&gt;</span><span class="w">
+</span><span class="w"></span>&lt;head<span class="sd">&gt;
+</span><span class="sd">   </span><span class="sd"> </span><span class="sd">&lt;meta charset=&#34;UTF-8&#34;&gt;</span><span class="w">
+</span><span class="w">    </span>&lt;title&gt;<span class="m">500</span>&lt;/title<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;/head&gt;</span><span class="w">
+</span><span class="w"></span>&lt;body<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;h1&gt;500&lt;/h1&gt;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>&lt;/body<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;/html&gt;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">&lt;!DOCTYPE<span class="w"> </span>html<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;html lang=&#34;en&#34; xmlns:th=&#34;http://www.w3.org/1999/xhtml&#34;&gt;</span><span class="w">
+</span><span class="w"></span>&lt;head<span class="sd">&gt;
+</span><span class="sd">   </span><span class="sd"> </span><span class="sd">&lt;meta charset=&#34;UTF-8&#34;&gt;</span><span class="w">
+</span><span class="w">    </span>&lt;title&gt;错误&lt;/title<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;/head&gt;</span><span class="w">
+</span><span class="w"></span>&lt;body<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;h1&gt;错误&lt;/h1&gt;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>&lt;!--可以将错误信息显示在页面的源代码中--<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;div&gt;</span><span class="w">
+</span><span class="w">    </span>&lt;div<span class="w"> </span>th<span class="p">:</span>utext=<span class="s2">&#34;&#39;&amp;lt;!--&#39;&#34;</span><span class="w"> </span>th<span class="p">:</span>remove=<span class="s2">&#34;tag&#34;</span>&gt;&lt;/div<span class="sd">&gt;
+</span><span class="sd">   </span><span class="sd"> </span><span class="sd">&lt;div th:utext=&#34;&#39;Failed Request URL : &#39; + ${url}&#34; th:remove=&#34;tag&#34;&gt;</span><span class="w">
+</span><span class="w">    </span>&lt;/div<span class="sd">&gt;
+</span><span class="sd">   </span><span class="sd"> </span><span class="sd">&lt;div th:utext=&#34;&#39;Exception message : &#39; + ${exception.message}&#34;</span><span class="w">
+</span><span class="w">         </span>th<span class="p">:</span>remove=<span class="s2">&#34;tag&#34;</span>&gt;&lt;/div<span class="sd">&gt;
+</span><span class="sd">   </span><span class="sd"> </span><span class="sd">&lt;ul th:remove=&#34;tag&#34;&gt;</span><span class="w">
+</span><span class="w">        </span>&lt;li<span class="w"> </span>th<span class="p">:</span>each=<span class="s2">&#34;st : ${exception.stackTrace}&#34;</span><span class="w"> </span>th<span class="p">:</span>remove=<span class="s2">&#34;tag&#34;</span>&gt;&lt;span<span class="w">
+</span><span class="w">                </span>th<span class="p">:</span>utext=<span class="s2">&#34;${st}&#34;</span><span class="w"> </span>th<span class="p">:</span>remove=<span class="s2">&#34;tag&#34;</span>&gt;&lt;/span&gt;&lt;/li<span class="sd">&gt;
+</span><span class="sd">   </span><span class="sd"> </span><span class="sd">&lt;/ul&gt;</span><span class="w">
+</span><span class="w">    </span>&lt;div<span class="w"> </span>th<span class="p">:</span>utext=<span class="s2">&#34;&#39;--&amp;gt;&#39;&#34;</span><span class="w"> </span>th<span class="p">:</span>remove=<span class="s2">&#34;tag&#34;</span>&gt;&lt;/div<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;/div&gt;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>&lt;/body<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;/html&gt;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c">#自定义首页</span><span class="w">
+</span><span class="w"></span>&lt;!DOCTYPE<span class="w"> </span>html<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;html lang=&#34;en&#34;&gt;</span><span class="w">
+</span><span class="w"></span>&lt;head<span class="sd">&gt;
+</span><span class="sd">   </span><span class="sd"> </span><span class="sd">&lt;meta charset=&#34;UTF-8&#34;&gt;</span><span class="w">
+</span><span class="w">    </span>&lt;title&gt;首页&lt;/title<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;/head&gt;</span><span class="w">
+</span><span class="w"></span>&lt;body<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;h1&gt;首页&lt;/h1&gt;</span><span class="w">
+</span><span class="w"></span>&lt;/body<span class="sd">&gt;</span><span class="sd">
+</span><span class="sd"></span><span class="sd">&lt;/html&gt;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>定义controller</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//错误页面异常信息显示处理
+</span><span class="c1"></span><span class="c1">//定义首页控制器
+</span><span class="c1"></span><span class="kn">package</span> <span class="nn">com.example.BlogDemo.web</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.example.BlogDemo.MyNotFoundException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javassist.NotFoundException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Controller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.GetMapping</span><span class="o">;</span>
+
+<span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">IndexController</span> <span class="o">{</span>
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="s">&#34;/&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">index</span><span class="o">(</span><span class="o">)</span>  <span class="o">{</span>
+<span class="c1">//        int i=9/0;
+</span><span class="c1"></span>        <span class="n">String</span> <span class="n">blog</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">blog</span><span class="o">=</span><span class="o">=</span><span class="kc">null</span><span class="o">)</span><span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">MyNotFoundException</span><span class="o">(</span><span class="s">&#34;博客不存在&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="s">&#34;index&#34;</span><span class="o">;</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//资源找不到异常处理
+</span><span class="c1"></span><span class="kn">package</span> <span class="nn">com.example.BlogDemo</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.http.HttpStatus</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.ResponseStatus</span><span class="o">;</span>
+
+<span class="nd">@ResponseStatus</span><span class="o">(</span><span class="n">HttpStatus</span><span class="o">.</span><span class="na">NOT_FOUND</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyNotFoundException</span> <span class="kd">extends</span> <span class="n">RuntimeException</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">MyNotFoundException</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">MyNotFoundException</span><span class="o">(</span><span class="n">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">message</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">MyNotFoundException</span><span class="o">(</span><span class="n">String</span> <span class="n">message</span><span class="o">,</span> <span class="n">Throwable</span> <span class="n">cause</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">message</span><span class="o">,</span> <span class="n">cause</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//统一处理异常
+</span><span class="c1"></span><span class="kn">package</span> <span class="nn">com.example.BlogDemo.handler</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.core.annotation.AnnotationUtils</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.ControllerAdvice</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.ExceptionHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.ResponseStatus</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.ModelAndView</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+<span class="c1">//import java.util.logging.Logger;
+</span><span class="c1"></span>
+<span class="nd">@ControllerAdvice</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ControllerExceptionHandler</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Logger</span> <span class="n">logger</span><span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getClass</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+
+    <span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="n">Exception</span><span class="o">.</span><span class="na">class</span><span class="o">)</span><span class="c1">//拦截异常,并进行处理
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">exceptionHandle</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;Request URL:{}, Exception:{]&#34;</span><span class="o">,</span><span class="n">request</span><span class="o">.</span><span class="na">getRequestURL</span><span class="o">(</span><span class="o">)</span><span class="o">,</span><span class="n">e</span><span class="o">)</span><span class="o">;</span><span class="c1">//控制台输出异常
+</span><span class="c1"></span>        <span class="k">if</span><span class="o">(</span><span class="n">AnnotationUtils</span><span class="o">.</span><span class="na">findAnnotation</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getClass</span><span class="o">(</span><span class="o">)</span><span class="o">,</span> <span class="n">ResponseStatus</span><span class="o">.</span><span class="na">class</span><span class="o">)</span><span class="o">!</span><span class="o">=</span><span class="kc">null</span><span class="o">)</span><span class="o">{</span>
+            <span class="k">throw</span> <span class="n">e</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">ModelAndView</span> <span class="n">mv</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">mv</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">&#34;url&#34;</span><span class="o">,</span><span class="n">request</span><span class="o">.</span><span class="na">getRequestURL</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">mv</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">&#34;exception&#34;</span><span class="o">,</span><span class="n">e</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">mv</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">&#34;error/error&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">mv</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="日志处理">日志处理</h1>
+<p>记录日志内容</p>
+<ul>
+<li>请求url</li>
+<li>请求ip</li>
+<li>参数args</li>
+<li>调用方法classmethod</li>
+<li>返回内容</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.example.BlogDemo.aspect</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.aspectj.lang.JoinPoint</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.aspectj.lang.annotation.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Component</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.context.request.RequestContextHolder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.context.request.ServletRequestAttributes</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.xml.transform.Result</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+
+<span class="nd">@Aspect</span>
+<span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LogAspect</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getClass</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+
+    <span class="nd">@Pointcut</span><span class="o">(</span><span class="s">&#34;execution(* com.example.BlogDemo.web.*.*(..))&#34;</span><span class="o">)</span>
+<span class="c1">//切入点表达式，知道对哪个类里面的哪个方法进行增强，对com.example.BlogDemo.web包中所有类，类中所有方法进行增强
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Before</span><span class="o">(</span><span class="s">&#34;log()&#34;</span><span class="o">)</span><span class="c1">//在log()方法之前进行切面操作，在log()方法--&gt;web中的控制器请求，即只要有请求发送，都会在请求返回之前执行该方法
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">dobefore</span><span class="o">(</span><span class="n">JoinPoint</span> <span class="n">joinPoint</span><span class="o">)</span> <span class="o">{</span><span class="c1">//在前面之前执行
+</span><span class="c1"></span>        <span class="n">ServletRequestAttributes</span> <span class="n">attributes</span><span class="o">=</span> <span class="o">(</span><span class="n">ServletRequestAttributes</span><span class="o">)</span> <span class="n">RequestContextHolder</span><span class="o">.</span><span class="na">getRequestAttributes</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="na">getRequest</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="na">getRequestURL</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//获取url和ip
+</span><span class="c1"></span>        <span class="n">String</span> <span class="n">ip</span> <span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="na">getRemoteAddr</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">classMethod</span><span class="o">=</span><span class="n">joinPoint</span><span class="o">.</span><span class="na">getSignature</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">getDeclaringTypeName</span><span class="o">(</span><span class="o">)</span><span class="o">+</span><span class="s">&#34;.&#34;</span><span class="o">+</span><span class="n">joinPoint</span><span class="o">.</span><span class="na">getSignature</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">getName</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">Object</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span> <span class="o">=</span><span class="n">joinPoint</span><span class="o">.</span><span class="na">getArgs</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">RequestLog</span> <span class="n">requestLog</span><span class="o">=</span><span class="k">new</span> <span class="n">RequestLog</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="n">ip</span><span class="o">,</span><span class="n">classMethod</span><span class="o">,</span><span class="n">args</span><span class="o">)</span><span class="o">;</span>
+
+
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;debefore......&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Request:{}&#34;</span><span class="o">,</span><span class="n">requestLog</span><span class="o">)</span><span class="o">;</span><span class="c1">//记录请求，包括url,ip,类方法,参数
+</span><span class="c1"></span>
+        <span class="cm">/*
+</span><span class="cm">        *sout:会输出到控制台和日志文件中
+</span><span class="cm">        * debefore......
+</span><span class="cm">        * Request:RequestLog{url=&#39;http://localhost:8080/3/ss&#39;, ip=&#39;127.0.0.1&#39;, ClassMethod=&#39;com.example.BlogDemo.web.IndexController.index&#39;, args=[3, ss]}
+</span><span class="cm">        *  */</span>
+    <span class="o">}</span>
+
+
+    <span class="nd">@After</span><span class="o">(</span><span class="s">&#34;log()&#34;</span><span class="o">)</span><span class="c1">//最终通知
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doafter</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;doafter......&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@AfterReturning</span><span class="o">(</span><span class="n">returning</span> <span class="o">=</span> <span class="s">&#34;result&#34;</span><span class="o">,</span> <span class="n">pointcut</span> <span class="o">=</span> <span class="s">&#34;log()&#34;</span><span class="o">)</span><span class="c1">//对请求完之后返回的内容进行记录,
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doafterReturn</span><span class="o">(</span><span class="n">Object</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span><span class="c1">//拦截返回内容
+</span><span class="c1"></span>        <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;Result:{}&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">RequestLog</span><span class="o">{</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="n">url</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="n">ip</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="n">ClassMethod</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">Object</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">RequestLog</span><span class="o">(</span><span class="n">String</span> <span class="n">url</span><span class="o">,</span> <span class="n">String</span> <span class="n">ip</span><span class="o">,</span> <span class="n">String</span> <span class="n">classMethod</span><span class="o">,</span> <span class="n">Object</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">ip</span> <span class="o">=</span> <span class="n">ip</span><span class="o">;</span>
+            <span class="n">ClassMethod</span> <span class="o">=</span> <span class="n">classMethod</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">args</span> <span class="o">=</span> <span class="n">args</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">&#34;RequestLog{&#34;</span> <span class="o">+</span>
+                    <span class="s">&#34;url=&#39;&#34;</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="sc">&#39;\&#39;&#39;</span> <span class="o">+</span>
+                    <span class="s">&#34;, ip=&#39;&#34;</span> <span class="o">+</span> <span class="n">ip</span> <span class="o">+</span> <span class="sc">&#39;\&#39;&#39;</span> <span class="o">+</span>
+                    <span class="s">&#34;, ClassMethod=&#39;&#34;</span> <span class="o">+</span> <span class="n">ClassMethod</span> <span class="o">+</span> <span class="sc">&#39;\&#39;&#39;</span> <span class="o">+</span>
+                    <span class="s">&#34;, args=&#34;</span> <span class="o">+</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">args</span><span class="o">)</span> <span class="o">+</span>
+                    <span class="sc">&#39;}&#39;</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">2021-03-05 09:28:18.839  INFO 9716 --- [nio-8080-exec-1] com.example.BlogDemo.aspect.LogAspect    :debefore......
+2021-03-05 09:28:18.839  INFO 9716 --- [nio-8080-exec-1] com.example.BlogDemo.aspect.LogAspect    : Request:RequestLog{url=&#39;http://localhost:8080/3/ss&#39;, ip=&#39;127.0.0.1&#39;, ClassMethod=&#39;com.example.BlogDemo.web.IndexController.index&#39;, args=[3, ss]}
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="页面处理">页面处理</h1>
+<p>1.静态页面导入project</p>
+<ul>
+<li>将html文件放入templates文件夹中</li>
+<li>将js，css，图片等放到static文件夹中</li>
+</ul>
+<p>2.thymeleaf布局</p>
+<ul>
+<li>定义fragment</li>
+<li>使用fragment布局</li>
+</ul>
+<p>3.错误页面美化</p>
+<h1 id="实体设计">实体设计</h1>
+<p>实体类：</p>
+<ul>
+<li>博客类Blog</li>
+<li>博客分类Type</li>
+<li>博客标签Tag</li>
+<li>博客评论Comment</li>
+<li>用户User</li>
+</ul>
+<p><strong>利用JPA，通过面向对象的方式在数据库中进行数据库表的创建。</strong></p>
+<ol>
+<li>构建实体类</li>
+<li>创建实体类之间的关系</li>
+</ol>
+<p>新建po文件夹，并进行上诉两步操作</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153552.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153552.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153552.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153552.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153552.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153552.png" /></p>
+<p>运行项目，会在数据库中自动生成数据表</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153737.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153737.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153737.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153737.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153737.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210305153737.png" /></p>
+<p>后台管理功能实现</p>
+<ul>
+<li>
+<p>dao对数据进行操作</p>
+</li>
+<li>
+<p>service实现业务逻辑，在数据库中查找，返回用户</p>
+</li>
+<li>
+<p>LoginController,登录控制器。调用service和dao</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.lrm.web.admin</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.lrm.po.User</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.lrm.service.UserService</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.annotation.Autowired</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Controller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.GetMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.PostMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestParam</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.mvc.support.RedirectAttributes</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpSession</span><span class="o">;</span>
+
+<span class="nd">@Controller</span><span class="c1">//控制器
+</span><span class="c1"></span><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/admin&#34;</span><span class="o">)</span><span class="c1">//admin的请求需要在这里进行处理
+</span><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoginController</span> <span class="o">{</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="n">UserService</span> <span class="n">userService</span><span class="o">;</span>
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="o">)</span><span class="c1">//admin请求会直接跳转到login
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">loginPage</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&#34;admin/login&#34;</span><span class="o">;</span><span class="c1">//跳转到login页面
+</span><span class="c1"></span>    <span class="o">}</span>
+
+    <span class="nd">@PostMapping</span><span class="o">(</span><span class="s">&#34;/login&#34;</span><span class="o">)</span><span class="c1">//
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">login</span><span class="o">(</span><span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">username</span><span class="o">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">password</span><span class="o">,</span> <span class="n">HttpSession</span> <span class="n">session</span><span class="o">,</span> <span class="n">RedirectAttributes</span> <span class="n">attributes</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">userService</span><span class="o">.</span><span class="na">checkUser</span><span class="o">(</span><span class="n">username</span><span class="o">,</span> <span class="n">password</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">user</span> <span class="o">!</span><span class="o">=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span><span class="c1">//如果用户正确，将其放入session中
+</span><span class="c1"></span>            <span class="n">user</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="kc">null</span><span class="o">)</span><span class="o">;</span>
+            <span class="n">session</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&#34;user&#34;</span><span class="o">,</span> <span class="n">user</span><span class="o">)</span><span class="o">;</span>
+            <span class="k">return</span> <span class="s">&#34;admin/index&#34;</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span><span class="c1">//如果用户名和密码不正确
+</span><span class="c1"></span>            <span class="n">attributes</span><span class="o">.</span><span class="na">addFlashAttribute</span><span class="o">(</span><span class="s">&#34;message&#34;</span><span class="o">,</span> <span class="s">&#34;用户名和密码错误&#34;</span><span class="o">)</span><span class="o">;</span>
+            <span class="k">return</span> <span class="s">&#34;redirect:/admin&#34;</span><span class="o">;</span><span class="c1">//重定向
+</span><span class="c1"></span>        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="s">&#34;/logout&#34;</span><span class="o">)</span><span class="c1">//用户注销
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">logout</span><span class="o">(</span><span class="n">HttpSession</span> <span class="n">session</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">session</span><span class="o">.</span><span class="na">removeAttribute</span><span class="o">(</span><span class="s">&#34;user&#34;</span><span class="o">)</span><span class="o">;</span><span class="c1">//将session中的user清空
+</span><span class="c1"></span>        <span class="k">return</span> <span class="s">&#34;redirect:/admin&#34;</span><span class="o">;</span><span class="c1">//重定向到admin
+</span><span class="c1"></span>    <span class="o">}</span>
+
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>登录拦截器</li>
+</ul>
+<p>目的：在没有登录的情况下， 不希望其他人能够访问到管理的界面（直接通过地址进行访问，这可能会导致后台的内容被篡改）；所以要加上登录拦截器。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.lrm.interceptor</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.handler.HandlerInterceptorAdapter</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletResponse</span><span class="o">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * Created by limi on 2017/10/15.
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoginInterceptor</span> <span class="kd">extends</span> <span class="n">HandlerInterceptorAdapter</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">preHandle</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span><span class="c1">//在请求未到达前进行预处理
+</span><span class="c1"></span>                             <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span>
+                             <span class="n">Object</span> <span class="n">handler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getSession</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&#34;user&#34;</span><span class="o">)</span> <span class="o">=</span><span class="o">=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span><span class="c1">//如果未登录
+</span><span class="c1"></span>            <span class="n">response</span><span class="o">.</span><span class="na">sendRedirect</span><span class="o">(</span><span class="s">&#34;/admin&#34;</span><span class="o">)</span><span class="o">;</span><span class="c1">//就重定向到登录页面
+</span><span class="c1"></span>            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.lrm.interceptor</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.Configuration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.config.annotation.InterceptorRegistry</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter</span><span class="o">;</span>
+
+<span class="cm">/**
+</span><span class="cm"> * Created by limi on 2017/10/15.
+</span><span class="cm"> */</span>
+<span class="nd">@Configuration</span><span class="c1">//配置类
+</span><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebConfig</span> <span class="kd">extends</span> <span class="n">WebMvcConfigurerAdapter</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span><span class="c1">//重写控制器过滤设置
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addInterceptors</span><span class="o">(</span><span class="n">InterceptorRegistry</span> <span class="n">registry</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">addInterceptor</span><span class="o">(</span><span class="k">new</span> <span class="n">LoginInterceptor</span><span class="o">(</span><span class="o">)</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">addPathPatterns</span><span class="o">(</span><span class="s">&#34;/admin/**&#34;</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">excludePathPatterns</span><span class="o">(</span><span class="s">&#34;/admin&#34;</span><span class="o">)</span><span class="c1">//排除掉一些路径
+</span><span class="c1"></span>                <span class="o">.</span><span class="na">excludePathPatterns</span><span class="o">(</span><span class="s">&#34;/admin/login&#34;</span><span class="o">)</span><span class="o">;</span><span class="c1">//排除掉一些路径
+</span><span class="c1"></span>    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="分类管理">分类管理</h1>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-02-10</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-title="个人博客搭建"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-title="个人博客搭建" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-title="个人博客搭建"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-title="个人博客搭建"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-title="个人博客搭建" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-title="个人博客搭建" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-title="个人博客搭建"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" class="prev" rel="prev" title="回溯算法"><i class="fas fa-angle-left fa-fw"></i>回溯算法</a>
+            <a href="/springboot%E8%BF%90%E8%A1%8C%E6%97%B6%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95/" class="next" rel="next" title="SpringBoot运行时错误记录">SpringBoot运行时错误记录<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

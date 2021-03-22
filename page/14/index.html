@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://shilongshen.github.io/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
-<meta property="og:updated_time" content="2021-02-04T09:17:30+08:00" />
+<meta property="og:updated_time" content="2021-03-22T09:54:48+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
@@ -103,85 +103,78 @@
         alt="/images/avatar.jpg"
         title="/images/avatar.jpg" /></a></div><h1 class="home-title">我的个人博客</h1><div class="links"><a href="https://github.com/shilongshen" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a><a href="mailto:1319144765@qq.com" title="Email" rel=" me"><i class="far fa-envelope fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/">深度生成模型</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考：https://nndl.github.io/
-https://www.spaces.ac.cn/archives/5253
-https://www.spaces.ac.cn/archives/5343
- 为什么要研究生成模型？ 概率生成模型（Probabilistic Generative Model），简称生成模型，是概率统计和机器学习领域的一类重要模型，指一系列用于随机生成可观测数据的模型。假设在一个连续或离散的高位空间$\cal{X}$中,存在一个随机向量$\pmb{X}$服从一个未知的数据分布$p_r(\pmb{x})$，$\pmb{x}\in\cal{X}$。生成模型是根据一些可观测样本${\pmb{x}^1,\pmb{x}^2,&hellip;,\pmb{x}^N }$来学习一个参数化的模型$p_\theta(\pmb{x})$来近似位置分布$p_r(\pmb{x})$，并可以用这个模型来生成一些样本，使得生成样本和真实样本尽可能地相似。生成模型通常包含两个基本功能：**概率密度估计**和**生成样本（即采样）**。下图以手写体数字图像为例给出了生成模型的两个功能示例，其中左图表示手写体数字图像的真实分布$p_r(\pmb{x})$以及从中采样的一些“真实”样本，右图表示估计出了分布$p_\theta(\pmb{x})$以及从中采样的“生成”样本。
- 深度生成模型的目标是从训练数据中学习到复杂的概率分布
- 1 概率生成模型 给定一组数据$\cal{D}=\lbrace\pmb{x}^{(n)}\rbrace_{n=1}^N$，假设它们都是独立地从相同的概率密度函数为$p_r(\pmb{x})$ 的未知分布中产生的．**密度估计（Density Estimation）是根据数据集$\cal{D}$来估计其概率密度函数$p_\theta(\pmb{x})$**。
-在机器学习中，密度估计是一类无监督学习问题．比如在手写体数字图像的密度估计问题中，我们将图像表示为一个随机向量𝑿，其中每一维都表示一个像素值．假设手写体数字图像都服从一个未知的分布$p_r(\pmb{x})$，希望通过一些观测样本来估计其分布．但是，手写体数字图像中不同像素之间存在复杂的依赖关系（比如相邻像素的颜色一般是相似的），很难用一个明确的图模型来描述其依赖关系，所以直接建模$p_r(\pmb{x})$ 比较困难．因此，我们通常通过引入隐变量𝒛来简化模型，这样密度估计问题可以转换为估计变量(𝒙, 𝒛) 的两个局部条件概率$p_\theta(\pmb{z})$和$p_\theta(\pmb{x|z})$．一般为了简化模型，假设隐变量𝒛 的先验分布为标准高斯分布𝒩(0, 𝑰)．隐变量𝒛 的每一维之间都是独立的．在这个假设下，先验分布𝑝(𝒛; 𝜃) 中没有参数．因此，**密度估计的重点是估计条件分布$p{(\pmb{x|z},\theta)}$．**
-如果要建模含隐变量的分布，就需要利用EM算法来进行密度估计，而在EM算法中，需要估计条件分布 $p(\pmb{x}|\pmb{z};\theta)$以及后验分布 $p(\pmb{z}|\pmb{x};\theta)$,当这两个分布比较复杂时就可以利用神经网络来建模，这就是变分自编码器的思想。
-由条件概率公式可得： $$ p_\theta(x，z)=p_\theta(\pmb{z})p_\theta(\pmb{x|z}) $$
-在得到两个变量的局部条件概率$p_\theta(\pmb{z})$ 和$p_\theta(\pmb{x|z})$之后，我们就可以**生成数据**𝒙，具体过程可以分为两步进行：
-(1)根据隐变量的先验分布$p_\theta(\pmb{z})$ 进行采样，得到样本$z$。
-(2)根据条件分布$p_\theta(\pmb{x|z})$进行采样，得到样本$x$.
-为了便于采样，通常$p_\theta(\pmb{x|z})$不能过于复杂。因此，另一种生成样本的思想是从一个简单分布𝑝(𝒛), 𝒛 ∈ 𝒵（比如标准正态分布）中采集一个样本𝒛，并利用一个深度神经网络𝑔 ∶ 𝒵 → 𝒳 使得𝑔(𝒛) 服从$p_r(\pmb{x})$．这样，我们就可以避免密度估计问题，并有效降低生成样本的难度，这正是**生成对抗网络**的思想．
-1.2 变分自编码器 1.2.1 含隐变量的生成模型 假设一个生成模型（如图13.3所示）中包含隐变量，即有部分变量是不可观测的，其中观测变量𝑿 是一个高维空间𝒳 中的随机向量，隐变量𝒁 是一个相对低维的空间𝒵 中的随机向量。
-这个生成模型的联合概率密度函数为： $$ p(\pmb{x,z};\theta)=p(\pmb{x|z};\theta)p(\pmb{z};\theta) $$ 其中$p(\pmb{z};\theta)$为隐变量$z$的先验分布的概率密度函数，$p(\pmb{x|z};\theta)$为已知$z$时观测变量$\pmb{x}$的条件概率密度函数,$\theta$表示两个密度函数的参数。一般情况下我们可以假设$p(\pmb{z};\theta)$和$p(\pmb{x|z};\theta)$为某种参数化的分布族，比如正态分布，这种分布的形式已知，只是参数$\theta$未知，可以通过极大似然进行估计。
-给定样本$\pmb{x}$，其对数边际似然函数$\log p(\pmb{x};\theta)$可以分解为 $$ \log p(\pmb{x};\theta)=ELBO(q,\pmb{x};\theta,\phi)+KL[q(\pmb{z};\phi),p(\pmb{z|x};\theta)] $$ 其中$q(\pmb{z};\phi)$是额外引入的变分密度函数，其参数为$\phi$，$ELBO(q,\pmb{x};\theta,\phi)$为证据下界， $$ ELBO(q,\pmb{x};\theta,\phi)=\mathbb{E}_{\mathcal{z}\sim {q(\pmb{z};\phi)}}[\log \frac{p(\pmb{x,z},\theta)}{q(\pmb{z};\phi)}] $$ 最大化对数边际似然$\log p(\pmb{x};\theta)$可以用EM算法来求解。在EM算法的每次迭代中，具体可以分为两步：</div><div class="post-footer">
-        <a href="/%E6%B7%B1%E5%BA%A6%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/">Read More</a></div>
+        <a href="/%E5%8D%B7%E7%A7%AF%E6%A0%B8%E7%B1%BB%E5%9E%8B%E7%AE%80%E4%BB%8B/">卷积核类型简介</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考</div><div class="post-footer">
+        <a href="/%E5%8D%B7%E7%A7%AF%E6%A0%B8%E7%B1%BB%E5%9E%8B%E7%AE%80%E4%BB%8B/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">线性模型</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">线性模型是机器学习中应用最广泛的模型，指通过样本特征的线性组合来进行预测的模型。给定一个D维样本$\pmb{x}=[x_1,&hellip;,x_D]^T$ ,其线下你给组合函数为： $$ f(x;w)=w_1x_1+w_2x_2+&hellip;+w_Dx_D+b=\pmb{w^Tx}+b $$ ​	其中$\pmb{w}=[w_1,&hellip;w_D]^T$为为D维的权重向量。直接用$f(x;w)$来预测输出目标$y=f(x;w)$。在分类问题中，由于输出目标$y$是一些离散的标签，而$f(x;w)$的置于为实数，因此无法直接用$f(x;w)$来进行预测，需要引入一个非线性的决策函数$g(.)$来预测输出目标 $$ y=g(f(x;w)) $$ 其中$f(x;w)$也称为判别函数。典型的二分类问题的结构图如下：
-3.1线性判别函数和决策边界 ​	一个线性分类模型是由一个（或多个）线性的判别函数$f(\pmb{x;w})=\pmb{w^Tx}+b$和非线性的决策函数$g(.)$构成。
-3.1.1二分类 ​	二分类问题的类别标签$y$只有两种取值，通常可以设为{+1,-1}。在二分类问题中，我们只需要一个线性判别函数$f(\pmb{x;w})=\pmb{w^Tx}+b$。特征空间$\cal{R}$中满足$f(\pmb{x;w})=0$的点组成一个分割超平面，称为决策边界。决策边界将特征空间一分为二，划成两个区域，每一个区域对应一个类别。
-​	给定N个样本的训练集$\cal{D}={(x^{(n)},y^{(n)}})^N_{n=1}$.其中$y^{n}\in(+1,-1)$.线性模型视图学习到参数$\pmb{w^*}$，使得对于每个样本$(x^{n},y^n)$尽量满足 $$ f(\pmb{x}^(n);\pmb{w}^*)&gt;0\qquad if \quad y^{(n)}=1\
-f(\pmb{x}^(n);\pmb{w}^*)&gt;0 \qquad	if \quad y^{(n)}=1 $$
-3.1.2多分类 ​	多分类问题是指分类的类别数C大于2.多分类一般需要多个线性判别函数，但是设计这些判别函数有很多种形式。
-假设一个多分类的问题的类别是$\lbrace1,2,&hellip;C\rbrace$。常用的方式有以下三种：
-（1）“一对其余”方式:把多分类问题转换为𝐶 个“一对其余”的二分类问 题．这种方式共需要𝐶 个判别函数，其中第𝑐 个判别函数$f_c$ 是将类别𝑐 的样本和 不属于类别𝑐 的样本分开．
-（2）“一对一方式”：：把多分类问题转换为𝐶(𝐶 − 1)/2 个“一对一”的二分 类问题．这种方式共需要𝐶(𝐶 − 1)/2 个判别函数，其中第(𝑖, 𝑗) 个判别函数是把类 别𝑖 和类别𝑗 的样本分开．
-（3）“argmax”方式：这是一种改进的“一对其余&quot;方式，共需要C个判别函数 $$ f_c(\pmb{x,w_c})=\pmb{w_c^Tx}+b_c \qquad c\in\lbrace1,&hellip;C\rbrace $$ 对于样本𝒙，如果存在一个类别𝑐，相对于所有的其他类别𝑐(̃ 𝑐 ̃ ≠ 𝑐)有𝑓𝑐(𝒙;𝒘𝑐) &gt; 𝑓𝑐̃(𝒙,𝒘𝑐̃)，那么𝒙属于类别𝑐．“argmax”方式的预测函数定义为 $$ y={argmax}_{c=1}^Cf_c(\pmb{x;w}_c) $$</div><div class="post-footer">
-        <a href="/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">Read More</a></div>
+        <a href="/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E7%82%B9/">卷积神经网络的特点</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考1
+参考2
+1.稀疏连接 卷积层与下一层的连接数大大减小
+或者可以说是上一层的某一个神经元只影响了下一层的某些神经元，而不是全部神经元
+或者说是下一层的某一神经元只被上一层的某些神经元所影响，而不是全部神经元
+2.参数共享 作为参数的卷积核$w^(l)$对于第$l$层的所有的神经元都是相同的。
+参数共享可以理解为一个卷积核直捕捉输入数据中的一种特定的局部特征，因此，如果要提取多种特征就需要使用多个不同的卷积核。
+3.等变表示  卷积层负责提取特征，采样层负责特征选择，全连接层负责分类
+ </div><div class="post-footer">
+        <a href="/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E7%82%B9/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/_____________________cost-volume___correlation_________/">计算机视觉中的cost volume</a>
+        <a href="/__________________________________________/">可控人物图像生成综述</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">1.姿态表示的错误 2.由于身体自遮挡造成的姿态表示的模棱两可 3.稀少的姿态 4.稀少的外观 5.
+从2D的层面来说肢体的遮挡是无可避免的
+ 姿态引导下任务图像生成是计算机视觉领域一个热门的研究方向。该任务的目标为在目标姿态的引导下，在保留源图像外观的基础上进行人物姿态的转变。姿态引导下人物图像生成研究具有广泛的应用价值：例如图像编辑、电影制作、AR技术、虚拟换装、以及数据增强等。在这些应用中，用户通常会关注语义和细节更加丰富的部分，例如脸部和服装的细节。因此对语义信息进行保留以及对细粒度外观特征进行补充对于姿态引导下图像生成模型具有重要的意义。
+姿态引导下的图像生成研究大致可以分为三种方法：全局预测方法、局部映射方法以及混合方法
+全局预测方法 受到图像翻译工作的启发，早期的姿态引导下图像生成研究通常采用了全局预测的方法来直接将源图像姿态直接转换为目标姿态。例如文献【】中提出的模型中采用了具有跳跃连接的U-net进行图像的生成，其中跳跃连接用于前向传递解码特征给编码器。但是这种基于全局预测的方法缺乏捕获相应局部特征的能力，这会导致生成图像中细节的缺失，例如生成平滑的服装或者是变形的姿态。究其原因在于U-net首先文献【】被提出用于解决图像分割问题，其原域的图像与目标域的图像的局部结构是对齐的，解码器的特征映射与编码器的特征映射具有相同的空间分布，属于强约束。而对于姿态转换问题，由于人体非刚性的特点，（由于视角变化或者是姿态变化）输入图像和目标图像具有不同的空间位置，其特征映射是未对齐的，对于未对齐的特征映射则不属于强约束。因此直接使用U-net的跳跃连接只能够为解码器提供未对齐的特征映射，这对于进行姿态转换并不能取得很好的效果。
+ 具体解释：
+假设U-net的结构如上，其中Encoder中进行的是的是源图像$I_s$和目标姿态$P_t$的信息融合，所以Encoder中的特征Encoder feature表示的是源姿态$P_s$和目标姿态$P_t$的一种融合信息（当然还包括了源图像的外观），而latent code可以理解为源图像的姿态已经转变为目标姿态（保留了源图像的外观），因此latent code可以视为生成$I_g$.(需要经过Decoder编码)。所以Encoder feature和latent code（可以理解为Decoder feature）在局部是不对齐的。
+思考一下U-net中的跳跃连接的作用是什么：是为了前向传递Encoder feature，这能够有效的保留源图像中的信息。（保留图像中的局部信息，保留细节）
+但是在姿态引导下的图像生成研究中，前向传递的特征是不对齐的，这会导致导致模型无法很好的捕获局部的信息，使得生成的图像细节的缺失，例如生成平滑的服装或者是变形的姿态
+ 局部映射方法 针对全局预测方法存在的缺陷，文献【】提出了一种改进的特征融合机制，对前向传递的解码器特征进行仿射变换后再传递给编码器。受到该方法的启发，有许多的研究人员采用了局部映射方法来进行姿态引导下的图像生成研究进行细粒度挖掘，例如例如引入薄板样条函数来进一步促进了非线性局部映射、引入了局部注意力机制增强了在局部映射建模中的灵活性、除此之外还有光流法以及3D 建模法等。由于局部映射方法往往需要对应的精确特征来进行细节重构，然而在实际的情况中，图像中人物往往由于视角的变化、遮挡或者姿态变化出现不可见的区域，这会导致源图像和目标图像中的某些部分区域无法对应，这些无法对应的部分就无法使用局部映射方法，这会导致相应部分的生成内容不确定。
+ 常用的局部映射方法：仿射变换，薄板样条，局部注意力机制，光流法，3D建模
+仿射变换和薄板样条不够灵活
+3D建模的计算量太大
+ 混合方法 针对局部映射方法存在的缺陷，混合方法尝试利用另外一个全局预测分支在不对应部分生成新的内容，并与局部映射方法生成的内容相结合。但是现有的混合方法只是尝试在图像级别将生成结果进行混合，中间层的特征融合很少被研究。具体来说全局预测分支通常独立于局部映射方法，这使得两者生成的内容在风格上是不一致的。</div><div class="post-footer">
+        <a href="/__________________________________________/">Read More</a></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">各种激活函数</a>
     </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
-参考文献
-在文献中是这样描述cost volume：
-  明确：在文献中是计算图像1（目标图像）和经过warp操作后的图像2（原图像）的cost volume。cost volume也称为correlation
-计算cost volume的目的是什么？ 文章中是这样描述的：A cost volume stores the data matching costs for associating a pixel with its corresponding pixels at the next frame
-即用于存储两张图像中各自像素之间的相似程度的。
-如何计算cost volume 假设图像特征的大小为$x \in \mathbb{R}^{C \times H \times W}$，则像素共有$H\times W$个像素，每个像素的维度为$C$，即一个像素为$C$维的向量。
- 注意在机器学习领域中，通常将特征表示为向量的形式，所以在分析两个特征向量之间的相似性时，常用余弦相似度表示。 $$ cos(A,B)=\frac{A \cdot B}{||A||_2\cdot||B||_2} $$
-当将向量进行归一化之后，即$||A||_2=1$，$||B||_2=1$ 。 此时$cos(A,B)=A \cdot B$。也就是说我们可以通过向量的点积来表示两个向量之间的相似程度。
-余弦相似度的取值范围是[-1,1]，相同两个向量的之间的相似度为1。
- 假设目标图像的维度为$x_1 \in \mathbb{R}^{C \times H \times W}$，原图像的维度为$x_2 \in \mathbb{R}^{C \times H \times W}$，那么如何计算cost volume？</div><div class="post-footer">
-        <a href="/_____________________cost-volume___correlation_________/">Read More</a></div>
+sigmoid $$ f(z)=\frac{1}{1+e^{-z}} $$
+其图像如下:
+特点  能够将输入的连续实值变换为0到1之间的输出  缺点  在深度神经网络中梯度反向传播是容易造成梯度爆炸和梯度消失  sigmoid导数 $$ f&rsquo;(z)=\frac{e^{-z}}{(1+e^{-z})^2} $$
+其导数图像如下:
+tanh $$ tanh(x)=\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}} $$
+其图像如下:
+特点 解决了sigmoid函数不是zero-centered的问题, 但是梯度消失依旧存在
+导数 $$ tanh&rsquo;(x)=1-(\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}})^2 $$
+导数图像
+Relu $$ Relu(x)=max(0,x) $$
+函数图像
+导数 $$ Relu&rsquo;(x)=\left{ \begin{array}{lr} 1 &amp;x&gt;0 \
+0 &amp;x&lt;0
+ \end{array}  \right. $$
+优点  解决了梯度消失问题 计算速度非常快 收敛速度远快于sigmoid和tanh  缺点  输出的不是zero-centered 有些神经元可能永远不会被激活(Dead ReLU)  不好的参数初始化 学习率过高, 导致网络不幸进入这种情况    Leaky Relu(PRelu) $$ f(x)=max(\alpha x,x) $$</div><div class="post-footer">
+        <a href="/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/___________________________________________________/">训练集、验证集和测试集的区别和联系</a>
+        <a href="/%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E8%B0%83%E6%95%B4/">学习率的调整</a>
     </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
-1 三者的区别  训练集（train set） —— 用于模型拟合的数据样本。 验证集（development set）—— 是模型训练过程中单独留出的样本集，它可以用于调整模型的超参数和用于对模型的能力进行初步评估。  ​ 在神经网络中， 我们用验证数据集去寻找最优的网络深度（number of hidden layers)，或者决定反向传播算法的停止点或者在神经网络中选择隐藏层神经元的数量；
-​ 在普通的机器学习中常用的交叉验证（Cross Validation) 就是把训练数据集本身再细分成不同的验证数据集去训练模型。
- 测试集 —— 用来评估模最终模型的泛化能力。但不能作为调参、选择特征等算法相关的选择的依据。     类别 验证集 测试集     是否被训练到 否 否   作用 用于调超参数，监控模型是否发生过拟合（以决定是否停止训练） 为了评估最终模型泛化能力   使用次数 多次使用，以不断调参 仅仅一次使用   缺陷 模型在一次次重新手动调参并继续训练后所逼近的验证集，可能只代表一部分非训练集，导致最终训练好的模型泛化性能不够 测试集为了具有泛化代表性，往往数据量比较大，测试一轮要很久，所以往往只取测试集的其中一小部分作为训练过程中的验证集     验证集的作用：
-使用验证集是为了 快速调参，也就是用验证集选择超参数（网络层数，网络节点数，迭代次数，学习率这些）。另外用验证集还可以监控模型是否异常（过拟合啦什么的），然后决定是不是要提前停止训练。
-验证集的关键在于 选择超参数，我们手动调参是为了让模型在验证集上的表现越来越好，如果把测试集作为验证集，调参去拟合测试集，就有点像作弊了。
-而测试集既 不参与参数的学习过程，也 不参与参数的选择过程，仅仅用于模型评价。
-验证集的正确打开方式：
-验证集可以看做参与了 “人工调参” 的训练过程</div><div class="post-footer">
-        <a href="/___________________________________________________/">Read More</a></div>
+目标函数损失值 曲线   曲线 初始时 上扬 [红线]： Solution：初始 学习率过大 导致 振荡，应减小学习率，并 从头 开始训练 。
+  曲线 初始时 强势下降 没多久 归于水平 [紫线]： Solution：后期 学习率过大 导致 无法拟合，应减小学习率，并 重新训练 后几轮 。
+  曲线 全程缓慢 [黄线]： Solution：初始 学习率过小 导致 收敛慢，应增大学习率，并从头 开始训练。
+  </div><div class="post-footer">
+        <a href="/%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E8%B0%83%E6%95%B4/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E8%B0%B1%E5%BD%92%E4%B8%80%E5%8C%96/">谱归一化</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">1. Lipschitz定义 2. Lipschitz常数 3.深度学习中的Lipschitz约束：泛化与生成模型 L约束与泛化 扰动敏感
-记输入为 x，输出为 y，模型为 f，模型参数为 w，记为：
-很多时候，我们希望得到一个“稳健”的模型。何为稳健？一般来说有两种含义，一是对于参数扰动的稳定性，比如模型变成了 fw+Δw(x) 后是否还能达到相近的效果？如果在动力学系统中，还要考虑模型最终是否能恢复到 fw(x)；二是对于输入扰动的稳定性，比如输入从 x 变成了 x+Δx 后，fw(x+Δx) 是否能给出相近的预测结果。
-读者或许已经听说过深度学习模型存在“对抗攻击样本”，比如图片只改变一个像素就给出完全不一样的分类结果，这就是模型对输入过于敏感的案例。
-L约束
-所以，大多数时候我们都希望模型对输入扰动是不敏感的，这通常能提高模型的泛化性能。也就是说，我们希望 ||x1−x2|| 很小时：
-也尽可能地小。当然，“尽可能”究竟是怎样，谁也说不准。于是 Lipschitz 提出了一个更具体的约束，那就是存在某个常数 C（它只与参数有关，与输入无关），使得下式恒成立
-也就是说，希望整个模型被一个线性函数“控制”住。这便是 L 约束了。
-**换言之，在这里我们认为满足 L 约束的模型才是一个好模型。**并且对于具体的模型，我们希望估算出 C(w) 的表达式，并且希望 C(w) 越小越好，越小意味着它对输入扰动越不敏感，泛化性越好。
-神经网络 在这里我们对具体的神经网络进行分析，以观察神经网络在什么时候会满足 L 约束。
-简单而言，我们考虑单层的全连接 f(Wx+b)，这里的 f 是激活函数，而 W,b 则是参数矩阵/向量，这时候 (3) 变为：
-让 x1,x2 充分接近，那么就可以将左边用一阶项近似，得到：
-显然，要希望左边不超过右边，**∂f/∂x 这一项（每个元素）的绝对值必须不超过某个常数。这就要求我们要使用“导数有上下界”的激活函数，不过我们目前常用的激活函数，比如sigmoid、tanh、relu等，都满足这个条件。**假定激活函数的梯度已经有界，尤其是我们常用的 relu 激活函数来说这个界还是 1，因此 ∂f/∂x 这一项只带来一个常数，我们暂时忽略它，剩下来我们只需要考虑 ||W(x1−x2)||。
-多层的神经网络可以逐步递归分析，从而最终还是单层的神经网络问题，而 CNN、RNN 等结构本质上还是特殊的全连接，所以照样可以用全连接的结果。因此，对于神经网络来说，问题变成了：如果下式恒成立，那么 C 的值可以是多少？
-找出 C 的表达式后，我们就可以希望 C 尽可能小，从而给参数带来一个正则化项。</div><div class="post-footer">
-        <a href="/%E8%B0%B1%E5%BD%92%E4%B8%80%E5%8C%96/">Read More</a></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/convolutional-neural-network-architecture-for-geometric-matching/">Convolutional neural network architecture for geometric matching</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-10-13">2020-10-13</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">it is empty!</div><div class="post-footer">
-        <a href="/convolutional-neural-network-architecture-for-geometric-matching/">Read More</a></div>
+        <a href="/_____________________________________________________________________/">最大似然估计、最大后验估计以及贝叶斯公式的理解</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">概率和统计的区别？
+概率（probabilty）和统计（statistics）看似两个相近的概念，其实研究的问题刚好相反。
+概率研究的问题是，已知一个模型和参数，怎么去预测这个模型产生的结果的特性（例如均值，方差，协方差等等）。 举个例子，我想研究怎么养猪（模型是猪），我选好了想养的品种、喂养方式、猪棚的设计等等（选择参数），我想知道我养出来的猪大概能有多肥，肉质怎么样（预测结果）。
+统计研究的问题则相反。统计是，有一堆数据，要利用这堆数据去预测模型和参数。仍以猪为例。现在我买到了一堆肉，通过观察和判断，我确定这是猪肉（这就确定了模型。在实际研究中，也是通过观察数据推测模型是／像高斯分布的、指数分布的、拉普拉斯分布的等等），然后，可以进一步研究，判定这猪的品种、这是圈养猪还是跑山猪还是网易猪，等等（推测模型参数）。
+一句话总结：概率是已知模型和参数，推数据。统计是已知数据，推模型和参数。
+显然，本文解释的MLE和MAP都是统计领域的问题。它们都是用来推测参数的方法。为什么会存在着两种不同方法呢？ 这需要理解贝叶斯思想。我们来看看贝叶斯公式。
+什么是贝叶斯公式？ &hellip;
+极大似然估计 极大似然估计，通俗 理解来说，就是利用已知的样本结果信息，反推最具有可能（最大概率）导致这些样本结果出现的模型参数值！
+换句话说，极大似然估计提供了一种给定观察数据来评估模型参数的方法，即：“模型已定，参数未知”。（给定样本来推测模型的参数）
+极大后验估计 </div><div class="post-footer">
+        <a href="/_____________________________________________________________________/">Read More</a></div>
 </article><ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -203,6 +196,10 @@ L约束
                 </li><li class="page-item ">
                     <span class="page-link">
                         <a href="/page/15/">15</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/16/">16</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">

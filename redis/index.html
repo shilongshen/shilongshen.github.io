@@ -6,15 +6,28 @@
         <meta name="robots" content="noodp" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
         <title>Redis - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="Redis" />
-<meta property="og:description" content="NoSQL(Not Only SQL)，泛指非关系型数据库用于解决大规模数据存储。这些类型的数据存储不需要固定的模式，无需多余的操作就可以横向扩展。
-优点：
- 易拓展;数据之间没有关系。 大数据量高性能 ；NoSQL数据库具有非常高的读写性能，在大数据量下同样表现优秀 多样灵活的数据模型 ； NoSQL无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式  RDBMS(关系型数据库) vs. NoSQL
-传统的ACID:
- A: （Atomicity）原子性 C:（Consistency）一致性 I：（Isolation）独立性 D:（Durability）持久性  CAP：
- C：（Consistency）强一致性 A：（Availability）高可用性 P:（Partition tolerance） 分区容错性  CAP的3进2：
-CAP的核心理论是：一个分布式系统不可能同时很好的满足一致性、可用性和分区容错性，最多只能较好的满足其中的两个。
- CA:单点集群，满足一致性，可用性的系统，通常在拓展性上不太强大&ndash;&gt;传统Oracle数据库 CP:满足一致性，分区容错性的系统，通常性能不是特别高&ndash;&gt;Redis AP:满足可用性，分区容错性的系统，通常对一直性要求低一些  分布式 VS 集群
- 分布式：不同的多台服务器上部署不同的服务模块他们之间通过RPC/Rmi之间通信和调用，对外提供服务和组内协作。 集群：不同的多台服务器上部署相同的服务模块，通过分布式调度软件j进行统一的调度，对外提供服务和访问。  票】、4" />
+<meta property="og:description" content="NoSQL数据库的四大分类  KV键值对 文档类数据库 列存储数据库 图关系数据库  Redis简要介绍 Redis : REmote DIctionary Server（远程字典服务器），是一个高性能的（key/value）分布式内存数据库，基于内存运行，是当下最热门的NoSQL数据库之一，也被人们称为数据结构服务器。
+Redis的三大特点  Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用 Redis不仅仅支持简单的key-value类型的数据，同时好提供list,set,zset,hash等数据结构的存储 Redis支持数据的备份，即master-slave模式的数据备份  Redis的使用场景   内存存储和持久化；Redis支持异步将内存中的数据存放写到磁盘上，同时不影响继续服务
+  取最新N个数据的操作，如：可以将最新10条评论的ID放在Redis的list集合模拟类似HttpSession这种需要设定过期时间的功能
+  发布、订阅消息系统
+  定时器、计数器
+可以对String进行自增自减运算，从而实现计数器功能。
+redis这种内存型数据库的读写性能非常高，很适合存储频繁读写的计数量
+  缓存
+将热点数据放入内存中，设置内存的最大使用量以及淘汰策略来保证缓存的命中率
+  会话缓存
+可以使用redis来统一存储多台应用服务器的回话信息
+当应用服务器不再存储用户的会话信息，也就不在具有状态，一个用户可以请求任意一个应用服务器，从而实现高可用性以及可伸缩性。
+  redis与memcached 两者都是非关系型内存键值数据库，主要有以下不同
+数据类型
+memcached仅支持字符串类型，而redis支持五种不同的数据类型，可以更灵活地解决问题
+数据持久化
+redis支持两种持久化策略：RDB快照和AOF日志，而memcached不支持持久化
+分布式
+memcached不支持分布式，只能通过再客户端使用一致性哈希来实现分布式存储
+redis实现了分布式的支持
+内存管理机制
+ 在redis中，并不是所有数据都一直存储在内存中，可以将一些很久没用的value交换到磁盘，而memcached的数据则一直在内存中。 memmcached将内存分割为特定长度的块来存储数据，以完全解决内存碎片的问题，但是这种方式会使得内存的利用率不高，例如块的大小为128bytes，只存储100bytes的数据，那么剩下的28bytes就浪费掉了  Redis相关知识  单进程 默认16个数据库，类似数组下标从零开始，初始默认使用0号 Select命令切换数据库 Dbsize查看当前数据库的key数量，keys *: 查看所有的key，keys k?：可以支持条件选择 flushall:清空所有的数据库（慎用） flushdb：清空当前库 同意密码管理，16个库都是同样的密码 redis索引都是从零开始 默认端口是6379  Redis的数据类型 Redis键（key）" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://shilongshen.github.io/redis/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
@@ -24,15 +37,28 @@ CAP的核心理论是：一个分布式系统不可能同时很好的满足一�
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
 <meta name="twitter:title" content="Redis"/>
-<meta name="twitter:description" content="NoSQL(Not Only SQL)，泛指非关系型数据库用于解决大规模数据存储。这些类型的数据存储不需要固定的模式，无需多余的操作就可以横向扩展。
-优点：
- 易拓展;数据之间没有关系。 大数据量高性能 ；NoSQL数据库具有非常高的读写性能，在大数据量下同样表现优秀 多样灵活的数据模型 ； NoSQL无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式  RDBMS(关系型数据库) vs. NoSQL
-传统的ACID:
- A: （Atomicity）原子性 C:（Consistency）一致性 I：（Isolation）独立性 D:（Durability）持久性  CAP：
- C：（Consistency）强一致性 A：（Availability）高可用性 P:（Partition tolerance） 分区容错性  CAP的3进2：
-CAP的核心理论是：一个分布式系统不可能同时很好的满足一致性、可用性和分区容错性，最多只能较好的满足其中的两个。
- CA:单点集群，满足一致性，可用性的系统，通常在拓展性上不太强大&ndash;&gt;传统Oracle数据库 CP:满足一致性，分区容错性的系统，通常性能不是特别高&ndash;&gt;Redis AP:满足可用性，分区容错性的系统，通常对一直性要求低一些  分布式 VS 集群
- 分布式：不同的多台服务器上部署不同的服务模块他们之间通过RPC/Rmi之间通信和调用，对外提供服务和组内协作。 集群：不同的多台服务器上部署相同的服务模块，通过分布式调度软件j进行统一的调度，对外提供服务和访问。  票】、4"/>
+<meta name="twitter:description" content="NoSQL数据库的四大分类  KV键值对 文档类数据库 列存储数据库 图关系数据库  Redis简要介绍 Redis : REmote DIctionary Server（远程字典服务器），是一个高性能的（key/value）分布式内存数据库，基于内存运行，是当下最热门的NoSQL数据库之一，也被人们称为数据结构服务器。
+Redis的三大特点  Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用 Redis不仅仅支持简单的key-value类型的数据，同时好提供list,set,zset,hash等数据结构的存储 Redis支持数据的备份，即master-slave模式的数据备份  Redis的使用场景   内存存储和持久化；Redis支持异步将内存中的数据存放写到磁盘上，同时不影响继续服务
+  取最新N个数据的操作，如：可以将最新10条评论的ID放在Redis的list集合模拟类似HttpSession这种需要设定过期时间的功能
+  发布、订阅消息系统
+  定时器、计数器
+可以对String进行自增自减运算，从而实现计数器功能。
+redis这种内存型数据库的读写性能非常高，很适合存储频繁读写的计数量
+  缓存
+将热点数据放入内存中，设置内存的最大使用量以及淘汰策略来保证缓存的命中率
+  会话缓存
+可以使用redis来统一存储多台应用服务器的回话信息
+当应用服务器不再存储用户的会话信息，也就不在具有状态，一个用户可以请求任意一个应用服务器，从而实现高可用性以及可伸缩性。
+  redis与memcached 两者都是非关系型内存键值数据库，主要有以下不同
+数据类型
+memcached仅支持字符串类型，而redis支持五种不同的数据类型，可以更灵活地解决问题
+数据持久化
+redis支持两种持久化策略：RDB快照和AOF日志，而memcached不支持持久化
+分布式
+memcached不支持分布式，只能通过再客户端使用一致性哈希来实现分布式存储
+redis实现了分布式的支持
+内存管理机制
+ 在redis中，并不是所有数据都一直存储在内存中，可以将一些很久没用的value交换到磁盘，而memcached的数据则一直在内存中。 memmcached将内存分割为特定长度的块来存储数据，以完全解决内存碎片的问题，但是这种方式会使得内存的利用率不高，例如块的大小为128bytes，只存储100bytes的数据，那么剩下的28bytes就浪费掉了  Redis相关知识  单进程 默认16个数据库，类似数组下标从零开始，初始默认使用0号 Select命令切换数据库 Dbsize查看当前数据库的key数量，keys *: 查看所有的key，keys k?：可以支持条件选择 flushall:清空所有的数据库（慎用） flushdb：清空当前库 同意密码管理，16个库都是同样的密码 redis索引都是从零开始 默认端口是6379  Redis的数据类型 Redis键（key）"/>
 <meta name="application-name" content="LoveIt">
 <meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -45,7 +71,7 @@ CAP的核心理论是：一个分布式系统不可能同时很好的满足一�
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/shilongshen.github.io\/redis\/"
-        },"genre": "posts","wordcount":  36 ,
+        },"genre": "posts","wordcount":  3039 ,
         "url": "https:\/\/shilongshen.github.io\/redis\/","datePublished": "2021-02-01T09:54:48+08:00","dateModified": "2021-02-01T09:54:48+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -122,56 +148,1472 @@ CAP的核心理论是：一个分布式系统不可能同时很好的满足一�
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Redis</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-02-01">2021-02-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;36 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-02-01">2021-02-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;3039 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;15 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
                     <span><i class="details-icon fas fa-angle-right"></i></span>
                 </div>
-                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
-            </div><div class="content" id="content"><p>NoSQL(Not Only SQL)，泛指<strong>非关系型</strong>数据库用于解决大规模数据存储。这些类型的数据存储<u>不需要固定的模式</u>，无需多余的操作就可以横向扩展。</p>
-<p>优点：</p>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>
+              <ul>
+                <li><a href="#nosql数据库的四大分类">NoSQL数据库的四大分类</a></li>
+                <li><a href="#redis简要介绍">Redis简要介绍</a></li>
+                <li><a href="#redis的三大特点">Redis的三大特点</a></li>
+                <li><a href="#redis的使用场景">Redis的使用场景</a></li>
+                <li><a href="#redis与memcached">redis与memcached</a></li>
+                <li><a href="#redis相关知识">Redis相关知识</a></li>
+                <li><a href="#redis的数据类型">Redis的数据类型</a></li>
+                <li><a href="#解析配置文件">解析配置文件</a></li>
+                <li><a href="#redis的持久化">redis的持久化</a>
+                  <ul>
+                    <li><a href="#rdbredis-database">RDB：redis database</a></li>
+                    <li><a href="#aofappend-only-file">AOF：append only file</a></li>
+                    <li><a href="#选择哪一个">选择哪一个</a></li>
+                  </ul>
+                </li>
+                <li><a href="#事务">事务</a></li>
+                <li><a href="#redis发布订阅">redis发布订阅</a></li>
+                <li><a href="#redis复制masterslave">redis复制(master/slave)</a></li>
+                <li><a href="#redis分片">redis分片</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h4 id="nosql数据库的四大分类">NoSQL数据库的四大分类</h4>
 <ul>
-<li>易拓展;数据之间没有关系。</li>
-<li>大数据量高性能 ；NoSQL数据库具有非常高的读写性能，在大数据量下同样表现优秀</li>
-<li>多样灵活的数据模型 ； NoSQL无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式</li>
+<li>KV键值对</li>
+<li>文档类数据库</li>
+<li>列存储数据库</li>
+<li>图关系数据库</li>
 </ul>
-<p>RDBMS(关系型数据库) vs. NoSQL</p>
-<p>传统的ACID:</p>
+<h4 id="redis简要介绍">Redis简要介绍</h4>
+<p>Redis : <strong>RE</strong>mote <strong>DI</strong>ctionary <strong>S</strong>erver（远程字典服务器），是一个高性能的（key/value）分布式内存数据库，基于内存运行，是当下最热门的NoSQL数据库之一，也被人们称为数据结构服务器。</p>
+<h4 id="redis的三大特点">Redis的三大特点</h4>
 <ul>
-<li>A: （Atomicity）原子性</li>
-<li>C:（Consistency）一致性</li>
-<li>I：（Isolation）独立性</li>
-<li>D:（Durability）持久性</li>
+<li>Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用</li>
+<li>Redis不仅仅支持简单的key-value类型的数据，同时好提供list,set,zset,hash等数据结构的存储</li>
+<li>Redis支持数据的备份，即master-slave模式的数据备份</li>
 </ul>
-<p>CAP：</p>
+<h4 id="redis的使用场景">Redis的使用场景</h4>
 <ul>
-<li>C：（Consistency）强一致性</li>
-<li>A：（Availability）高可用性</li>
-<li>P:（Partition tolerance） 分区容错性</li>
+<li>
+<p>内存存储和持久化；Redis支持异步将内存中的数据存放写到磁盘上，同时不影响继续服务</p>
+</li>
+<li>
+<p>取最新N个数据的操作，如：可以将最新10条评论的ID放在Redis的list集合模拟类似HttpSession这种需要设定过期时间的功能</p>
+</li>
+<li>
+<p>发布、订阅消息系统</p>
+</li>
+<li>
+<p>定时器、计数器</p>
+<p>可以对String进行自增自减运算，从而实现计数器功能。</p>
+<p>redis这种内存型数据库的读写性能非常高，很适合存储频繁读写的计数量</p>
+</li>
+<li>
+<p>缓存</p>
+<p>将热点数据放入内存中，设置内存的最大使用量以及淘汰策略来保证缓存的命中率</p>
+</li>
+<li>
+<p>会话缓存</p>
+<p>可以使用redis来统一存储多台应用服务器的回话信息</p>
+<p>当应用服务器不再存储用户的会话信息，也就不在具有状态，一个用户可以请求任意一个应用服务器，从而实现高可用性以及可伸缩性。</p>
+</li>
 </ul>
-<p>CAP的3进2：</p>
-<p>CAP的核心理论是：一个分布式系统不可能同时很好的满足一致性、可用性和分区容错性，<strong>最多只能较好的满足其中的两个</strong>。</p>
+<h4 id="redis与memcached">redis与memcached</h4>
+<p>两者都是非关系型内存键值数据库，主要有以下不同</p>
+<p><strong>数据类型</strong></p>
+<p>memcached仅支持字符串类型，而redis支持五种不同的数据类型，可以更灵活地解决问题</p>
+<p><strong>数据持久化</strong></p>
+<p>redis支持两种持久化策略：RDB快照和AOF日志，而memcached不支持持久化</p>
+<p><strong>分布式</strong></p>
+<p>memcached不支持分布式，只能通过再客户端使用一致性哈希来实现分布式存储</p>
+<p>redis实现了分布式的支持</p>
+<p><strong>内存管理机制</strong></p>
 <ul>
-<li>CA:单点集群，满足一致性，可用性的系统，通常在拓展性上不太强大&ndash;&gt;传统Oracle数据库</li>
-<li>CP:满足一致性，分区容错性的系统，通常性能不是特别高&ndash;&gt;Redis</li>
-<li>AP:满足可用性，分区容错性的系统，通常对一直性要求低一些</li>
+<li>在redis中，并不是所有数据都一直存储在内存中，可以将一些很久没用的value交换到磁盘，而memcached的数据则一直在内存中。</li>
+<li>memmcached将内存分割为特定长度的块来存储数据，以完全解决内存碎片的问题，但是这种方式会使得内存的利用率不高，例如块的大小为128bytes，只存储100bytes的数据，那么剩下的28bytes就浪费掉了</li>
 </ul>
+<h4 id="redis相关知识">Redis相关知识</h4>
+<ul>
+<li>单进程</li>
+<li>默认16个数据库，类似数组下标从零开始，初始默认使用0号</li>
+<li>Select命令切换数据库</li>
+<li>Dbsize查看当前数据库的key数量，<code>keys *</code>: 查看所有的key，<code>keys k?</code>：可以支持条件选择</li>
+<li>flushall:清空所有的数据库（慎用）</li>
+<li>flushdb：清空当前库</li>
+<li>同意密码管理，16个库都是同样的密码</li>
+<li>redis索引都是从零开始</li>
+<li>默认端口是6379</li>
+</ul>
+<h4 id="redis的数据类型">Redis的数据类型</h4>
+<p>Redis键（key）</p>
+<ul>
+<li>keys *</li>
+<li>exists key的名字，判断某个key是否存在</li>
+<li>move key db 当前的库就没有了，被移除了</li>
+<li>expire key 几秒钟：为给定的key设置过期时间</li>
+<li>ttl key 查看还有多少秒过期，-1表示永不过期，-2表示已经过期</li>
+<li>del key：删除key</li>
+<li>type  key 查看你的key是什么类型</li>
+</ul>
+<p>1.<strong>Redis字符串（String）</strong></p>
+<p>string 是redis最基本的数据类型，一个key对应一个value</p>
+<p>string类型是二进制安全的。这意味着redis的string可以包含任何数据。比如jpg图片或者序列化的对象</p>
+<p>string类型是redis最基本的数据类型，一个redis中字符串value最多可以是512M</p>
+<p>常用命令：</p>
+<p>set/get/append/strlen</p>
+<p>incr/decr/incrby/decrby,一定要是数字才能够进行加减</p>
+<p>getrange/setrange</p>
+<p>setex(set with expire)键秒值/setnx(set if not exist)</p>
+<p>mset/mget/msetnx</p>
+<p>getset(先get后set)</p>
+<p>2.<strong>Redis列表（List）</strong></p>
+<p>redis列表是简单的字符串列表，按照插入顺序排序。可以在头部或者尾部插入元素。底层是一个双向链表。（元素可以重复）</p>
+<p>3.<strong>Redis集合（Set）</strong></p>
+<p>redis的set是string类型的无序集合（元素不可重复）。它是通过HashTable实现的</p>
+<p>4.<strong>Redis哈希（Hash)</strong></p>
+<p>redis hash是一个键值对集合</p>
+<p>redis hash是一个string类型的filed和value的映射表，hash特别适合用于存储对象</p>
+<p>5.<strong>Redis有序集合（Zset, sorted set)</strong></p>
+<p>zset和set一样也是string类型元素的集合，且不允许重复的成员</p>
+<p>不同是每一个元素都会关联一个double类型的分数</p>
+<p>redis正式通过分数来为集合中的成员进行<strong>从小到大</strong>的排序。<strong>zset的成员是唯一的，但是分数（score）确实可以重复的。</strong></p>
+<h4 id="解析配置文件">解析配置文件</h4>
+<p>解析配置文件redis.conf或者是redis.windows.conf</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-markdown" data-lang="markdown">常见redis.conf配置说明：
+
+<span class="gh">#是否在后台运行；no：不是后台运行
+</span><span class="gh"></span>daemonize yes
+ 
+<span class="gh">#是否开启保护模式，默认开启。要是配置里没有指定bind和密码。开启该参数后，redis只会本地进行访问，拒绝外部访问。
+</span><span class="gh"></span>protected-mode yes
+ 
+<span class="gh">#redis的进程文件
+</span><span class="gh"></span>pidfile /var/run/redis/redis-server.pid
+ 
+<span class="gh">#redis监听的端口号。
+</span><span class="gh"></span>port 6379
+ 
+<span class="gh">#此参数确定了TCP连接中已完成队列(完成三次握手之后)的长度， 当然此值必须不大于Linux系统定义的/proc/sys/net/core/somaxconn值，默认是511，而Linux的默认参数值是128。当系统并发量大并且客户端速度缓慢的时候，可以将这二个参数一起参考设定。该内核参数默认值一般是128，对于负载很大的服务程序来说大大的不够。一般会将它修改为2048或者更大。在/etc/sysctl.conf中添加:net.core.somaxconn = 2048，然后在终端中执行sysctl -p。
+</span><span class="gh"></span>tcp-backlog 511
+ 
+<span class="gh">#指定 redis 只接收来自于该 IP 地址的请求，如果不进行设置，那么将处理所有请求
+</span><span class="gh"></span><span class="gh">#bind 127.0.0.1
+</span><span class="gh"></span><span class="gh">#bind 0.0.0.0
+</span><span class="gh"></span> 
+<span class="gh">#配置unix socket来让redis支持监听本地连接。
+</span><span class="gh"></span><span class="gh"># unixsocket /var/run/redis/redis.sock
+</span><span class="gh"></span> 
+<span class="gh">#配置unix socket使用文件的权限
+</span><span class="gh"></span><span class="gh"># unixsocketperm 700
+</span><span class="gh"></span> 
+<span class="gh"># 此参数为设置客户端空闲超过timeout，服务端会断开连接，为0则服务端不会主动断开连接，不能小于0。
+</span><span class="gh"></span>timeout 0
+ 
+<span class="gh">#tcp keepalive参数。如果设置不为0，就使用配置tcp的SO_KEEPALIVE值，使用keepalive有两个好处:检测挂掉的对端。降低中间设备出问题而导致网络看似连接却已经与对端端口的问题。在Linux内核中，设置了keepalive，redis会定时给对端发送ack。检测到对端关闭需要两倍的设置值。
+</span><span class="gh"></span>tcp-keepalive 0
+ 
+<span class="gh">#指定了服务端日志的级别。级别包括：debug（很多信息，方便开发、测试），verbose（许多有用的信息，但是没有debug级别信息多），notice（适当的日志级别，适合生产环境），warn（只有非常重要的信息）
+</span><span class="gh"></span>loglevel notice
+ 
+<span class="gh">#指定了记录日志的文件。空字符串的话，日志会打印到标准输出设备。后台运行的redis标准输出是/dev/null。
+</span><span class="gh"></span>logfile /var/log/redis/redis-server.log
+ 
+<span class="gh">#是否打开记录syslog功能
+</span><span class="gh"></span><span class="gh"># syslog-enabled no
+</span><span class="gh"></span> 
+<span class="gh">#syslog的标识符。
+</span><span class="gh"></span><span class="gh"># syslog-ident redis
+</span><span class="gh"></span> 
+<span class="gh">#日志的来源、设备
+</span><span class="gh"></span><span class="gh"># syslog-facility local0
+</span><span class="gh"></span> 
+<span class="gh">#数据库的数量，默认使用的数据库是DB 0。可以通过SELECT命令选择一个db
+</span><span class="gh"></span>databases 16
+ 
+<span class="gh"># redis是基于内存的数据库，可以通过设置该值定期写入磁盘。
+</span><span class="gh"></span><span class="gh"># 注释掉“save”这一行配置项就可以让保存数据库功能失效
+</span><span class="gh"></span><span class="gh"># 900秒（15分钟）内至少1个key值改变（则进行数据库保存--持久化） 
+</span><span class="gh"></span><span class="gh"># 300秒（5分钟）内至少10个key值改变（则进行数据库保存--持久化） 
+</span><span class="gh"></span><span class="gh"># 60秒（1分钟）内至少10000个key值改变（则进行数据库保存--持久化）
+</span><span class="gh"></span>save 900 1
+save 300 10
+save 60 10000
+ 
+<span class="gh">#当RDB持久化出现错误后，是否依然进行继续进行工作，yes：不能进行工作，no：可以继续进行工作，可以通过info中的rdb_last_bgsave_status了解RDB持久化是否有错误
+</span><span class="gh"></span>stop-writes-on-bgsave-error yes
+ 
+<span class="gh">#使用压缩rdb文件，rdb文件压缩使用LZF压缩算法，yes：压缩，但是需要一些cpu的消耗。no：不压缩，需要更多的磁盘空间
+</span><span class="gh"></span>rdbcompression yes
+ 
+<span class="gh">#是否校验rdb文件。从rdb格式的第五个版本开始，在rdb文件的末尾会带上CRC64的校验和。这跟有利于文件的容错性，但是在保存rdb文件的时候，会有大概10%的性能损耗，所以如果你追求高性能，可以关闭该配置。
+</span><span class="gh"></span>rdbchecksum yes
+ 
+<span class="gh">#rdb文件的名称
+</span><span class="gh"></span>dbfilename dump.rdb
+ 
+<span class="gh">#数据目录，数据库的写入会在这个目录。rdb、aof文件也会写在这个目录
+</span><span class="gh"></span>dir /data
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-markdown" data-lang="markdown">缓存过期清除策略：
+
+<span class="gh"># MAXMEMORY POLICY: how Redis will select what to remove when maxmemory
+</span><span class="gh"></span><span class="gh"># is reached. You can select among five behaviors:
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># volatile-lru -&gt; remove the key with an expire set using an LRU algorithm  --&gt;使用lru算法移除key,只设置了过期时间的键
+</span><span class="gh"></span><span class="gh"># allkeys-lru -&gt; remove any key according to the LRU algorithm --&gt;使用lru算法移除key
+</span><span class="gh"></span><span class="gh"># volatile-random -&gt; remove a random key with an expire set --&gt;在过期集合中移除随机而的key，只设置了过期时间的键
+</span><span class="gh"></span><span class="gh"># allkeys-random -&gt; remove a random key, any key --&gt;随机移除key
+</span><span class="gh"></span><span class="gh"># volatile-ttl -&gt; remove the key with the nearest expire time (minor TTL) --&gt;移除那些ttl值最小的key，即那些最近要过期的key
+</span><span class="gh"></span><span class="gh"># noeviction -&gt; don&#39;t expire at all, just return an error on write operations --&gt;不进行移除。针对写操作，只是返回错误信息
+</span><span class="gh"></span>#
+
+The default is:
+<span class="gh">#
+</span><span class="gh"># maxmemory-policy noeviction
+</span><span class="gh"></span>
+lru：最近最少使用
+random：随机
+ttl：有限时间内
+noeviction:永不过期，在实际生产中基本不使用这个
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203043.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203043.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203043.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203043.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203043.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203043.png" /></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-markdown" data-lang="markdown">SNAPSHOTTING快照
+<span class="gu">################################ SNAPSHOTTING  ################################
+</span><span class="gu"></span><span class="gh">#
+</span><span class="gh"># Save the DB on disk:
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh">#   save &lt;seconds&gt; &lt;changes&gt;
+</span><span class="gh"></span>
+save 秒钟 写操作次数
+
+<span class="gh"># redis是基于内存的数据库，可以通过设置该值定期写入磁盘。
+</span><span class="gh"></span><span class="gh"># 注释掉“save”这一行配置项就可以让保存数据库功能失效
+</span><span class="gh"></span><span class="gh"># 900秒（15分钟）内至少1个key值改变（则进行数据库保存--持久化） 
+</span><span class="gh"></span><span class="gh"># 300秒（5分钟）内至少10个key值改变（则进行数据库保存--持久化） 
+</span><span class="gh"></span><span class="gh"># 60秒（1分钟）内至少10000个key值改变（则进行数据库保存--持久化）
+</span><span class="gh"></span>save 900 1  --&gt;15分钟内改变了1次
+save 300 10 --&gt;5分钟改变了10次
+save 60 10000 --&gt;1分钟改变了1万次
+
+如果想要禁用RDB持久化策略，只要不设置任何save指令，或者给save传入一个空字符串
+127.0.0.1:6379&gt; set k1 v1
+OK
+127.0.0.1:6379&gt; save
+OK
+
+
+<span class="gh"># If the background saving process will start working again Redis will
+</span><span class="gh"></span><span class="gh"># automatically allow writes again.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># However if you have setup your proper monitoring of the Redis server
+</span><span class="gh"></span><span class="gh"># and persistence, you may want to disable this feature so that Redis will
+</span><span class="gh"></span><span class="gh"># continue to work as usual even if there are problems with disk,
+</span><span class="gh"></span><span class="gh"># permissions, and so forth.
+</span><span class="gh"></span>stop-writes-on-bgsave-error yes
+如果配置成no，表示你不在乎数据不一一致或者有其他手段发现和控制
+
+
+<span class="gh"># Compress string objects using LZF when dump .rdb databases?
+</span><span class="gh"></span><span class="gh"># For default that&#39;s set to &#39;yes&#39; as it&#39;s almost always a win.
+</span><span class="gh"></span><span class="gh"># If you want to save some CPU in the saving child set it to &#39;no&#39; but
+</span><span class="gh"></span><span class="gh"># the dataset will likely be bigger if you have compressible values or keys.
+</span><span class="gh"></span>rdbcompression yes
+
+是否将rdb文件进行压缩
+
+
+<span class="gh"># Since version 5 of RDB a CRC64 checksum is placed at the end of the file.
+</span><span class="gh"></span><span class="gh"># This makes the format more resistant to corruption but there is a performance
+</span><span class="gh"></span><span class="gh"># hit to pay (around 10%) when saving and loading RDB files, so you can disable it
+</span><span class="gh"></span><span class="gh"># for maximum performances.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># RDB files created with checksum disabled have a checksum of zero that will
+</span><span class="gh"></span><span class="gh"># tell the loading code to skip the check.
+</span><span class="gh"></span>rdbchecksum yes
+
+在存储快照后，还可以让redis使用CRC64算法进行数据校验，但是这样会增加大约10%的性能损耗
+
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="redis的持久化">redis的持久化</h4>
+<p>持久化就是将内存中的数据自动备份到硬盘中</p>
+<p>redis是内存型数据库，为了保证数据在断电后不会丢失，需要将内存中的数据持久化到硬盘上。</p>
+<h5 id="rdbredis-database">RDB：redis database</h5>
+<p>是什么： <u>在指定的时间间隔内将内存中的数据集写入磁盘</u>，&ndash;&gt;（写） 也就是snapshot快照，它<u>恢复时是将快照文件直接读入内存中</u>  &lt;&ndash;（读）。</p>
+<blockquote>
+<p>将某个时间点的所有数据都存放在硬盘上。</p>
+<p>可以将快照复制到其他服务器从而创建具有相同数据的服务器副本。</p>
+<p>如果系统发生故障，将会丢失最后一次创建快照之后的数据。</p>
+<p>如果数据量很大，保存快照的时间会很长</p>
+</blockquote>
+<p>优点和缺点：redis会单独创建（fork）一个子进程来进行持久化，会将数据写入到一个临时文件中，待持久化过程都结束了，再用这个临时文件替换上次持久化好的文件。整个过程中，主进程是不进行任何IO操作的，这就确保了极高的性能。如果需要进行大规模数据的恢复，且对数据恢复的完整性不是非常敏感，那RDB方式要比AOF方式更加的高效。RDB的缺点是最后一次持久化后的数据可能丢失。</p>
+<p>fork：复制一个与当前进程一样的进程。新进程的所有数据都和原进程一致，但是是一个全新的进程，并作为原进程的子进程</p>
+<p>reb保存的是dump.rdb文件</p>
+<p>配置位置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-markdown" data-lang="markdown"><span class="gu">################################ SNAPSHOTTING  ################################
+</span><span class="gu"></span><span class="gh">#
+</span><span class="gh"># Save the DB on disk:
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh">#   save &lt;seconds&gt; &lt;changes&gt;
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh">#   Will save the DB if both the given number of seconds and the given
+</span><span class="gh"></span><span class="gh">#   number of write operations against the DB occurred.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh">#   In the example below the behaviour will be to save:
+</span><span class="gh"></span><span class="gh">#   after 900 sec (15 min) if at least 1 key changed
+</span><span class="gh"></span><span class="gh">#   after 300 sec (5 min) if at least 10 keys changed
+</span><span class="gh"></span><span class="gh">#   after 60 sec if at least 10000 keys changed
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh">#   Note: you can disable saving completely by commenting out all &#34;save&#34; lines.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh">#   It is also possible to remove all the previously configured save
+</span><span class="gh"></span><span class="gh">#   points by adding a save directive with a single empty string argument
+</span><span class="gh"></span><span class="gh">#   like in the following example:
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh">#   save &#34;&#34;
+</span><span class="gh"></span>
+<span class="gh"># redis是基于内存的数据库，可以通过设置该值定期写入磁盘。--&gt;触发快照的默认配置
+</span><span class="gh"></span><span class="gh"># 注释掉“save”这一行配置项就可以让保存数据库功能失效
+</span><span class="gh"></span><span class="gh"># 900秒（15分钟）内至少1个key值改变（则进行数据库保存--持久化） 
+</span><span class="gh"></span><span class="gh"># 300秒（5分钟）内至少10个key值改变（则进行数据库保存--持久化） 
+</span><span class="gh"></span><span class="gh"># 60秒（1分钟）内至少10000个key值改变（则进行数据库保存--持久化）
+</span><span class="gh"></span>
+save 900 1
+save 300 10
+save 60 10000
+
+<span class="gh"># By default Redis will stop accepting writes if RDB snapshots are enabled
+</span><span class="gh"></span><span class="gh"># (at least one save point) and the latest background save failed.
+</span><span class="gh"></span><span class="gh"># This will make the user aware (in a hard way) that data is not persisting
+</span><span class="gh"></span><span class="gh"># on disk properly, otherwise chances are that no one will notice and some
+</span><span class="gh"></span><span class="gh"># disaster will happen.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># If the background saving process will start working again Redis will
+</span><span class="gh"></span><span class="gh"># automatically allow writes again.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># However if you have setup your proper monitoring of the Redis server
+</span><span class="gh"></span><span class="gh"># and persistence, you may want to disable this feature so that Redis will
+</span><span class="gh"></span><span class="gh"># continue to work as usual even if there are problems with disk,
+</span><span class="gh"></span><span class="gh"># permissions, and so forth.
+</span><span class="gh"></span>stop-writes-on-bgsave-error yes
+
+<span class="gh"># Compress string objects using LZF when dump .rdb databases?
+</span><span class="gh"></span><span class="gh"># For default that&#39;s set to &#39;yes&#39; as it&#39;s almost always a win.
+</span><span class="gh"></span><span class="gh"># If you want to save some CPU in the saving child set it to &#39;no&#39; but
+</span><span class="gh"></span><span class="gh"># the dataset will likely be bigger if you have compressible values or keys.
+</span><span class="gh"></span>rdbcompression yes
+
+<span class="gh"># Since version 5 of RDB a CRC64 checksum is placed at the end of the file.
+</span><span class="gh"></span><span class="gh"># This makes the format more resistant to corruption but there is a performance
+</span><span class="gh"></span><span class="gh"># hit to pay (around 10%) when saving and loading RDB files, so you can disable it
+</span><span class="gh"></span><span class="gh"># for maximum performances.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># RDB files created with checksum disabled have a checksum of zero that will
+</span><span class="gh"></span><span class="gh"># tell the loading code to skip the check.
+</span><span class="gh"></span>rdbchecksum yes
+
+<span class="gh"># The filename where to dump the DB
+</span><span class="gh"></span>dbfilename dump.rdb
+
+<span class="gh"># The working directory.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># The DB will be written inside this directory, with the filename specified
+</span><span class="gh"></span><span class="gh"># above using the &#39;dbfilename&#39; configuration directive.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># The Append Only File will also be created inside this directory.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># Note that you must specify a directory here, not a file name.
+</span><span class="gh"></span>dir ./
+</code></pre></td></tr></table>
+</div>
+</div><p>如何触发RDB快照</p>
+<p>配置文件的默认配置（在某一个条件下触发），将生成的rdb文件备份到其他机器</p>
+<p>save或bgsave，立刻生成rdb文件；save:全部阻塞，bgsave:在后台异步进行快照操作</p>
+<p>执行flushall命令，但是产生的是空的rdb文件，无意义</p>
+<p>如何恢复</p>
+<p>将备份文件(dump.rdb)移动到啊redis安装目录并启动服务即可。（config get dir 获取redis安装目录）</p>
+<p>优点：适合大规模的数据恢复，对数据完整性和一致性要求不高</p>
+<p>缺点：在一定间隔时间做一次备份，所以如果redis意外关闭的话，就会丢失最后一次快照之后的所有修改；fork的时候，内存中的数据被克隆了一份，大致有2倍的膨胀性要求考虑</p>
+<p>小总结</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210204110502.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210204110502.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210204110502.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210204110502.png 2x"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208204850.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208204850.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208204850.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208204850.png 2x"
         data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210204110502.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210204110502.png" /></p>
-<p>分布式 VS 集群</p>
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208204850.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208204850.png" /></p>
+<h5 id="aofappend-only-file">AOF：append only file</h5>
+<p>是什么：<strong>以日志的形式来记录每个写操作</strong>，将redis执行过的所有写指令记录下来（读操作不记录），只追加文件但不可以改写文件，redis启动之初会读取该文件重新构建数据，换言之，redis重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作。</p>
+<blockquote>
+<p>将写命令添加到AOF文件的末尾。</p>
+<p>使用AOF持久化需要设置同步选项，从而确保写命令同步到磁盘文件上的时机。这是因为对文件进行写入并不会马上将内容同步到磁盘上，而是先存储到缓冲区，然后由操作系统决定什么时候同步到磁盘。有以下同步选项：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203908.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203908.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203908.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203908.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203908.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210203908.png" /></p>
+</blockquote>
+<p><strong>简要的说就是每秒钟将写操作进行备份</strong></p>
+<p>AOF保存的是appendonly.aof文件</p>
+<p>配置位置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-markdown" data-lang="markdown"><span class="gu">############################## APPEND ONLY MODE ###############################
+</span><span class="gu"></span>
+<span class="gh"># By default Redis asynchronously dumps the dataset on disk. This mode is
+</span><span class="gh"></span><span class="gh"># good enough in many applications, but an issue with the Redis process or
+</span><span class="gh"></span><span class="gh"># a power outage may result into a few minutes of writes lost (depending on
+</span><span class="gh"></span><span class="gh"># the configured save points).
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># The Append Only File is an alternative persistence mode that provides
+</span><span class="gh"></span><span class="gh"># much better durability. For instance using the default data fsync policy
+</span><span class="gh"></span><span class="gh"># (see later in the config file) Redis can lose just one second of writes in a
+</span><span class="gh"></span><span class="gh"># dramatic event like a server power outage, or a single write if something
+</span><span class="gh"></span><span class="gh"># wrong with the Redis process itself happens, but the operating system is
+</span><span class="gh"></span><span class="gh"># still running correctly.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># AOF and RDB persistence can be enabled at the same time without problems.
+</span><span class="gh"></span><span class="gh"># If the AOF is enabled on startup Redis will load the AOF, that is the file
+</span><span class="gh"></span><span class="gh"># with the better durability guarantees.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># Please check http://redis.io/topics/persistence for more information.
+</span><span class="gh"></span>
+appendonly no
+
+<span class="gh"># The name of the append only file (default: &#34;appendonly.aof&#34;)
+</span><span class="gh"></span>appendfilename &#34;appendonly.aof&#34;
+
+<span class="gh"># The fsync() call tells the Operating System to actually write data on disk
+</span><span class="gh"></span><span class="gh"># instead of waiting for more data in the output buffer. Some OS will really flush
+</span><span class="gh"></span><span class="gh"># data on disk, some other OS will just try to do it ASAP.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># Redis supports three different modes:
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># no: don&#39;t fsync, just let the OS flush the data when it wants. Faster.
+</span><span class="gh"></span><span class="gh"># always: fsync after every write to the append only log. Slow, Safest.
+</span><span class="gh"></span><span class="gh"># everysec: fsync only one time every second. Compromise.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># The default is &#34;everysec&#34;, as that&#39;s usually the right compromise between
+</span><span class="gh"></span><span class="gh"># speed and data safety. It&#39;s up to you to understand if you can relax this to
+</span><span class="gh"></span><span class="gh"># &#34;no&#34; that will let the operating system flush the output buffer when
+</span><span class="gh"></span><span class="gh"># it wants, for better performances (but if you can live with the idea of
+</span><span class="gh"></span><span class="gh"># some data loss consider the default persistence mode that&#39;s snapshotting),
+</span><span class="gh"></span><span class="gh"># or on the contrary, use &#34;always&#34; that&#39;s very slow but a bit safer than
+</span><span class="gh"></span><span class="gh"># everysec.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># More details please check the following article:
+</span><span class="gh"></span><span class="gh"># http://antirez.com/post/redis-persistence-demystified.html
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># If unsure, use &#34;everysec&#34;.
+</span><span class="gh"></span>
+always:同步持久化，每次数据变更会立刻记录到磁盘，性能较差但是数据完整性较好
+everysec:异步操作，每秒记录一次。
+
+<span class="gh"># appendfsync always
+</span><span class="gh"></span>appendfsync everysec
+<span class="gh"># appendfsync no
+</span><span class="gh"></span>
+<span class="gh"># When the AOF fsync policy is set to always or everysec, and a background
+</span><span class="gh"></span><span class="gh"># saving process (a background save or AOF log background rewriting) is
+</span><span class="gh"></span><span class="gh"># performing a lot of I/O against the disk, in some Linux configurations
+</span><span class="gh"></span><span class="gh"># Redis may block too long on the fsync() call. Note that there is no fix for
+</span><span class="gh"></span><span class="gh"># this currently, as even performing fsync in a different thread will block
+</span><span class="gh"></span><span class="gh"># our synchronous write(2) call.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># In order to mitigate this problem it&#39;s possible to use the following option
+</span><span class="gh"></span><span class="gh"># that will prevent fsync() from being called in the main process while a
+</span><span class="gh"></span><span class="gh"># BGSAVE or BGREWRITEAOF is in progress.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># This means that while another child is saving, the durability of Redis is
+</span><span class="gh"></span><span class="gh"># the same as &#34;appendfsync none&#34;. In practical terms, this means that it is
+</span><span class="gh"></span><span class="gh"># possible to lose up to 30 seconds of log in the worst scenario (with the
+</span><span class="gh"></span><span class="gh"># default Linux settings).
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># If you have latency problems turn this to &#34;yes&#34;. Otherwise leave it as
+</span><span class="gh"></span><span class="gh"># &#34;no&#34; that is the safest pick from the point of view of durability.
+</span><span class="gh"></span>重写时是否可以运行appendfsync,用默认no即可，保证数据安全性
+
+no-appendfsync-on-rewrite no
+
+<span class="gh"># Automatic rewrite of the append only file.
+</span><span class="gh"></span><span class="gh"># Redis is able to automatically rewrite the log file implicitly calling
+</span><span class="gh"></span><span class="gh"># BGREWRITEAOF when the AOF log size grows by the specified percentage.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># This is how it works: Redis remembers the size of the AOF file after the
+</span><span class="gh"></span><span class="gh"># latest rewrite (if no rewrite has happened since the restart, the size of
+</span><span class="gh"></span><span class="gh"># the AOF at startup is used).
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># This base size is compared to the current size. If the current size is
+</span><span class="gh"></span><span class="gh"># bigger than the specified percentage, the rewrite is triggered. Also
+</span><span class="gh"></span><span class="gh"># you need to specify a minimal size for the AOF file to be rewritten, this
+</span><span class="gh"></span><span class="gh"># is useful to avoid rewriting the AOF file even if the percentage increase
+</span><span class="gh"></span><span class="gh"># is reached but it is still pretty small.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># Specify a percentage of zero in order to disable the automatic AOF
+</span><span class="gh"></span><span class="gh"># rewrite feature.
+</span><span class="gh"></span>auto-aof-rewrite-percentage : 设置重写的基准值
+auto-aof-rewrite-min-size ： 设置重写的基准值
+
+
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+
+<span class="gh"># An AOF file may be found to be truncated at the end during the Redis
+</span><span class="gh"></span><span class="gh"># startup process, when the AOF data gets loaded back into memory.
+</span><span class="gh"></span><span class="gh"># This may happen when the system where Redis is running
+</span><span class="gh"></span><span class="gh"># crashes, especially when an ext4 filesystem is mounted without the
+</span><span class="gh"></span><span class="gh"># data=ordered option (however this can&#39;t happen when Redis itself
+</span><span class="gh"></span><span class="gh"># crashes or aborts but the operating system still works correctly).
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># Redis can either exit with an error when this happens, or load as much
+</span><span class="gh"></span><span class="gh"># data as possible (the default now) and start if the AOF file is found
+</span><span class="gh"></span><span class="gh"># to be truncated at the end. The following option controls this behavior.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># If aof-load-truncated is set to yes, a truncated AOF file is loaded and
+</span><span class="gh"></span><span class="gh"># the Redis server starts emitting a log to inform the user of the event.
+</span><span class="gh"></span><span class="gh"># Otherwise if the option is set to no, the server aborts with an error
+</span><span class="gh"></span><span class="gh"># and refuses to start. When the option is set to no, the user requires
+</span><span class="gh"></span><span class="gh"># to fix the AOF file using the &#34;redis-check-aof&#34; utility before to restart
+</span><span class="gh"></span><span class="gh"># the server.
+</span><span class="gh"></span><span class="gh">#
+</span><span class="gh"># Note that if the AOF file will be found to be corrupted in the middle
+</span><span class="gh"></span><span class="gh"># the server will still exit with an error. This option only applies when
+</span><span class="gh"></span><span class="gh"># Redis will try to read more data from the AOF file but not enough bytes
+</span><span class="gh"></span><span class="gh"># will be found.
+</span><span class="gh"></span>aof-load-truncated yes
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>aof和rdb可以共存，当两者共存时先找的是aof</strong></p>
+<p>aof启动</p>
+<p>将appendonly设置为yes</p>
+<p>将有数据的aof文件复制一份保存到对应目录</p>
+<p>恢复：重启redis然后重新加载（会将所有写操作重新执行一遍）</p>
+<p>修复：redis-check-aof &ndash;fix进行修复，即将aof文件中的不符合规范的语句进行删除</p>
+<p>rewrite</p>
+<p>是什么：AOF采用文件追加的方式，文件会越来越大，为避免这种情况，新增重写机制，当AOF文件的大小超过所设定的阈值时，redis就会重新启动AOF文件的内容压缩，只保留可以恢复数据的最小指令集，可以使用命令bgrewriteaof</p>
+<p>重写原理：aof文件持续增长而过大时，会fork出一条新进程来将文件重写（也就是先写临时文件最后再rename），遍历新进程的内存中数据，每条记录有一条set语句。重写aof文件的操作，并没有读取旧的aof文件，而是将整个内存中的数据库内容用命令的方式重写一个新的aof文件，这一点和快照有一点类似。</p>
+<p>触发机制：redis会记录上一次重写时的aof大小，默认配置是当aof文件大小是上次rewrite后大小的一倍且文件大于64M时触发。</p>
+<p>优点：</p>
+<p>每秒同步</p>
+<p>缺点：</p>
+<p>相同数据集而言，aof文件要远大于rdb文件，恢复速度鳗鱼rdb</p>
+<p>aof运行效率要慢于rdb，每秒同步策略效率较好，不同步效率和rdb相同</p>
+<p>小结</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208221917.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208221917.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208221917.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208221917.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208221917.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208221917.png" /></p>
+<h5 id="选择哪一个">选择哪一个</h5>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222525.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222525.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222525.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222525.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222525.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222525.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222650.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222650.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222650.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222650.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222650.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210208222650.png" /></p>
+<h4 id="事务">事务</h4>
+<ol>
+<li>
+<p>是什么：可以一次执行多个命令，本质是一组命令的集合。一个事务中的所有命令都会序列化，<strong>按顺序串行化执行而不会被其他命令插入，不许加塞</strong>。</p>
+</li>
+<li>
+<p>能干嘛：一个队列中，一次性、顺序性、排他性的<strong>执行一系列命令</strong>。对强一致性要求严格。要么一起成功，要么一起失败</p>
+</li>
+<li>
+<p>常用命令：</p>
+</li>
+</ol>
+<p>discard：取消事务，放弃执行事务块内的所有命令</p>
+<p>exec：执行所有事务块内的命令</p>
+<p>multi：标记一个事务块的开始</p>
+<p>unwatch：取消watch命令对所有key的监视</p>
+<p>watch key：监视一个（或多个）key，如果在事务执行之前这个（或多个）key被其他命令所改动，那么事务将被打断。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="n">case1</span><span class="p">:</span><span class="err">正</span><span class="err">常</span><span class="err">执</span><span class="err">行</span><span class="err">；</span><span class="err">一</span><span class="err">次</span><span class="err">性</span><span class="err">执</span><span class="err">行</span><span class="err">多</span><span class="err">条</span><span class="err">语</span><span class="err">句</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">multi</span>
+<span class="n">OK</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k1</span> <span class="n">v1</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k2</span> <span class="n">v2</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k3</span> <span class="n">v3</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">get</span> <span class="n">k2</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">exec</span>
+<span class="mi">1</span><span class="p">)</span> <span class="n">OK</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="n">case2</span><span class="err">：</span><span class="err">放</span><span class="err">弃</span><span class="err">执</span><span class="err">行</span><span class="err">，</span><span class="err">不</span><span class="err">执</span><span class="err">行</span><span class="err">事</span><span class="err">务</span><span class="err">块</span><span class="err">中</span><span class="err">的</span><span class="err">语</span><span class="err">句</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">multi</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k2</span> <span class="mi">22</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k3</span> <span class="mi">33</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">discard</span>
+<span class="n">OK</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">get</span> <span class="n">k2</span>
+<span class="s2">&#34;</span><span class="s2">v2</span><span class="s2">&#34;</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">get</span> <span class="n">k3</span>
+<span class="s2">&#34;</span><span class="s2">v3</span><span class="s2">&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">全</span><span class="err">体</span><span class="err">连</span><span class="err">坐</span><span class="err">，</span><span class="err">当</span><span class="err">事</span><span class="err">务</span><span class="err">块</span><span class="err">中</span><span class="err">的</span><span class="err">一</span><span class="err">条</span><span class="err">语</span><span class="err">句</span><span class="err">出</span><span class="err">错</span><span class="err">了</span><span class="err">，</span><span class="err">则</span><span class="err">事</span><span class="err">务</span><span class="err">块</span><span class="err">中</span><span class="err">的</span><span class="err">语</span><span class="err">句</span><span class="err">都</span><span class="err">不</span><span class="err">会</span><span class="err">被</span><span class="err">执</span><span class="err">行</span><span class="err">，</span><span class="err">即</span><span class="err">要</span><span class="err">么</span><span class="err">都</span><span class="err">执</span><span class="err">行</span><span class="err">，</span><span class="err">要</span><span class="err">么</span><span class="err">都</span><span class="err">不</span><span class="err">执</span><span class="err">行</span><span class="err">；</span><span class="err">注</span><span class="err">意</span><span class="err">这</span><span class="err">是</span><span class="err">在</span><span class="err">加</span><span class="err">入</span><span class="err">队</span><span class="err">列</span><span class="err">时</span><span class="err">就</span><span class="err">已</span><span class="err">经</span><span class="err">报</span><span class="err">错</span><span class="err">了</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">multi</span>
+<span class="n">OK</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k1</span> <span class="n">v1</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k2</span> <span class="n">v2</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k3</span> <span class="n">v3</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">setget</span> <span class="n">k4</span> <span class="n">v4</span>
+<span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="n">ERR</span> <span class="k">unknown</span> <span class="n">command</span> <span class="o">`</span><span class="n">setget</span><span class="o">`</span><span class="p">,</span> <span class="k">with</span> <span class="n">args</span> <span class="n">beginning</span> <span class="k">with</span><span class="p">:</span> <span class="o">`</span><span class="n">k4</span><span class="o">`</span><span class="p">,</span> <span class="o">`</span><span class="n">v4</span><span class="o">`</span><span class="p">,</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k5</span> <span class="n">v5</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">exec</span>
+<span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="n">EXECABORT</span> <span class="k">Transaction</span> <span class="n">discarded</span> <span class="n">because</span> <span class="k">of</span> <span class="n">previous</span> <span class="n">errors</span><span class="p">.</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="n">case4</span><span class="err">：</span><span class="err">这</span><span class="err">与</span><span class="n">case3的区别在于</span><span class="err">，</span><span class="err">在</span><span class="err">加</span><span class="err">入</span><span class="err">队</span><span class="err">列</span><span class="err">时</span><span class="err">不</span><span class="err">报</span><span class="err">错</span><span class="err">而</span><span class="err">是</span><span class="err">在</span><span class="err">执</span><span class="err">行</span><span class="n">exec时对出错的语句进行报错</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">keys</span> <span class="o">*</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">k1</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">k2</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">k3</span><span class="s2">&#34;</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">multi</span>
+<span class="n">OK</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">incr</span> <span class="n">k1</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k2</span> <span class="n">v2</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">k3</span> <span class="n">v3</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">get</span> <span class="n">k4</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">exec</span>
+<span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="n">ERR</span> <span class="n">value</span> <span class="k">is</span> <span class="k">not</span> <span class="n">an</span> <span class="nb">integer</span> <span class="k">or</span> <span class="k">out</span> <span class="k">of</span> <span class="n">range</span>
+<span class="mi">2</span><span class="p">)</span> <span class="n">OK</span>
+<span class="mi">3</span><span class="p">)</span> <span class="n">OK</span>
+<span class="mi">4</span><span class="p">)</span> <span class="p">(</span><span class="n">nil</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="n">case5</span><span class="p">:</span><span class="n">watch监控</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>悲观锁/乐观锁/CAS(check and set)</p>
 <ul>
-<li>分布式：不同的多台服务器上部署<strong>不同的服务模块</strong>他们之间通过RPC/Rmi之间通信和调用，对外提供服务和组内协作。</li>
-<li>集群：不同的多台服务器上部署<strong>相同的服务模块</strong>，通过分布式调度软件j进行统一的调度，对外提供服务和访问。</li>
+<li>悲观锁：每次去拿数据都认为别人会修改，所以<u>每次在拿数据的时候都会上锁</u>，这样别人想拿这个数据就会block直到它拿到锁。传统的关系型数据库就用到了很多这种锁机制，比如行锁，表锁，读锁，写锁等，都是<strong>在做操作之前先上锁</strong>。</li>
+<li>乐观锁：每次拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。乐观锁适用于多读的应用类型，这样可以提高吞吐量。<strong>乐观锁策略：提交版本必须大于记录当前版本才能执行更新</strong>。</li>
+<li>CAS：</li>
 </ul>
-<p>票】、4</p>
+</li>
+<li>
+<p>初始化信用卡可用余额和欠额</p>
+</li>
+<li>
+<p>无加塞篡改，先监控再开启multi，保证两笔金额变动在同一事务内</p>
+</li>
+<li>
+<p>有加塞篡改</p>
+</li>
+<li>
+<p>unwatch</p>
+</li>
+<li>
+<p>一旦执行exec，之前加的监控锁都会被取消掉</p>
+</li>
+<li>
+<p>小结</p>
+<p>通过watch命令在事务执行之前监控了多个keys，如果在watch之后有任何key的值发生了改变，exec命令执行的事务都将被放弃，同时返回nil应答以通知调用者事务执行失败</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">无</span><span class="err">加</span><span class="err">塞</span><span class="err">篡</span><span class="err">改</span>
+<span class="o">#</span> <span class="err">初</span><span class="err">始</span><span class="err">化</span><span class="err">信</span><span class="err">用</span><span class="err">卡</span><span class="err">可</span><span class="err">用</span><span class="err">余</span><span class="err">额</span><span class="n">balance和欠额debt</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">balance</span> <span class="mi">100</span>
+<span class="n">OK</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">debt</span> <span class="mi">0</span>
+<span class="n">OK</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">keys</span> <span class="o">*</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">debt</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">balance</span><span class="s2">&#34;</span>
+<span class="o">#</span><span class="err">先</span><span class="err">监</span><span class="err">控</span><span class="n">watch</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">watch</span> <span class="n">balance</span>
+<span class="n">OK</span>
+<span class="o">#</span><span class="err">再</span><span class="err">开</span><span class="err">启</span><span class="n">multi</span><span class="err">，</span><span class="err">保</span><span class="err">证</span><span class="err">两</span><span class="err">笔</span><span class="err">金</span><span class="err">额</span><span class="err">变</span><span class="err">动</span><span class="err">在</span><span class="err">同</span><span class="err">一</span><span class="err">事</span><span class="err">务</span><span class="err">内</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">multi</span>
+<span class="n">OK</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">decrby</span> <span class="n">balance</span> <span class="mi">20</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">incrby</span> <span class="n">debt</span> <span class="mi">20</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">exec</span>
+<span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">80</span>
+<span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">20</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span><span class="err">有</span><span class="err">加</span><span class="err">塞</span><span class="err">篡</span><span class="err">改</span>
+<span class="o">#</span> <span class="err">初</span><span class="err">始</span><span class="err">化</span><span class="err">信</span><span class="err">用</span><span class="err">卡</span><span class="err">可</span><span class="err">用</span><span class="err">余</span><span class="err">额</span><span class="n">balance和欠额debt</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">balance</span> <span class="mi">100</span>
+<span class="n">OK</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">debt</span> <span class="mi">0</span>
+<span class="n">OK</span>
+<span class="o">#</span><span class="err">先</span><span class="err">监</span><span class="err">控</span><span class="n">watch</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">watch</span> <span class="n">balance</span>
+<span class="n">OK</span>
+
+<span class="o">#</span><span class="o">#</span><span class="o">#</span><span class="o">#</span>
+<span class="o">#</span><span class="err">此</span><span class="err">时</span><span class="err">修</span><span class="err">改</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">set</span> <span class="n">balance</span> <span class="mi">800</span>
+<span class="n">OK</span>
+<span class="o">#</span><span class="o">#</span><span class="o">#</span><span class="o">#</span>
+
+<span class="o">#</span><span class="err">再</span><span class="err">进</span><span class="err">行</span><span class="n">multi</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">multi</span>
+<span class="n">OK</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">decrby</span> <span class="n">balance</span> <span class="mi">20</span>
+<span class="n">QUEUED</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">incrby</span> <span class="n">debt</span> <span class="mi">20</span>
+<span class="n">QUEUED</span>
+
+<span class="o">#</span><span class="err">此</span><span class="err">时</span><span class="err">执</span><span class="err">行</span><span class="err">事</span><span class="err">务</span><span class="err">失</span><span class="err">败</span><span class="err">，</span><span class="err">返</span><span class="err">回</span><span class="n">nil</span>
+<span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="k">exec</span>
+<span class="p">(</span><span class="n">nil</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>通过watch监控<code>balance</code>，如果<code>balance</code>在中间阶段被别人修改了，我们就不能够对其进行操作。通过这样的操作才能够保证<code>balance</code>变量的安全性。</p>
+<ol start="4">
+<li>三阶段</li>
+</ol>
+<ul>
+<li>开启：以multi开始一个事务</li>
+<li>入队：将多个命令入队到事务中，接到这些命令并不会立即执行，而是放到等待执行的事务队列里面</li>
+<li>执行：由exec命令触发事务</li>
+</ul>
+<ol start="5">
+<li>三特性</li>
+</ol>
+<ul>
+<li>单独的隔离操作：事务中的所有命令都会序列化、按顺序执行。事务在执行过程中，不会被其他客户端发送来的命令请求打断。</li>
+<li>没有隔离级别的概念：队列中的命令没有提交之前都不会实际的被执行。因为事务提交前任何指令都不会被实际执行，也就不存在”事务内的查询要看到事务里的更新，在事务外查询不能看到“这个问题</li>
+<li>不保证原子性：redis同一个事务如果有一天命令执行失败，其后的命令仍然会被执行，没有回滚。</li>
+</ul>
+<h4 id="redis发布订阅">redis发布订阅</h4>
+<p>是什么：进程间的通信模式：发送者（pub）发送消息，订阅者(sub)接收消息</p>
+<p><code>注意在实际的工作中不会使用redis进行消息的发布和订阅</code></p>
+<p>订阅/发布消息图</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163501.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163501.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163501.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163501.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163501.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163501.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163550.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163550.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163550.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163550.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163550.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210209163550.png" /></p>
+<p>命令：</p>
+<p>psubscribe pattern:订阅一个或多个符合给定模式的频道</p>
+<p>pubsub subcommand：查看订阅与发布系统状态</p>
+<p>publish channel message：将消息发送到指定的频道</p>
+<p>punsubscribe pattern：退订所有给定模式的频道</p>
+<p>subscribe channel ：订阅给定的一个或多个频道的信息</p>
+<p>unsubscribe channel：退订给定的频道</p>
+<p>案例：</p>
+<p><strong>先订阅后发布</strong>才能收到消息，</p>
+<p>1.可以一次订阅多个：subscribe c1 c2 c3</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">subscribe</span> <span class="n">c1</span> <span class="n">c2</span> <span class="n">c3</span>
+<span class="n">Reading</span> <span class="n">messages</span><span class="p">.</span><span class="p">.</span><span class="p">.</span> <span class="p">(</span><span class="n">press</span> <span class="n">Ctrl</span><span class="o">-</span><span class="k">C</span> <span class="k">to</span> <span class="n">quit</span><span class="p">)</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">subscribe</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">c1</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">1</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">subscribe</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">c2</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">2</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">subscribe</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">c3</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">3</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>2.消息发布，publish c2 hello-redis</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">publish</span> <span class="n">c2</span> <span class="n">hello</span><span class="o">-</span><span class="n">redis</span>
+<span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>此时</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">subscribe</span> <span class="n">c1</span> <span class="n">c2</span> <span class="n">c3</span>
+<span class="n">Reading</span> <span class="n">messages</span><span class="p">.</span><span class="p">.</span><span class="p">.</span> <span class="p">(</span><span class="n">press</span> <span class="n">Ctrl</span><span class="o">-</span><span class="k">C</span> <span class="k">to</span> <span class="n">quit</span><span class="p">)</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">subscribe</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">c1</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">1</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">subscribe</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">c2</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">2</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">subscribe</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">c3</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">3</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">message</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">c2</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">hello-redis</span><span class="s2">&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>====================================================</p>
+<p>3.订阅多个,使用通配符 **，psubscribe new *</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">psubscribe</span> <span class="k">new</span><span class="o">*</span>
+<span class="n">Reading</span> <span class="n">messages</span><span class="p">.</span><span class="p">.</span><span class="p">.</span> <span class="p">(</span><span class="n">press</span> <span class="n">Ctrl</span><span class="o">-</span><span class="k">C</span> <span class="k">to</span> <span class="n">quit</span><span class="p">)</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">psubscribe</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">new*</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>4.收取信息，publish new1 redis2015</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">publish</span> <span class="n">new1</span> <span class="n">redis2015</span>
+<span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>此时</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">6379</span><span class="o">&gt;</span> <span class="n">psubscribe</span> <span class="k">new</span><span class="o">*</span>
+<span class="n">Reading</span> <span class="n">messages</span><span class="p">.</span><span class="p">.</span><span class="p">.</span> <span class="p">(</span><span class="n">press</span> <span class="n">Ctrl</span><span class="o">-</span><span class="k">C</span> <span class="k">to</span> <span class="n">quit</span><span class="p">)</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">psubscribe</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">new*</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">integer</span><span class="p">)</span> <span class="mi">1</span>
+<span class="mi">1</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">pmessage</span><span class="s2">&#34;</span>
+<span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">new*</span><span class="s2">&#34;</span>
+<span class="mi">3</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">new1</span><span class="s2">&#34;</span>
+<span class="mi">4</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">redis2015</span><span class="s2">&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="redis复制masterslave">redis复制(master/slave)</h4>
+<p>是什么：就是我们所说的主从复制，主机数据更新后根据配置和策略，自动同步到备机的master/slaver机制，master以写为主，slave以读为主</p>
+<p>能干嘛：读写分离；容灾恢复</p>
+<h4 id="redis分片">redis分片</h4>
+<p>分片是将数据划分为多个部分的方法 ，可以将数据存储在多台机器中，这种方法在解决某些问题时可以获得线性级别的性能提升。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210204832.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210204832.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210204832.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210204832.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210204832.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210210204832.png" /></p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">

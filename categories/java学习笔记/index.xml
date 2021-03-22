@@ -9,15 +9,28 @@
     <pubDate>Mon, 01 Feb 2021 09:54:48 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://shilongshen.github.io/redis/</guid>
-    <description><![CDATA[NoSQL(Not Only SQL)，泛指非关系型数据库用于解决大规模数据存储。这些类型的数据存储不需要固定的模式，无需多余的操作就可以横向扩展。
-优点：
- 易拓展;数据之间没有关系。 大数据量高性能 ；NoSQL数据库具有非常高的读写性能，在大数据量下同样表现优秀 多样灵活的数据模型 ； NoSQL无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式  RDBMS(关系型数据库) vs. NoSQL
-传统的ACID:
- A: （Atomicity）原子性 C:（Consistency）一致性 I：（Isolation）独立性 D:（Durability）持久性  CAP：
- C：（Consistency）强一致性 A：（Availability）高可用性 P:（Partition tolerance） 分区容错性  CAP的3进2：
-CAP的核心理论是：一个分布式系统不可能同时很好的满足一致性、可用性和分区容错性，最多只能较好的满足其中的两个。
- CA:单点集群，满足一致性，可用性的系统，通常在拓展性上不太强大&ndash;&gt;传统Oracle数据库 CP:满足一致性，分区容错性的系统，通常性能不是特别高&ndash;&gt;Redis AP:满足可用性，分区容错性的系统，通常对一直性要求低一些  分布式 VS 集群
- 分布式：不同的多台服务器上部署不同的服务模块他们之间通过RPC/Rmi之间通信和调用，对外提供服务和组内协作。 集群：不同的多台服务器上部署相同的服务模块，通过分布式调度软件j进行统一的调度，对外提供服务和访问。  票】、4]]></description>
+    <description><![CDATA[NoSQL数据库的四大分类  KV键值对 文档类数据库 列存储数据库 图关系数据库  Redis简要介绍 Redis : REmote DIctionary Server（远程字典服务器），是一个高性能的（key/value）分布式内存数据库，基于内存运行，是当下最热门的NoSQL数据库之一，也被人们称为数据结构服务器。
+Redis的三大特点  Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用 Redis不仅仅支持简单的key-value类型的数据，同时好提供list,set,zset,hash等数据结构的存储 Redis支持数据的备份，即master-slave模式的数据备份  Redis的使用场景   内存存储和持久化；Redis支持异步将内存中的数据存放写到磁盘上，同时不影响继续服务
+  取最新N个数据的操作，如：可以将最新10条评论的ID放在Redis的list集合模拟类似HttpSession这种需要设定过期时间的功能
+  发布、订阅消息系统
+  定时器、计数器
+可以对String进行自增自减运算，从而实现计数器功能。
+redis这种内存型数据库的读写性能非常高，很适合存储频繁读写的计数量
+  缓存
+将热点数据放入内存中，设置内存的最大使用量以及淘汰策略来保证缓存的命中率
+  会话缓存
+可以使用redis来统一存储多台应用服务器的回话信息
+当应用服务器不再存储用户的会话信息，也就不在具有状态，一个用户可以请求任意一个应用服务器，从而实现高可用性以及可伸缩性。
+  redis与memcached 两者都是非关系型内存键值数据库，主要有以下不同
+数据类型
+memcached仅支持字符串类型，而redis支持五种不同的数据类型，可以更灵活地解决问题
+数据持久化
+redis支持两种持久化策略：RDB快照和AOF日志，而memcached不支持持久化
+分布式
+memcached不支持分布式，只能通过再客户端使用一致性哈希来实现分布式存储
+redis实现了分布式的支持
+内存管理机制
+ 在redis中，并不是所有数据都一直存储在内存中，可以将一些很久没用的value交换到磁盘，而memcached的数据则一直在内存中。 memmcached将内存分割为特定长度的块来存储数据，以完全解决内存碎片的问题，但是这种方式会使得内存的利用率不高，例如块的大小为128bytes，只存储100bytes的数据，那么剩下的28bytes就浪费掉了  Redis相关知识  单进程 默认16个数据库，类似数组下标从零开始，初始默认使用0号 Select命令切换数据库 Dbsize查看当前数据库的key数量，keys *: 查看所有的key，keys k?：可以支持条件选择 flushall:清空所有的数据库（慎用） flushdb：清空当前库 同意密码管理，16个库都是同样的密码 redis索引都是从零开始 默认端口是6379  Redis的数据类型 Redis键（key）]]></description>
 </item><item>
     <title>设计模式</title>
     <link>https://shilongshen.github.io/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>

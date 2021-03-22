@@ -22,12 +22,13 @@
     <pubDate>Sun, 15 Nov 2020 13:27:05 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://shilongshen.github.io/%E5%9F%BA%E4%BA%8Ehugo%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
-    <description><![CDATA[本文是基于ubuntu16.04进行搭建 下载安装hugo 1 2  下载地址：https://github.com/gohugoio/hugo/releases/download/v0.56.0/hugo_0.56.0_Linux-64bit.deb 安装：sudo dpkg -i hugo_0.56.0_Linux-64bit.deb   注意如果直接使用
+    <description><![CDATA[本文是基于ubuntu16.04进行搭建 注意：本文是基于ubuntu16.04进行搭建
+下载安装hugo 1 2  下载地址：https://github.com/gohugoio/hugo/releases/download/v0.56.0/hugo_0.56.0_Linux-64bit.deb 安装：sudo dpkg -i hugo_0.56.0_Linux-64bit.deb   注意如果直接使用
 1  sudo apt install hugo   进行安装，安装的版本可能过低，导致一些主题不能够使用。要尽可能下载新版本！
 安装完成后可以使用
 1  hugo version   来检查是否安装成功。
 生成站点 1  hugo new site /path   /path站点表示路径，我这里设为了‘myblog’ , myblog中的结构
  archetypes config.toml content data layouts static themes  创建文章 1  hugo new post/about.md   这是会在content/post文件夹下生成一个about.md文件
-安装皮肤 1 2  cd theme git clone https://github.com/vaga/hugo-theme-m10c.git   hugo提供的皮肤可以在这里找到]]></description>
+安装皮肤 1 2  cd theme //将下载的主题文件夹存放在这里   hugo提供的皮肤可以在这里找到]]></description>
 </item></channel>
 </rss>

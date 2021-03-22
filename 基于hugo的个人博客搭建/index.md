@@ -5,7 +5,7 @@
 
 #### 本文是基于ubuntu16.04进行搭建
 
-
+**注意：本文是基于ubuntu16.04进行搭建**
 
 ## 下载安装hugo
 
@@ -50,12 +50,14 @@ hugo new post/about.md
 
 ## 安装皮肤
 
-~~~
+~~~shell
 cd theme
-git clone https://github.com/vaga/hugo-theme-m10c.git
+//将下载的主题文件夹存放在这里
 ~~~
 
 hugo提供的皮肤可以在这里[找到](https://www.gohugo.org/theme/)
+
+> 注意，如果想使用[LoveIt](https://hugoloveit.com/zh-cn/)主题，最好使用hugo0.63，如果太高的版本，例如hugo0.82，可能会出现一些问题。
 
 ## 运行hugo
 

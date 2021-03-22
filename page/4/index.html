@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://shilongshen.github.io/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
-<meta property="og:updated_time" content="2021-02-04T09:17:30+08:00" />
+<meta property="og:updated_time" content="2021-03-22T09:54:48+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
@@ -103,62 +103,82 @@
         alt="/images/avatar.jpg"
         title="/images/avatar.jpg" /></a></div><h1 class="home-title">我的个人博客</h1><div class="links"><a href="https://github.com/shilongshen" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a><a href="mailto:1319144765@qq.com" title="Email" rel=" me"><i class="far fa-envelope fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/">操作系统基础</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-27">2020-11-27</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">什么是操作系统 操作系统所处的位置：
-底层是硬件，包括芯片，电路板，硬盘，键盘等
-硬件的上层是软件，软件又分为用户态和内核态
-其中操作系统运行在内核态中，处于软件的最基础部分，操作系统具有对所有硬件的完全访问权，可以执行机器能够运行的任何指令。
-用户态的最低层次称为用户接口程序（用户与之交互的程序，基于文本的称为shell，基于图形界面的称为GUI），用户接口程序允许用户运行其他程序，例如web应用,电子邮件，音乐播放器。
- 文本模式登录后所取得的程序被称为壳（shell），这是因为这只程序负责最外面跟使用者（我们）打交道，所以被戏称为“壳”
-在Linux中的shell为bash
-  操作系统本质上是一个运行在计算机的软件，用于管理计算机硬件和软件资源（操作系统是一个运行在内核态的软件） 操作系统屏蔽了硬件的复杂性 操作系统运行与裸机之上，为其他软件提供基础的运行环境  操作系统具有两种功能：
- 向应用程序提供抽象;例如将硬盘抽象为文件，使用该抽象，程序可以创建，读写文件，而不用直接和硬件打交道。 管理计算机资源;在相互竞争的程序间有序的控制对处理器、存储器以及其他I/O接口的分配。  什么是系统调用 如果一个进程在用户态需要使用内核态的功能，就进行系统调用从而陷入内核，由操作系统代为完成。
-线程中发生函数调用时, 就会在线程栈中分配函数调用栈, 而虚拟内存分配, 文件操作, 网络读写等很多功能都是由操作系统来实现的, 再向用户程序暴露接口, 所以线程免不了要调用操作系统提供的系统服务, 即系统调用.
-
-Linux 的系统调用主要有以下这些：
-   Task Commands     进程控制 fork(); exit(); wait();   进程通信 pipe(); shmget(); mmap();   文件操作 open(); read(); write();   设备操作 ioctl(); read(); write();   信息维护 getpid(); alarm(); sleep();   安全 chmod(); umask(); chown();    例：</div><div class="post-footer">
-        <a href="/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/">Read More</a></div>
+        <a href="/linux%E7%9B%B8%E5%85%B3/">Linux相关</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-12-28">2020-12-28</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">Linux中tty是什么 tty：终端设备的统称。
+tty一词源于Teletypes，或者teletypewriters，原来指的是电传打字机，是通过串行线用打印机键盘通过阅读和发送信息的东西，后来这东西被键盘与显示器取代，所以现在叫终端比较合适。终端是一种字符型设备，它有多种类型，通常使用tty来简称各种类型的终端设备。
+tty1～6是文本型控制台，tty7是X Window图形显示管理器。
+在本地机器上可以通过Ctrl+Alt+F1（F1-F7键）切换到对应的登录控制台。
+ 所谓的窗口环境就是：文字界面加上X窗口软件！文字界面一定是存在的，只是窗口界面软件看你要不要启动而已
+ 快捷键  Tab：命令和文件名补全； Ctrl+C：中断正在运行的程序； Ctrl+D：结束键盘输入（End Of File，EOF）  帮助 1. &ndash;help 指令的基本用法与选项介绍。
+2. man man 是 manual 的缩写，将指令的具体信息显示出来。
+当执行 man date 时，有 DATE(1) 出现，其中的数字代表指令的类型，常用的数字及其类型如下：
+   代号 类型     1 用户在 shell 环境中可以操作的指令或者可执行文件   5 配置文件   8 系统管理员可以使用的管理指令    3. info info 与 man 类似，但是 info 将文档分成一个个页面，每个页面可以跳转。
+4. doc /usr/share/doc 存放着软件的一整套说明文件。
+关机 1.</div><div class="post-footer">
+        <a href="/linux%E7%9B%B8%E5%85%B3/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/arraylist%E4%B8%8E%E6%95%B0%E7%BB%84%E9%97%B4%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2/">ArrayList与数组之间的相互转换</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-25">2020-11-25</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">将ArrayList转换为数组 方法1：利用循环语句将ArrayList中的元素添加到数组中 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18  public class ArrayListTest { public static void main(String[] args) { List&lt;Integer&gt; list =new ArrayList(); list.add(1); list.add(2); list.add(3); list.add(4); int[] b=new int[list.size()]; for (int i=0;i&lt;list.size();i++){ b[i]= list.get(i); } for (int s:b){ System.out.println(s); } } }   方法2：使用ArrayList中的toArray方法，将Arraylist转换为数组 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  public class ArrayListTest { public static void main(String[] args) { List&lt;Integer&gt; list =new ArrayList(); list.</div><div class="post-footer">
-        <a href="/arraylist%E4%B8%8E%E6%95%B0%E7%BB%84%E9%97%B4%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2/">Read More</a></div>
+        <a href="/map%E7%9A%84%E9%81%8D%E5%8E%86%E6%96%B9%E5%BC%8F/">Map的遍历方式</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-12-27">2020-12-27</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63  package MapTest; import java.util.Iterator; import java.util.Map; import java.</div><div class="post-footer">
+        <a href="/map%E7%9A%84%E9%81%8D%E5%8E%86%E6%96%B9%E5%BC%8F/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E5%BC%82%E5%B8%B8/">异常</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-25">2020-11-25</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">异常分类 所有的异常都派生于Throwable,在下一层又分解为Error和Exception。
-Error类层次描述Java运行时系统的内部错误和资源耗尽错误，发生这类错误时，除了通知错误并尽力妥善终止程序外，你几乎无能为力，这一类错误很少发生。
-Exception类又分为Runtime Exception和其他Exception。
-Java将异常进行分类：
- 非检查型异常（unchecked）：派生于Error类和Runtime Exception类的所有异常 检查型异常（checked）:其他所有异常  需要为所有检查型异常提供异常处理器。
-声明检查型异常 一个方法必须声明所有可能抛出的检查型异常，如果没有声明，编译器就会发出一个错误警告
-声明的方法：在方法首部通过throws 声明这个方法可能抛出的检查型异常，例如
-1 2 3 4 5 6 7  class Test{ public Image LoadImage(String s) throws IOException{ ... } }   这里需要注意的是：
- 如果子类覆写父类的方法，那么子类的这个方法声明的异常不能比父类更加通用。子类中的方法可以声明更加特殊的异常或不声明异常 如果父类中的方法没有声明任何异常，那么子类的方法也不能声明异常  如何抛出异常 例：
-1 2 3 4 5 6 7 8 9 10 11  String readData(Scanner in) throws EOFException{ while(){ if(!in.hasNext()){ if(n&lt;len){ throw new EOFException;//抛出异常  } } } return s; }   抛出异常的方法：</div><div class="post-footer">
-        <a href="/%E5%BC%82%E5%B8%B8/">Read More</a></div>
+        <a href="/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/">常用函数</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-12-27">2020-12-27</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">将字符串转换为字符： 1 2  String str = &#34;42&#34;; char[] chars = str.toCharArray();   去除字符串的空格： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32  String trim //trim()方法移除字符串两侧(头尾)的空白字符(空格、tab键、换行符) String strip 1、trim()方法不足之处 trim()早在Java早期就存在，当时Unicode还没有完全发展到我们今天广泛使用的标准。 trim()方法移除字符串两侧的空白字符(空格、tab键、换行符) 支持Unicode的空白字符的判断应该使用isWhitespace(int)。 此外，开发人员无法专门删除缩进空白或专门删除尾随空白。 简单得说就是，trim()方法无法删除掉Unicode空白字符，但用Character.isWhitespace©方法可以判断出来。 2、strip()方法 JAVA11(JDK11)中的strip()方法，适用于字符首尾空白是Unicode空白字符的情况，通过一段代码来具体看一下， public static void main(String[] args) { String s = “\t abc \n”; System.</div><div class="post-footer">
+        <a href="/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/compable%E5%92%8Ccomparator/">Comparable和Comparator</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-24">2020-11-24</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">在Arrays类中的sort方法能够对对象数组进行排序，但是我们知道，排序要有排序规则，如果是自定义的类，必须明确这些规则才能够使用Arrays.sort方法对对象数组进行排序。实际上这些排序规则就是一种比较规则。
-对于基本数据类型,例如int等，或者是常用的对象,例如String ,其本身就定义了比较规则，因此我们不需要在重新定义比较规则。但是对于我们自己定义的类就必须重新定义比较规则。
-在Java中实现Arrays.sort数组排序有两种方式：
- 实现Comparable接口，并覆写compareTo方法。在调用Arrays.sort只需要传入对象数组即可 在调用Arrays.sort时需要传入一个数组和一个比较器作为参数。比较器是实现了Comparator接口中compare方法的类的的实例。   首先来看第一种方式 类实现Comparable类中的compareTo方法，Arrays.sort传入对象数组
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40  public class ArraysTest { public static void main(String[] args) { Employee[] employees=new Employee[3];//构建一个对象数组  employees[0]=new Employee(10000,&#34;xiaoming&#34;); employees[1]=new Employee(20000,&#34;xiaohong&#34;); employees[2]=new Employee(15000,&#34;xiaocai&#34;); Arrays.</div><div class="post-footer">
-        <a href="/compable%E5%92%8Ccomparator/">Read More</a></div>
+        <a href="/ubuntu-%E7%BB%99%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACpytorch%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9Acuda%E7%89%88%E6%9C%AC/">给不同版本Pytorch指定特定CUDA版本</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-12-25">2020-12-25</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/"><i class="far fa-folder fa-fw"></i>技术分享与记录</a></span></div><div class="content">参考
+在服务器上安装不同版本的pytorch
+先创建一个虚拟环境
+1  conda create -n pytorch1.0 python=3.7   切换到该虚拟环境(这样就不会影响原有的环境了)
+1  conda activate pytorch1.0   方法一：
+1  conda install pytorch=1.0.0 torchvision -c pytorch   这样就会安装
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41  Collecting package metadata (current_repodata.</div><div class="post-footer">
+        <a href="/ubuntu-%E7%BB%99%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACpytorch%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9Acuda%E7%89%88%E6%9C%AC/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">lambda表达式</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-24">2020-11-24</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">为什么引入lambda表达式 在Java中是面向对象进行编程，如果你想要调用一个方法，你必须创建一个类，并在类中构造一个方法，方法体中为实现的方法。当你想要调用这个方法时，你必须将类进行实例化才能够调用这个方法。从某种意义上来说，这是比较复杂的，lambda就是为了简化这一过程。
-lambda表达式的语法   lambda表达式的形式为参数，箭头（-&gt;），以及一个表达式。
-  如果代码要完成的计算无法放在一个表达式中，可以将放在{}中
-  {}中可以显式包含return语句：
-1 2 3 4  （String first,Sring second）-&gt;{ if (first.length&gt;second.length) return -1; else return 0; }     即使lambda表达式中没有参数，任要提供空括号，就像空参数一样：
-1 2 3 4  ()-&gt;{ for (int i=0;i&lt;100;i++) System,out.println(i); }     如果可以推导出一个参数的类型，则可以忽略其类型：
-1 2 3  Comparator&lt;String&gt; Com=(first,second)-&gt;{ first.length-second.length; }     无需指定lambda表达式的返回类型。lambda表达式的返回类型总是能够从上下文推断得到：
-1  （String first,Sring second）-&gt; first.length&gt;second.length //返回类型为int   函数式接口 定义：只具有一个抽象方法的接口称为函数式接口</div><div class="post-footer">
-        <a href="/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">Read More</a></div>
+        <a href="/video-based-pose-transfer-method/">video-based pose transfer method</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-12-19">2020-12-19</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">Dance Dance Generation: Motion Transfer for Internet Videos 该文章可以实现在复杂背景下的pose transfer。
+In summary, our contributions include the following.
+  We demonstrate personalized motion transfer on videos from the Internet.
+  We propose a novel two-stage frame-work to synthesize people performing new movements and fuse them seamlessly with background scenes. （主要贡献：实现复杂背景下的姿态转换）
+  We perform qualitative and quantitative evaluations validating the superiority of our method over existing state-of-the-art.
+  method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过阶段进行修正）</div><div class="post-footer">
+        <a href="/video-based-pose-transfer-method/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/">Java基础总结</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-21">2020-11-21</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">String.getBytes(String decode)方法会根据指定的decode编码返回某字符串在该编码下的byte数组表示，如：
-1 2 3 4 5 6 7 8 9 10  byte[] a= &#34;shen&#34;.getBytes();//java默认的编码方式为unicode  for (byte s:a){ System.out.println(s); } /* 115 104 101 110 */   final，static关键字    final 关键字 表示常量，即变量被赋值后不能被更改。例如：final double number=24; 被final修饰的类不能被继承，被final修饰的方法不能被重写，能被重载。final不能修饰接口和抽象类。     static 关键字 静态字段属于类而不属于对象，通过类名.静态字段来访问；静态方法属于类，通过类名.静态方法来使用。静态方法只能访问静态字段，不能访问实例字段。    this关键字，super关键字    this this指向当前对象     super super指向父类    自动装箱和自动拆箱  装箱：将基本类型用它们对应的引用类型包装起来； 拆箱：将包装类型转换为基本数据类型；  1 2 3 4 5  //自动装箱 //向ArrayList&lt;Integer&gt;中添加int元素 list.</div><div class="post-footer">
-        <a href="/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/">Read More</a></div>
+        <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-12-16">2020-12-16</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">网络基础知识 TCP/IP是通信协议的统称
+TCP/IP就是IP,TCP,HTTP等协议的集合。
+简单的说，协议就是计算机与计算机之间通过网络实现通信时事先达成的一种“约定”。两台计算机之间必须能够支持相同的协议，并准守相同协议进行处理，这样才能实现相互通信。
+分组交换协议 分组交换协议是指将大数据分割成一个个叫做包的较小单位进行传输的方法。
+协议的分层 每个分层都接受由它下一层所提供的特定服务，并且负责为它的上一层提供特定的服务。上下层之间进行交互时所遵守的约定称为接口。同一层之间的交互叫做“协议”。
+传输方式的分类 面向有连接型与面向无连接型 通过网络发送数据可以大致分为面向有连接型与面向无连接型。
+ 面向有连接型：字发送数据数据之前，需要在收发主机之间建立一条通信线路。就好比人们平常打电话 （如TCP协议） 面向无连接型：不要求建立和断开连接。发送端可以在任何时候自由发送数据。反之，接收端也永远不知道自己会在何时收到数据。因此在面向无连接型时，接收端常常需要确认是否接收到数据。就好比去邮局寄包裹 （如UDP协议，IP协议）  电路交换和分组交换 网络通信方式大致可以分为两种：电路交换和分组交换。
+  电路交换历史久远，主要用于过去的电话网
+ 电路交换用于电话通信系统，两个用户要通信之前需要建立一条专用的物理链路，并且在整个通信过程中始终占用该链路。由于通信的过程中不可能一直在使用传输线路，因此电路交换对线路的利用率很低，往往不到 10%。    分组交换则是比较新的通信技术，TCP/IP则是采用了分组交换技术（重点介绍）。
+ 让连接到通信电路的计算机将所要发送的数据分为多个数据包，按照一定的顺序排列之后分别发送。这就是分组交换。有了分组交换，数据被细分之后，所有计算机就可以一齐收发数据。 每个分组都有首部和尾部，包含了源地址和目的地址等控制信息，在同一个传输线路上同时传输多个分组互相不会影响，因此在同一条传输线路上允许同时传输多个分组，也就是说分组交换不需要占用传输线路。 在一个邮局通信系统中，邮局收到一份邮件之后，先存储下来，然后把相同目的地的邮件一起转发到下一个目的地，这个过程就是存储转发过程，分组交换也使用了存储转发过程。    地址 TCP/IP通信中使用MAC地址、IP地址、端口号等信息作为地址标识。甚至在应用层中，可以使用电子邮件地址作为网络通信的地址。
+地址应该具有唯一性和层次性
+MAC地址和IP地址在标识一个通信主体时虽然都具有唯一性，但是其中只有IP具有层次性。
+TCP/IP的基础知识 参考
+互联网进行通信时需要相应的网络协议，TCP/IP原本就是为使用互联网而开发制定的协议族。
+因此互联网的协议就是TCP/IP，TCP/IP就是互联网的协议。
+http是应用层协议，tcp是传输层协议，IP是网络层协议，不是同一层的协议，协议是一层层打包的。 像这样**［以太［IP［TCP［http［应用数据］］**
+ OSI与TCP/IP的区别和联系 ISO制定了OSI模型，OSI参考模型中各个分层的作用：
+ISO制定的OSI参考模型的过于庞大、复杂招致了许多批评。与此对照，由技术人员（IEFT）自己开发的TCP/IP协议栈获得了更为广泛的应用。如图所示，是TCP/IP参考模型和OSI参考模型的对比示意图。
+TCP/IP参考模型分为四个层次：应用层、传输层、网络互连层和主机到网络层。
+在TCP/IP参考模型中，去掉了OSI参考模型中的会话层和表示层（这两层的功能被合并到应用层实现）。同时将OSI参考模型中的数据链路层和物理层合并为主机到网络接口层。
+网络7层协议，4层，5层？ 7层指OSI模型，包括物理层、数据链路层、网络层、传输层、会话层、表示层、应用层
+4层指TCP/IP，包括网络接口层、网络层、传输层、应用层
+5层只是OSI和TCP/IP的综合，是业界产生出来的非官方协议模型，但是很多具体的应用。实际应用还是TCP/IP的四层结构。为了方便可以把下两层称为网络接口层。五层体系结构包括：物理层、数据链路层、网络层、传输层、应用层、。
+下面将针对“5层”进行介绍
+TCP/IP分层模型与通信示例 每个分层中都会对所发送的数据附加一个首部，在这个首部中包含了必要的信息
+网络中传输的数据包由两部分组成：一部分是协议要用到的首部，另一部分是上层传过来的数据。
+在数据包的首部明确表明了协议应该如何读取数据。
+TCP/IP各层对邮件的收发处理：
+每个包首部至少都会有两个信息：一个是发送端和接收端地址（以太网会用MAC地址，IP会用IP地址，TCP会用端口号，即使是应用程序，也会用电子邮件这样的信息作为一种地址标识）；另一个是上层协议的协议类型（一个标识位，用来标识上一层的协议信息）。
+什么是端口
+分层中的包信息：
+1.物理层（硬件） bit,byte,帧的区别和联系 1byte=8bit
+在网络中，网络设备将“bit”组成一个个的byte，然后这些字节“封装”成帧，在网络上传输。为什么要把数据“封装”成帧呢？因为用户数据一般都比较大，有的可以达到MB字节，一下子发送出去十分困难，于是就需要把数据分成许多小份，再按照一定的次序发送出去。 以太网的帧值总是在一定范围内浮动，最大的帧值是1518字节，最小的帧值是64字节。在实际应用中，帧的大小是由设备的MTU（最大传输单位）即设备每次能够传输的最大字节数自动来确定的。</div><div class="post-footer">
+        <a href="/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">Read More</a></div>
 </article><ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -187,7 +207,7 @@ lambda表达式的语法   lambda表达式的形式为参数，箭头（-&gt;）
                     <span class="page-link" aria-hidden="true">&hellip;</span>
                 </li><li class="page-item ">
                     <span class="page-link">
-                        <a href="/page/15/">15</a>
+                        <a href="/page/16/">16</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">
