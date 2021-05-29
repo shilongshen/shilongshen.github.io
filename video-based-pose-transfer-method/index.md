@@ -3,10 +3,6 @@
 
 
 
-
-
-
-
 #### Dance Dance Generation: Motion Transfer for Internet Videos
 
 该文章可以实现在复杂背景下的pose transfer。
@@ -23,33 +19,23 @@ In summary, our **contributions** include the following.
 
 <img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222456.png" style="zoom: 200%;" />
 
-method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过阶段进行修正）
+method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过第二阶段进行修正）
 
 - 利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。
 - Human synthesis net：将对齐的body parts与target pose 作为输入，对body parts进行修正，并得到前景mask
 - fusion net：将body parts + background +target pose 作为输入，进行前景和背景的融合，实现复杂背景下的pose transfer
 
-
-
-这里需要注意的点;
+这里需要注意的点：
 
 - 如何保证生成视频帧在时间上是平滑的？方法: target pose采用多帧的姿态表示作为输入。
 
   ![](https://gitee.com/shilongshen/image-bad/raw/master/img/20201219223607.png)
 
-
-
 存在的问题：
 
 当source person和target person将的body shape 存在较大差异时，可能生成的结果就不那么理想了。
 
-
-
-
-
 #### TransMoMo: Invariance-Driven Unsupervised Video Motion Retargeting
-
-
 
 ![](https://gitee.com/shilongshen/image-bad/raw/master/img/20201220093913.png)
 
@@ -61,8 +47,6 @@ method: (主要的思想是先将利用语义分割图将前景中的人物进�
 
 3.human motion的变化是复杂的。
 
-
-
 解决思路:
 
 三阶段网络：（这使得我们能够更加的关注motion retarget，其中步骤1,步骤3是直接采用现有最好的方法即可）
@@ -72,8 +56,6 @@ method: (主要的思想是先将利用语义分割图将前景中的人物进�
 2.motion retarget（主要贡献处：invariance-driven disentanglement）
 
 3.skeleton-to-video rendering
-
-
 
 为了解决第2和第3个难点，利用了三个因素的不变性质：structure（表示**体型**），motion（表示**姿态**），view-angle（表示**相机视角**）。具体来说：
 
@@ -156,7 +138,7 @@ method: (主要的思想是先将利用语义分割图将前景中的人物进�
 
   
 
-  - ![](https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png)
+  ​				 ![](https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png)
 
   ![](https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140312.png)
 
@@ -190,39 +172,23 @@ method: (主要的思想是先将利用语义分割图将前景中的人物进�
 
   - Triplet Loss（确保view-angle不随时间变化，这个不太理解）
 
-  ![image-20201220141410582](/home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png)
+  ![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090200.png)
 
   -  Structural Invariance Loss
 
-  
-  
-  ![image-20201220141430954](/home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png)
-
-
-
-
+  ![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090241.png)
 
 可能存在的一些问题：
 
-仅仅从skeleton的角度进行处理，并没有显示的考虑纹理信息（即没有考虑skeleton与纹理之间的对齐问题）。从这一角度出发是不是可以进行优化。
+仅仅从skeleton的角度进行处理，并没有显示的考虑纹理信息（即没有考虑skeleton与纹理之间的对齐问题）。从这一角度出发是不是可以进行优化？
 
 生成结果的时间连续性上的处理是采用多帧的skeleton进行输入。
 
-
-
-
-
-
-
 #### Deep Spatial Transformation for Pose-Guided Person Image Generation and Animation
-
-
 
 该文首先基于图像设计了一种新颖的网络框架，随后又将其拓展到视频生成（主要加上了skeleton降噪处理时间平滑性处理）
 
 这里只介绍video-based person generation
-
-
 
 **第一部分**为skeleton的降噪处理。
 
@@ -232,15 +198,15 @@ method: (主要的思想是先将利用语义分割图将前景中的人物进�
 
 **第二部分**为视频帧时间平滑处理
 
-![image-20201221155417583](/home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png)
+<img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507093407.png" style="zoom:80%;" />
 
 
 
-- 将source image(将source image根据目标姿态进行warp)和前一帧的输出(将前一帧的输出根据目标姿态进行warp)共同作为当前帧生成网络的输入
+- 将source image(将source image根据目标姿态进行warp和前一帧的输出(将前一帧的输出根据目标姿态进行warp)共同作为当前帧生成网络的输入
 
-针对source image 和 前一帧的输出使用独立的 模块。最后再将两者的输出相加作为当前帧的输出。
+针对source image 和 前一帧的输出使用独立的模块。最后再将两者的输出相加作为当前帧的输出。
 
-![](https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png)
+<img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png" style="zoom:67%;" />
 
 
 
@@ -252,15 +218,27 @@ method: (主要的思想是先将利用语义分割图将前景中的人物进�
 
 > ## Method
 >
-> 
->
 > ![img](https://pic4.zhimg.com/80/v2-947730fe3afaf619392747a3f43570d7_720w.jpg)
 >
-> 
+> FOMM使用了相邻关键点的局部仿射变换来模拟物体运动，还额外考虑了遮挡的部分，遮挡的部分可以使用image inpainting生成。
 >
-> 首先因为没有完美的监督信息，所以文章借鉴了monkey-net的训练方法：用同一个视频同时作为source image和driving video来利用本身作为监督信息，这类似于一种自监督的学习机制。然后文章提出的方法大概包括以下三个模块：
+> 参数定义:
+>
+>
+> - $S$:原图像
+> - $D$:驱动帧
+> - $\mathcal{T}_{S\leftarrow D}$:后向光流场,建立$D$与$S$中每一个像素位置的对应关系.-->就是预测一个仿射变换
+> - $R$:中间参考帧
+>
+> 首先因为没有完美的监督信息，所以文章借鉴了monkey-net的训练方法：用同一个视频同时作为source image和driving video来利用本身作为监督信息，这类似于一种自监督的学习机制。然后文章提出的方法大概包括以下模块：
+>
+> ### keypoint detector
+>
+> keypoint detector会输出关键点信息和**局部仿射变换的参数信息**，这些参数使得关键点附近的姿态信息可以通过局部仿射变换得到，然后通过泰勒展开可以得到 $T_{X\leftarrow R}$,其中$X=S$或$X=D$.
 >
 > ### Local Affine Transformations for Approximate Motion Description
+>
+> 在推断过程中，D和S的关键点差异可能会比较大，所以作者引入了一个抽象的参考帧R，通过预测R到S的映射 $T_{S\leftarrow R}$和R到D的映射$T_{D\leftarrow R}$ ，这样避免了直接计算D到S的映射，并且可以同时处理D和S。在通过这种方法得到  $T_{S\leftarrow R}$和$T_{D\leftarrow R}$ ,并联合原图像$S$送入motion estimation module中的dense motion network,得到对应的输出$T_{S\leftarrow D}$和$\mathcal{O}_{S\leftarrow D}$.
 >
 > 这个部分的理解我们首先需要考虑一个非常简单的问题：如何用一种最naive的方法来借助driving video中的关键点帮助调整source  image中的motion？这个问题的解答可能会让人想到一种简单的映射函数:R2->R2，也就是将一个帧里的像素映射到另一帧里面去，这种思想非常类似于inpainting里面的examplar的方法：像素迁移，这种映射关系在光流场中被称为后向光流场。
 >
@@ -278,9 +256,27 @@ method: (主要的思想是先将利用语义分割图将前景中的人物进�
 >
 > 
 >
-> ![img](https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg)
+> $$
+> \mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}(p)=\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}\left(p_{k}\right)+\left(\left.\frac{d}{d p} \mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}(p)\right|_{p=p_{k}}\right)\left(p-p_{k}\right)+o\left(\left\|p-p_{k}\right\|\right)
+> $$
 >
-> 
+> $$
+> \mathcal{T}_{\mathbf{X} \leftarrow \mathrm{R}}(p) \simeq\left\{\left\{\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}\left(p_{1}\right),\left.\frac{d}{d p} \mathcal{T}_{\mathbf{X} \leftarrow \mathrm{R}}(p)\right|_{p=p_{1}}\right\}, \ldots\left\{\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}\left(p_{k}\right),\left.\frac{d}{d p} \mathcal{T}_{\mathbf{X} \leftarrow \mathrm{R}}(p)\right|_{p=p_{K}}\right\}\right\}
+> $$
+>
+> $$
+> \mathcal{T}_{\mathrm{S} \leftarrow \mathrm{D}}=\mathcal{T}_{\mathrm{S} \leftarrow \mathrm{R}} \circ \mathcal{T}_{\mathrm{R} \leftarrow \mathrm{D}}=\mathcal{T}_{\mathrm{S}} \leftarrow \mathrm{R} \circ \mathcal{T}_{\mathrm{D} \leftarrow \mathrm{R}}^{-1}
+> $$
+> After computing again the first order Taylor expansion of Eq. (3) (see Sup. Mat.),
+> $$
+> \mathcal{T}_{\mathbf{S} \leftarrow \mathrm{D}}(z) \approx \mathcal{T}_{\mathbf{S} \leftarrow \mathbf{R}}\left(p_{k}\right)+J_{k}\left(z-\mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}}\left(p_{k}\right)\right)
+> $$
+> with:
+> $$
+> J_{k}=\left(\left.\frac{d}{d p} \mathcal{T}_{\mathrm{S}} \leftarrow \mathrm{R}(p)\right|_{p=p_{k}}\right)\left(\frac{d}{d p} \mathcal{T}_{\mathrm{D}} \leftarrow \mathrm{R}(p) \mid p=p_{k}\right)^{-1}
+> $$
+>
+> > 只预测仿射变换对应零阶 也就是monkeynet , 加上雅可比矩阵之后 也就是对应一阶 对应这篇文章的idea 我觉得零阶就认为关键点附近的物体运动是一致的，一阶就是关键点附近的形变可以有一定的不一致
 >
 > 当然这一步我觉得是需要基于一个物理假设的就是每一个关键点对应的一个刚体，其上的运动是一样的，然后就是可以用泰勒展开的方法来逼近这个刚体部分的运动。（文章提到了monkey-net其实就是只用了零阶的泰勒展开，而本文进一步优化提出了一阶的泰勒展开）
 >
@@ -297,10 +293,6 @@ method: (主要的思想是先将利用语义分割图将前景中的人物进�
 ​	![](https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221454.png)
 
 ![](https://gitee.com/shilongshen/image-bad/raw/master/img/20210118221621.png)
-
-
-
-
 
 
 
@@ -328,17 +320,13 @@ method: (主要的思想是先将利用语义分割图将前景中的人物进�
 
 ![](https://gitee.com/shilongshen/image-bad/raw/master/img/20210119100709.png)
 
-
-
-
-
 Pose-Dependent Appearance Embedding
 
 提取图像的姿态编码和外观编码
 
 ![](https://gitee.com/shilongshen/image-bad/raw/master/img/20210119104800.png)
 
-
+ 
 
 Pose-Attentive Retrieval Block
 

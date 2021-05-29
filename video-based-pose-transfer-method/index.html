@@ -11,7 +11,7 @@ In summary, our contributions include the following.
   We demonstrate personalized motion transfer on videos from the Internet.
   We propose a novel two-stage frame-work to synthesize people performing new movements and fuse them seamlessly with background scenes. （主要贡献：实现复杂背景下的姿态转换）
   We perform qualitative and quantitative evaluations validating the superiority of our method over existing state-of-the-art.
-  method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过阶段进行修正）" />
+  method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过第二阶段进行修正）" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://shilongshen.github.io/video-based-pose-transfer-method/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
@@ -26,7 +26,7 @@ In summary, our contributions include the following.
   We demonstrate personalized motion transfer on videos from the Internet.
   We propose a novel two-stage frame-work to synthesize people performing new movements and fuse them seamlessly with background scenes. （主要贡献：实现复杂背景下的姿态转换）
   We perform qualitative and quantitative evaluations validating the superiority of our method over existing state-of-the-art.
-  method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过阶段进行修正）"/>
+  method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过第二阶段进行修正）"/>
 <meta name="application-name" content="LoveIt">
 <meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -39,7 +39,7 @@ In summary, our contributions include the following.
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/shilongshen.github.io\/video-based-pose-transfer-method\/"
-        },"genre": "posts","wordcount":  397 ,
+        },"genre": "posts","wordcount":  519 ,
         "url": "https:\/\/shilongshen.github.io\/video-based-pose-transfer-method\/","datePublished": "2020-12-19T13:26:17+08:00","dateModified": "2020-12-19T13:26:17+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -116,8 +116,8 @@ In summary, our contributions include the following.
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">video-based pose transfer method</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-12-19">2020-12-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;397 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-12-19">2020-12-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;519 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -141,6 +141,7 @@ In summary, our contributions include the following.
         </li>
         <li><a href="#method">Method</a>
           <ul>
+            <li><a href="#keypoint-detector">keypoint detector</a></li>
             <li><a href="#local-affine-transformations-for-approximate-motion-description">Local Affine Transformations for Approximate Motion Description</a></li>
             <li><a href="#occlusion-aware-image-generation">Occlusion-aware Image Generation</a>
               <ul>
@@ -178,13 +179,13 @@ In summary, our contributions include the following.
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222620.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222620.png" /></p>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201219222456.png" style="zoom: 200%;" /></p>
-<p>method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过阶段进行修正）</p>
+<p>method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过第二阶段进行修正）</p>
 <ul>
 <li>利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。</li>
 <li>Human synthesis net：将对齐的body parts与target pose 作为输入，对body parts进行修正，并得到前景mask</li>
 <li>fusion net：将body parts + background +target pose 作为输入，进行前景和背景的融合，实现复杂背景下的pose transfer</li>
 </ul>
-<p>这里需要注意的点;</p>
+<p>这里需要注意的点：</p>
 <ul>
 <li>
 <p>如何保证生成视频帧在时间上是平滑的？方法: target pose采用多帧的姿态表示作为输入。</p>
@@ -288,11 +289,9 @@ In summary, our contributions include the following.
 <li>
 <p><strong>1. Invariance of motion</strong></p>
 <ul>
-<li>
-<p>Cross Reconstruction Loss</p>
-</li>
-<li>
-<p><img
+<li>Cross Reconstruction Loss</li>
+</ul>
+<p>​				 <img
         class="lazyload"
         src="/svg/loading.min.svg"
         data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png"
@@ -300,8 +299,6 @@ In summary, our contributions include the following.
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220140207.png" /></p>
-</li>
-</ul>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -369,26 +366,26 @@ In summary, our contributions include the following.
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png, /home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png 2x"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090200.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090200.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090200.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090200.png 2x"
         data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201220141410582.png"
-        title="image-20201220141410582" /></p>
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090200.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090200.png" /></p>
 <ul>
 <li>Structural Invariance Loss</li>
 </ul>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png, /home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png 2x"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090241.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090241.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090241.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090241.png 2x"
         data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201220141430954.png"
-        title="image-20201220141430954" /></p>
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090241.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507090241.png" /></p>
 </li>
 </ul>
 <p>可能存在的一些问题：</p>
-<p>仅仅从skeleton的角度进行处理，并没有显示的考虑纹理信息（即没有考虑skeleton与纹理之间的对齐问题）。从这一角度出发是不是可以进行优化。</p>
+<p>仅仅从skeleton的角度进行处理，并没有显示的考虑纹理信息（即没有考虑skeleton与纹理之间的对齐问题）。从这一角度出发是不是可以进行优化？</p>
 <p>生成结果的时间连续性上的处理是采用多帧的skeleton进行输入。</p>
 <h4 id="deep-spatial-transformation-for-pose-guided-person-image-generation-and-animation">Deep Spatial Transformation for Pose-Guided Person Image Generation and Animation</h4>
 <p>该文首先基于图像设计了一种新颖的网络框架，随后又将其拓展到视频生成（主要加上了skeleton降噪处理时间平滑性处理）</p>
@@ -404,26 +401,12 @@ In summary, our contributions include the following.
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155128.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155128.png" /></p>
 <p><strong>第二部分</strong>为视频帧时间平滑处理</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png, /home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png 2x"
-        data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201221155417583.png"
-        title="image-20201221155417583" /></p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210507093407.png" style="zoom:80%;" /></p>
 <ul>
-<li>将source image(将source image根据目标姿态进行warp)和前一帧的输出(将前一帧的输出根据目标姿态进行warp)共同作为当前帧生成网络的输入</li>
+<li>将source image(将source image根据目标姿态进行warp和前一帧的输出(将前一帧的输出根据目标姿态进行warp)共同作为当前帧生成网络的输入</li>
 </ul>
-<p>针对source image 和 前一帧的输出使用独立的 模块。最后再将两者的输出相加作为当前帧的输出。</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png" /></p>
+<p>针对source image 和 前一帧的输出使用独立的模块。最后再将两者的输出相加作为当前帧的输出。</p>
+<p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221155858.png" style="zoom:67%;" /></p>
 <h4 id="first-order-motion-model-for-image-animation">First Order Motion Model for Image Animation</h4>
 <p><a href="https://zhuanlan.zhihu.com/p/269635265" target="_blank" rel="noopener noreffer">参考1</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/136606648" target="_blank" rel="noopener noreffer">参考2</a></p>
@@ -437,8 +420,19 @@ In summary, our contributions include the following.
         data-sizes="auto"
         alt="https://pic4.zhimg.com/80/v2-947730fe3afaf619392747a3f43570d7_720w.jpg"
         title="img" /></p>
-<p>首先因为没有完美的监督信息，所以文章借鉴了monkey-net的训练方法：用同一个视频同时作为source image和driving video来利用本身作为监督信息，这类似于一种自监督的学习机制。然后文章提出的方法大概包括以下三个模块：</p>
+<p>FOMM使用了相邻关键点的局部仿射变换来模拟物体运动，还额外考虑了遮挡的部分，遮挡的部分可以使用image inpainting生成。</p>
+<p>参数定义:</p>
+<ul>
+<li>$S$:原图像</li>
+<li>$D$:驱动帧</li>
+<li>$\mathcal{T}_{S\leftarrow D}$:后向光流场,建立$D$与$S$中每一个像素位置的对应关系.&ndash;&gt;就是预测一个仿射变换</li>
+<li>$R$:中间参考帧</li>
+</ul>
+<p>首先因为没有完美的监督信息，所以文章借鉴了monkey-net的训练方法：用同一个视频同时作为source image和driving video来利用本身作为监督信息，这类似于一种自监督的学习机制。然后文章提出的方法大概包括以下模块：</p>
+<h3 id="keypoint-detector">keypoint detector</h3>
+<p>keypoint detector会输出关键点信息和<strong>局部仿射变换的参数信息</strong>，这些参数使得关键点附近的姿态信息可以通过局部仿射变换得到，然后通过泰勒展开可以得到 $T_{X\leftarrow R}$,其中$X=S$或$X=D$.</p>
 <h3 id="local-affine-transformations-for-approximate-motion-description">Local Affine Transformations for Approximate Motion Description</h3>
+<p>在推断过程中，D和S的关键点差异可能会比较大，所以作者引入了一个抽象的参考帧R，通过预测R到S的映射 $T_{S\leftarrow R}$和R到D的映射$T_{D\leftarrow R}$ ，这样避免了直接计算D到S的映射，并且可以同时处理D和S。在通过这种方法得到  $T_{S\leftarrow R}$和$T_{D\leftarrow R}$ ,并联合原图像$S$送入motion estimation module中的dense motion network,得到对应的输出$T_{S\leftarrow D}$和$\mathcal{O}_{S\leftarrow D}$.</p>
 <p>这个部分的理解我们首先需要考虑一个非常简单的问题：如何用一种最naive的方法来借助driving video中的关键点帮助调整source  image中的motion？这个问题的解答可能会让人想到一种简单的映射函数:R2-&gt;R2，也就是将一个帧里的像素映射到另一帧里面去，这种思想非常类似于inpainting里面的examplar的方法：像素迁移，这种映射关系在光流场中被称为后向光流场。</p>
 <p>但是作者没有直接地将D映射到S，而是假设了<strong>一种中间的reference帧来帮助建立过渡关系</strong>，这一篇的独到之处在于用local affine  transformations来逼近运动的表述，也就是用泰勒展开来逼近于关键点在空间的位移，关键点和仿射系数都是由关键点检测的网络来输出。</p>
 <blockquote>
@@ -453,14 +447,26 @@ In summary, our contributions include the following.
         title="img" /></p>
 <p>也就是说可以<strong>用关键点的位置加上一个映射的仿射系数和无穷小量来<u>表示运动之后的关键点的位置</u></strong>，其中关键点就是当前的位置信息，然后映射系数就是motion信息，最后无穷小量可以被忽略不计。</p>
 </blockquote>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg"
-        data-srcset="https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg, https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg 1.5x, https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg 2x"
-        data-sizes="auto"
-        alt="https://pic4.zhimg.com/80/v2-d2cc848d05de97ede7c91d122da0c25b_720w.jpg"
-        title="img" /></p>
+<p>$$
+\mathcal{T}<em>{\mathbf{X} \leftarrow \mathbf{R}}(p)=\mathcal{T}</em>{\mathbf{X} \leftarrow \mathbf{R}}\left(p_{k}\right)+\left(\left.\frac{d}{d p} \mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}(p)\right|_{p=p_{k}}\right)\left(p-p_{k}\right)+o\left(\left|p-p_{k}\right|\right)
+$$</p>
+<p>$$
+\mathcal{T}<em>{\mathbf{X} \leftarrow \mathrm{R}}(p) \simeq\left{\left{\mathcal{T}</em>{\mathbf{X} \leftarrow \mathbf{R}}\left(p_{1}\right),\left.\frac{d}{d p} \mathcal{T}_{\mathbf{X} \leftarrow \mathrm{R}}(p)\right|_{p=p_{1}}\right}, \ldots\left{\mathcal{T}_{\mathbf{X} \leftarrow \mathbf{R}}\left(p_{k}\right),\left.\frac{d}{d p} \mathcal{T}_{\mathbf{X} \leftarrow \mathrm{R}}(p)\right|_{p=p_{K}}\right}\right}
+$$</p>
+<p>$$
+\mathcal{T}<em>{\mathrm{S} \leftarrow \mathrm{D}}=\mathcal{T}</em>{\mathrm{S} \leftarrow \mathrm{R}} \circ \mathcal{T}<em>{\mathrm{R} \leftarrow \mathrm{D}}=\mathcal{T}</em>{\mathrm{S}} \leftarrow \mathrm{R} \circ \mathcal{T}<em>{\mathrm{D} \leftarrow \mathrm{R}}^{-1}
+$$
+After computing again the first order Taylor expansion of Eq. (3) (see Sup. Mat.),
+$$
+\mathcal{T}</em>{\mathbf{S} \leftarrow \mathrm{D}}(z) \approx \mathcal{T}<em>{\mathbf{S} \leftarrow \mathbf{R}}\left(p</em>{k}\right)+J_{k}\left(z-\mathcal{T}_{\mathbf{D} \leftarrow \mathbf{R}}\left(p_{k}\right)\right)
+$$
+with:
+$$
+J_{k}=\left(\left.\frac{d}{d p} \mathcal{T}_{\mathrm{S}} \leftarrow \mathrm{R}(p)\right|_{p=p_{k}}\right)\left(\frac{d}{d p} \mathcal{T}_{\mathrm{D}} \leftarrow \mathrm{R}(p) \mid p=p_{k}\right)^{-1}
+$$</p>
+<blockquote>
+<p>只预测仿射变换对应零阶 也就是monkeynet , 加上雅可比矩阵之后 也就是对应一阶 对应这篇文章的idea 我觉得零阶就认为关键点附近的物体运动是一致的，一阶就是关键点附近的形变可以有一定的不一致</p>
+</blockquote>
 <p>当然这一步我觉得是需要基于一个物理假设的就是每一个关键点对应的一个刚体，其上的运动是一样的，然后就是可以用泰勒展开的方法来逼近这个刚体部分的运动。（文章提到了monkey-net其实就是只用了零阶的泰勒展开，而本文进一步优化提出了一阶的泰勒展开）</p>
 <h3 id="occlusion-aware-image-generation">Occlusion-aware Image Generation</h3>
 <p>第二步是由上一步预测得到的关键点和仿射系数来预测一个更加dense的光流场变化，并输出一个occlusion mask来指示哪个区域直接transfer哪个区域需要inpainting。</p>

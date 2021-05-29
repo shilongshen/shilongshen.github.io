@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://shilongshen.github.io/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
-<meta property="og:updated_time" content="2021-03-22T09:54:48+08:00" />
+<meta property="og:updated_time" content="2021-05-28T09:54:48+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
@@ -103,72 +103,67 @@
         alt="/images/avatar.jpg"
         title="/images/avatar.jpg" /></a></div><h1 class="home-title">我的个人博客</h1><div class="links"><a href="https://github.com/shilongshen" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a><a href="mailto:1319144765@qq.com" title="Email" rel=" me"><i class="far fa-envelope fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/spring/">Spring</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-02-10">2021-02-10</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">1.Spring框架概述 是什么  是一个轻量级的开源的JavaEE框架 解决企业应用开发的复杂性 有两个核心部分：IOC和AOP  IOC:控制反转，把创建对象的过程交给Spring进行管理 AOP:面向切面，不修改源代码进行功能增强    特点  方便解耦，简化开发 AOP的支持方便程序的测试 方便和其他框架进行整合 降低Java EE API的开发难度 方便事务的操作  入门案例 1.下载地址： https://repo.spring.io/release/org/springframework/spring/ #spring-5.2.6.RELEASE-dist.zip 28-Apr-2020 08:22 82.25 MB
-2.使用IDEA创建project
-3.导入Spring的jar包 commons-logging-1.1.1.jar spring-beans-5.2.6.RELEASE.jar spring-context-5.2.6.RELEASE.jar spring-core-5.2.6.RELEASE.jar spring-expression-5.2.6.RELEASE.jar
-4.创建普通类，在这个类创建普通方法
-1 2 3 4 5 6  package com.bean1;public class User {public void add(){System.out.println(&#34;hello world!&#34;);}}  5.创建Spring配置文件，在配置文件配置创建的对象 (1)Spring配置文件使用XML格式
-1 2 3 4 5 6 7 8  &lt;?</div><div class="post-footer">
-        <a href="/spring/">Read More</a></div>
+        <a href="/labelme%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">LabelMe简单使用</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-05-08">2021-05-08</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/"><i class="far fa-folder fa-fw"></i>技术分享与记录</a></span></div><div class="content">LabelMe安装 参考
+ Ubuntu  1 2 3 4 5 6 7 8 9  # Ubuntu 14.04 / Ubuntu 16.04# Python2# sudo apt-get install python-qt4 # PyQt4sudo apt-get install python-pyqt5 # PyQt5sudo pip install labelme# Python3sudo apt-get install python3-pyqt5 # PyQt5sudo pip3 install labelme  基本操作 1 2 3 4 5 6 7 8 9 10  labelme # 打开labelme软件labelme apc2016_obj3.</div><div class="post-footer">
+        <a href="/labelme%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/springboot%E8%BF%90%E8%A1%8C%E6%97%B6%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95/">SpringBoot运行时错误记录</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-02-10">2021-02-10</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">java.sql.SQLException: The server time zone value &lsquo;�й���׼ʱ��&rsquo; is unrecognized 参考
-解决方法:
-1  在URL上加上：?serverTimezone=GMT%2B8&amp;useUnicode=true&amp;characterEncoding=utf-8  Establishing SSL connection without server‘s identity verification is not recommende 参考
-解决方法
-1 2 3 4 5 6 7  在你连接数据库的url后面加上参数即可jdbc:mysql://localhost:3306/testdb?useSSL=false使用上述标红的URL,即可解决该警告,标红参数前面为你数据库连接URL,如果有多个参数记得用&amp;连接,例如jdbc:mysql://localhost:3306/testdb?characterEncoding=utf-8&amp;useSSL=false  template might not exist or might not be accessible by any of the configured Template Resolvers 解决方法：
-在application.yaml中设置
-1 2 3  spring:thymeleaf:prefix:classpath:/templates/  注意：thymeleaf 的classpath要多一个斜杠的，漏斜杠就会有问题</div><div class="post-footer">
-        <a href="/springboot%E8%BF%90%E8%A1%8C%E6%97%B6%E9%94%99%E8%AF%AF%E8%AE%B0%E5%BD%95/">Read More</a></div>
+        <a href="/git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/">git常用指令</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-05-01">2021-05-01</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/"><i class="far fa-folder fa-fw"></i>技术分享与记录</a></span></div><div class="content">如何在本地创建一个本地仓库并推送到github 1 2 3 4 5 6 7 8  git init #通过git init命令把这个目录变成Git可以管理的仓库git add *** #用命令git add告诉Git，把文件添加到仓库,可以多次add不同的文件（git add .）#添加所有文件git commit -m &#34;***&#34; #用命令git commit告诉Git，把文件提交到仓库,简单解释一下git commit命令，-m后面输入的是本次提交的说明，可以输入任意内容，当然最好是有意义的，这样你就能从历史记录里方便地找到改动记录。commit可以一次提交很多文件.4. 登陆GitHub，创建一个新的仓库，（选择建立readme文件）5. git remote add origin git@github.com:shilongshen/learngit.git #将本地库与远程库关联,其中learngit为仓库名6. git pull --rebase origin master#将github中的README.md文件合并到本地代码目录中7. git push -u origin master#把本地仓库的内容推送到GitHub仓库  将修改提交到仓库 1 2 3 4 5 6 7 8 9  git add #(将文件提交到缓冲区)#几种git add 命令：git add -A #保存所有的修改git add .</div><div class="post-footer">
+        <a href="/git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">个人博客搭建</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-02-10">2021-02-10</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>项目学习</a></span></div><div class="content">技术组合：
- 后端：Spring Boot，JPA，thymeleaf模板 数据库:MySQL 前端UI：Semantic UI框架  工具与环境：
- IDEA Maven 3 JDK 8 Axure RP8 &ndash;&gt;页面原型设计工具  异常处理 拦截异常：自定义400，500, error异常页面
-1 2 3 4 5 6 7 8 9 10  &lt;!DOCTYPEhtml&gt;&lt;html lang=&#34;en&#34;&gt;&lt;head&gt;&lt;meta charset=&#34;UTF-8&#34;&gt;&lt;title&gt;404&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;404&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;  1 2 3 4 5 6 7 8 9 10 11  &lt;!DOCTYPEhtml&gt;&lt;html lang=&#34;en&#34;&gt;&lt;head&gt;&lt;meta charset=&#34;UTF-8&#34;&gt;&lt;title&gt;500&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;500&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25  &lt;!</div><div class="post-footer">
-        <a href="/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">Read More</a></div>
+        <a href="/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/">B树、B&#43;树和红黑树</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-04-23">2021-04-23</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>数据结构和算法</a></span></div><div class="content">B树 2-3树和2-3-4树 多路查找树，其每个节点的孩子数可以多于两个，且每一个结点处可以存储多个元素，所有的元素之间存在某种特定的排序关系。
+ 首先聊一聊2-3树：    每个节点具有两个孩子（2结点）或 三个孩子（3结点）
+  2结点具有一个元素和两个孩子（或没有孩子），左子树元素小于该元素，右子树元素大于该元素。这个2节点要么没有孩子，要有就有两个，不能只有一个孩子。
+  3结点具有两个元素和三个孩子（或没有孩子），左子树元素小于较小元素，右子树元素大于较大元素，中子树包含介于两元素之间的元素。这个3节点要么没有孩子，要有就有3个。
+  2-3树中的所有叶子都在一个层次上。
+  同理，2-3-4树是2-3树的拓展，包括了4结点的使用。一个4结点包含了小中大三个元素和四个孩子（或没有孩子）
+而2-3树和2-3-4树都是B树的特例
+2-3树的插入和删除 再聊一聊2-3树的插入和删除操作  插入操作：与二叉排序树相同，插入操作一定是发生在叶子结点的。
+  对于空树，直接插入一个2结点
+  对于2结点的插入：直接将2结点转换为3结点即可
+  对于3结点的插入一个新元素：因为3结点本身已经是2-3树结点的最大容量，因此需要将其拆分，将树中两元素或插入元素的三者中选择其一向上移动一层。
+例如插入元素5，需要将6向上移动一层
+  删除操作：
+  所删除元素位于一个3结点的叶子节点上，直接将该节点删除
+  所删除的元素位于一个2结点的叶子节点上，分为4种情况
+   此节点的父结点也是2结点，且拥有一个3结点的右孩子  例如删除结点1，只需要进行左旋，让6成为父节点，4成为6的左孩子，7为6的右孩子
+ 此节点的父结点也是2结点，且拥有一个2结点的孩子    此节点的父结点是3结点
+  当前树是一颗满二叉树
+  所删除元素位于非叶子结点。此时通常是将树按中序遍历后得到此元素的前驱或后继元素，考虑让他们来补位即可   描述一颗B树时需要指定它的阶数
+每一个结点都可以存储多个数据，我们可以进一步的将其细分为
+B+树 B+树的优点   单一节点存储更多的元素，使得查询的IO次数更少。</div><div class="post-footer">
+        <a href="/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">回溯算法</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-02-04">2021-02-04</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>算法</a></span></div><div class="content">参考
- 「回溯算法」与「深度优先遍历」都有「不撞南墙不回头」的意思。我个人的理解是：「回溯算法」强调了「深度优先遍历」思想的用途，用一个 不断变化 的变量，在尝试各种可能的过程中，搜索需要的结果。强调了 回退 操作对于搜索的合理性。
- 递归之后需要做和递归之前相同的逆向操作   问题1 给定一个 没有重复 数字的序列，返回其所有可能的全排列。
-我们尝试在纸上写 333 个数字、444 个数字、555 个数字的全排列，相信不难找到这样的方法。以数组 [1, 2, 3] 的全排列为例。
-先写以 111 开头的全排列，它们是：[1, 2, 3], [1, 3, 2]，即 1 + [2, 3] 的全排列（注意：递归结构体现在这里）； 再写以 222 开头的全排列，它们是：[2, 1, 3], [2, 3, 1]，即 2 + [1, 3] 的全排列； 最后写以 333 开头的全排列，它们是：[3, 1, 2], [3, 2, 1]，即 3 + [1, 2] 的全排列。  总结搜索的方法：按顺序枚举每一位可能出现的情况，已经选择的数字在 当前 要选择的数字中不能出现。按照这种策略搜索就能够做到 不重不漏。这样的思路，可以用一个树形结构表示。
-  每一个结点表示了求解全排列问题的不同的阶段，这些阶段通过变量的「不同的值」体现，这些变量的不同的值，称之为「状态」； 使用深度优先遍历有「回头」的过程，在「回头」以后， 状态变量需要设置成为和先前一样 ，因此在回到上一层结点的过程中，需要撤销上一次的选择，这个操作称之为「状态重置」；</div><div class="post-footer">
-        <a href="/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">Read More</a></div>
+        <a href="/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">二分查找</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-04-23">2021-04-23</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>数据结构和算法</a></span></div><div class="content">二分查找思路1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18  public int Search(int[] nums,int target){int left=0;int right=nums.length-1;while(left&lt;=right){int mid=left+(right-left)/2;if(nums[mid]==target){return nums[mid];}else if(nums[mid]&gt;target){right=mid-1；}else{left=mid+1;}}return -1;}  二分查找的思路2  排除法：考虑中间元素nums[mid] 在什么情况下不是目标元素 思路：将待搜索区间分为2个部分，一部分一定不存在目标元素，另一部分可能存在目标元素  写二分查找的一般步骤：
+ 将循环条件设置为while(left&lt;right) 写if和else语句的时候，思考nums[i]满足什么性质时，nums[mid]不是目标元素，接着判断mid的左边有没有可能存在目标元素，mid的右边有没有可能存在目标元素。 根据“边界收缩行为”修改中间数的行为  int mid = left +(right - left)/2 “/” 是整数除法，默认的取整行为是向下取整，这会带来一个问题：int mid = left +(right - left)/2 永远取不到右边界right，对应的是mid被分到了左边区间。在面对left=mid和right=mid-1这种边界收缩时，就有可能产生死循环。   退出循环后，看是否需要对nums[left]是否是目标元素再做一次检查。  参考 链接</div><div class="post-footer">
+        <a href="/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/redis/">Redis</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-02-01">2021-02-01</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">NoSQL数据库的四大分类  KV键值对 文档类数据库 列存储数据库 图关系数据库  Redis简要介绍 Redis : REmote DIctionary Server（远程字典服务器），是一个高性能的（key/value）分布式内存数据库，基于内存运行，是当下最热门的NoSQL数据库之一，也被人们称为数据结构服务器。
-Redis的三大特点  Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用 Redis不仅仅支持简单的key-value类型的数据，同时好提供list,set,zset,hash等数据结构的存储 Redis支持数据的备份，即master-slave模式的数据备份  Redis的使用场景   内存存储和持久化；Redis支持异步将内存中的数据存放写到磁盘上，同时不影响继续服务
-  取最新N个数据的操作，如：可以将最新10条评论的ID放在Redis的list集合模拟类似HttpSession这种需要设定过期时间的功能
-  发布、订阅消息系统
-  定时器、计数器
-可以对String进行自增自减运算，从而实现计数器功能。
-redis这种内存型数据库的读写性能非常高，很适合存储频繁读写的计数量
-  缓存
-将热点数据放入内存中，设置内存的最大使用量以及淘汰策略来保证缓存的命中率
-  会话缓存
-可以使用redis来统一存储多台应用服务器的回话信息
-当应用服务器不再存储用户的会话信息，也就不在具有状态，一个用户可以请求任意一个应用服务器，从而实现高可用性以及可伸缩性。
-  redis与memcached 两者都是非关系型内存键值数据库，主要有以下不同
-数据类型
-memcached仅支持字符串类型，而redis支持五种不同的数据类型，可以更灵活地解决问题
-数据持久化
-redis支持两种持久化策略：RDB快照和AOF日志，而memcached不支持持久化
-分布式
-memcached不支持分布式，只能通过再客户端使用一致性哈希来实现分布式存储
-redis实现了分布式的支持
-内存管理机制
- 在redis中，并不是所有数据都一直存储在内存中，可以将一些很久没用的value交换到磁盘，而memcached的数据则一直在内存中。 memmcached将内存分割为特定长度的块来存储数据，以完全解决内存碎片的问题，但是这种方式会使得内存的利用率不高，例如块的大小为128bytes，只存储100bytes的数据，那么剩下的28bytes就浪费掉了  Redis相关知识  单进程 默认16个数据库，类似数组下标从零开始，初始默认使用0号 Select命令切换数据库 Dbsize查看当前数据库的key数量，keys *: 查看所有的key，keys k?：可以支持条件选择 flushall:清空所有的数据库（慎用） flushdb：清空当前库 同意密码管理，16个库都是同样的密码 redis索引都是从零开始 默认端口是6379  Redis的数据类型 Redis键（key）</div><div class="post-footer">
-        <a href="/redis/">Read More</a></div>
+        <a href="/ieee%E4%BC%9A%E8%AE%AE%E8%AE%BA%E6%96%87latex%E6%A8%A1%E6%9D%BF%E7%9A%84%E4%BD%BF%E7%94%A8/">IEEE会议论文Latex模板的使用</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-04-17">2021-04-17</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/"><i class="far fa-folder fa-fw"></i>技术分享与记录</a></span></div><div class="content">注意，此处是会议论文模板的使用（期刊模板类似）；解决的问题为外部bib文件的引用
+ 模板下载地址：链接或链接  注意此时参考文献只能够在tex文件内部编辑，比较麻烦。如果我们已经有了外部的bib文件，例如
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20  @inproceedings{goodfellow2014generative,title={Generative Adversarial Nets},author={Goodfellow, Ian and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},booktitle={Advances in neural information processing systems},pages={2672--2680},year={2014},}@inproceedings{men2020controllable,title={Controllable Person Image Synthesis with Attribute-Decomposed GAN},author={Men, Yifang and Mao, Yiming and Jiang, Yuning and Ma, Wei-Ying and Lian, Zhouhui},booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},pages={5084--5093},year={2020}}  我们可以直接通过外部bib文件的引用的方式导入已有的参考文献。首先下载链接，打开bibtex文件夹，这里面包含了ieee的参考文献格式定义。将IEEEtran.</div><div class="post-footer">
+        <a href="/ieee%E4%BC%9A%E8%AE%AE%E8%AE%BA%E6%96%87latex%E6%A8%A1%E6%9D%BF%E7%9A%84%E4%BD%BF%E7%94%A8/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%A4%8D%E5%88%B6/">链表的复制</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-01-28">2021-01-28</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>算法</a></span></div><div class="content">在这里，复制的意思是指 深拷贝（Deep Copy），类似我们常用的“复制粘贴”，事实上，与此对应的还有 浅拷贝，它们的区别是：
-浅拷贝只复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象  1.普通单向链表的定义
-1 2 3 4 5 6 7 8 9 10  // Definition for a Node. class Node { int val; Node next; public Node(int val) { this.val = val; this.next = null; } }   给定链表的头结点head，复制链表需要遍历链表，每一轮建立新节点+构建前驱结点pre和当前结点node的引用指向即可
-1 2 3 4 5 6 7 8 9 10 11 12 13 14  class Solution{ public Node copy(Node head){ Node cur=head; Node dum=new Node(0);//随意初始化一个结点  Node pre=dum; while(cur!</div><div class="post-footer">
-        <a href="/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%A4%8D%E5%88%B6/">Read More</a></div>
+        <a href="/%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/">算法复杂度分析</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-03-22">2021-03-22</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>数据结构和算法</a></span></div><div class="content">执行时间: 时间复杂度
+内存消耗：空间复杂度
+一般更关注于时间复杂度，(所以常用空间换时间)
+时间复杂度 大$O$记号
+$O(g(N))$：代表了一个复杂的表达式，是关于输入规模$N$的函数的上界
+$g(N)$：关于输入规模$N$的简单表达式，$N$可以理解为输入数据的个数
+ 随着输入规模的增加，程序的运行时间将以什么样的速度增加。
+ 时间复杂度的计算规则 如果一个算法执行的操作数于输入数据的规模$N$的表达式为多项式： $$ aN^2+bN+c $$
+ 时间复杂度忽略加法常数项 只保留最高次幂项 并且最高次幂项的乘法系数视为1  所以上式可看为 $$ N^2 $$
+所以时间复杂度就为$O(N^2)$
+注意：时间复杂度只有当输入规模特别大时才有意义
+时间复杂度的数学表达式 $O(g(n))={f(n):存在正常量c和n_0，使得对所有n\geq n_0,有0 \leq f(n) \leq cg(n)}$
+$O(g(n))$是$f(n)$的上界，等价于:$\lim\limits_{n \rightarrow \infty }\frac{f(n)}{g(n)} &lt;= c$
+空间复杂度 空间复杂度表达了在处理过程中，使用的额外空间，也是用大$O$记号。
+参考 链接</div><div class="post-footer">
+        <a href="/%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/">Read More</a></div>
 </article><ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -189,7 +184,7 @@ redis实现了分布式的支持
                     <span class="page-link" aria-hidden="true">&hellip;</span>
                 </li><li class="page-item ">
                     <span class="page-link">
-                        <a href="/page/16/">16</a>
+                        <a href="/page/21/">21</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">

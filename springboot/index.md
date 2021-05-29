@@ -196,11 +196,11 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot
 
 - 自动配好Tomcat
 
-- - 引入Tomcat依赖。
+  - 引入Tomcat依赖。
   - 配置Tomcat
 
 ```xml
-<dependency>
+	<dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <version>2.3.4.RELEASE</version>
@@ -210,20 +210,20 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot
 
 - 自动配好SpringMVC
 
-- - 引入SpringMVC全套组件
+  - 引入SpringMVC全套组件
   - 自动配好SpringMVC常用组件（功能）
 
 - 自动配好Web常见功能，如：字符编码问题
 
-- - SpringBoot帮我们配置好了所有web开发的常见场景
+  - SpringBoot帮我们配置好了所有web开发的常见场景
 
 - 默认的包结构
 
-- - <u>主程序所在包及其下面的所有子包里面的组件都会被默认扫描进来</u>
+  - <u>主程序所在包及其下面的所有子包里面的组件都会被默认扫描进来</u>
   - 无需以前的包扫描配置
   - 想要改变扫描路径，@SpringBootApplication(scanBasePackages=**"com.atguigu"**)
 
-- - - 或者@ComponentScan 指定扫描路径
+ - 或者@ComponentScan 指定扫描路径
 
 ```xml
 @SpringBootApplication
@@ -235,19 +235,16 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot
 
 - 各种配置拥有默认值
 
-- - 默认配置最终都是映射到某个类上，如：MultipartProperties
+  - 默认配置最终都是映射到某个类上，如：MultipartProperties
   - 配置文件的值最终会绑定某个类上，这个类会在容器中创建对象
 
 - 按需加载所有自动配置项
 
-- - 非常多的starter
+  - 非常多的starter
   - 引入了哪些场景这个场景的自动配置才会开启
   - SpringBoot所有的自动配置功能都在 spring-boot-autoconfigure 包里面
-  - 
 
-- ......
-
-
+......
 
 ## 容器功能
 
@@ -344,10 +341,6 @@ public class Pet {
 
 使用@Bean标注在方法上，为容器添加组件，包括了创建对象和属性注入。`方法名作为容器中的对象名`
 
-
-
-
-
 ```java
 package com.demo.config;
 
@@ -360,7 +353,7 @@ import javax.jws.soap.SOAPBinding;
 
 
 /*
-* 1.配置类中使用@Bean标注在方法上给容器注册组件，默认是单实例
+* 1. 配置类中使用@Bean标注在方法上给容器注册组件，默认是单实例
 * 2. 配置类本身也是组件
 * 3.proxyBeanMethods: 代理bean的方法
 *   Full(proxyBeanMethods = true)、【保证每个@Bean方法被调用多少次返回的组件都是单实例的】
@@ -551,9 +544,17 @@ public class MyConfig {
    @ConfigurationProperties(prefix = "mycar")
    ```
 
-2. 在Car类前使用`@ConfigurationProperties(prefix = "mycar")`，在MyConfig前面使用`@EnableConfigurationProperties(Car.class)`
+2. 在Car类前使用
 
+```java
+@ConfigurationProperties(prefix = "mycar")
+```
 
+在MyConfig前面使用
+
+```java
+@EnableConfigurationProperties(Car.class)
+```
 
 
 
@@ -593,7 +594,7 @@ public class MyConfig {
 
 @EnableAutoConfiguration由以下两个注解构成：
 
-```
+```java
 @AutoConfigurationPackage
 @Import(AutoConfigurationImportSelector.class)
 public @interface EnableAutoConfiguration {}
@@ -603,7 +604,7 @@ public @interface EnableAutoConfiguration {}
 
 自动配置包，指定了默认的包规则
 
-```
+```java
 @Import(AutoConfigurationPackages.Registrar.class)  //给容器中导入一个组件
 public @interface AutoConfigurationPackage {}
 
@@ -724,11 +725,10 @@ SpringBoot默认会在底层配好所有的组件。但是如果用户自己配�
 在创建类的时候可以不用写set,get以及构造方法，Lombok会在程序编译的时候自动创建。
 
 ```xml
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
+<dependency>
+   <groupId>org.projectlombok</groupId>
+   <artifactId>lombok</artifactId>
+</dependency>
 
 idea中搜索安装lombok插件
 ```
@@ -948,6 +948,8 @@ person:
 ### 简单功能分析
 
 #### 静态资源访问
+
+[参考](https://blog.csdn.net/bird_tp/article/details/106098481)
 
 **默认静态资源文件夹路径**放在resources下的/static 或 /public 或 /resources 或 `/META-INF/resources`
 
@@ -1792,7 +1794,7 @@ th:replace
 > 在数据源中事先建立了多个数据库连接，这些数据库连接保存在连接池（Connection Pool）中。Java程序访问数据库时，只需从连接池中取出空闲状态的数据库连接，当访问结束时，再将数据库连接返回给连接池，这样做可以提高数据库的访问效率。
 >
 > 数据源（DataSource）的作用是获取数据库连接，而连接池则是对已经创建好的数据库连接对象进行管理
-> ————————————————
+> ------------------------------------------------
 > 版权声明：本文为CSDN博主「hhrxp373317」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 > 原文链接：https://blog.csdn.net/hhrxp/article/details/20446915
 
@@ -1842,7 +1844,7 @@ th:replace
   - **数据库连接池的配置，是自己容器中没有DataSource才自动配置的**
   - 底层配置好的连接池是：**HikariDataSource**
 
-```
+```java
     @Configuration(proxyBeanMethods = false)
     @Conditional(PooledDataSourceCondition.class)
     @ConditionalOnMissingBean({ DataSource.class, XADataSource.class })
@@ -1919,11 +1921,123 @@ class DemoApplicationTests {
 
 ##### 配置模式
 
+- 添加依赖（pom文件中）
+
+```xml
+<!--        jdbc-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+<!--      mybatis-spring-boot适配器  -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.4</version>
+        </dependency>
+<!--       添加mysql驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+<!--web依赖-->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+```
+
+- 修改配置文件（application.yaml）；指定Mapper配置文件的位置，以及指定全局配置文件的信息 （建议；**配置在mybatis.configuration**）
+
+```yaml
+#mybatis设置
+mybatis:
+#  config-location:
+#  sql映射文件的位置
+  mapper-locations: classpath:mybatis/Mapper/*.xml
+#  全局配置文件的内容可以直接在此处进行设置
+  configuration:
+    map-underscore-to-camel-case: false
+
+
+spring:
+  application:
+    name: demo
+
+#设置数据源
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mybatis_test?serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+
+```
+
+- 编写mapper接口(EmployeeMapper.java)。标准@Mapper注解
+
+```java
+@Mapper//表示这是一个Mapper
+public interface EmployeeMapper {
+    Employee getEmployeeById(int id);
+}
+```
+
+- 编写sql映射文件(EmployeeMapper.xml)并绑定mapper接口
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.EmployeeMapper">
+    <select id="getEmployeeById" resultType="com.example.demo.bean.Employee">
+        select * from tbl_employee where id = #{id}
+    </select>
+</mapper>
+```
+
+
+
+- 目录结构
+
+<img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210503094634.png" style="zoom:67%;" />
+
 ##### 注解模式
+
+直接在mapper接口(EmployeeMapper.java)中写sql语句，这样就不用sql映射文件(EmployeeMapper.xml)了。
+
+```java
+@Mapper
+public interface CityMapper {
+
+    @Select("select * from city where id=#{id}")
+    public City getById(Long id);
+
+    public void insert(City city);
+
+}
+```
+
+
+
+
+
+
 
 ##### 混合模式
 
+将上面的两种方式相结合
 
+##### 最佳实战：
+
+- 引入mybatis-starter
+- **配置application.yaml中，指定mapper-location位置即可**
+- 编写Mapper接口并标注@Mapper注解
+- 简单方法直接注解方式
+- 复杂方法编写mapper.xml进行绑定映射
+- *@MapperScan("com.atguigu.admin.mapper") 简化，其他的接口就可以不用标注@Mapper注解*
 
 #### 整合 MyBatis-Plus 完成CRUD
 

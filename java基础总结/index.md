@@ -26,7 +26,7 @@ byte[] a= "shen".getBytes();//java默认的编码方式为unicode
 | ------------- | ------------------------------------------------------------ |
 | static 关键字 | 静态字段属于类而不属于对象，通过类名.静态字段来访问；静态方法属于类，通过类名.静态方法来使用。静态方法只能访问静态字段，不能访问实例字段。 |
 
-
+- 在类中使用`final`定义常量必须进行初始化操作。
 
 ### this关键字，super关键字
 
@@ -136,7 +136,7 @@ public static void main(String[] args) {
 
 重写（override）：当子类继承父类，子类必须对父类的某一个方法进行改变时，就发生了重写。注意重写要求方法签名相同，并且返回类型也要相同。
 
-
+- 注意构造方法不能够被重写，但是能够被重载
 
 ### 成员变量和局部变量的区别
 
@@ -422,6 +422,8 @@ class Son extends Father {
 
 将对象的字段（field）隐藏在对象内部，不让外部直接操作，而是通过一些公有方法来间接的操作
 
+把过程和数据包围起来，对数据的访问只能通过已定义的接口。面向对象计算始于这个基本概念。<u>封装实际上使用方法将类的数据隐藏起来，控制用户对类的修改和访问数据的程度。 适当的封装可以让程式码更容易理解和维护，也加强了程式码的安全性。</u> 
+
 
 
 ### 抽象类和接口
@@ -435,11 +437,13 @@ class Son extends Father {
 
 ![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316214101.png)
 
+常见问题：实现接口的类必须实现该接口的所有抽象方法？回答：如果是抽象类的话 就不需要实现所有的方法。
+
 ### ==和equals的区别
 
 - == 它的作用是判断两个对象的地址是不是相等。即，判断两个对象是不是同一个对象。如果为基本数据类型==比较的是值。如果是引用数据类型，比较的是内存地址。
 - equals 分为两种情况
-  - 类没有重写equals,则通过Object类的equals方法进行比较，用来比较两个对象的引用是否相等。
+  - 类没有重写equals,则通过Object类的equals方法进行比较，用来比较两个对象的引用是否相等，即内存地址。
   - 类重写了equals方法，一般我们重写equals方法来比较对象**内容**是否相等，若相等则返回true。
 
 ###  hashCode 与 equals
@@ -452,9 +456,13 @@ class Son extends Father {
 
 - 如果两个对象相等，那么哈希码一定相等
 
+- 但是两个对象的hashcode相等，两个对象不一定相等 
+
 所以
 
 - 重写equals方法时必须重写hashCode方法，如果equals方法返回true,哈希码一定相等
+
+
 
 ### 构造函数
 
@@ -475,7 +483,7 @@ java反射机制使用java.lang.Class或java.lang.reflect.Constructor的newInsta
 int m=7;
 int n=7;
 int a=2* ++m  (此时a=16,m=8)  -->先进行加法运再进行乘法
-int b=2* ++n  (此时a=14,n=8)  -->先进行乘法运算再进行加法    
+int b=2* n++  (此时a=14,n=8)  -->先进行乘法运算再进行加法    
 ```
 
 i--和--i同理
@@ -488,9 +496,13 @@ String s3 = new String("a") 时，将在**字符串常量池外的堆**里，创
 
 
 
-Q: String str=new String("hello");我只想问下这个hello是放在堆里面还是放在字符串常量中？
+Q: String str=new String("hello");我只想问下这个hello是放在堆里面还是放在字符串常量中？  -->`new`操作一定会在堆中建立一个对象
 
 A: 如果字符串常量池里存在hello这个字符串的话，则只在堆中创建一个hello对象，否则也要在字符串常量池中也创建一个hello常量，前者是新建了一个对象，后者是两个对象。
+
+
+
+字符串常量池在方法区中，即在运行时常量池中，即方法区中。
 
 [参考题](https://www.nowcoder.com/test/question/done?tid=42152683&qid=3450#summary)
 
@@ -507,12 +519,56 @@ A: 如果字符串常量池里存在hello这个字符串的话，则只在堆中
 Java有四种访问权限， 其中三种有访问权限修饰符，分别为private，public和protected，还有一种不带任何修饰符。
 
 1. private: Java语言中对访问权限限制的最窄的修饰符，一般称之为“私有的”。被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问。
-2. default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，只允许在同一个包中进行访问。
-3. protect: 介于public 和 private 之间的一种访问修饰符，一般称之为“保护形”。被其修饰的类、属性以及方法只能被类本身的方法及子类访问，即使子类在不同的包中也可以访问。
+2. default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，**只允许在同一个包中进行访问**。
+3. protect: 介于public 和 private 之间的一种访问修饰符，一般称之为“保护形”。**被其修饰的类、属性以及方法只能被类本身的方法及子类访问，即使子类在不同的包中也可以访问**。
 4. public： Java语言中访问限制最宽的修饰符，一般称之为“公共的”。被其修饰的类、属性以及方法不仅可以跨类访问，而且允许跨包（package）访问。
 
 <img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210317230809.png" style="zoom:80%;" />
 
+
+
 ### 深拷贝和浅拷贝
 
+浅拷贝：只复制对象本身
 
+深拷贝：不仅会复制对象本身，还会同时克隆所有子对象。
+
+![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210326224959.png)
+
+### Java内存模型
+
+在Java内存模型下，线程可以将变量保存到本地内存（比如计算机的寄存器）中，而不是直接在主存中进行读写，线程需要将主存中的变量拷贝到本地内存中进行操作。
+
+![](https://gitee.com/shilongshen/image-bad/raw/master/img/20201129211018.png)
+
+### TCP/IP中分为几层，每层的作用是什么
+
+TCP/IP中可以分为5层，分别是应用层、传输层、网络层、数据链路层和物理层。
+
+应用层中针对不同的应用使用不同的应用协议，来实现应用在网络之间的交互。
+
+传输层是用于建立网络中两个节点之间的数据通信，负责数据的可靠传输
+
+网络层用于将网络中的节点的地址管理和路由选择
+
+数据链路用于将同一个链路中的节点进行连接
+
+物理层指的是实际的数据传输的硬件，例如电话线路等，不同的传输设备的特性是不一样的，物理层要尽可能的屏蔽掉这些差异
+
+### String、StringBuilder和StringBuffer
+
+```java
+
+String str = "Test string";
+StringBuilder strBuilder = new StringBuilder(str);
+strBuilder.setCharAt(1, 'X');
+str=Builder.toString();
+ 
+ 
+String不可变    -->cu
+StringBuilder可变
+```
+
+- String：字符串常量，不可变
+- StringBuilder：字符串常量，可变，线程不安全
+- StringBuffer：字符串常量，可变，线程安全

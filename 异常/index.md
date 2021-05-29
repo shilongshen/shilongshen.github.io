@@ -233,10 +233,6 @@ public class Test {
 
 `throw/throws把异常一层层地往上抛，直到有人去处理它。而try...catch就是那个劳苦工人，负责获取相应的异常并对它进行处理。`
 
-
-
-
-
 相关问题：
 
 有关finally语句块说法正确的是（A B C ）

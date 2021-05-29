@@ -1025,7 +1025,19 @@ a=[1,2,[3,4]]
 
 [参考](https://oldpan.me/archives/pytorch-to-use-multiple-gpus)
 
+[参考](https://pytorch.org/docs/stable/generated/torch.nn.DataParallel.html#torch.nn.DataParallel)
+
+[参考](https://zhuanlan.zhihu.com/p/102697821)
+
 pytorch默认只使用一个GPU进行训练，如果想要使用多个GPU运行，需要使用`nn.DataParallel`
+
+> 首先在前向过程中，你的输入数据会被划分成多个子部分（以下称为副本）送到不同的device中进行计算，而你的模型module是在每个device上进行复制一份，也就是说，输入的batch是会被平均分到每个device中去，但是你的模型module是要拷贝到每个devide中去的，每个模型module只需要处理每个副本即可，当然你要保证你的batch size大于你的gpu个数。然后在反向传播过程中，每个副本的梯度被累加到原始模块中。概括来说就是：DataParallel 会自动帮我们将数据切分 load 到相应 GPU，将模型复制到相应 GPU，进行正向传播计算梯度并汇总。
+>
+> 注意还有一句话，官网中是这样描述的：
+>
+> The parallelized `module` must have its parameters and buffers on `device_ids[0]` before running this `DataParallel` module.
+>
+> 意思就是：在运行此DataParallel模块之前，并行化模块必须在device_ids [0]上具有其参数和缓冲区。在执行DataParallel之前，会首先把其模型的参数放在device_ids[0]上，一看好像也没有什么毛病，其实有个小坑。我举个例子，服务器是八卡的服务器，刚好前面序号是0的卡被别人占用着，于是你只能用其他的卡来，比如你用2和3号卡，如果你直接指定device_ids=[2, 3]的话会出现模型初始化错误，类似于module没有复制到在device_ids[0]上去，这就需要CUDA_VISIBLE_DEVICES设置对程序可见的device
 
 ```python
 device = torch.device("cuda:0")
@@ -1048,7 +1060,17 @@ model.to(device)#默认只使用一个GPU进行训练
 #CUDA_VISIBLE_DEVICES=2,0,3 // 仅使用device0, device2和device3
 
 
-#device为用户	主机上从0号开始可用的GPU编号
+#设置临时的环境变量
+Linux： export CUDA_VISIBLE_DEVICES=2,3
+windows:  set CUDA_VISIBLE_DEVICES=2,3
+#或者使用
+os.environ["CUDA_VISIBLE_DEVICES"] = "2, 3"
+#设置上面两行代码后，那么对这个程序而言可见的只有2和3号卡，和其他的卡没有关系，这是物理上的号卡，逻辑上来说其实是对应0和1号卡，即device_ids[0]对应的就是第2号卡，device_ids[1]对应的就是第3号卡。（当然你要保证上面这两行代码需要定义在以下代码之前）
+device_ids = [0, 1]
+net = torch.nn.DataParallel(net, device_ids=device_ids)
+
+
+#device为程序可见的0号开始可用的GPU编号
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #Model为用户的网络模型
@@ -1082,6 +1104,20 @@ input = data.to(device)#输入数据也需要放入device中进行处理
 #因此想要再次调用原model中的函数，需要将原本的model.load()函数变为model.module.load()形式。其中load()为我在model中自定义的函数，综上，在model与函数中间加入.module即可。
 
 ~~~
+
+小结：
+
+```python
+#并行训练
+os.environ["CUDA_VISIBLE_DEVICES"] = "2, 3"#指定程序可见GPU
+device_ids = [0, 1]
+model = torch.nn.DataParallel(m, device_ids=device_ids)#将数据切分到device上
+model.to(device)#或者是model.cuda()
+```
+
+
+
+
 
 #### matplotlib 画动态图以及plt.ion()和plt.ioff()的使用
 

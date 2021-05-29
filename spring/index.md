@@ -47,8 +47,6 @@ public class User {
 }
 ```
 
-
-
 5.创建Spring配置文件，在配置文件配置创建的对象
 (1)Spring配置文件使用XML格式
 
@@ -99,8 +97,15 @@ hello world!
 
 ### 是什么
 
-- 控制反转，把对象创建和对象之间的调用过程，交给Spring进行管理
+- 控制反转（Inverse of Control），把对象创建和对象之间的调用过程，交给Spring进行管理
+
 - 使用IOC目的：降低耦合度
+
+  > 将对象的创建和对象之间的调用交给IOC容器来管理，并用IOC容器完成对象属性的注入，这样可以极大的简化开发。
+  >
+  > IOC容器就像是一个工厂，当我们需要创建对象的时候，只需要配置好文件/注解即可，完全不用考虑对象是如何创建的。
+  >
+  > ![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210422171248.png)
 
 > [参考](https://blog.csdn.net/ivan820819/article/details/79744797)
 >
@@ -1013,13 +1018,266 @@ public class Emp {
 
 ### 基于注解方式
 
-什么是注解：注解是代码特殊标记，格式：@注解名称（属性名称=属性值，属性名称=属性值）
+什么是注解：
+
+- 注解是代码特殊标记，格式：@注解名称（属性名称=属性值，属性名称=属性值）
+- 注解可以作用在类上面、方法上面、属性上面
+- 使用目的：简化xml配置
+
+#### 基于注解的对象创建
+
+Spring 针对Bean管理中常见创建对象提供注解
+
+- @Component
+- @Service：一般用于service层
+- @Controller：一般用于web 层
+- @Repository：一般用在dao层
+
+上面4个注解的功能是一样的，都可以用来创建bean实例
+
+基本步骤如下：
+
+- 引入依赖
+
+```xml
+<dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+<!--      <scope>test</scope>-->
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.3.6</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.3.6</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aspects</artifactId>
+      <version>5.3.6</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+      <version>5.3.6</version>
+    </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+  </dependencies>
+```
+
+- 开启组件扫描
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--在spring的配置文件中-->
+<!--    开启组件扫描,spring将扫描org.example路径下带有注解的的类或方法或属性-->
+    <context:component-scan base-package="org.example"/>
+</beans>
+```
+
+- 创建类，在类的上面添加创建对象的注解
+
+```java
+package org.example.service;
+
+import org.springframework.stereotype.Component;
+
+@Component(value = "userService")
+//这就等价于在配置文件中的<bean id="userService" class="org.example.service.UserServer"></bean>
+//即进行对象的创建
+//value默认值是类名称,首字母小写：value = "userService"
+public class UserService {
+    public void add(){
+        System.out.println("add is running ...");
+    }
+}
+
+```
+
+- 测试
+
+```java
+package org.example.Test;
+
+import org.example.service.UserService;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TestUser {
+    @Test
+    public void Test1() {
+        ApplicationContext applicationContext =
+                new ClassPathXmlApplicationContext("applicationContext.xml");
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        System.out.println(userService);
+        userService.add();
+    }
+}
+/*
+org.example.service.UserService@5762806e
+add is running ...
+*/
+```
+
+#### 组件扫描的说明
+
+```xml
+<!--
+默认扫描所有注解
+use-default-filters="false"  表示现在不使用默认的filter，自己配置filter
+context:include-filter  设置扫描哪些内容
+-->
+    <context:component-scan base-package="org.example" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+```
+
+```xml
+<!--    配置扫描所有注解，但是排除其中指定的注解
+            context:exclude-filter  设置不扫描哪些内容
+-->
+    <context:component-scan base-package="org.example">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    </context:component-scan>
+```
+
+#### 基于注解的属性注入
+
+- @Autowired：根据属性类型进行自动注入
+
+  - 创建service和dao对象，并添加创建对象注解
+  - 在service中注入dao对象---> 在service类中添加dao类型属性，在属性上使用注解
+
+  ```java
+  package org.example.service;
+  
+  import org.example.dao.UserDao;
+  import org.springframework.beans.factory.annotation.Autowired;
+  import org.springframework.stereotype.Component;
+  import org.springframework.stereotype.Service;
+  
+  @Service(value = "userService")
+  //这就等价于在配置文件中的<bean id="userService" class="org.example.service.UserServer"></bean>
+  //即进行对象的创建
+  //value默认值是类名称,首字母小写：value = "userService"
+  public class UserService {
+  //    定义dao类型属性
+  //    不需要添加set方法
+      @Autowired
+      private UserDao userDao;
+  
+      public void add() {
+          System.out.println("service add is running ...");
+          userDao.add();
+      }
+  }
+  
+  ```
+
+  
+
+- @Qualifier：根据属性名进行注入
+
+  - @Qualifier要和@Autowired一起使用；当一个接口有多个实现类的时候，需要通过@Qualifier指明要注入的是哪一个实现类
+
+  ```java
+   @Autowired
+   @Qualifier(value = "userDaoImpl1")  //指明注入的是哪一个实现类
+   private UserDao userDao;
+  ```
+
+  
+
+- @Resource：可以根据类型注入，也可以根据名称注入
+
+  ```java
+   @Resource(name = "userDaoImpl1")
+   private UserDao userDao;
+  ```
+
+  
+
+- @Value：注入普通类型属性
+
+  ```java
+  @Value("abc")
+  private String name;
+  ```
+
+#### 完全注解开发
+
+不适用xml，而是使用配置类进行配置
+
+- 创建配置类，替代xml配置文件
+
+```java
+package org.example.Config;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration//使用注解表明这是一个配置类
+@ComponentScan(basePackages = {"org.example"})//开启组件扫描
+public class SpringConfig {
+    
+}
+
+```
+
+- 测试方法
+
+```java
+@Test
+//    使用配置类
+    public void Test2() {
+//        加载配置类
+        ApplicationContext applicationContext =
+                new AnnotationConfigApplicationContext(SpringConfig.class);
+        UserService userService = applicationContext.getBean("userService", UserService.class);
+        System.out.println(userService);
+        userService.add();
+    }
+```
+
+[参考](https://liayun.blog.csdn.net/article/details/110218278)
+
+![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210501114102.png)
+
+
 
 # 3.AOP
 
 ## 什么是AOP
 
-- 面向切面编程，利用AOP可以对业务逻辑的各个部分进行隔离，从而使业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
+- 面向切面编程，利用AOP（Aspect-Oriented Programming）可以对业务逻辑的各个部分进行隔离，从而使业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。
 
 ![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210218092242.png)
 
@@ -1030,7 +1288,7 @@ public class Emp {
 > 面向切面编程（AOP是Aspect Oriented Program的首字母缩写） ，我们知道，面向对象的特点是继承、多态和封装。而封装就要求将功能分散到不同的对象中去，这在软件设计中往往称为职责分配。实际上也就是说，让不同的类设计不同的方法。这样代码就分散到一个个的类中去了。这样做的好处是降低了代码的复杂程度，使类可重用。
 >       但是人们也发现，在分散代码的同时，也增加了代码的重复性。什么意思呢？比如说，我们在两个类中，可能都需要在每个方法中做日志。按面向对象的设计方法，我们就必须在两个类的方法中都加入日志的内容。也许他们是完全相同的，但就是因为面向对象的设计让类与类之间无法联系，而不能将这些重复的代码统一起来。
 >     也许有人会说，那好办啊，我们可以将这段代码写在一个独立的类独立的方法里，然后再在这两个类中调用。但是，这样一来，这两个类跟我们上面提到的独立的类就有耦合了，它的改变会影响这两个类。那么，有没有什么办法，能让我们在需要的时候，随意地加入代码呢？**这种在运行时，动态地将代码切入到类的指定方法、指定位置上的编程思想就是面向切面的编程。** 
->       一般而言，我们管切入到指定类指定方法的代码片段称为切面，而切入到哪些类、哪些方法则叫切入点。有了AOP，我们就可以把几个类共有的代码，抽取到一个切片中，等到需要时再切入对象中去，从而改变其原有的行为。
+>       一般而言，我们管切入到指定类指定方法的代码片段称为切面，而切入到哪些类、哪些方法则叫切入点。<u>有了AOP，我们就可以把几个类共有的代码，抽取到一个切片中，等到需要时再切入对象中去，从而改变其原有的行为。</u>
 > 这样看来，AOP其实只是OOP的补充而已。OOP从横向上区分出一个个的类来，而AOP则从纵向上向对象中加入特定的代码。有了AOP，OOP变得立体了。如果加上时间维度，AOP使OOP由原来的二维变为三维了，由平面变成立体了。从技术上来说，AOP基本上是通过代理机制实现的。 
 >      AOP在编程历史上可以说是里程碑式的，对OOP编程是一种十分有益的补充。
 
@@ -1140,7 +1398,7 @@ public class JDKProxy {
 //创建代理对象代码
 class UserDaoProxy implements InvocationHandler {
 
-    //    把创建的是谁的代理对象，把谁传递过来
+    //    创建的是谁的代理对象，把谁传递过来
 //    有参数构造传递，
     private Object object;
 
@@ -1495,6 +1753,148 @@ Spring中一般基于**AspectJ**实现AOP操作
 
 
 
-# JdbcTemplate
+# 4.JdbcTemplate
 
 ......
+
+# 5.spring framework体系结构
+
+[参考](https://www.cnblogs.com/ywlaker/p/6136625.html)
+
+[参考](https://docs.spring.io/spring-framework/docs/5.0.0.RC3/spring-framework-reference/overview.html)
+
+## 前言
+
+spring的jar包只有20个左右，每个都有相应的功能，一个jar还可能依赖了若干其他jar，所以，搞清楚它们之间的关系，配置maven依赖就可以简洁明了，下面举个例子，
+
+要在普通java工程使用spring框架，需要哪些jar呢？只要一个
+
+```xml
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>3.2.17.RELEASE</version>
+</dependency>
+```
+
+　　那要在web工程中引入spring mvc呢？也只要配置一个依赖
+
+```xml
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>3.2.17.RELEASE</version>
+</dependency>
+```
+
+## spring4的结构图
+
+<img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210430161922.png" style="zoom:80%;" />
+
+
+
+图中将spring分为5个部分：
+
+ - core
+ - aop
+ - data access
+ - web
+ - test
+
+图中每个圆角矩形都对应一个jar，如果在maven中配置，所有这些jar的“groupId”都是“org.springframework”，每个jar有一个不同的“artifactId”
+
+## core
+
+　core部分包含4个模块
+
+1. spring-core：依赖注入IoC与DI的最基本实现
+2. spring-beans：Bean工厂与bean的装配
+3. spring-context：spring的context上下文即IoC容器
+4. spring-expression：spring表达式语言
+
+　　它们的完整依赖关系
+
+![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210430162501.png)
+
+因为spring-core依赖了commons-logging，而其他模块都依赖了spring-core，所以整个spring框架都依赖了commons-logging，如果有自己的日志实现如log4j，可以排除对commons-logging的依赖，没有日志实现而排除了commons-logging依赖，编译报错
+
+```xml
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>3.2.17.RELEASE</version>
+    <exclusions>
+        <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+## aop
+
+　　aop部分包含4个模块
+
+1. spring-aop：面向切面编程
+
+2. spring-aspects：集成AspectJ
+
+   > [参考](https://blog.csdn.net/qq_27677039/article/details/106308233)
+   >
+   > aop包本身具有完整的AOP实现，但是只会使用Cglib或者JDK动态代理，在类加载时通过动态代理织入（补充一句：spring容器会在创建被代理bean时会自动创建代理bean），其使用了aspectj的部分功能
+   >
+   > aspectj提供了非常完善的AOP能力，可以编译时织入、编译后织入、加载时织入，几乎能在java class的任何时刻使用织入功能；
+   >
+   > 因此可以说aspectj包是对aop包的aop功能进行支持；
+   >
+   > SpingAOP具有一定面向切面具体实现，但在功能上弱于AspectJ，AspectJ结合aop包，则可以在IOC中使用完整的AOP功能（仅仅AspectJ是没有IOC的功能的）
+
+3. spring-instrument：提供一些类级的工具支持和ClassLoader级的实现，用于服务器
+
+4. spring-instrument-tomcat：针对tomcat的instrument实现
+
+　　它们的依赖关系
+
+![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210430162717.png)
+
+
+
+## data access
+
+　　data access部分包含5个模块
+
+1. spring-jdbc：jdbc的支持
+2. spring-tx：事务控制
+3. spring-orm：对象关系映射，集成orm框架
+4. spring-oxm：对象xml映射
+5. spring-jms：java消息服务
+
+![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210430162813.png)
+
+## web
+
+　　web部分包含4个模块
+
+1. spring-web：基础web功能，如文件上传
+2. spring-webmvc：mvc实现
+3. spring-webmvc-portlet：基于portlet的mvc实现
+4. spring-struts：与struts的集成，不推荐，spring4不再提供
+
+　　它们的依赖关系
+
+![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210430162941.png)
+
+## test
+
+　　test部分只有一个模块
+
+![](https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210430163036.png)
+
+# spring配置文件中的名称空间
+
+[参考](https://blog.csdn.net/hhx_echo/article/details/76095840)
+
+# 参考
+
+JavaGuide面试突击版

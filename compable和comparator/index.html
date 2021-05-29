@@ -37,7 +37,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/shilongshen.github.io\/compable%E5%92%8Ccomparator\/"
-        },"genre": "posts","wordcount":  800 ,
+        },"genre": "posts","wordcount":  942 ,
         "url": "https:\/\/shilongshen.github.io\/compable%E5%92%8Ccomparator\/","datePublished": "2020-11-24T13:26:17+08:00","dateModified": "2020-11-24T13:26:17+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -114,8 +114,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Comparable和Comparator</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-24">2020-11-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;800 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-24">2020-11-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;942 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;5 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -127,13 +127,15 @@
       <ul>
         <li>
           <ul>
-            <li>
+            <li><a href="#首先来看第一种方式">首先来看第一种方式</a></li>
+            <li><a href="#第二种方式">第二种方式</a></li>
+            <li><a href="#1treeset中的元素或treemap中的key部分需要实现comparable接口">1.TreeSet中的元素或TreeMap中的key部分需要实现Comparable接口</a></li>
+            <li><a href="#2给构造方法传入一个比较器">2.给构造方法传入一个比较器</a></li>
+            <li><a href="#collectionssort">Collections.sort</a></li>
+            <li><a href="#hashmap按照key或value进行排序">HashMap按照key或value进行排序</a>
               <ul>
-                <li><a href="#首先来看第一种方式">首先来看第一种方式</a></li>
-                <li><a href="#第二种方式">第二种方式</a></li>
-                <li><a href="#1treeset中的元素或treemap中的key部分需要实验comparable接口">1.TreeSet中的元素或TreeMap中的key部分需要实验Comparable接口</a></li>
-                <li><a href="#2给构造方法传入一个比较器">2.给构造方法传入一个比较器</a></li>
-                <li><a href="#collectionssort">Collections.sort</a></li>
+                <li><a href="#按照key进行排序">按照key进行排序：</a></li>
+                <li><a href="#按照value进行排序">按照value进行排序</a></li>
               </ul>
             </li>
           </ul>
@@ -150,7 +152,7 @@
 <li>在调用Arrays.sort时需要传入一个数组和一个比较器作为参数。比较器是实现了Comparator接口中compare方法的类的的实例。</li>
 </ul>
 <hr>
-<h4 id="首先来看第一种方式">首先来看第一种方式</h4>
+<h3 id="首先来看第一种方式">首先来看第一种方式</h3>
 <p>类实现Comparable类中的compareTo方法，Arrays.sort传入对象数组</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -238,7 +240,7 @@
 
 </code></pre></td></tr></table>
 </div>
-</div><h4 id="第二种方式">第二种方式</h4>
+</div><h3 id="第二种方式">第二种方式</h3>
 <p>在调用Arrays.sort时需要传入一个数组和一个比较器作为参数。比较器是实现了Comparator接口中compare方法的类的的实例。</p>
 <p>这听起来有一些拗口，来看一看代码</p>
 <div class="highlight"><div class="chroma">
@@ -507,7 +509,7 @@
 </div>
 </div><p>实际上，不仅仅是Arrays.sort方法要求传入的对象数组必须实现Comparable接口或者Arrays.sort需要传入实现Comparator接口的比较器,对于TreeSet和TreeMap中的key部分也需要实现比较规则，因为TreeSet和TreeMap的底层结果为自平衡二叉树，其特点是可排序。</p>
 <p>来看代码</p>
-<h4 id="1treeset中的元素或treemap中的key部分需要实验comparable接口">1.TreeSet中的元素或TreeMap中的key部分需要实验Comparable接口</h4>
+<h3 id="1treeset中的元素或treemap中的key部分需要实现comparable接口">1.TreeSet中的元素或TreeMap中的key部分需要实现Comparable接口</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -630,7 +632,7 @@
 <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><h4 id="2给构造方法传入一个比较器">2.给构造方法传入一个比较器</h4>
+</div><h3 id="2给构造方法传入一个比较器">2.给构造方法传入一个比较器</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -761,13 +763,133 @@
 *   如果比较规则有多个或者比较规则之间需要频繁切换，建议选择Comparator
 </code></pre></td></tr></table>
 </div>
-</div><h4 id="collectionssort">Collections.sort</h4>
-<p>Collections.sort能够给集合进行排序，其中集合需要自定义比较规则，也是一样的两种方式</p>
+</div><h3 id="collectionssort">Collections.sort</h3>
+<p>Collections.sort能够给List<T> list进行排序，其中集合需要自定义比较规则，也是一样的两种方式  &ndash;&gt;Arrays.sort是对数组进行排序</p>
 <ul>
 <li>实现Comparable接口，并覆写compareTo方法。在调用Collections.sort只需要传入集合即可</li>
 <li>在调用Collections.sort时需要传入一个数组和一个比较器作为参数。比较器是实现了Comparator接口中compare方法的类的的实例。</li>
 </ul>
-</div><div class="post-footer" id="post-footer">
+<h3 id="hashmap按照key或value进行排序">HashMap按照key或value进行排序</h3>
+<p><a href="https://blog.csdn.net/xHibiki/article/details/82938480?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-2.control&amp;dist_request_id=1328761.10591.16172379784854221&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-2.control" target="_blank" rel="noopener noreffer">参考</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">        <span class="n">Map</span> <span class="n">phone</span><span class="o">=</span><span class="k">new</span> <span class="n">HashMap</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">phone</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;Apple&#34;</span><span class="o">,</span><span class="n">7299</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">phone</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;SAMSUNG&#34;</span><span class="o">,</span><span class="n">6000</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">phone</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;Meizu&#34;</span><span class="o">,</span><span class="n">2698</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">phone</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;Xiaomi&#34;</span><span class="o">,</span><span class="n">2400</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">phone</span><span class="o">)</span><span class="o">;</span>
+<span class="cm">/*
+</span><span class="cm">{Meizu=2698, Apple=7299, Xiaomi=2400, SAMSUNG=6000}
+</span><span class="cm">*/</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="按照key进行排序">按照key进行排序：</h4>
+<p>对key进行排序,首先要得到HashMap中键的集合(keySet),并转换为数组,这样才能用Arrays.sort()进行排序</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">        <span class="n">Set</span> <span class="n">set</span><span class="o">=</span><span class="n">phone</span><span class="o">.</span><span class="na">keySet</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//得到key集合
+</span><span class="c1"></span>        <span class="n">Object</span><span class="o">[</span><span class="o">]</span> <span class="n">arr</span><span class="o">=</span><span class="n">set</span><span class="o">.</span><span class="na">toArray</span><span class="o">(</span><span class="o">)</span><span class="o">;</span><span class="c1">//将key集合转换为数组
+</span><span class="c1"></span>        <span class="n">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">arr</span><span class="o">)</span><span class="o">;</span><span class="c1">//对数组进行排序
+</span><span class="c1"></span>        <span class="k">for</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">:</span><span class="n">arr</span><span class="o">)</span><span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">key</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+
+
+        <span class="k">for</span><span class="o">(</span><span class="n">Object</span> <span class="n">key</span><span class="o">:</span><span class="n">arr</span><span class="o">)</span><span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">key</span><span class="o">+</span><span class="s">&#34;: &#34;</span><span class="o">+</span><span class="n">phone</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">key</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+
+
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="按照value进行排序">按照value进行排序</h4>
+<p>将entrySet转换为List,然后重写比较器比较即可.这里可以使用List.sort(comparator),也可以使用Collections.sort(list,comparato</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">//将将entrySet转换为List
+</span><span class="c1"></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span><span class="o">(</span><span class="n">phone</span><span class="o">.</span><span class="na">entrySet</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span> <span class="c1">//转换为list
+</span><span class="c1"></span>
+<span class="c1">//重写比较器，使用list.sort()排序
+</span><span class="c1"></span>       <span class="n">list</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="k">new</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+          <span class="nd">@Override</span>
+          <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">o1</span><span class="o">,</span> <span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">o2</span><span class="o">)</span> <span class="o">{</span>
+              <span class="k">return</span> <span class="n">o2</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">o1</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span><span class="c1">//对value进行排序
+</span><span class="c1"></span>          <span class="o">}</span>
+      <span class="o">}</span><span class="o">)</span><span class="o">;</span>
+
+<span class="c1">//或者使用Collections.sort()排序
+</span><span class="c1"></span>        <span class="n">Collections</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">list</span><span class="o">,</span> <span class="k">new</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+           <span class="nd">@Override</span>
+           <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">o1</span><span class="o">,</span> <span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">o2</span><span class="o">)</span> <span class="o">{</span>
+               <span class="k">return</span> <span class="n">o2</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">o1</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+           <span class="o">}</span>
+       <span class="o">}</span><span class="o">)</span><span class="o">;</span>
+
+
+
+<span class="c1">//for-each循环
+</span><span class="c1"></span>           <span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">mapping</span> <span class="o">:</span> <span class="n">list</span><span class="o">)</span><span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">mapping</span><span class="o">.</span><span class="na">getKey</span><span class="o">(</span><span class="o">)</span><span class="o">+</span><span class="s">&#34;: &#34;</span><span class="o">+</span><span class="n">mapping</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>   
+
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">

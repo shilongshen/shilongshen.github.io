@@ -93,7 +93,7 @@ TCP/IP各层对邮件的收发处理：
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/shilongshen.github.io\/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80\/"
-        },"genre": "posts","wordcount":  2671 ,
+        },"genre": "posts","wordcount":  2808 ,
         "url": "https:\/\/shilongshen.github.io\/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80\/","datePublished": "2020-12-16T09:54:48+08:00","dateModified": "2020-12-16T09:54:48+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -170,8 +170,8 @@ TCP/IP各层对邮件的收发处理：
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">计算机网络基础</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-12-16">2020-12-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2671 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;13 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-12-16">2020-12-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2808 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;14 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -258,6 +258,7 @@ TCP/IP各层对邮件的收发处理：
         <li><a href="#路由器的分组转发流程">路由器的分组转发流程</a></li>
         <li><a href="#路由选择协议">路由选择协议</a></li>
         <li><a href="#网络层和数据链路层的关系">网络层和数据链路层的关系</a></li>
+        <li><a href="#mac地址和ip地址的联系">MAC地址和IP地址的联系</a></li>
         <li><a href="#ip基础知识">IP基础知识</a>
           <ul>
             <li><a href="#ip地址属于网络层">IP地址属于网络层</a></li>
@@ -282,11 +283,6 @@ TCP/IP各层对邮件的收发处理：
             <li><a href="#ip地址聚合cidr与vlsm">IP地址聚合（CIDR与VLSM）</a></li>
           </ul>
         </li>
-        <li><a href="#dns">DNS</a>
-          <ul>
-            <li><a href="#dns的产生">DNS的产生</a></li>
-          </ul>
-        </li>
         <li><a href="#arp">ARP</a>
           <ul>
             <li><a href="#arp-的工作机制">ARP 的工作机制</a></li>
@@ -298,7 +294,6 @@ TCP/IP各层对邮件的收发处理：
             <li><a href="#traceroute">Traceroute</a></li>
           </ul>
         </li>
-        <li><a href="#dhcp">DHCP</a></li>
         <li><a href="#nat">NAT</a></li>
         <li><a href="#虚拟专用网-vpn">虚拟专用网 VPN</a></li>
       </ul>
@@ -312,12 +307,13 @@ TCP/IP各层对邮件的收发处理：
             <li><a href="#tcp首部格式">TCP首部格式</a></li>
             <li><a href="#通过序列号和确认应答来提高可靠性">通过序列号和确认应答来提高可靠性</a></li>
             <li><a href="#重发超时">重发超时</a></li>
+            <li><a href="#连接管理">连接管理</a></li>
             <li><a href="#tcp三次握手">TCP三次握手</a></li>
             <li><a href="#tcp四次挥手">TCP四次挥手</a></li>
             <li><a href="#tcp以段为单位发送数据">TCP以段为单位发送数据</a></li>
-            <li><a href="#利用窗口控制提高速度">利用窗口控制提高速度</a></li>
+            <li><a href="#利用窗口控制提高传输速度">利用窗口控制提高传输速度</a></li>
             <li><a href="#窗口控制和快速重发控制">窗口控制和快速重发控制</a></li>
-            <li><a href="#流控制">流控制</a></li>
+            <li><a href="#流量控制">流量控制</a></li>
             <li><a href="#拥塞控制">拥塞控制</a></li>
           </ul>
         </li>
@@ -325,10 +321,16 @@ TCP/IP各层对邮件的收发处理：
     </li>
     <li><a href="#5应用层">5.应用层</a>
       <ul>
-        <li><a href="#文件传输协议ftp">文件传输协议:FTP</a></li>
-        <li><a href="#www">WWW</a>
+        <li><a href="#dns">DNS</a>
           <ul>
-            <li><a href="#web的基本要素urlhtmlhttp">Web的基本要素:URL，HTML，HTTP</a>
+            <li><a href="#dns的产生">DNS的产生</a></li>
+          </ul>
+        </li>
+        <li><a href="#dhcp">DHCP</a></li>
+        <li><a href="#文件传输协议ftp">文件传输协议:FTP</a></li>
+        <li><a href="#web基础">Web基础</a>
+          <ul>
+            <li><a href="#web基本要素">Web基本要素</a>
               <ul>
                 <li><a href="#url">URL</a></li>
                 <li><a href="#html超文本标记语言">HTML（超文本标记语言）</a></li>
@@ -337,46 +339,43 @@ TCP/IP各层对邮件的收发处理：
             </li>
             <li><a href="#javascript-">JavaScript :</a></li>
             <li><a href="#cgi">CGI</a></li>
-            <li><a href="#cookie">Cookie</a></li>
-            <li><a href="#session">Session</a>
+            <li><a href="#web-页面请求过程">Web 页面请求过程</a>
               <ul>
-                <li><a href="#浏览器禁用-cookie">浏览器禁用 Cookie</a></li>
-                <li><a href="#cookie-与-session-选择">Cookie 与 Session 选择</a></li>
+                <li><a href="#1-dhcp-配置主机信息">1. DHCP 配置主机信息</a></li>
+                <li><a href="#2-arp-解析-mac-地址">2. ARP 解析 MAC 地址</a></li>
+                <li><a href="#3-dns-解析域名">3. DNS 解析域名</a></li>
+                <li><a href="#4-http-请求页面">4. HTTP 请求页面</a></li>
               </ul>
             </li>
-            <li><a href="#虚拟主机">虚拟主机</a></li>
-            <li><a href="#代理">代理</a></li>
-            <li><a href="#网关">网关</a></li>
-            <li><a href="#隧道">隧道</a></li>
-            <li><a href="#缓存">缓存</a></li>
-            <li><a href="#内容协商">内容协商</a>
-              <ul>
-                <li><a href="#1-类型">1. 类型</a></li>
-                <li><a href="#2-vary">2. Vary</a></li>
-              </ul>
-            </li>
-            <li><a href="#内容编码">内容编码</a></li>
-            <li><a href="#范围请求">范围请求</a>
-              <ul>
-                <li><a href="#1-range">1. Range</a></li>
-                <li><a href="#2-accept-ranges">2. Accept-Ranges</a></li>
-                <li><a href="#3-响应状态码">3. 响应状态码</a></li>
-              </ul>
-            </li>
-            <li><a href="#分块传输编码">分块传输编码</a></li>
-            <li><a href="#多部分对象集合">多部分对象集合</a></li>
-            <li><a href="#基本概念">基本概念</a>
+            <li><a href="#从输入url到页面加载发生了什么">从输入URL到页面加载发生了什么</a></li>
+          </ul>
+        </li>
+        <li><a href="#http基本概念">HTTP基本概念</a>
+          <ul>
+            <li>
               <ul>
                 <li><a href="#请求和响应报文">请求和响应报文</a>
                   <ul>
-                    <li><a href="#请求报文的结构">请求报文的结构</a></li>
+                    <li><a href="#请求报文结构">请求报文结构</a></li>
                     <li><a href="#响应报文结构">响应报文结构</a></li>
+                    <li><a href="#报文主体和实体主体">报文主体和实体主体</a></li>
                   </ul>
                 </li>
               </ul>
             </li>
-            <li><a href="#报文主体和实体主体">报文主体和实体主体</a></li>
-            <li><a href="#http方法">HTTP方法</a></li>
+            <li><a href="#http方法">HTTP方法</a>
+              <ul>
+                <li><a href="#get">GET</a></li>
+                <li><a href="#post">POST</a></li>
+                <li><a href="#put">PUT</a></li>
+                <li><a href="#delete">DELETE</a></li>
+                <li><a href="#head">HEAD</a></li>
+                <li><a href="#patch">PATCH</a></li>
+                <li><a href="#options">OPTIONS</a></li>
+                <li><a href="#connect">CONNECT</a></li>
+                <li><a href="#trace">TRACE</a></li>
+              </ul>
+            </li>
             <li><a href="#http状态码">HTTP状态码</a>
               <ul>
                 <li><a href="#1xx-信息">1XX 信息</a></li>
@@ -405,14 +404,44 @@ TCP/IP各层对邮件的收发处理：
               </ul>
             </li>
             <li><a href="#http20">HTTP2.0</a></li>
-            <li><a href="#web-页面请求过程">Web 页面请求过程</a>
+          </ul>
+        </li>
+        <li><a href="#http协议相关">HTTP协议相关</a>
+          <ul>
+            <li><a href="#持久连接">持久连接</a>
               <ul>
-                <li><a href="#1-dhcp-配置主机信息">1. DHCP 配置主机信息</a></li>
-                <li><a href="#2-arp-解析-mac-地址">2. ARP 解析 MAC 地址</a></li>
-                <li><a href="#3-dns-解析域名">3. DNS 解析域名</a></li>
-                <li><a href="#4-http-请求页面">4. HTTP 请求页面</a></li>
+                <li><a href="#http长连接短链接">HTTP长连接、短链接</a></li>
               </ul>
             </li>
+            <li><a href="#管线化">管线化</a></li>
+            <li><a href="#cookie">Cookie</a></li>
+            <li><a href="#session">Session</a>
+              <ul>
+                <li><a href="#浏览器禁用-cookie">浏览器禁用 Cookie</a></li>
+                <li><a href="#cookie-与-session-选择">Cookie 与 Session 选择</a></li>
+              </ul>
+            </li>
+            <li><a href="#虚拟主机">虚拟主机</a></li>
+            <li><a href="#代理">代理</a></li>
+            <li><a href="#网关">网关</a></li>
+            <li><a href="#隧道">隧道</a></li>
+            <li><a href="#缓存">缓存</a></li>
+            <li><a href="#内容协商">内容协商</a>
+              <ul>
+                <li><a href="#1-类型">1. 类型</a></li>
+                <li><a href="#2-vary">2. Vary</a></li>
+              </ul>
+            </li>
+            <li><a href="#内容编码">内容编码</a></li>
+            <li><a href="#范围请求">范围请求</a>
+              <ul>
+                <li><a href="#1-range">1. Range</a></li>
+                <li><a href="#2-accept-ranges">2. Accept-Ranges</a></li>
+                <li><a href="#3-响应状态码">3. 响应状态码</a></li>
+              </ul>
+            </li>
+            <li><a href="#分块传输编码">分块传输编码</a></li>
+            <li><a href="#多部分对象集合">多部分对象集合</a></li>
           </ul>
         </li>
       </ul>
@@ -600,11 +629,11 @@ TCP/IP各层对邮件的收发处理：
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201218170259170.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201218170259170.png, /home/ssl/.config/Typora/typora-user-images/image-20201218170259170.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201218170259170.png 2x"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193835.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193835.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193835.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193835.png 2x"
         data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201218170259170.png"
-        title="image-20201218170259170" /></p>
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193835.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193835.png" /></p>
 <p>除此之外只具有中继器功能的HUB称为<strong>集线器</strong>，也是物理层设备</p>
 <h1 id="2数据链路层">2.数据链路层</h1>
 <h2 id="计算机网络的连接方式">计算机网络的连接方式</h2>
@@ -623,11 +652,11 @@ TCP/IP各层对邮件的收发处理：
 <hr>
 <p>明确：</p>
 <ul>
-<li>我们可以将数据链路层视为视为让网卡起作用的“驱动程序”。驱动程序是在操作系统与硬件之间起到桥梁作用的<strong>软件</strong>。</li>
+<li>我们可以将数据链路层视为让网卡起作用的“驱动程序”。驱动程序是在操作系统与硬件之间起到桥梁作用的<strong>软件</strong>。</li>
 </ul>
 <h2 id="mac地址">MAC地址</h2>
 <p>MAC地址由设备的制造厂商针对每块<strong>网卡</strong>进行分别的指定。</p>
-<p>人们可以通过制造商内部产品编号唯一确定MAC地址。但是却无法确定哪家场商的哪个网卡被用在了哪个地方（不具有层次性）。</p>
+<p>人们可以通过制造商内部产品编号唯一确定MAC地址。但是却无法确定哪家厂商的哪个网卡被用在了哪个地方（不具有层次性）。</p>
 <p><u>MAC地址用于识别数据链路中互连的节点</u>。</p>
 <p>用于表示同一链路中不同计算机的一种标识</p>
 <h2 id="网桥">网桥</h2>
@@ -692,7 +721,22 @@ TCP/IP各层对邮件的收发处理：
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220171840.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201220171840.png" /></p>
-<h3 id="令牌传递方式">令牌传递方式</h3>
+<p>常见问题：有关CSMA/CD协议特点描述正确的是（ <em>AC</em>  ）？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">A可抢占性的   //放弃发送后，随机等待一段时间，再重新抢占介质，重新发送帧
+B不可抢占性的
+C半双工介质访问控制协议
+D全双工介质访问控制协议
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="令牌传递方式">令牌传递方式</h3>
 <p>令牌传递方式是沿着令牌环发送一种叫做“令牌”的特殊报文。是控制传输的一种方式。只有获得令牌的站才能够发送数据。</p>
 <p>两个特点：</p>
 <ol>
@@ -713,11 +757,11 @@ TCP/IP各层对邮件的收发处理：
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201221090131252.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201221090131252.png, /home/ssl/.config/Typora/typora-user-images/image-20201221090131252.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201221090131252.png 2x"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193935.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193935.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193935.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193935.png 2x"
         data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201221090131252.png"
-        title="image-20201221090131252" /></p>
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193935.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193935.png" /></p>
 <h2 id="半双工和全双工通信">半双工和全双工通信</h2>
 <p>半双工指，在某一时刻只能够发送或者只能够接收的通信方式。类似于无线电收发器</p>
 <p>全双工指，在某一时刻既可以发送数据页可以接收数据的通信方式，类似于电话</p>
@@ -748,11 +792,11 @@ TCP/IP各层对邮件的收发处理：
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201221094723518.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201221094723518.png, /home/ssl/.config/Typora/typora-user-images/image-20201221094723518.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201221094723518.png 2x"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193450.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193450.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193450.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193450.png 2x"
         data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201221094723518.png"
-        title="image-20201221094723518" /></p>
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193450.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330193450.png" /></p>
 <p>以太网的帧的前端有一个叫做前导码的部分，表示一个一台网帧的开始，也是对端网卡能够确保与其同步的标志。</p>
 <p>以太网帧本体的前端是以太网的首部。共14个字节。然后是数据，帧尾是FCS。</p>
 <ul>
@@ -776,11 +820,11 @@ TCP/IP各层对邮件的收发处理：
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201221102410548.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201221102410548.png, /home/ssl/.config/Typora/typora-user-images/image-20201221102410548.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201221102410548.png 2x"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194035.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194035.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194035.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194035.png 2x"
         data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201221102410548.png"
-        title="image-20201221102410548" /></p>
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194035.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194035.png" /></p>
 <p>互联网用户通常需要连接到某个 ISP （互联网供应商）之后才能接入到互联网，PPP 协议是用户计算机和 ISP 进行通信时所使用的数据链路层协议。</p>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221103509.png" style="zoom:50%;" /></p>
 <h3 id="ppp的帧格式">PPP的帧格式</h3>
@@ -816,12 +860,12 @@ TCP/IP各层对邮件的收发处理：
 <li>虽然IP也是分组交换的一种协议，但是它不具有重发机制。即使分组数据包未能到达对端主机也不会重发。因此属于<strong>非可靠性传输协议</strong></li>
 </ul>
 </li>
-<li><strong>ICMP</strong> : IP数据包在发送过程中一旦发生异常导致无法到达对端目标地址时，需要给发送端发送一个发生异常的通知。ICMP就是为这一功能制定的。它有时页用于诊断网络的健康状况</li>
+<li><strong>ICMP</strong> : IP数据包在发送过程中一旦发生异常导致无法到达对端目标地址时，需要给发送端发送一个发生异常的通知。ICMP就是为这一功能制定的。它有时也用于诊断网络的健康状况</li>
 <li><strong>ARP</strong> ： 从分组数据包的IP地址中解析出物理地址（MAC）地址的一种协议</li>
 </ul>
 <h2 id="ip地址">IP地址</h2>
 <p>IP地址由网络号和主机号两部分组成。</p>
-<p>两个主机即使主机号不同，但是网络号相同，这说明了它们处于同一网段。通常处于同一网段的主机也都属于同一个部门或集团组织。这位IP寻址带来了极大的方便。因此IP地址具有层次性。</p>
+<p>两个主机即使主机号不同，但是网络号相同，这说明了它们处于同一网段。通常处于同一网段的主机也都属于同一个部门或集团组织。这为IP寻址带来了极大的方便。因此IP地址具有层次性。</p>
 <p><u>连接到网络中的所有主机用于通信的目标地址</u></p>
 <h3 id="主机路由器和节点的区别">主机，路由器和节点的区别</h3>
 <ul>
@@ -861,7 +905,7 @@ TCP/IP各层对邮件的收发处理：
 <li>自治系统间的路由选择：BGP</li>
 </ul>
 <h2 id="网络层和数据链路层的关系">网络层和数据链路层的关系</h2>
-<p>数据链路层的主要作用是在互连同一种数据链路的结点间进行包传递。而一旦跨越多种数据链路就需要借助网络层。<u>网络层可以跨越不同的数据链路进行数据包的传输</u>。</p>
+<p>数据链路层的主要作用是在互连<strong>同一种</strong>数据链路的结点间进行包传递。而一旦跨越<strong>多种数据链路</strong>就需要借助网络层。<u>网络层可以跨越不同的数据链路进行数据包的传输</u>。</p>
 <ul>
 <li>数据链路层提供<strong>直连</strong>两个设备之间的通信功能</li>
 <li>网络层负责在没有直连的两个网络之间进行通信传输。</li>
@@ -875,6 +919,23 @@ TCP/IP各层对邮件的收发处理：
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221134906.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221134906.png" /></p>
+<h2 id="mac地址和ip地址的联系">MAC地址和IP地址的联系</h2>
+<p>问题：</p>
+<ul>
+<li>数据链路上只直到接收端的MAC地址不就知道数据是准备发送给主机B的吗，为什么还需要知道它的IP地址？</li>
+</ul>
+<p>回答：</p>
+<ul>
+<li>考虑发送给其他数据链路中的某一个主机时的情况。如下图，主机A想要发送数据给主机B，则必须经过路由器C。路由器C隔断了两个网络，所以无法实现直接从主机A发送到主机B。必须先将数据发送给路由器C的MAC地址C1。</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331090207.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331090207.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331090207.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331090207.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331090207.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331090207.png" /></p>
 <h2 id="ip基础知识">IP基础知识</h2>
 <p>IP大致分为三个作用模块</p>
 <ul>
@@ -888,9 +949,9 @@ TCP/IP各层对邮件的收发处理：
 <li>无论主机和哪种形式的数据链路相连，其IP地址的形式都不会改变。以太网、无线局域网、PPP等，都不会改变IP地址的形式</li>
 </ul>
 <h3 id="路由控制">路由控制</h3>
-<p>路由控制是指将分组数据发送到最终目标地址的功能。</p>
+<p>路由控制是指将分组数据发送到最终目标地址的功能。通过IP地址的网络标识表示进行路由控制。</p>
 <h4 id="多跳路由">多跳路由</h4>
-<p>“跳”：网路中的一个区间</p>
+<p>“跳”：网路中在同一个数据链路中进行传输的一个区间。在数据链路中通过MAC地址进行数据帧传输。此时一跳是指从源MAC地址到目标MAC地址之间传输帧的区间。在这一条的区间中，电缆可以通过网桥或交换集线器相连，不会通过路由器或网关相连。</p>
 <p>IP路由又称为多跳路由，指路由器或主机在转发数据包时，只指定下一个路由器或主机，而不是将到最终目标地址的所有通路都指出。</p>
 <p>因为每一个区间在转发数据包时会指定下一跳的操作，直到最终目标地址。</p>
 <p><img
@@ -901,16 +962,36 @@ TCP/IP各层对邮件的收发处理：
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221142018.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201221142018.png" /></p>
-<h4 id="路由控制表">路由控制表</h4>
-<p>为了将数据包发送给目标主机，所有主机都维护一张路由控制表。<strong>该表记录IP数据在下一步应该发送给哪一个路由器</strong>（根据MAC地址）。数据包将根据路由控制表在各个数据链路传递。</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201221142405567.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201221142405567.png, /home/ssl/.config/Typora/typora-user-images/image-20201221142405567.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201221142405567.png 2x"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331085845.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331085845.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331085845.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331085845.png 2x"
         data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201221142405567.png"
-        title="image-20201221142405567" /></p>
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331085845.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331085845.png" /></p>
+<h4 id="路由控制表">路由控制表</h4>
+<p>为了将数据包发送给目标主机，所有主机都维护一张路由控制表。<strong>该表记录IP数据在下一步应该发送给哪一个路由器</strong>（根据网络标识）。数据包将根据路由控制表在各个数据链路传递。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194127.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194127.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194127.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194127.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194127.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194127.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331094214.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331094214.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331094214.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331094214.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331094214.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331094214.png" /></p>
+<ul>
+<li>路由控制表中记录网络地址以及下一步应该发送至路由器的地址。</li>
+<li>在发送IP包时，首先要通过确定IP包首部中的目标地址，再从路由控制表中找到与该地址具有<strong>相同网络标识</strong>的记录，根据该记录将IP包转发给相应的下一个路由器。</li>
+</ul>
 <h3 id="数据链路的抽象化">数据链路的抽象化</h3>
 <p><u>不同的数据链路最大的不同在于它们的最大传输单位（MTU）不同。</u></p>
 <p>以太网的MTU为1500字节，</p>
@@ -920,11 +1001,11 @@ TCP/IP各层对邮件的收发处理：
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201221142858306.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201221142858306.png, /home/ssl/.config/Typora/typora-user-images/image-20201221142858306.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201221142858306.png 2x"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194212.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194212.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194212.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194212.png 2x"
         data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201221142858306.png"
-        title="image-20201221142858306" /></p>
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194212.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194212.png" /></p>
 <h3 id="ip地址属于面向无连接型">IP地址属于面向无连接型</h3>
 <p>IP地址属于面向无连接型，不需要建立与目标地址间的连接，属于非可靠传输。</p>
 <h2 id="ip地址基础知识">IP地址基础知识</h2>
@@ -975,6 +1056,9 @@ TCP/IP各层对邮件的收发处理：
 <p>要使用子网，必须配置子网掩码。一个 B 类地址的默认子网掩码为 255.255.0.0，如果 B 类地址的子网占两个比特，那么子网掩码为 11111111 11111111 11000000 00000000，也就是 255.255.192.0。</p>
 <p>注意，外部网络看不到子网的存在。</p>
 <p>子网掩码用二进制方式标识的话，也是 32位的数字。它对应网络标识的部分全部为1，对应主机标识的部分全部为0，<strong>通过这种方式可以灵活的指定网络标识的长度。</strong></p>
+<blockquote>
+<p>同一个IP地址根据不同的子网掩码可以划分出不同的网络标识</p>
+</blockquote>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -1031,7 +1115,7 @@ TCP/IP各层对邮件的收发处理：
 <p>也就是说，从192.168.1.0到192.168.1.255都是同一个子网网段，里面的0—255号可以分配给不同的机器。</p>
 <p>0—255号都是机器的号码，IP地址显示的就是其中129号。</p>
 <p>192.168.1.0就是所谓的<strong>网络号</strong>，也可以写作192.168.1或者192.168.1.0\24（24指的是IP地址中有24位未被遮掩）</p>
-<p>IP地址的意思就很明白了，网段（网络号）加上机器号码。同一个IP地址根据不同子网掩码，会划分出不同的网络号和机器号。</p>
+<p>IP地址的意思就很明白了，网段（网络号）加上机器号码。<strong>同一个IP地址根据不同子网掩码，会划分出不同的网络号和机器号。</strong></p>
 <p>—————————————————————————————————————</p>
 <p>但是，现在就出现了个问题，我子网掩码的最后8位全是0，要是最后8位不全为0怎么办？又是什么意思呢？</p>
 <p>现在我们就要看上面子网掩码为255.255.255.0的时候机器号码是从0到255的，那如果我想在0到255里再划分一部分呢？</p>
@@ -1092,38 +1176,13 @@ TCP/IP各层对邮件的收发处理：
 <p>例：200.16.23.0/20表示一个地址块时，起始地址为200.16.23.0，地址块中的地址数为2^12次。</p>
 <p><strong>CIDR中的广播地址：将主机号全置为1。</strong></p>
 <p>例：网络195.1.22.64/27的广播地址就要考虑5位主机号置1。由于64的二进制数为 0100 0000，后5位置1后为01011111（为十进制数95），那么网络195.1.22.64/27的广播地址为195.1.22.95。</p>
-<h2 id="dns">DNS</h2>
-<h3 id="dns的产生">DNS的产生</h3>
-<p>起因：IP地址不便于记忆。</p>
-<p>解决方法：为每一台计算机赋予一个唯一的主机名。主机名与IP地址一一对应</p>
-<p>在进行网络通信时直接使用主机名，系统自动将其转换为对应的IP地址。</p>
-<p>**DNS系统：有效管理主机名和IP地址之间对应关系的系统。**它可以维护一个用来表示主机名和和IP地址之间对应关系的数据库。</p>
-<p><strong>域名</strong>：为了识别主机名称和组织名称的一种具有<u>分层</u>的名称。</p>
-<p>例如：<code>kusa.ac.jp</code>。在使用域名时，可以在每个主机名后面追加上域名。例如:<code>pepper.kusa.ac.jp</code>,<code>piyo.kusa.ac.jp</code></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png" /></p>
-<p><strong>域名服务器</strong>：指管理域名的主机和相应的软件。</p>
-<p>它可以管理所在分层的域的相关信息。其所管理的分层叫做ZONE 。</p>
-<p><strong>DNS解析器</strong>：进行DNS查询的主机和软件。</p>
-<p><strong>DNS查询</strong></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png" /></p>
 <h2 id="arp">ARP</h2>
 <p>ARP是一种解决MAC地址问题的协议。</p>
+<blockquote>
+<p>在数据链路层中不使用IP地址进行通信，而是使用MAC地址。知道了目标的IP地址还需要知道其对应的MAC地址，这样从才能够实现在数据链路上进行传输。</p>
+</blockquote>
 <p>以目标IP地址为线索，用来定位下一个应该接收数据包的网络设备对应的MAC地址。如果目标主机不在同一条链路，可以通过ARP查找下一跳路由器的MAC地址</p>
-<p>ARP只适用于IPv4,IPv6中可以用ICMPv6来替代ARP.</p>
+<p>ARP只适用于IPv4,IPv6中可以用ICMPv6来替代ARP。</p>
 <h3 id="arp-的工作机制">ARP 的工作机制</h3>
 <ul>
 <li>ARP是借助ARP请求和ARP响应两种类型的包确定MAC地址。</li>
@@ -1174,13 +1233,18 @@ TCP/IP各层对邮件的收发处理：
 <li>不断执行这样的步骤，直到最后一个数据报刚刚到达目的主机，主机不转发数据报，也不把 TTL 值减 1。但是因为数据报封装的是无法交付的 UDP，因此目的主机要向源主机发送 ICMP 终点不可达差错报告报文。</li>
 <li>之后源主机知道了到达目的主机所经过的路由器 IP 地址以及到达每个路由器的往返时间。</li>
 </ul>
-<h2 id="dhcp">DHCP</h2>
-<p>功能：实现IP地址的自动配置、统一管理IP地址分配。</p>
-<p>DHCP让即插即用成为可能</p>
 <h2 id="nat">NAT</h2>
 <p>功能：用于在本地网络中使用私有地址，在连接互联网时转而使用全局IP地址的技术。</p>
 <p>专用网内部的主机使用本地 IP 地址又想和互联网上的主机通信时，可以<u>使用 NAT 来将本地 IP 转换为全球 IP</u>。</p>
 <p>在以前，NAT 将本地 IP 和全球 IP 一一对应，这种方式下拥有 n 个全球 IP 地址的专用网内最多只可以同时有 n  台主机接入互联网。为了更有效地利用全球 IP 地址，现在常用的 NAT 转换表把传输层的端口号也用上了，使得<u>多个专用网内部的主机共用一个全球  IP 地址</u>。<u>使用端口号的 NAT 也叫做网络地址与端口转换 NAPT</u>。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104721.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104721.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104721.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104721.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104721.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104721.png" /></p>
 <h2 id="虚拟专用网-vpn">虚拟专用网 VPN</h2>
 <p>由于 IP 地址的紧缺，一个机构能申请到的 IP 地址数往往远小于本机构所拥有的主机数。并且一个机构并不需要把所有的主机接入到外部的互联网中，机构内的计算机可以使用仅在本机构有效的 IP 地址（<strong>专用地址</strong>）。</p>
 <blockquote>
@@ -1201,14 +1265,38 @@ TCP/IP各层对邮件的收发处理：
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210317221648.png"
-        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210317221648.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210317221648.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210317221648.png 2x"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194308.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194308.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194308.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194308.png 2x"
         data-sizes="auto"
-        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210317221648.png"
-        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210317221648.png" /></p>
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194308.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194308.png" /></p>
 <ul>
-<li><strong>TCP</strong> ： 是一种面向有连接的传输层协议。能够保证数据的<strong>可靠</strong>传输。有重发控制，顺序控制，流量控制，拥塞控制，提供全双工通信，面向字节流（把应用层传下来的报文看成字节流，把字节流组织成大小不等的数据块），每一条 TCP 连接只能是点对点的（一对一）。</li>
-<li><strong>UDP</strong> ：是一种<u>面向无连接</u>的传输层协议。它不会关注对端是否真的接收到数据（不可靠传输）。 尽最大可能交付，没有拥塞控制，面向报文（对于应用程序传下来的报文不合并也不拆分，只是添加 UDP 首部），支持一对一、一对多、多对一和多对多的交互通信。（<u>UDP主要用于那些对高速传输和实时性有较高要求的通信或广播通信</u>。）</li>
+<li>
+<p><strong>TCP</strong> ： 是一种面向有连接的传输层协议。能够保证数据的<strong>可靠</strong>传输。有<strong>重发控制，顺序控制，流量控制，拥塞控制</strong>，提供全双工通信，面向字节流（把应用层传下来的报文看成字节流，把字节流组织成大小不等的数据块），每一条 TCP 连接只能是点对点的（一对一）。</p>
+<ul>
+<li>TCP通过校验和、序列号、确认应答、重发控制、连接管理以及窗口控制等机制实现可靠性传输。</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406193105.png" style="zoom:67%;" /></p>
+</li>
+<li>
+<p><strong>UDP</strong> ：是一种<u>面向无连接</u>的传输层协议。它不会关注对端是否真的接收到数据（不可靠传输）。 尽最大可能交付，没有拥塞控制，面向报文（对于应用程序传下来的报文不合并也不拆分，只是添加 UDP 首部），支持一对一、一对多、多对一和多对多的交互通信。（<u>UDP主要用于那些对高速传输和实时性有较高要求的通信或广播通信</u>。）</p>
+</li>
+<li>
+<p>TCP和UDP的区别：</p>
+<ul>
+<li>TCP可以在丢包时进行重发，而UDP不可以。</li>
+<li>TCP可以对次序乱掉的分包进行顺序控制，而UDP不可以。</li>
+<li>TCP只有在确认对端存在的时候才会发送数据，从而可以控制通信流量的浪费。而UDP不可以。</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406192939.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406192939.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406192939.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406192939.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406192939.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406192939.png" /></p>
+</li>
 </ul>
 <h2 id="套接字socket">套接字（Socket）</h2>
 <p>应用在使用TCP或UDP时，会用到操作系统提供的类库。这种类库一般被称为API（应用编程接口）。</p>
@@ -1261,10 +1349,7 @@ TCP/IP各层对邮件的收发处理：
 <p><strong>数据偏移</strong>   ：指的是数据部分距离报文段起始处的偏移量，实际上指的是首部的长度。</p>
 </li>
 <li>
-<p><strong>确认 ACK</strong>   ：当 ACK=1 时确认号字段有效，否则无效。TCP 规定，在连接建立后所有传送的报文段都必须把 ACK 置 1。</p>
-</li>
-<li>
-<p>当发送端的数据到达接收主机时，接收端主机会返回一个已收到消息的通知。这个消息称为<strong>确认应答</strong>（ACK）</p>
+<p><strong>确认 ACK</strong>   ：当 ACK=1 时确认号字段有效，否则无效。TCP 规定，在连接建立后所有传送的报文段都必须把 ACK 置 1。当发送端的数据到达接收主机时，接收端主机会返回一个已收到消息的通知。这个消息称为<strong>确认应答</strong>（ACK）</p>
 </li>
 <li>
 <p><strong>同步 SYN</strong>   ：在连接建立时用来同步序号。当 SYN=1，ACK=0 时表示这是一个连接请求报文段。若对方同意建立连接，则响应报文中 SYN=1，ACK=1。</p>
@@ -1292,6 +1377,9 @@ $$
 RTO=RTTs+4*RTTd
 $$</p>
 <p>其中 RTTd 为偏差的加权平均值。</p>
+<h3 id="连接管理">连接管理</h3>
+<p>TCP是面向有连接的通信传输。因此在通信会做好通信两端的准备工作。</p>
+<p>即通过三次握手和四次挥手来进行连接管理。</p>
 <h3 id="tcp三次握手">TCP三次握手</h3>
 <p>TCP是面向有连接的通信传输。需要在数据通信之前先做好通信两端之间的准备工作。</p>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201223212343.png" style="zoom: 50%;" /></p>
@@ -1304,35 +1392,105 @@ $$</p>
 <li>B 收到 A 的确认后，连接建立。</li>
 </ul>
 <p><strong>三次握手的原因</strong></p>
-<p>第三次握手是为了防止失效的连接请求到达服务器，让服务器错误打开连接。</p>
-<p>客户端发送的连接请求如果在网络中滞留，那么就会隔很长一段时间才能收到服务器端发回的连接确认。客户端等待一个超时重传时间之后，就会重新请求连接。但是这个滞留的连接请求最后还是会到达服务器，如果不进行三次握手，那么服务器就会打开两个连接。如果有第三次握手，客户端会忽略服务器之后发送的对滞留连接请求的连接确认，不进行第三次握手，因此就不会再次打开连接。</p>
+<ol>
+<li>第三次握手是为了<strong>防止失效的连接请求到达服务器，让服务器错误打开连接。</strong></li>
+</ol>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210429100632.png" style="zoom: 67%;" /></p>
+<blockquote>
+<p>网络报文的生存时间往往都会超 TCP 请求超时时间，如果两次握手就可以创建连接 ，传输数据并释放连接后，第一个超时的连接请求才到达 B 机器的话，B 机器会以为是 A 创建新连接的请求，然后确认同意创建连接。因为 A 机器的状态不是 SYN_SENT ，所以直接丢弃了 B 的确认数据 ，以致最后只是 B 机器单方面创建连接完毕。</p>
+<p>谢希仁版《计算机网络》中的例子是这样的，“已失效的连接请求报文段” 的产生在这样一种情况下：client 发出的第一个连接请求报文段并没有丢失，而是在某个网络结点长时间的滞留了，<strong>以致延误到连接释放以后的某个时间才到达 server</strong>。本来这是一个早已失效的报文段。但 server 收到此失效的连接请求报文段后，就误认为是 client 再次发出的一个新的连接请求。于是就向 client 发出确认报文段，同意建立连接。<u>假设不采用 “三次握手”，那么只要 server 发出确认，新的连接就建立了</u>。</p>
+<p><u>由于现在 client 并没有发出建立连接的请求(通过检测server的ack)，因此不会理睬 server 的确认，也不会向 server 发送数据。但 server 却以为新的运输连接已经建立，并一直等待 client 发来数据。这样，server 的很多资源就白白浪费掉了。</u></p>
+<p>采用 “三次握手” 的办法可以防止上述现象发生。例如刚才那种情况，client 不会向 server 的确认发出确认。server 由于收不到确认，就知道 client 并没有要求建立连接。</p>
+<p>client通过检测server返回的ack,如果ack不对(是失效的请求连接到达server,使得server进行第2次握手),这个时候client不会进行第三次握手,而是向server发送一个reset信号,server接收到reset信号后就会变成Listen状态.</p>
+<p>作者：山尽
+链接：https://www.zhihu.com/question/24853633/answer/573627478
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</blockquote>
+<blockquote>
+<p>注意是客户端忽略  &ndash;&gt;客户端不会向服务端发送数据，服务端就会进行空等待中，进而浪费了服务端的资源</p>
+<p>本质上是通过序列号来确认，即原因2</p>
+</blockquote>
+<ol start="2">
+<li>两次握手无法进行序列号的确认工作  &ndash;&gt;用三次握手来确认双方都可以获得对方的 序列号（seq）</li>
+</ol>
+<p><a href="https://mp.weixin.qq.com/s/NIjxgx4NPn7FC4PfkHBAAQ" target="_blank" rel="noopener noreffer">参考1</a></p>
+<p><a href="https://blog.csdn.net/meism5/article/details/90414236" target="_blank" rel="noopener noreffer">参考2</a></p>
+<blockquote>
+<p>**TCP 的可靠连接是靠 seq（ sequence numbers 序列号）来达成的。**三次握手是为了确保对方获得自己的序列号</p>
+<p>TCP建立的的传输是双工的,也就是说即可以从A到B传输,也可以从B到A进行传输</p>
+<p>为了确保B知道A传输过来的数据是否合法,以及为了确保A知道B传输过来的数据是否合法,需要对双方的初始序列号进行确认</p>
+<p>两次握手只能够保证A和B就A的初始序列号达成一致,但是无法对B的初始序列号达成一致,所以还需要进行第三次握手</p>
+<p>如何使得双方对初始序列号达成一致?通过确认应答号来确定</p>
+</blockquote>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210429140628.png" style="zoom:67%;" /></p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406190956.png" style="zoom:67%;" /></p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406191035.png" style="zoom:67%;" /></p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406191818.png" style="zoom:67%;" /></p>
+<p><strong>为什么要回传SYN</strong></p>
+<p>接收端传回发送端的SYN是为了告诉发送端，我接收到的信息确实就是你所发送的信号。？&mdash;&gt;不是通过序列号来确认的吗</p>
 <h3 id="tcp四次挥手">TCP四次挥手</h3>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201223212544.png" style="zoom: 67%;" /></p>
 <p>以下描述不讨论序号和确认号，因为序号和确认号的规则比较简单。并且不讨论 ACK，因为 ACK 在连接建立之后都为 1。</p>
 <ul>
-<li>A 发送连接释放报文，FIN=1。</li>
-<li>B 收到之后发出确认，此时 TCP 属于半关闭状态，B 能向 A 发送数据但是 A 不能向 B 发送数据。</li>
-<li>当 B 不再需要连接时，发送连接释放报文，FIN=1。</li>
-<li>A 收到后发出确认，进入 TIME-WAIT 状态，等待 2 MSL（最大报文存活时间）后释放连接。</li>
-<li>B 收到 A 的确认后释放连接。</li>
+<li>
+<p>A 发送连接释放报文，FIN=1。</p>
+</li>
+<li>
+<p>B 收到之后发出确认，此时 TCP 属于半关闭状态，B 能向 A 发送数据但是 A 不能向 B 发送数据。</p>
+</li>
+<li>
+<p>当 B 不再需要连接时，发送连接释放报文，FIN=1。</p>
+</li>
+<li>
+<p>A 收到后发出确认，进入 TIME-WAIT 状态，等待 2 MSL（<strong>最大报文存活时间</strong>）后释放连接。</p>
+<p>&ndash;&gt;最大分段寿命（Maximum Segment Lifetime (MSL) ，默认使用2分钟）</p>
+</li>
+<li>
+<p>B 收到 A 的确认后释放连接。</p>
+</li>
 </ul>
 <p><strong>四次挥手的原因</strong></p>
-<p>客户端发送了 FIN 连接释放报文之后，服务器收到了这个报文，就进入了 CLOSE-WAIT 状态。<u>这个状态是为了让服务器端接收还未传送完毕的数据</u>，传送完毕之后，服务器会发送 FIN 连接释放报文。</p>
+<p>客户端发送了 FIN 连接释放报文之后，服务器收到了这个报文，就进入了 <strong>CLOSE-WAIT</strong> 状态。<u>这个状态是为了让服务器端接收还未传送完毕的数据</u>，传送完毕之后，服务器会发送 FIN 连接释放报文。</p>
 <p><strong>TIME_WAIT</strong></p>
 <p>客户端接收到服务器端的 FIN 报文后进入此状态，此时并不是直接进入 CLOSED 状态，还需要等待一个时间计时器设置的时间 2MSL。这么做有两个理由：</p>
 <ul>
-<li>确保最后一个确认报文能够到达。如果 B 没收到 A 发送来的确认报文，那么就会重新发送连接释放请求报文，A 等待一段时间就是为了处理这种情况的发生。</li>
-<li>等待一段时间是为了让本连接持续时间内所产生的所有报文都从网络中消失，使得下一个新的连接不会出现旧的连接请求报文。</li>
+<li>
+<p><strong>确保最后一个确认报文能够到达</strong>。如果 B 没收到 A 发送来的确认报文，那么就会重新发送连接释放请求报文，A 等待一段时间就是为了处理这种情况的发生。</p>
+<ul>
+<li>
+<p>为什么要等待2MSL呢？</p>
+<p>如果B没有收到A发送来的确认报文①，B就会重新发送请求释放报文②，这其中有两个过程①②,所以TIME_WAIT的时间是2MSL</p>
+<p>(注意一个端在网络中的寿命是不会比最长分段寿命长的)</p>
+</li>
 </ul>
+</li>
+<li>
+<p>防止类似与“三次握手”中提到了的“已经失效的连接请求报文段”出现在本连接中。客户端发送完最后一个确认报文后，等待一段时间是为了<strong>让本连接持续时间内所产生的所有报文都从网络中消失，使得下一个新的连接不会出现旧的连接请求报文</strong>。</p>
+</li>
+</ul>
+<blockquote>
+<p><em>为什么建立连接是三次握手，关闭连接确是四次挥手呢？</em></p>
+<p>建立连接的时候， 服务器在LISTEN状态下，收到建立连接请求的SYN报文后，把ACK和SYN放在一个报文里发送给客户端。</p>
+<p>而关闭连接时，服务器收到对方的FIN报文后，表示的是客户端请求断开连接，服务端接收到这个信号的时候不会立刻断开连接，因为还存在没有接收的数据，这个时候服务端会先向客户端回应一个ACK信号，表示服务端收到了客户端的断开请求连接</p>
+<p>这时就进入了close-wait状态了，用于服务端接收还未传送的数据。</p>
+<p>当服务端接收完毕后，再向服务端发送FIN=1和ACK=1，表示自己可以断开连接了</p>
+<p>因此，服务端的ACK和FIN一般都会分开发送，从而导致多了一次。</p>
+<ul>
+<li>本质的原因是在建立连接的时候，因为客户端和服务端之间不存在数据的传送，因此无需将ACK和SYN分开进行发送</li>
+<li>而断开连接时，因为客户端和服务端之间存在数据的传送，所以需要将服务端需要将数据接收完才断开连接，所以FIN和ACK是分开发送的。</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210429100512.png" style="zoom:67%;" /></p>
+</blockquote>
 <h3 id="tcp以段为单位发送数据">TCP以段为单位发送数据</h3>
 <p>在建立TCP的连接过程中，也可以确立发送数据包的单位。我们可以称之为最大消息单位（MSS）。</p>
 <p>TCP在传送大量数据时，是以MSS的大小将数据进行分割发送。，进行重发时也是以MSS为单位。</p>
 <p>MSS是在三次挥手时，在两端主机计算出来的。</p>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201225153128.png" style="zoom:67%;" /></p>
-<h3 id="利用窗口控制提高速度">利用窗口控制提高速度</h3>
+<h3 id="利用窗口控制提高传输速度">利用窗口控制提高传输速度</h3>
 <p>TCP以1个段为单位，每发送一个段就要进行一次确认应答处理，这种传输方式的一个缺点是，包的往返时间越长通信性能就越低。</p>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201225154510.png" style="zoom:50%;" /></p>
-<p>为此，TCP引入了窗口这个概念，能够提高传输的速度。即发送端主机在发送一个段后不必一直等待确认应答，而是继续发送。如下图：</p>
+<p>为此，TCP引入了窗口这个概念，能够提高传输的速度。即<strong>发送端主机在发送一个段后不必一直等待确认应答，而是继续发送</strong>。如下图：</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -1341,7 +1499,7 @@ $$</p>
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201225154646.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201225154646.png" /></p>
-<p>窗口是指无需等待确认应答就可以继续发送数据的最大值</p>
+<p><strong>窗口是指无需等待确认应答就可以继续发送数据的最大值</strong></p>
 <p>如下图：</p>
 <ul>
 <li>在窗口内的数据即使没有收到确认应答也可以发送出去</li>
@@ -1361,7 +1519,7 @@ $$</p>
 </li>
 <li>
 <p>某个报文丢失的情况</p>
-<p>接收端主机在内有收到自己所期望序号的数据时，会对之前收到的数据进行确认应答。</p>
+<p>接收端主机在没有收到自己所期望序号的数据时，会对之前收到的数据进行确认应答。</p>
 <p>发送端一旦收到某个确认应答后，又连续3次收到同样的确认应答，则认为数据段已经丢失，需要进行重发。这种机制被称为<strong>快速重发机制</strong></p>
 <p><img
         class="lazyload"
@@ -1373,7 +1531,7 @@ $$</p>
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201225160626.png" /></p>
 </li>
 </ol>
-<h3 id="流控制">流控制</h3>
+<h3 id="流量控制">流量控制</h3>
 <p>TCP提供流控制可以<strong>让发送端根据接收端的实际接收能力控制发送的数据量</strong></p>
 <ul>
 <li>TCP首部中，专门有一个字段用来通知窗口的大小，接收主机可以将自己可以接收的缓冲区大小放入这个字段中通知给发送端</li>
@@ -1381,7 +1539,10 @@ $$</p>
 <li>接收区缓冲区一旦面临数据溢出，窗口大小的值就会被设置成一个更小的值，从而控制发送端主机发送数据</li>
 </ul>
 <h3 id="拥塞控制">拥塞控制</h3>
-<p>如果网络出现拥塞，分组将会丢失，此时发送方会继续重传，从而导致网络拥塞程度更高。因此当出现拥塞时，应当控制发送方的速率。这一点和流量控制很像，但是出发点不同。流<strong>量控制是为了让接收方能来得及接收，而拥塞控制是为了降低整个网络的拥塞程度</strong>。</p>
+<p>如果网络出现拥塞，分组将会丢失，此时发送方会继续重传，从而导致网络拥塞程度更高。因此当出现拥塞时，应当控制发送方的速率。这一点和流量控制很像，但是出发点不同。<strong>流量控制是为了让接收方能来得及接收，而拥塞控制是为了降低整个网络的拥塞程度</strong>。</p>
+<ul>
+<li>在网络拥堵时减少数据的发送。</li>
+</ul>
 <p>发送的最初执行慢开始，令 cwnd（报文段大小） = 1，发送方只能发送 1 个报文段；当收到确认后，将 <strong>cwnd 加倍</strong>，因此之后发送方能够发送的报文段数量为：2、4、8 &hellip;</p>
 <p>注意到慢开始每个轮次都将 cwnd 加倍，这样会让 cwnd  增长速度非常快，从而使得发送方发送的速度增长速度过快，网络拥塞的可能性也就更高。设置一个慢开始门限 ssthresh，当 cwnd &gt;=  ssthresh 时，进入拥塞避免，每个轮次<strong>只将 cwnd 加 1</strong>。</p>
 <p>如果出现了超时，则令 <strong>ssthresh = cwnd / 2</strong>，然后重新执行慢开始</p>
@@ -1404,7 +1565,19 @@ $$</p>
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201218202543.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201218202543.png" /></p>
 <p>TCP和IP等下层协议是不依赖于上层应用类型、适用面非常广的协议，而应用协议则是为了实现<strong>某种应用</strong>而设计和创造的协议。</p>
-<p>（网络应用由不同的用户和软件供应商开发。为了实现网络应用的功能，在应用层之间进行通信时将其连接的协议是十分重要的）</p>
+<blockquote>
+<p>相当于传输层及以下部分是通用的部分，不管什么应用都可以通过这一通用部分进行传输；而在应用层中有不同的应用，针对不同的应用应该采用不同的应用协议。</p>
+</blockquote>
+<p>网络应用由不同的用户和软件供应商开发。为了实现网络应用的功能，在应用层之间进行通信时将其连接的协议是十分重要的。</p>
+<p>应用可以直接享用传输层以下的基础部分。开发者只需要关心选用哪种应用协议，如何开发即可，而不必担心应用中的数据该以何种方式发送到目标主机。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406111712.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406111712.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406111712.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406111712.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406111712.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406111712.png" /></p>
 <p>常见的应用协议：</p>
 <ul>
 <li>浏览器与服务端之间的通信协议为HTTP，所传输数据的主要格式为HTML。</li>
@@ -1412,15 +1585,67 @@ $$</p>
 <li>文件传输协议:FTP。文件传输是指将保存在其他计算机硬盘上的文件转移到本地的硬盘上</li>
 <li>远程登录协议：SSH 协议或TELNET协议。</li>
 <li>网络管理协议：SNMP协议。</li>
-<li><img
+</ul>
+<p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="/home/ssl/.config/Typora/typora-user-images/image-20201218203214986.png"
-        data-srcset="/home/ssl/.config/Typora/typora-user-images/image-20201218203214986.png, /home/ssl/.config/Typora/typora-user-images/image-20201218203214986.png 1.5x, /home/ssl/.config/Typora/typora-user-images/image-20201218203214986.png 2x"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194402.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194402.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194402.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194402.png 2x"
         data-sizes="auto"
-        alt="/home/ssl/.config/Typora/typora-user-images/image-20201218203214986.png"
-        title="image-20201218203214986" /></li>
-</ul>
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194402.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210330194402.png" /></p>
+<p>SNMP：简单网络管理协议 使用无连接UDP
+SSH：安全外壳协议 采用面向连接的TCP协议传输 应用22号端口 安全系数较高。
+DHCP：动态主机配置协议 使用UDP进行工作
+TELNET：是TCP/IP协议族中的一员，是Internet远程登录服务的标准协议和主要方式</p>
+<h2 id="dns">DNS</h2>
+<h3 id="dns的产生">DNS的产生</h3>
+<p>起因：IP地址不便于记忆。</p>
+<p>解决方法：为每一台计算机赋予一个唯一的主机名。主机名与IP地址一一对应</p>
+<p>在进行网络通信时直接使用主机名，系统自动将其转换为对应的IP地址。</p>
+<p>**DNS系统：有效管理主机名和IP地址之间对应关系的系统。**它可以维护一个用来表示主机名和和IP地址之间对应关系的数据库。</p>
+<p><strong>域名</strong>：为了识别主机名称和组织名称的一种具有<u>分层</u>的名称。</p>
+<p>例如：<code>kusa.ac.jp</code>。在使用域名时，可以在每个主机名后面追加上域名。例如:<code>pepper.kusa.ac.jp</code>,<code>piyo.kusa.ac.jp</code></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222162109.png" /></p>
+<p><strong>域名服务器</strong>：指管理域名的主机和相应的软件。</p>
+<p>它可以管理所在分层的域的相关信息。其所管理的分层叫做ZONE 。</p>
+<p><strong>DNS解析器</strong>：进行DNS查询的主机和软件。</p>
+<p><strong>DNS查询</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201222163017.png" /></p>
+<h2 id="dhcp">DHCP</h2>
+<p><strong>功能：实现IP地址的自动配置、统一管理IP地址分配。</strong></p>
+<p>DHCP让即插即用成为可能</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331103754.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331103754.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331103754.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331103754.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331103754.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331103754.png" /></p>
+<p>工作原理：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104130.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104130.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104130.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104130.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104130.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210331104130.png" /></p>
 <h2 id="文件传输协议ftp">文件传输协议:FTP</h2>
 <p>FTP 使用 TCP 进行连接，它需要两个连接来传送一个文件：</p>
 <ul>
@@ -1445,17 +1670,20 @@ $$</p>
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201225172113.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201225172113.png" /></p>
 <p>主动模式要求客户端开放端口号给服务器端，需要去配置客户端的防火墙。被动模式只需要服务器端开放端口号即可，无需客户端配置防火墙。但是被动模式会导致服务器端的安全性减弱，因为开放了过多的端口号。</p>
-<h2 id="www">WWW</h2>
+<h2 id="web基础">Web基础</h2>
 <p>万维网（WWW，World Wide Web）是将互联网中的信息以<strong>超文本</strong>形式展示的<strong>系统</strong>。也叫作Web。</p>
 <p>可以显示Web信息的<strong>客户端软件</strong>称为Web浏览器。简称为浏览器。</p>
 <p>借助浏览器，人们不需要考虑该信息保存在在哪个服务器，只需要点击鼠标就可以访问页面的链接并打开相关信息。</p>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201229200513.png" style="zoom:80%;" /></p>
-<h3 id="web的基本要素urlhtmlhttp">Web的基本要素:URL，HTML，HTTP</h3>
+<h3 id="web基本要素">Web基本要素</h3>
 <h4 id="url">URL</h4>
 <ul>
 <li>（统一资源定位符）：用来表示互联网中资源（文件）的具体位置</li>
 </ul>
 <p>它是  URI（<strong>U</strong>niform <strong>R</strong>esource <strong>I</strong>dentifier，统一资源标识符）的子集，<strong>URL 在 URI 的基础上增加了定位能力</strong>。URI 除了包含 URL，还包含 URN（Uniform Resource  Name，统一资源名称），它只是用来定义一个资源的名称，并不具备定位该资源的能力。例如 urn:isbn:0451450523  用来定义一个书籍名称，但是却没有表示怎么找到这本书。</p>
+<ul>
+<li>URI包含了URL</li>
+</ul>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -1487,21 +1715,6 @@ $$</p>
 <li>HTTP1.1允许在一个TCP连接上发送多个命令和应答；大大减小TCP连接和断开操作，从而提高了效率。</li>
 </ul>
 </blockquote>
-<p><strong>持久连接</strong>：</p>
-<p>也称为keep-alive</p>
-<p>特点为：只要任意一端没有明确的提出断开连接则保持TCP连接状态。</p>
-<p>在HTTP1.1中，所有的连接默认都是持久连接</p>
-<p><strong>管线化</strong>：</p>
-<p>管线话技术出现后，不用等待响应就可以发送下一个请求。</p>
-<p>这样就能够同时并行发送多个请求，而不需要一个一个等待响应了。</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png" /></p>
 <h3 id="javascript-">JavaScript :</h3>
 <ul>
 <li>是一种嵌入在HTML中的编程语言，作为客户端程序运行于多种类型的的浏览器中。</li>
@@ -1514,281 +1727,70 @@ $$</p>
 </ul>
 <p>引入CGI以后客户端请求会触发Web服务器运行另一个程序，客户端的请求也会输给这个程序。该程序运行结束后就会将生成的HTML和其他数据再返回给客户端。</p>
 <p>利用CGI可以针对用户的操作<strong>返回给客户端动态的信息</strong>。</p>
+<h3 id="web-页面请求过程">Web 页面请求过程</h3>
+<h4 id="1-dhcp-配置主机信息">1. DHCP 配置主机信息</h4>
+<ul>
+<li>假设主机最开始没有 IP 地址以及其它信息，那么就需要先使用 DHCP 来获取。</li>
+<li>主机生成一个 DHCP 请求报文，并将这个报文放入具有目的端口 67 和源端口 68 的 UDP 报文段中。</li>
+<li>该报文段则被放入在一个具有广播 IP 目的地址(255.255.255.255) 和源 IP 地址（0.0.0.0）的 IP 数据报中。</li>
+<li>该数据报则被放置在 MAC 帧中，该帧具有目的地址 FF:<zero-width  space>FF:<zero-width space>FF:<zero-width  space>FF:<zero-width space>FF:FF，将广播到与交换机连接的所有设备。</li>
+<li>连接在交换机的 DHCP 服务器收到广播帧之后，不断地向上分解得到 IP 数据报、UDP 报文段、DHCP 请求报文，之后生成 DHCP  ACK 报文，该报文包含以下信息：IP 地址、DNS 服务器的 IP 地址、默认网关路由器的 IP 地址和子网掩码。该报文被放入 UDP  报文段中，UDP 报文段有被放入 IP 数据报中，最后放入 MAC 帧中。</li>
+<li>该帧的目的地址是请求主机的 MAC 地址，因为交换机具有自学习能力，之前主机发送了广播帧之后就记录了 MAC 地址到其转发接口的交换表项，因此现在交换机就可以直接知道应该向哪个接口发送该帧。</li>
+<li>主机收到该帧后，不断分解得到 DHCP 报文。之后就配置它的 IP 地址、子网掩码和 DNS 服务器的 IP 地址，并在其 IP 转发表中安装默认网关。</li>
+</ul>
+<h4 id="2-arp-解析-mac-地址">2. ARP 解析 MAC 地址</h4>
+<ul>
+<li>主机通过浏览器生成一个 TCP 套接字，套接字向 HTTP 服务器发送 HTTP 请求。为了生成该套接字，主机需要知道网站的域名对应的 IP 地址。</li>
+<li>主机生成一个 DNS 查询报文，该报文具有 53 号端口，因为 DNS 服务器的端口号是 53。</li>
+<li>该 DNS 查询报文被放入目的地址为 DNS 服务器 IP 地址的 IP 数据报中。</li>
+<li>该 IP 数据报被放入一个以太网帧中，该帧将发送到网关路由器。</li>
+<li>DHCP 过程只知道网关路由器的 IP 地址，为了获取网关路由器的 MAC 地址，需要使用 ARP 协议。</li>
+<li>主机生成一个包含目的地址为网关路由器 IP 地址的 ARP 查询报文，将该 ARP  查询报文放入一个具有广播目的地址（FF:<zero-width space>FF:<zero-width  space>FF:<zero-width space>FF:<zero-width  space>FF:FF）的以太网帧中，并向交换机发送该以太网帧，交换机将该帧转发给所有的连接设备，包括网关路由器。</li>
+<li>网关路由器接收到该帧后，不断向上分解得到 ARP 报文，发现其中的 IP 地址与其接口的 IP 地址匹配，因此就发送一个 ARP 回答报文，包含了它的 MAC 地址，发回给主机。</li>
+</ul>
+<h4 id="3-dns-解析域名">3. DNS 解析域名</h4>
+<ul>
+<li>知道了网关路由器的 MAC 地址之后，就可以继续 DNS 的解析过程了。</li>
+<li>网关路由器接收到包含 DNS 查询报文的以太网帧后，抽取出 IP 数据报，并根据转发表决定该 IP 数据报应该转发的路由器。</li>
+<li>因为路由器具有内部网关协议（RIP、OSPF）和外部网关协议（BGP）这两种路由选择协议，因此路由表中已经配置了网关路由器到达 DNS 服务器的路由表项。</li>
+<li>到达 DNS 服务器之后，DNS 服务器抽取出 DNS 查询报文，并在 DNS 数据库中查找待解析的域名。</li>
+<li>找到 DNS 记录之后，发送 DNS 回答报文，将该回答报文放入 UDP 报文段中，然后放入 IP 数据报中，通过路由器反向转发回网关路由器，并经过以太网交换机到达主机。</li>
+</ul>
+<h4 id="4-http-请求页面">4. HTTP 请求页面</h4>
+<ul>
+<li>有了 HTTP 服务器的 IP 地址之后，主机就能够生成 TCP 套接字，该套接字将用于向 Web 服务器发送 HTTP GET 报文。</li>
+<li>在生成 TCP 套接字之前，必须先与 HTTP 服务器进行三次握手来建立连接。生成一个具有目的端口 80 的 TCP SYN 报文段，并向 HTTP 服务器发送该报文段。</li>
+<li>HTTP 服务器收到该报文段之后，生成 TCP SYN ACK 报文段，发回给主机。</li>
+<li>连接建立之后，浏览器生成 HTTP GET 报文，并交付给 HTTP 服务器。</li>
+<li>HTTP 服务器从 TCP 套接字读取 HTTP GET 报文，生成一个 HTTP 响应报文，将 Web 页面内容放入报文主体中，发回给主机。</li>
+<li>浏览器收到 HTTP 响应报文后，抽取出 Web 页面内容，之后进行渲染，显示 Web 页面。</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png" /></p>
+<h3 id="从输入url到页面加载发生了什么">从输入URL到页面加载发生了什么</h3>
+<ul>
+<li>DNS域名解析</li>
+<li>TCP建立连接</li>
+<li>发送HTTP请求</li>
+<li>服务器处理请求并返回HTTP报文</li>
+<li>浏览器解析渲染页面</li>
+<li>断开连接</li>
+</ul>
 <hr>
-<h3 id="cookie">Cookie</h3>
-<ul>
-<li>
-<p>Cookie技术通过在请求和响应报文中写入Cookie信号来控制客户端的状态</p>
-</li>
-<li>
-<blockquote>
-<p>Cookie 是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器之后向同一服务器再次发起请求时被携带上，用于告知服务端两个请求是否来自同一浏览器。由于之后每次请求都会需要携带 Cookie 数据，因此会带来额外的性能开销（尤其是在移动环境下）。</p>
-</blockquote>
-</li>
-</ul>
-<p>HTTP是不保存状态的协议，即无状态协议，**HTTP协议自身不对请求和响应之间的通信状态进行保存。**因此需要使用Cookie技术。</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png" /></p>
-<blockquote>
-<p><strong>用途</strong>：</p>
-<p>比如，用户登录在一家购物网站，即使他跳转到该站的其他页面后，也能够继续保持登录状态。针对这个实例，网站为了能够掌握是谁发送的请求，需要保存用户的状态。</p>
-<ul>
-<li>会话状态管理（如用户登录状态、购物车、游戏分数或其它需要记录的信息）</li>
-<li>个性化设置（如用户自定义设置、主题等）</li>
-<li>浏览器行为跟踪（如跟踪分析用户行为等）</li>
-</ul>
-</blockquote>
-<blockquote>
-<p><strong>分类</strong>：</p>
-<ul>
-<li>会话期 Cookie：浏览器关闭之后它会被自动删除，也就是说它仅在会话期内有效。</li>
-<li>持久性 Cookie：指定过期时间（Expires）或有效期（max-age）之后就成为了持久性的 Cookie。</li>
-</ul>
-</blockquote>
-<p>过程：</p>
-<ul>
-<li>客户端发送请求报文</li>
-<li>服务端返回响应报文，响应报文中的首部字段有一个叫做Set-Cookie字段</li>
-<li>客户端通过响应报文中的Set-Cookie字段得知，自动保存Cookie</li>
-<li>在下次客户端发送请求报文时，请求报文中会自动包含Cookie字段</li>
-<li>服务端发现请求报文中的Cookie字段后，会去检查是哪一个客户端发送过来的请求，然后对比服务器上的记录，最后的到之前的状态信息</li>
-</ul>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png" /></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png" /></p>
-<h3 id="session">Session</h3>
-<p>除了可以将用户信息通过 Cookie 存储在用户浏览器中，也可以利用 Session 存储在服务器端，存储在服务器端的信息更加安全。</p>
-<blockquote>
-<p>利用Session将用户信息存储在服务端</p>
-</blockquote>
-<p>Session 可以存储在服务器上的文件、数据库或者内存中。也可以将 Session 存储在 Redis 这种内存型数据库中，效率会更高。</p>
-<p>使用 Session 维护用户登录状态的过程如下：</p>
-<ul>
-<li>用户进行登录时，用户提交包含用户名和密码的表单，放入 HTTP 请求报文中；</li>
-<li>服务器验证该用户名和密码，如果正确则把用户信息存储到 Redis 中，它在 Redis 中的 Key 称为 Session ID；</li>
-<li>服务器返回的响应报文的 Set-Cookie 首部字段包含了这个 <strong>Session ID</strong>，客户端收到响应报文之后将该 Cookie 值存入浏览器中；</li>
-<li>客户端之后对同一个服务器进行请求时会包含该 Cookie 值，<u>服务器收到之后提取出 Session ID，从 Redis 中取出用户信息，继续之前的业务操作。</u></li>
-</ul>
-<p>应该注意 Session ID 的安全性问题，不能让它被恶意攻击者轻易获取，那么就不能产生一个容易被猜到的 Session ID  值。此外，还需要经常重新生成 Session ID。在对安全性要求极高的场景下，例如转账等操作，除了使用 Session  管理用户状态之外，还需要对用户进行重新验证，比如重新输入密码，或者使用短信验证码等方式。</p>
-<h4 id="浏览器禁用-cookie">浏览器禁用 Cookie</h4>
-<p>此时无法使用 Cookie 来保存用户信息，只能使用 Session。除此之外，不能再将 Session ID 存放到 Cookie 中，而是使用 URL 重写技术，将 Session ID 作为 URL 的参数进行传递。</p>
-<h4 id="cookie-与-session-选择">Cookie 与 Session 选择</h4>
-<ul>
-<li>Cookie 只能存储 ASCII 码字符串，而 Session 则可以存储任何类型的数据，因此在考虑数据复杂性时首选 Session；</li>
-<li>Cookie 存储在浏览器中，容易被恶意查看。如果非要将一些隐私数据存在 Cookie 中，可以将 Cookie 值进行加密，然后在服务器进行解密；</li>
-<li>对于大型网站，<u>如果用户所有的信息都存储在 Session 中，那么开销是非常大的</u>，因此不建议将所有的用户信息都存储到 Session 中。</li>
-</ul>
-<h3 id="虚拟主机">虚拟主机</h3>
-<p>HTTP1.1规范允许一台HTTP服务器搭建多个Web 站点。</p>
-<p>即使物理层面只有一台主机，但是只要使用虚拟主机的功能，就可以假想有多台服务器</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png" /></p>
-<p>客户端通过域名来访问服务器，域名首先会通过DNS解析成IP地址。即虚拟主机具有不同的域名，但是一台服务器上的虚拟主机的IP地址是相同的。所以需要区别不同的虚拟主机。</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png" /></p>
-<h3 id="代理">代理</h3>
-<p>代理服务器的基本行为就是接收客户端发送的请求后转发给其他服务器。代理不改变请求URL，会直接发送给前方持有资源的目标服务器。</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png" /></p>
-<p>使用代理服务器的原因：</p>
-<ul>
-<li>
-<p>利用缓存技术减少网络带宽的流量</p>
-</li>
-<li>
-<p>组织内部针对特定网站的访问控制</p>
-<p>&hellip;</p>
-</li>
-</ul>
-<p>缓存代理：会预先将资源副本（缓存）保存在代理服务器上</p>
-<h3 id="网关">网关</h3>
-<p>网关与代理的不同之处在于，网关能够使通信线路上的服务器提供非HTTP协议服务</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png" /></p>
-<p>网关能够提高通信的安全性。</p>
-<h3 id="隧道">隧道</h3>
-<p>隧道可以按照要求建立一条与其他服务器的通信线路，届时可以使用SSL等加密手段进行通信。</p>
-<p>隧道的目的是确保通信的安全性</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png" /></p>
-<h3 id="缓存">缓存</h3>
-<p>缓存指代理服务器或客户端本地磁盘内保存的资源副本</p>
-<p>利用缓存可以减少堆源服务器的访问，节省了通信流量和通信时间</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png" /></p>
-<h3 id="内容协商">内容协商</h3>
-<p>通过内容协商返回最合适的内容，例如根据浏览器的默认语言选择返回中文界面还是英文界面。</p>
-<h4 id="1-类型">1. 类型</h4>
-<p><strong>1.1 服务端驱动型</strong></p>
-<p>客户端设置特定的 HTTP 首部字段，例如 Accept、Accept-Charset、Accept-Encoding、Accept-Language，服务器根据这些字段返回特定的资源。</p>
-<p>它存在以下问题：</p>
-<ul>
-<li>服务器很难知道客户端浏览器的全部信息；</li>
-<li>客户端提供的信息相当冗长（HTTP/2 协议的首部压缩机制缓解了这个问题），并且存在隐私风险（HTTP 指纹识别技术）；</li>
-<li>给定的资源需要返回不同的展现形式，共享缓存的效率会降低，而服务器端的实现会越来越复杂。</li>
-</ul>
-<p><strong>1.2 代理驱动型</strong></p>
-<p>服务器返回 300 Multiple Choices 或者 406 Not Acceptable，客户端从中选出最合适的那个资源。</p>
-<h4 id="2-vary">2. Vary</h4>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Vary: Accept-Language
-</code></pre></td></tr></table>
-</div>
-</div><p>在使用内容协商的情况下，只有当缓存服务器中的缓存满足内容协商条件时，才能使用该缓存，否则应该向源服务器请求该资源。</p>
-<p>例如，一个客户端发送了一个包含 Accept-Language 首部字段的请求之后，源服务器返回的响应包含 <code>Vary: Accept-Language</code> 内容，缓存服务器对这个响应进行缓存之后，在客户端下一次访问同一个 URL 资源，并且 Accept-Language 与缓存中的对应的值相同时才会返回该缓存。</p>
-<h3 id="内容编码">内容编码</h3>
-<p>内容编码将实体主体进行压缩，从而减少传输的数据量。</p>
-<p>常用的内容编码有：gzip、compress、deflate、identity。</p>
-<p>浏览器发送 Accept-Encoding  首部，其中包含有它所支持的压缩算法，以及各自的优先级。服务器则从中选择一种，使用该算法对响应的消息主体进行压缩，并且发送  Content-Encoding 首部来告知浏览器它选择了哪一种算法。由于该内容协商过程是基于编码类型来选择资源的展现形式的，响应报文的  Vary 首部字段至少要包含 Content-Encoding。</p>
-<h3 id="范围请求">范围请求</h3>
-<p>如果网络出现中断，服务器只发送了一部分数据，范围请求可以使得客户端只请求服务器未发送的那部分数据，从而避免服务器重新发送所有数据。</p>
-<h4 id="1-range">1. Range</h4>
-<p>在请求报文中添加 Range 首部字段指定请求的范围。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">GET /z4d4kWk.jpg HTTP/1.1
-Host: i.imgur.com
-Range: bytes=0-1023
-</code></pre></td></tr></table>
-</div>
-</div><p>请求成功的话服务器返回的响应包含 206 Partial Content 状态码。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">HTTP/1.1 206 Partial Content
-Content-Range: bytes 0-1023/146515
-Content-Length: 1024
-...
-(binary content)
-</code></pre></td></tr></table>
-</div>
-</div><h4 id="2-accept-ranges">2. Accept-Ranges</h4>
-<p>响应首部字段 Accept-Ranges 用于告知客户端是否能处理范围请求，可以处理使用 bytes，否则使用 none。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Accept-Ranges: bytes
-</code></pre></td></tr></table>
-</div>
-</div><h4 id="3-响应状态码">3. 响应状态码</h4>
-<ul>
-<li>在请求成功的情况下，服务器会返回 206 Partial Content 状态码。</li>
-<li>在请求的范围越界的情况下，服务器会返回 416 Requested Range Not Satisfiable 状态码。</li>
-<li>在不支持范围请求的情况下，服务器会返回 200 OK 状态码。</li>
-</ul>
-<h3 id="分块传输编码">分块传输编码</h3>
-<p>Chunked Transfer Encoding，可以把数据分割成多块，让浏览器逐步显示页面。</p>
-<h3 id="多部分对象集合">多部分对象集合</h3>
-<p>一份报文主体内可含有多种类型的实体同时发送，每个部分之间用 boundary 字段定义的分隔符进行分隔，每个部分都可以有首部字段。</p>
-<p>例如，上传多个表单时可以使用如下方式：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Content-Type: multipart/form-data; boundary=AaB03x
-
---AaB03x
-Content-Disposition: form-data; name=&#34;submit-name&#34;
-
-Larry
---AaB03x
-Content-Disposition: form-data; name=&#34;files&#34;; filename=&#34;file1.txt&#34;
-Content-Type: text/plain
-
-... contents of file1.txt ...
---AaB03x--
-</code></pre></td></tr></table>
-</div>
-</div><hr>
-<h3 id="基本概念">基本概念</h3>
+<h2 id="http基本概念">HTTP基本概念</h2>
 <p>HTTP协议用于客户端和服务器之间的通信</p>
 <p>HTTP规定，客户端和服务端通过请求和响应的交换达成通信。</p>
 <h4 id="请求和响应报文">请求和响应报文</h4>
 <p>客户端发送一个请求报文给服务端，服务端根据请求报文中的信息进行处理，并将处理的结果放入响应报文中返回给客户端。</p>
+<ul>
+<li>报文的结构为：报文首部+空行+报文实体。其中报文首部又由请求行/状态行+首部字段构成。通常并不一定要有报文实体。</li>
+</ul>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -1805,7 +1807,7 @@ Content-Type: text/plain
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230103323.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230103323.png" /></p>
-<h5 id="请求报文的结构"><strong>请求报文的结构</strong></h5>
+<h5 id="请求报文结构"><strong>请求报文结构</strong></h5>
 <ul>
 <li>请求方法</li>
 <li>请求URL</li>
@@ -1838,55 +1840,85 @@ Content-Type: text/plain
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230094622.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230094622.png" /></p>
-<h3 id="报文主体和实体主体">报文主体和实体主体</h3>
+<h5 id="报文主体和实体主体">报文主体和实体主体</h5>
 <ul>
-<li>HTTP在传输数据时可以按照数据原貌直接传输，也可以在传输过程中通过编码提升传输速度</li>
-<li>HTTP报文的主体用于传输请求或响应的实体主体</li>
+<li>
+<p>报文：是HTTP通信中的基本单位，由8位组字节流构成，通过HTTP通信传输。</p>
+</li>
+<li>
+<p>实体：作为请求或响应的有效载荷数据被传输，其内容由实体首部和实体主体组成。</p>
+</li>
+<li>
+<p>HTTP在传输数据时可以按照数据原貌直接传输，也可以在传输过程中通过编码提升传输速度</p>
+</li>
+<li>
+<p>HTTP报文的主体用于传输请求或响应的实体主体</p>
+</li>
 </ul>
 <p>通常情况下报文主体等于实体主体，只有当传输过程中进行编码操作时，实体主体的内容发生变化，才导致它和报文主体产生差异。</p>
 <h3 id="http方法">HTTP方法</h3>
 <p>请求报文中包含了方法字段，常用方法如下:</p>
-<p>GET</p>
+<h4 id="get">GET</h4>
 <blockquote>
 <p>获取资源</p>
 </blockquote>
 <p>当前网络请求中，<strong>绝大部分使用的是 GET 方法</strong>。</p>
-<p>HEAD</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151039.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151039.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151039.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151039.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151039.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151039.png" /></p>
+<h4 id="post">POST</h4>
+<blockquote>
+<p>传输实体主体</p>
+</blockquote>
+<p>POST 主要用来传输数据，而 GET 主要用来获取资源。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151238.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151238.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151238.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151238.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151238.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402151238.png" /></p>
+<p>更多 POST 与 GET 的比较请见<a href="https://github.com/CyC2018/CS-Notes/blob/master/notes/HTTP.md#%E4%B9%9Dget-%E5%92%8C-post-%E6%AF%94%E8%BE%83" target="_blank" rel="noopener noreffer">参考</a>。</p>
+<h4 id="put">PUT</h4>
+<blockquote>
+<p>上传文件</p>
+</blockquote>
+<p>要求在请求报文的主体中包含文件内容，然后保存到请求URI指定位置。</p>
+<p>由于自身不带验证机制，任何人都可以上传文件，因此存在安全性问题，一般不使用该方法。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160044.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160044.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160044.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160044.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160044.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160044.png" /></p>
+<h4 id="delete">DELETE</h4>
+<blockquote>
+<p>删除文件</p>
+</blockquote>
+<p>与 PUT 功能相反，并且同样不带验证机制。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160406.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160406.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160406.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160406.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160406.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160406.png" /></p>
+<h4 id="head">HEAD</h4>
 <blockquote>
 <p>获取报文首部</p>
 </blockquote>
 <p>和 GET 方法类似，但是不返回报文实体主体部分。</p>
 <p>主要用于确认 URL 的有效性以及资源更新的日期时间等。</p>
-<p>POST</p>
-<blockquote>
-<p>传输实体主体</p>
-</blockquote>
-<p>POST 主要用来传输数据，而 GET 主要用来获取资源。</p>
-<p>更多 POST 与 GET 的比较请见第九章。</p>
-<p>PUT</p>
-<blockquote>
-<p>上传文件</p>
-</blockquote>
-<p>由于自身不带验证机制，任何人都可以上传文件，因此存在安全性问题，一般不使用该方法。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">PUT /new.html HTTP/1.1
-Host: example.com
-Content-type: text/html
-Content-length: 16
-
-&lt;p&gt;New File&lt;/p&gt;
-</code></pre></td></tr></table>
-</div>
-</div><p>PATCH</p>
+<h4 id="patch">PATCH</h4>
 <blockquote>
 <p>对资源进行部分修改</p>
 </blockquote>
@@ -1911,53 +1943,57 @@ Content-Length: 100
 [description of changes]
 </code></pre></td></tr></table>
 </div>
-</div><p>DELETE</p>
+</div><h4 id="options">OPTIONS</h4>
 <blockquote>
-<p>删除文件</p>
-</blockquote>
-<p>与 PUT 功能相反，并且同样不带验证机制。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">DELETE /file.html HTTP/1.1
-</code></pre></td></tr></table>
-</div>
-</div><p>OPTIONS</p>
-<blockquote>
-<p>查询支持的方法</p>
+<p>查询支持的方法；查询针对请求URI指定的资源支持的方法</p>
 </blockquote>
 <p>查询指定的 URL 能够支持的方法。</p>
 <p>会返回 <code>Allow: GET, POST, HEAD, OPTIONS</code> 这样的内容。</p>
-<p>CONNECT</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160605.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160605.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160605.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160605.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160605.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160605.png" /></p>
+<h4 id="connect">CONNECT</h4>
 <blockquote>
 <p>要求在与代理服务器通信时建立隧道</p>
 </blockquote>
 <p>使用 SSL（Secure Sockets Layer，安全套接层）和 TLS（Transport Layer Security，传输层安全）协议把通信内容加密后经网络隧道传输。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">CONNECT www.example.com:443 HTTP/1.1
-</code></pre></td></tr></table>
-</div>
-</div><p><a href="https://camo.githubusercontent.com/5b900cbd7bbb78f2ce5f4d83801041a1d59178b6c5f6078cbe435880c2320ef4/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f64633030663730652d633563382d346432302d626166312d3264373030313461393765332e6a7067" target="_blank" rel="noopener noreffer"><img
+<p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="https://camo.githubusercontent.com/5b900cbd7bbb78f2ce5f4d83801041a1d59178b6c5f6078cbe435880c2320ef4/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f64633030663730652d633563382d346432302d626166312d3264373030313461393765332e6a7067"
-        data-srcset="https://camo.githubusercontent.com/5b900cbd7bbb78f2ce5f4d83801041a1d59178b6c5f6078cbe435880c2320ef4/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f64633030663730652d633563382d346432302d626166312d3264373030313461393765332e6a7067, https://camo.githubusercontent.com/5b900cbd7bbb78f2ce5f4d83801041a1d59178b6c5f6078cbe435880c2320ef4/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f64633030663730652d633563382d346432302d626166312d3264373030313461393765332e6a7067 1.5x, https://camo.githubusercontent.com/5b900cbd7bbb78f2ce5f4d83801041a1d59178b6c5f6078cbe435880c2320ef4/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f64633030663730652d633563382d346432302d626166312d3264373030313461393765332e6a7067 2x"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161001.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161001.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161001.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161001.png 2x"
         data-sizes="auto"
-        alt="https://camo.githubusercontent.com/5b900cbd7bbb78f2ce5f4d83801041a1d59178b6c5f6078cbe435880c2320ef4/68747470733a2f2f63732d6e6f7465732d313235363130393739362e636f732e61702d6775616e677a686f752e6d7971636c6f75642e636f6d2f64633030663730652d633563382d346432302d626166312d3264373030313461393765332e6a7067"
-        title="img" /></a></p>
-<p>TRACE</p>
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161001.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161001.png" /></p>
+<h4 id="trace">TRACE</h4>
 <blockquote>
-<p>追踪路径</p>
+<p>追踪路径,服务器会将通信路径返回给客户端。</p>
 </blockquote>
-<p>服务器会将通信路径返回给客户端。</p>
 <p>发送请求时，在 Max-Forwards 首部字段中填入数值，每经过一个服务器就会减 1，当数值为 0 时就停止传输。</p>
 <p>通常不会使用 TRACE，并且它容易受到 XST 攻击（Cross-Site Tracing，跨站追踪）。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161240.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161240.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161240.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161240.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161240.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402161240.png" /></p>
+<hr>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160827.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160827.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160827.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160827.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160827.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402160827.png" /></p>
+<hr>
 <h3 id="http状态码">HTTP状态码</h3>
 <p>服务器返回的   <strong>响应报文</strong>   中第一行为状态行，包含了状态码以及原因短语，用来告知客户端请求的结果。</p>
 <table>
@@ -2086,7 +2122,13 @@ Content-Length: 100
 <h4 id="4xx-客户端错误">4XX 客户端错误</h4>
 <ul>
 <li><strong>400 Bad Request</strong>  ：请求报文中存在语法错误。</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402184802.png" style="zoom: 67%;" /></p>
+<ul>
 <li><strong>401 Unauthorized</strong>  ：该状态码表示发送的请求需要有认证信息（BASIC 认证、DIGEST 认证）。如果之前已进行过一次请求，则表示用户认证失败。</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185042.png" style="zoom: 67%;" /></p>
+<ul>
 <li><strong>403 Forbidden</strong>  ：请求被拒绝。</li>
 </ul>
 <p><img
@@ -2111,8 +2153,19 @@ Content-Length: 100
 <h4 id="5xx-服务器错误">5XX 服务器错误</h4>
 <ul>
 <li><strong>500 Internal Server Error</strong>  ：服务器正在执行请求时发生错误。</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185132.png" style="zoom:67%;" /></p>
+<ul>
 <li><strong>503 Service Unavailable</strong>  ：服务器暂时处于超负载或正在进行停机维护，现在无法处理请求。</li>
 </ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185236.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185236.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185236.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185236.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185236.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185236.png" /></p>
 <h3 id="http首部">HTTP首部</h3>
 <p>使用首部字段是为了给浏览器和服务器提供报文主体大小、所使用的语言、认证信息等内容</p>
 <p>HTTP首部字段结构：</p>
@@ -2377,11 +2430,19 @@ Content-Length: 100
 <p>HTTP存在的问题</p>
 <ul>
 <li>通信使用明文（不加密），内容可能被窃听</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185726.png" style="zoom:67%;" /></p>
+<ul>
 <li>不验证通信双方的身份，可能不是和预想的通信方在通信。</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185909.png" style="zoom:67%;" /></p>
+<ul>
 <li>无法证明报文的完整性，内容可能被篡改。</li>
 </ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402185946.png" style="zoom:67%;" /></p>
 <p>什么是HTTPS：</p>
 <p><strong>与SSL组合使用的HTTP被称为HTTPS.（超文本传输安全协议）。</strong></p>
+<p>HTTPS=HTTP+通信加密+证书+完整性保护</p>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -2404,7 +2465,8 @@ Content-Length: 100
 <p>通过使用 SSL，HTTPS 具有了加密（防窃听）、认证（防伪装）和完整性保护（防篡改）。</p>
 </blockquote>
 <h4 id="共享秘钥加密">共享秘钥加密</h4>
-<p>加密和解密使用同一个秘钥，也称为对称秘钥加密</p>
+<p>加密和解密使用<strong>同一个</strong>秘钥，也称为对称秘钥加密</p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402190540.png" style="zoom:67%;" /></p>
 <p>优点：运算速度快</p>
 <p>存在问题：无法安全的将秘钥发送给对方</p>
 <p><img
@@ -2419,8 +2481,9 @@ Content-Length: 100
 <ul>
 <li>发送密文的一方使用对方的公开秘钥进行加密处理</li>
 <li>对方收到被加密的信息后，在使用自己的私有秘钥进行解密（也称为非对称秘钥加密）</li>
+<li>即使用公开密钥进行加密，使用私有密钥进行解密。</li>
 </ul>
-<p>优点：使用这种方式可以不需要发送用于解密的私有秘钥，也不必担心木要被攻击者窃听而盗走</p>
+<p>优点：使用这种方式可以不需要发送用于解密的私有秘钥，也不必担心密钥被攻击者窃听而盗走</p>
 <p>缺点：运算速度慢</p>
 <p><img
         class="lazyload"
@@ -2439,7 +2502,7 @@ Content-Length: 100
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230161327.png" style="zoom: 33%;" /></p>
 <h4 id="认证">认证</h4>
 <p>存在问题：</p>
-<p>公开秘钥加密方式的问题：无法证明公开秘钥本身就是货真价实的公开秘钥。（无法证明收到的公开秘钥就是预想的那台服务器发行的公开秘钥）</p>
+<p>公开秘钥加密方式的问题：<strong>无法证明公开秘钥本身就是货真价实的公开秘钥</strong>。（无法证明收到的公开秘钥就是预想的那台服务器发行的公开秘钥）</p>
 <p>解决方法：</p>
 <ul>
 <li>通过使用   <strong>证书</strong>   来对通信方进行认证。</li>
@@ -2450,6 +2513,7 @@ Content-Length: 100
 <blockquote>
 <p>如何将公开秘钥安全的转交给客户端：</p>
 <p>​	多数浏览器开发商发布版本时，会<strong>事先</strong>在内部植入常用认证机构的<strong>公开秘钥</strong></p>
+<p>浏览器通过认证机构的<strong>公开秘钥</strong>来验证数字签名，以证实服务器公开密钥的真实性。</p>
 </blockquote>
 <p><img
         class="lazyload"
@@ -2460,7 +2524,7 @@ Content-Length: 100
         alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230165147.png"
         title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230165147.png" /></p>
 <h4 id="完整性保护">完整性保护</h4>
-<p>SSL 提供报文摘要功能来进行完整性保护。</p>
+<p><strong>SSL 提供报文摘要功能来进行完整性保护。</strong></p>
 <p>HTTP 也提供了 MD5 报文摘要功能，但不是安全的。例如报文内容被篡改之后，同时重新计算 MD5 的值，通信接收方是无法意识到发生了篡改。</p>
 <p><u>HTTPS 的报文摘要功能之所以安全，是因为它结合了加密和认证这两个操作</u>。试想一下，加密之后的报文，遭到篡改之后，也很难重新计算报文摘要，因为无法轻易获取明文。</p>
 <h4 id="https-的缺点">HTTPS 的缺点</h4>
@@ -2471,52 +2535,330 @@ Content-Length: 100
 <h3 id="http20">HTTP2.0</h3>
 <hr>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201229213747.png" style="zoom:80%;" /></p>
-<h3 id="web-页面请求过程">Web 页面请求过程</h3>
-<h4 id="1-dhcp-配置主机信息">1. DHCP 配置主机信息</h4>
+<h2 id="http协议相关">HTTP协议相关</h2>
+<h3 id="持久连接">持久连接</h3>
+<p>也称为keep-alive</p>
+<p>特点为：只要任意一端没有明确的提出断开连接则保持TCP连接状态。</p>
+<p>在HTTP1.1中，所有的连接默认都是持久连接</p>
+<h4 id="http长连接短链接">HTTP长连接、短链接</h4>
 <ul>
-<li>假设主机最开始没有 IP 地址以及其它信息，那么就需要先使用 DHCP 来获取。</li>
-<li>主机生成一个 DHCP 请求报文，并将这个报文放入具有目的端口 67 和源端口 68 的 UDP 报文段中。</li>
-<li>该报文段则被放入在一个具有广播 IP 目的地址(255.255.255.255) 和源 IP 地址（0.0.0.0）的 IP 数据报中。</li>
-<li>该数据报则被放置在 MAC 帧中，该帧具有目的地址 FF:<zero-width  space>FF:<zero-width space>FF:<zero-width  space>FF:<zero-width space>FF:FF，将广播到与交换机连接的所有设备。</li>
-<li>连接在交换机的 DHCP 服务器收到广播帧之后，不断地向上分解得到 IP 数据报、UDP 报文段、DHCP 请求报文，之后生成 DHCP  ACK 报文，该报文包含以下信息：IP 地址、DNS 服务器的 IP 地址、默认网关路由器的 IP 地址和子网掩码。该报文被放入 UDP  报文段中，UDP 报文段有被放入 IP 数据报中，最后放入 MAC 帧中。</li>
-<li>该帧的目的地址是请求主机的 MAC 地址，因为交换机具有自学习能力，之前主机发送了广播帧之后就记录了 MAC 地址到其转发接口的交换表项，因此现在交换机就可以直接知道应该向哪个接口发送该帧。</li>
-<li>主机收到该帧后，不断分解得到 DHCP 报文。之后就配置它的 IP 地址、子网掩码和 DNS 服务器的 IP 地址，并在其 IP 转发表中安装默认网关。</li>
+<li>长连接：就是持久连接，一次建立可以进行多次通信</li>
+<li>短链接：一次建立只进行一次通信</li>
 </ul>
-<h4 id="2-arp-解析-mac-地址">2. ARP 解析 MAC 地址</h4>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406195923.png" style="zoom:67%;" /></p>
+<h3 id="管线化">管线化</h3>
+<p>管线化技术出现后，不用等待响应就可以发送下一个请求。</p>
+<p>这样就能够同时并行发送多个请求，而不需要一个一个等待响应了。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230141351.png" /></p>
+<h3 id="cookie">Cookie</h3>
 <ul>
-<li>主机通过浏览器生成一个 TCP 套接字，套接字向 HTTP 服务器发送 HTTP 请求。为了生成该套接字，主机需要知道网站的域名对应的 IP 地址。</li>
-<li>主机生成一个 DNS 查询报文，该报文具有 53 号端口，因为 DNS 服务器的端口号是 53。</li>
-<li>该 DNS 查询报文被放入目的地址为 DNS 服务器 IP 地址的 IP 数据报中。</li>
-<li>该 IP 数据报被放入一个以太网帧中，该帧将发送到网关路由器。</li>
-<li>DHCP 过程只知道网关路由器的 IP 地址，为了获取网关路由器的 MAC 地址，需要使用 ARP 协议。</li>
-<li>主机生成一个包含目的地址为网关路由器 IP 地址的 ARP 查询报文，将该 ARP  查询报文放入一个具有广播目的地址（FF:<zero-width space>FF:<zero-width  space>FF:<zero-width space>FF:<zero-width  space>FF:FF）的以太网帧中，并向交换机发送该以太网帧，交换机将该帧转发给所有的连接设备，包括网关路由器。</li>
-<li>网关路由器接收到该帧后，不断向上分解得到 ARP 报文，发现其中的 IP 地址与其接口的 IP 地址匹配，因此就发送一个 ARP 回答报文，包含了它的 MAC 地址，发回给主机。</li>
+<li>Cookie技术通过在请求和响应报文中写入Cookie信号来控制客户端的状态</li>
+<li>对通信状态进行保存</li>
 </ul>
-<h4 id="3-dns-解析域名">3. DNS 解析域名</h4>
+<blockquote>
+<p>Cookie 是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器之后向同一服务器再次发起请求时被携带上，用于告知服务端两个请求是否来自同一浏览器。由于之后每次请求都会需要携带 Cookie 数据，因此会带来额外的性能开销（尤其是在移动环境下）。</p>
+</blockquote>
+<p>HTTP是不保存状态的协议，即无状态协议，**HTTP协议自身不对请求和响应之间的通信状态进行保存。**因此需要使用Cookie技术。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230095333.png" /></p>
+<blockquote>
+<p><strong>用途</strong>：</p>
+<p>比如，用户登录在一家购物网站，即使他跳转到该站的其他页面后，也能够继续保持登录状态。针对这个实例，网站为了能够掌握是谁发送的请求，需要保存用户的状态。</p>
 <ul>
-<li>知道了网关路由器的 MAC 地址之后，就可以继续 DNS 的解析过程了。</li>
-<li>网关路由器接收到包含 DNS 查询报文的以太网帧后，抽取出 IP 数据报，并根据转发表决定该 IP 数据报应该转发的路由器。</li>
-<li>因为路由器具有内部网关协议（RIP、OSPF）和外部网关协议（BGP）这两种路由选择协议，因此路由表中已经配置了网关路由器到达 DNS 服务器的路由表项。</li>
-<li>到达 DNS 服务器之后，DNS 服务器抽取出 DNS 查询报文，并在 DNS 数据库中查找待解析的域名。</li>
-<li>找到 DNS 记录之后，发送 DNS 回答报文，将该回答报文放入 UDP 报文段中，然后放入 IP 数据报中，通过路由器反向转发回网关路由器，并经过以太网交换机到达主机。</li>
+<li>会话状态管理（如用户登录状态、购物车、游戏分数或其它需要记录的信息）</li>
+<li>个性化设置（如用户自定义设置、主题等）</li>
+<li>浏览器行为跟踪（如跟踪分析用户行为等）</li>
 </ul>
-<h4 id="4-http-请求页面">4. HTTP 请求页面</h4>
+</blockquote>
+<blockquote>
+<p><strong>分类</strong>：</p>
 <ul>
-<li>有了 HTTP 服务器的 IP 地址之后，主机就能够生成 TCP 套接字，该套接字将用于向 Web 服务器发送 HTTP GET 报文。</li>
-<li>在生成 TCP 套接字之前，必须先与 HTTP 服务器进行三次握手来建立连接。生成一个具有目的端口 80 的 TCP SYN 报文段，并向 HTTP 服务器发送该报文段。</li>
-<li>HTTP 服务器收到该报文段之后，生成 TCP SYN ACK 报文段，发回给主机。</li>
-<li>连接建立之后，浏览器生成 HTTP GET 报文，并交付给 HTTP 服务器。</li>
-<li>HTTP 服务器从 TCP 套接字读取 HTTP GET 报文，生成一个 HTTP 响应报文，将 Web 页面内容放入报文主体中，发回给主机。</li>
-<li>浏览器收到 HTTP 响应报文后，抽取出 Web 页面内容，之后进行渲染，显示 Web 页面。</li>
+<li>会话期 Cookie：浏览器关闭之后它会被自动删除，也就是说它仅在会话期内有效。</li>
+<li>持久性 Cookie：指定过期时间（Expires）或有效期（max-age）之后就成为了持久性的 Cookie。</li>
+</ul>
+</blockquote>
+<p>过程：</p>
+<ul>
+<li>客户端发送请求报文</li>
+<li>服务端返回响应报文，响应报文中的首部字段有一个叫做Set-Cookie字段</li>
+<li>客户端通过响应报文中的Set-Cookie字段得知，自动保存Cookie</li>
+<li>在下次客户端发送请求报文时，请求报文中会自动包含Cookie字段</li>
+<li>服务端发现请求报文中的Cookie字段后，会去检查是哪一个客户端发送过来的请求，然后对比服务器上的记录，最后得到之前的状态信息</li>
 </ul>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png 2x"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png 2x"
         data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201216170841.png" /></p>
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100626.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230100704.png" /></p>
+<h3 id="session">Session</h3>
+<p>除了可以将用户信息通过 Cookie 存储在用户浏览器中，也可以利用 Session 存储在<strong>服务器端</strong>，存储在服务器端的信息更加安全。</p>
+<blockquote>
+<p>利用Session将用户信息存储在服务端,将用户状态与SessionID进行绑定，通过SessionID来识别不同的用户。</p>
+</blockquote>
+<p>Session 可以存储在服务器上的文件、数据库或者内存中。也可以将 Session 存储在 Redis 这种内存型数据库中，效率会更高。</p>
+<p>使用 Session 维护用户登录状态的过程如下：（通过Cookie来管理Session）</p>
+<ul>
+<li>用户进行登录时，用户提交包含用户名和密码的表单，放入 HTTP 请求报文中；</li>
+<li>服务器验证该用户名和密码，如果正确则把用户信息存储到 Redis 中，它在 Redis 中的 Key 称为 Session ID；</li>
+<li>服务器返回的响应报文的 Set-Cookie 首部字段包含了这个 <strong>Session ID</strong>，客户端收到响应报文之后将该 Cookie 值存入浏览器中；</li>
+<li>客户端之后对同一个服务器进行请求时会包含该 Cookie 值，<u>服务器收到之后提取出 Session ID，从 Redis 中取出用户信息，继续之前的业务操作。</u></li>
+</ul>
+<p>应该注意 Session ID 的安全性问题，不能让它被恶意攻击者轻易获取，那么就不能产生一个容易被猜到的 Session ID  值。此外，还需要经常重新生成 Session ID。在对安全性要求极高的场景下，例如转账等操作，除了使用 Session  管理用户状态之外，还需要对用户进行重新验证，比如重新输入密码，或者使用短信验证码等方式。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402112017.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402112017.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402112017.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402112017.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402112017.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402112017.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:%5cUsers%5cssl%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210402112156050.png"
+        data-srcset="C:%5cUsers%5cssl%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210402112156050.png, C:%5cUsers%5cssl%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210402112156050.png 1.5x, C:%5cUsers%5cssl%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210402112156050.png 2x"
+        data-sizes="auto"
+        alt="C:\Users\ssl\AppData\Roaming\Typora\typora-user-images\image-20210402112156050.png"
+        title="image-20210402112156050" /></p>
+<h4 id="浏览器禁用-cookie">浏览器禁用 Cookie</h4>
+<p>此时无法使用 Cookie 来保存用户信息，只能使用 Session。除此之外，不能再将 Session ID 存放到 Cookie 中，而是使用 URL 重写技术（将Session ID直接附加到URL路径后面），将 Session ID 作为 URL 的参数进行传递。</p>
+<h4 id="cookie-与-session-选择">Cookie 与 Session 选择</h4>
+<ul>
+<li>Cookie 只能存储 ASCII 码字符串，而 Session 则可以存储任何类型的数据，因此在考虑数据复杂性时首选 Session；</li>
+<li>Cookie 存储在浏览器中，容易被恶意查看。如果非要将一些隐私数据存在 Cookie 中，可以将 Cookie 值进行加密，然后在服务器进行解密；</li>
+<li>对于大型网站，<u>如果用户所有的信息都存储在 Session 中，那么开销是非常大的</u>，因此不建议将所有的用户信息都存储到 Session 中。</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210406200502.png" style="zoom:80%;" /></p>
+<h3 id="虚拟主机">虚拟主机</h3>
+<p>HTTP1.1规范允许一台HTTP服务器搭建多个Web 站点。</p>
+<p>即使物理层面只有一台主机，但是只要使用虚拟主机的功能，就可以假想有多台服务器</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142123.png" /></p>
+<p>客户端通过域名来访问服务器，域名首先会通过DNS解析成IP地址。即虚拟主机具有不同的域名，但是一台服务器上的虚拟主机的IP地址是相同的。所以需要区别不同的虚拟主机。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142448.png" /></p>
+<h3 id="代理">代理</h3>
+<p>代理服务器的基本行为就是接收客户端发送的请求后转发给其他服务器。代理不改变请求URL，会直接发送给前方持有资源的目标服务器。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230142725.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402140827.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402140827.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402140827.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402140827.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402140827.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402140827.png" /></p>
+<p>使用代理服务器的原因：</p>
+<ul>
+<li>
+<p>利用缓存技术减少网络带宽的流量</p>
+</li>
+<li>
+<p>组织内部针对特定网站的访问控制</p>
+<p>&hellip;</p>
+</li>
+</ul>
+<p>缓存代理：会预先将资源副本（缓存）保存在代理服务器上，当代理再次接收到对相同资源的请求时，就可以不从源服务器那里获
+取资源，而是将之前缓存的资源作为响应返回。</p>
+<h3 id="网关">网关</h3>
+<p>网关与代理的不同之处在于，网关能够使通信线路上的服务器提供非HTTP协议服务</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143216.png" /></p>
+<p>网关能够提高通信的安全性。因为可以在客户端与网关之间的通信线路上加密以确保连接的安全。比如，网关可以连接数据库，使用
+SQL 语句查询数据。另外，在 Web 购物网站上进行信用卡结算时，网关可以和信用卡结算系统联动。</p>
+<h3 id="隧道">隧道</h3>
+<p>隧道可以按照要求建立一条与其他服务器的通信线路，届时可以使用SSL等加密手段进行通信。</p>
+<p>隧道的目的是确保通信的安全性。</p>
+<p>隧道本身不会去解析 HTTP 请求。也就是说，请求保持原样中转给之后的服务器。隧道会在通信双方断开连接时结束。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143457.png" /></p>
+<h3 id="缓存">缓存</h3>
+<p>缓存指代理服务器或客户端本地磁盘内保存的资源副本</p>
+<p>利用缓存可以减少堆源服务器的访问，节省了通信流量和通信时间</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201230143725.png" /></p>
+<h3 id="内容协商">内容协商</h3>
+<p>通过内容协商返回最合适的内容，例如根据浏览器的默认语言选择返回中文界面还是英文界面。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402141839.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402141839.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402141839.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402141839.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402141839.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210402141839.png" /></p>
+<h4 id="1-类型">1. 类型</h4>
+<p><strong>1.1 服务端驱动型</strong></p>
+<p>客户端设置特定的 HTTP 首部字段，例如 Accept、Accept-Charset、Accept-Encoding、Accept-Language，服务器根据这些字段返回特定的资源。</p>
+<p>它存在以下问题：</p>
+<ul>
+<li>服务器很难知道客户端浏览器的全部信息；</li>
+<li>客户端提供的信息相当冗长（HTTP/2 协议的首部压缩机制缓解了这个问题），并且存在隐私风险（HTTP 指纹识别技术）；</li>
+<li>给定的资源需要返回不同的展现形式，共享缓存的效率会降低，而服务器端的实现会越来越复杂。</li>
+</ul>
+<p><strong>1.2 代理驱动型</strong></p>
+<p>服务器返回 300 Multiple Choices 或者 406 Not Acceptable，客户端从中选出最合适的那个资源。</p>
+<h4 id="2-vary">2. Vary</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Vary: Accept-Language
+</code></pre></td></tr></table>
+</div>
+</div><p>在使用内容协商的情况下，只有当缓存服务器中的缓存满足内容协商条件时，才能使用该缓存，否则应该向源服务器请求该资源。</p>
+<p>例如，一个客户端发送了一个包含 Accept-Language 首部字段的请求之后，源服务器返回的响应包含 <code>Vary: Accept-Language</code> 内容，缓存服务器对这个响应进行缓存之后，在客户端下一次访问同一个 URL 资源，并且 Accept-Language 与缓存中的对应的值相同时才会返回该缓存。</p>
+<h3 id="内容编码">内容编码</h3>
+<p>内容编码将实体主体进行压缩，从而减少传输的数据量。</p>
+<p>常用的内容编码有：gzip、compress、deflate、identity。</p>
+<p>浏览器发送 Accept-Encoding  首部，其中包含有它所支持的压缩算法，以及各自的优先级。服务器则从中选择一种，使用该算法对响应的消息主体进行压缩，并且发送  Content-Encoding 首部来告知浏览器它选择了哪一种算法。由于该内容协商过程是基于编码类型来选择资源的展现形式的，响应报文的  Vary 首部字段至少要包含 Content-Encoding。</p>
+<h3 id="范围请求">范围请求</h3>
+<p>如果网络出现中断，服务器只发送了一部分数据，范围请求可以使得客户端只请求服务器未发送的那部分数据，从而避免服务器重新发送所有数据。</p>
+<h4 id="1-range">1. Range</h4>
+<p>在请求报文中添加 Range 首部字段指定请求的范围。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">GET /z4d4kWk.jpg HTTP/1.1
+Host: i.imgur.com
+Range: bytes=0-1023
+</code></pre></td></tr></table>
+</div>
+</div><p>请求成功的话服务器返回的响应包含 206 Partial Content 状态码。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">HTTP/1.1 206 Partial Content
+Content-Range: bytes 0-1023/146515
+Content-Length: 1024
+...
+(binary content)
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="2-accept-ranges">2. Accept-Ranges</h4>
+<p>响应首部字段 Accept-Ranges 用于告知客户端是否能处理范围请求，可以处理使用 bytes，否则使用 none。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Accept-Ranges: bytes
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="3-响应状态码">3. 响应状态码</h4>
+<ul>
+<li>在请求成功的情况下，服务器会返回 206 Partial Content 状态码。</li>
+<li>在请求的范围越界的情况下，服务器会返回 416 Requested Range Not Satisfiable 状态码。</li>
+<li>在不支持范围请求的情况下，服务器会返回 200 OK 状态码。</li>
+</ul>
+<h3 id="分块传输编码">分块传输编码</h3>
+<p>Chunked Transfer Encoding，可以把数据分割成多块，让浏览器逐步显示页面。</p>
+<h3 id="多部分对象集合">多部分对象集合</h3>
+<p>一份报文主体内可含有多种类型的实体同时发送，每个部分之间用 boundary 字段定义的分隔符进行分隔，每个部分都可以有首部字段。</p>
+<p>例如，上传多个表单时可以使用如下方式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Content-Type: multipart/form-data; boundary=AaB03x
+
+--AaB03x
+Content-Disposition: form-data; name=&#34;submit-name&#34;
+
+Larry
+--AaB03x
+Content-Disposition: form-data; name=&#34;files&#34;; filename=&#34;file1.txt&#34;
+Content-Type: text/plain
+
+... contents of file1.txt ...
+--AaB03x--
+</code></pre></td></tr></table>
+</div>
+</div><hr>
 <h1 id="参考">参考</h1>
 <p><a href="https://github.com/CyC2018/CS-Notes">https://github.com/CyC2018/CS-Notes</a></p>
 <p>上野宣. 图解 HTTP[M]. 人民邮电出版社, 2014.</p>

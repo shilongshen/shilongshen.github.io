@@ -6,11 +6,12 @@
         <meta name="robots" content="noodp" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
         <title>SpringMVC - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="SpringMVC" />
-<meta property="og:description" content="什么是SpringMVC Spring MVC 是 Spring 提供给 Web 应用的框架设计
-MVC 参考
+<meta property="og:description" content="MVC 参考
 首先用户的请求会到达 Servlet，然后根据请求调用相应的 Java Bean，并把所有的显示结果交给 JSP 去完成，这样的模式我们就称为 MVC 模式。
- M 代表 模型（Model） 模型是什么呢？ 模型就是数据，就是 dao,bean V 代表 视图（View） 视图是什么呢？ 就是网页, JSP，用来展示模型中的数据;主要负责接受Servlet传递的内容，调用JavaBean，将内容显示给用户 C 代表 控制器（controller) 控制器是什么？ 控制器的作用就是把不同的数据(Model)，显示在不同的视图(View)上，Servlet 扮演的就是这样的角色。主要负责所有用户的请求参数，判断请求参数是否合法，根据请求的类型调用JavaBean，将最终的处理结果交给显示层显示！    传统的模型层被拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。 在 Service 下可以通过 Spring 的声明式事务操作数据访问层，而在业务层上还允许我们访问 NoSQL ，这样就能够满足异军突起的 NoSQL 的使用了，它可以大大提高互联网系统的性能。
- 特点： 结构松散，几乎可以在 Spring MVC 中使用各类视图 松耦合，各个模块分离 与 Spring 无缝集成   从图 1 可总结出 Spring MVC 的工作流程如下：" />
+ M 代表 模型（Model） 模型负责封装数据在视图层显示 V 代表 视图（View） 视图是什么呢？ 就是网页, JSP，用来展示模型中的数据;主要负责接受Servlet传递的内容，调用JavaBean，将内容显示给用户 C 代表 控制器（controller) 控制器是什么？ 控制器的作用就是把不同的数据(Model)，显示在不同的视图(View)上，Servlet 扮演的就是这样的角色。主要负责所有用户的请求参数，判断请求参数是否合法，根据请求的类型调用JavaBean，将最终的处理结果交给显示层显示！ 目的：将业务逻辑从页面中分离出来，进行解耦  SpringMVC基本概念 Spring MVC 是 Spring 提供给 Web 应用的框架设计
+传统的模型层被拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。 在 Service 下可以通过 Spring 的声明式事务操作数据访问层，而在业务层上还允许我们访问 NoSQL ，这样就能够满足异军突起的 NoSQL 的使用了，它可以大大提高互联网系统的性能。
+ 特点： 结构松散，几乎可以在 Spring MVC 中使用各类视图 松耦合，各个模块分离 与 Spring 无缝集成   从图 1 可总结出 Spring MVC 的工作流程如下：
+ 客户端请求提交到 DispatcherServlet。 由 DispatcherServlet 控制器寻找一个或多个 HandlerMapping，找到处理请求的 Controller。 DispatcherServlet 将请求提交到 Controller。 Controller 调用业务逻辑处理后返回 ModelAndView。 DispatcherServlet 寻找一个或多个 ViewResolver 视图解析器，找到 ModelAndView 指定的视图。 视图负责将结果显示到客户端。  Spring MVC接口 在图 1 中包含 4 个 Spring MVC 接口，即 DispatcherServlet、HandlerMapping、Controller 和 ViewResolver。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://shilongshen.github.io/springmvc/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
@@ -20,11 +21,12 @@ MVC 参考
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
 <meta name="twitter:title" content="SpringMVC"/>
-<meta name="twitter:description" content="什么是SpringMVC Spring MVC 是 Spring 提供给 Web 应用的框架设计
-MVC 参考
+<meta name="twitter:description" content="MVC 参考
 首先用户的请求会到达 Servlet，然后根据请求调用相应的 Java Bean，并把所有的显示结果交给 JSP 去完成，这样的模式我们就称为 MVC 模式。
- M 代表 模型（Model） 模型是什么呢？ 模型就是数据，就是 dao,bean V 代表 视图（View） 视图是什么呢？ 就是网页, JSP，用来展示模型中的数据;主要负责接受Servlet传递的内容，调用JavaBean，将内容显示给用户 C 代表 控制器（controller) 控制器是什么？ 控制器的作用就是把不同的数据(Model)，显示在不同的视图(View)上，Servlet 扮演的就是这样的角色。主要负责所有用户的请求参数，判断请求参数是否合法，根据请求的类型调用JavaBean，将最终的处理结果交给显示层显示！    传统的模型层被拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。 在 Service 下可以通过 Spring 的声明式事务操作数据访问层，而在业务层上还允许我们访问 NoSQL ，这样就能够满足异军突起的 NoSQL 的使用了，它可以大大提高互联网系统的性能。
- 特点： 结构松散，几乎可以在 Spring MVC 中使用各类视图 松耦合，各个模块分离 与 Spring 无缝集成   从图 1 可总结出 Spring MVC 的工作流程如下："/>
+ M 代表 模型（Model） 模型负责封装数据在视图层显示 V 代表 视图（View） 视图是什么呢？ 就是网页, JSP，用来展示模型中的数据;主要负责接受Servlet传递的内容，调用JavaBean，将内容显示给用户 C 代表 控制器（controller) 控制器是什么？ 控制器的作用就是把不同的数据(Model)，显示在不同的视图(View)上，Servlet 扮演的就是这样的角色。主要负责所有用户的请求参数，判断请求参数是否合法，根据请求的类型调用JavaBean，将最终的处理结果交给显示层显示！ 目的：将业务逻辑从页面中分离出来，进行解耦  SpringMVC基本概念 Spring MVC 是 Spring 提供给 Web 应用的框架设计
+传统的模型层被拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。 在 Service 下可以通过 Spring 的声明式事务操作数据访问层，而在业务层上还允许我们访问 NoSQL ，这样就能够满足异军突起的 NoSQL 的使用了，它可以大大提高互联网系统的性能。
+ 特点： 结构松散，几乎可以在 Spring MVC 中使用各类视图 松耦合，各个模块分离 与 Spring 无缝集成   从图 1 可总结出 Spring MVC 的工作流程如下：
+ 客户端请求提交到 DispatcherServlet。 由 DispatcherServlet 控制器寻找一个或多个 HandlerMapping，找到处理请求的 Controller。 DispatcherServlet 将请求提交到 Controller。 Controller 调用业务逻辑处理后返回 ModelAndView。 DispatcherServlet 寻找一个或多个 ViewResolver 视图解析器，找到 ModelAndView 指定的视图。 视图负责将结果显示到客户端。  Spring MVC接口 在图 1 中包含 4 个 Spring MVC 接口，即 DispatcherServlet、HandlerMapping、Controller 和 ViewResolver。"/>
 <meta name="application-name" content="LoveIt">
 <meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -37,7 +39,7 @@ MVC 参考
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/shilongshen.github.io\/springmvc\/"
-        },"genre": "posts","wordcount":  241 ,
+        },"genre": "posts","wordcount":  1871 ,
         "url": "https:\/\/shilongshen.github.io\/springmvc\/","datePublished": "2021-03-10T09:54:48+08:00","dateModified": "2021-03-10T09:54:48+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -114,8 +116,8 @@ MVC 参考
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">SpringMVC</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-03-10">2021-03-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;241 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-03-10">2021-03-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1871 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;9 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -123,59 +125,121 @@ MVC 参考
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#什么是springmvc">什么是SpringMVC</a>
+    <li><a href="#mvc">MVC</a></li>
+    <li><a href="#springmvc基本概念">SpringMVC基本概念</a>
       <ul>
-        <li><a href="#mvc">MVC</a></li>
         <li><a href="#spring-mvc接口">Spring MVC接口</a></li>
         <li><a href="#demo">Demo</a></li>
+        <li><a href="#ssm整合">ssm整合</a>
+          <ul>
+            <li><a href="#webxml">web.xml</a></li>
+            <li><a href="#applicationcontextxml">ApplicationContext.xml</a></li>
+            <li><a href="#dispatcher-servletxml">dispatcher-servlet.xml</a></li>
+          </ul>
+        </li>
+        <li><a href="#helloworld实例">helloworld实例</a></li>
       </ul>
     </li>
-    <li><a href="#httpsession">HttpSession</a></li>
-    <li><a href="#postmapping">@PostMapping</a></li>
-    <li><a href="#redirect">redirect</a></li>
-    <li><a href="#什么是javabean">什么是JavaBean</a></li>
+    <li><a href="#url地址映射配置">URL地址映射配置</a>
+      <ul>
+        <li><a href="#requestmapping">@RequestMapping</a>
+          <ul>
+            <li><a href="#映射单个url">映射单个URL</a></li>
+            <li><a href="#映射多个url">映射多个URL</a></li>
+            <li><a href="#映射url在控制器上">映射URL在控制器上</a></li>
+            <li><a href="#设置url映射的请求方式">设置URL映射的请求方式</a></li>
+            <li><a href="#通过参数名称映射url">通过参数名称映射URL</a></li>
+          </ul>
+        </li>
+        <li><a href="#getmapping">@GetMapping</a>
+          <ul>
+            <li>
+              <ul>
+                <li>
+                  <ul>
+                    <li>
+                      <ul>
+                        <li><a href="#requestmapping和getmapping区别">@RequestMapping和@GetMapping区别</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#参数绑定">参数绑定</a>
+      <ul>
+        <li><a href="#基本数据类型">基本数据类型</a></li>
+        <li><a href="#包装类型">包装类型</a></li>
+        <li><a href="#数组类型">数组类型</a></li>
+        <li><a href="#字符串类型">字符串类型</a></li>
+        <li><a href="#javabean类型">JavaBean类型</a></li>
+        <li><a href="#list类型">List类型</a></li>
+        <li><a href="#map类型">Map类型</a></li>
+      </ul>
+    </li>
+    <li><a href="#请求重发和重定向">请求重发和重定向</a>
+      <ul>
+        <li><a href="#重定向">重定向</a></li>
+        <li><a href="#请求转发">请求转发</a>
+          <ul>
+            <li><a href="#设置request请求域">设置Request请求域</a></li>
+            <li><a href="#设置request请求域-1">设置Request请求域</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#json数据开发">JSON数据开发</a>
+      <ul>
+        <li><a href="#基本概念">基本概念</a>
+          <ul>
+            <li><a href="#responsebody">@ResponseBody</a></li>
+            <li><a href="#requestbody">@RequestBody</a></li>
+          </ul>
+        </li>
+        <li><a href="#使用配置">使用配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#常见参数">常见参数</a>
+      <ul>
+        <li><a href="#control--以及-restcontroller">@Control  以及 @RestController</a></li>
+        <li><a href="#httpsession">HttpSession</a></li>
+        <li><a href="#postmapping">@PostMapping</a></li>
+        <li><a href="#redirect">redirect</a></li>
+        <li><a href="#什么是javabean">什么是JavaBean</a></li>
+      </ul>
+    </li>
     <li><a href="#参考">参考</a></li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h1 id="什么是springmvc">什么是SpringMVC</h1>
-<p>Spring MVC 是 Spring 提供给 Web 应用的框架设计</p>
-<h2 id="mvc">MVC</h2>
+            </div><div class="content" id="content"><h1 id="mvc">MVC</h1>
 <p><a href="https://www.jianshu.com/p/91a2d0a1e45a" target="_blank" rel="noopener noreffer">参考</a></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312153341.png"
-        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312153341.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312153341.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312153341.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312153341.png"
-        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312153341.png" /></p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312153341.png" style="zoom:67%;" /></p>
 <p>首先用户的请求会到达 Servlet，然后根据请求调用相应的 Java Bean，并把所有的显示结果交给 JSP 去完成，这样的模式我们就称为 MVC 模式。</p>
 <ul>
 <li><strong>M 代表 模型（Model）</strong>
-模型是什么呢？ 模型就是数据，就是 dao,bean</li>
+模型负责封装数据在视图层显示</li>
 <li><strong>V 代表 视图（View）</strong>
 视图是什么呢？ 就是网页, JSP，用来展示模型中的数据;<u>主要负责接受Servlet传递的内容，调用JavaBean，将内容显示给用户</u></li>
 <li><strong>C 代表 控制器（controller)</strong>
 控制器是什么？ 控制器的作用就是把不同的数据(Model)，显示在不同的视图(View)上，Servlet 扮演的就是这样的角色。<u>主要负责所有用户的请求参数，判断请求参数是否合法，根据请求的类型调用JavaBean，将最终的处理结果交给显示层显示！</u></li>
+<li>目的：将业务逻辑从页面中分离出来，进行解耦</li>
 </ul>
-<hr>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="C:%5cUsers%5cssl%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210312153639550.png"
-        data-srcset="C:%5cUsers%5cssl%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210312153639550.png, C:%5cUsers%5cssl%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210312153639550.png 1.5x, C:%5cUsers%5cssl%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20210312153639550.png 2x"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418193405.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418193405.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418193405.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418193405.png 2x"
         data-sizes="auto"
-        alt="C:\Users\ssl\AppData\Roaming\Typora\typora-user-images\image-20210312153639550.png"
-        title="image-20210312153639550" /></p>
-<hr>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154336.png"
-        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154336.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154336.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154336.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154336.png"
-        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154336.png" /></p>
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418193405.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418193405.png" /></p>
+<h1 id="springmvc基本概念">SpringMVC基本概念</h1>
+<p>Spring MVC 是 Spring 提供给 Web 应用的框架设计</p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154336.png" style="zoom:67%;" /></p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418194307.png" style="zoom:67%;" /></p>
 <p><strong>传统的模型层被拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。</strong> 在 Service 下可以通过 Spring 的声明式事务操作数据访问层，而在业务层上还允许我们访问 NoSQL ，这样就能够满足异军突起的 NoSQL 的使用了，它可以大大提高互联网系统的性能。</p>
 <ul>
 <li><strong>特点：</strong>
@@ -186,11 +250,12 @@ MVC 参考
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154725.png"
-        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154725.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154725.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154725.png 2x"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418194758.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418194758.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418194758.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418194758.png 2x"
         data-sizes="auto"
-        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154725.png"
-        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154725.png" /></p>
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418194758.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210418194758.png" /></p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312154725.png" style="zoom:67%;" /></p>
 <blockquote>
 <p>从图 1 可总结出 Spring MVC 的工作流程如下：</p>
 <ol>
@@ -205,13 +270,1405 @@ MVC 参考
 <p>在图 1 中包含 4 个 Spring MVC 接口，即 DispatcherServlet、HandlerMapping、Controller 和 ViewResolver。</p>
 <p>Spring MVC 所有的请求都经过 DispatcherServlet 来统一分发（通过DispatcherServlet拦截请求(拦截器，web.xml中配置)，再请求分发到对应的Controller），在 DispatcherServlet 将请求分发给 Controller 之前需要借助 Spring MVC 提供的 HandlerMapping 定位到具体的 Controller。</p>
 <p><u>HandlerMapping 接口通过解析xml文件负责完成客户请求到 Controller 映射</u>。</p>
-<p>Controller 接口将处理用户请求，这和 <a href="http://c.biancheng.net/java/" target="_blank" rel="noopener noreffer">Java</a> Servlet 扮演的角色是一致的。一旦 Controller 处理完用户请求，将返回 ModelAndView 对象给 DispatcherServlet 前端控制器，ModelAndView 中包含了模型（Model）和视图（View）。</p>
-<p>从宏观角度考虑，DispatcherServlet 是整个 Web 应用的控制器；从微观考虑，Controller 是单个 Http 请求处理过程中的控制器，而 ModelAndView 是 Http 请求过程中返回的模型（Model）和视图（View）。</p>
+<p>Controller 接口将处理用户请求，这和 <a href="http://c.biancheng.net/java/" target="_blank" rel="noopener noreffer">Java</a> Servlet 扮演的角色是一致的。一旦 Controller 处理完用户请求，将返回 ModelAndView 对象给 DispatcherServlet 前端控制器，ModelAndView （Model指封装数据的模型）和视图（View指视图的名字，会在解析时找到相应的页面，并将Model中封装的数据传入页面中，然后进行解析）。</p>
+<p>从宏观角度考虑，<strong>DispatcherServlet 是整个 Web 应用的控制器；从微观考虑，Controller 是单个 Http 请求处理过程中的控制器</strong>，而 ModelAndView 是 Http 请求过程中返回的模型（Model）和视图（View）。</p>
 <p>ViewResolver 接口（视图解析器）在 Web 应用中负责查找 View 对象，从而将相应结果渲染给客户。</p>
 </blockquote>
 <h2 id="demo">Demo</h2>
 <p><a href="https://blog.csdn.net/superxiaolong123/article/details/79881335" target="_blank" rel="noopener noreffer">链接</a></p>
-<h1 id="httpsession">HttpSession</h1>
+<p><a href="https://www.jianshu.com/p/2101d176555b" target="_blank" rel="noopener noreffer">链接</a></p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210430173839.png" style="zoom:80%;" /></p>
+<ul>
+<li>web.xml：web的配置文件</li>
+<li>ApplicationContext.xml 是spring 全局配置文件，用来控制spring 特性的   &ndash;&gt;spring的配置文件</li>
+<li>dispatcher-servlet.xml 是spring mvc里面的，控制器、拦截uri转发view   &ndash;&gt;springMVC的配置文件，前端控制器</li>
+</ul>
+<h2 id="ssm整合">ssm整合</h2>
+<h3 id="webxml">web.xml</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;!DOCTYPE web-app PUBLIC
+</span><span class="cp"> &#34;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&#34;
+</span><span class="cp"> &#34;http://java.sun.com/dtd/web-app_2_3.dtd&#34; &gt;</span>
+
+<span class="nt">&lt;web-app</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;display-name</span><span class="nt">&gt;</span>Archetype Created Web Application<span class="nt">&lt;/display-name&gt;</span>
+
+    <span class="c">&lt;!--</span><span class="c">  spring配置文件</span><span class="c">--&gt;</span>
+    <span class="c">&lt;!--</span><span class="c">从类路径下加载spring的配置文件,classpath关键字特指类路径下加载 begin</span><span class="c">--&gt;</span>
+  <span class="nt">&lt;context-param</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;param-name</span><span class="nt">&gt;</span>contextConfigLocation<span class="nt">&lt;/param-name&gt;</span>
+    <span class="nt">&lt;param-value</span><span class="nt">&gt;</span>/WEB-INF/applicationContext.xml<span class="nt">&lt;/param-value&gt;</span>
+  <span class="nt">&lt;/context-param&gt;</span>
+
+     <span class="c">&lt;!--</span><span class="c">负责启动spring容器的监听器 begin</span><span class="c">--&gt;</span>
+  <span class="nt">&lt;listener</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;listener-class</span><span class="nt">&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="nt">&lt;/listener-class&gt;</span>
+  <span class="nt">&lt;/listener&gt;</span>
+
+    <span class="c">&lt;!--</span><span class="c">  springMVC的配置文件dispatcher servlet</span><span class="c">--&gt;</span>
+    <span class="c">&lt;!--</span><span class="c">声明springMVC 的 DispatcherServlet begin</span><span class="c">--&gt;</span>
+  <span class="nt">&lt;servlet</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;servlet-name</span><span class="nt">&gt;</span>dispatcher<span class="nt">&lt;/servlet-name&gt;</span>
+    <span class="nt">&lt;servlet-class</span><span class="nt">&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="nt">&lt;/servlet-class&gt;</span>
+    <span class="nt">&lt;load-on-startup</span><span class="nt">&gt;</span>1<span class="nt">&lt;/load-on-startup&gt;</span>
+  <span class="nt">&lt;/servlet&gt;</span>
+
+     <span class="c">&lt;!--</span><span class="c">拦截器配置 begin</span><span class="c">--&gt;</span>
+  <span class="nt">&lt;servlet-mapping</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;servlet-name</span><span class="nt">&gt;</span>dispatcher<span class="nt">&lt;/servlet-name&gt;</span>
+    <span class="nt">&lt;url-pattern</span><span class="nt">&gt;</span>*.form<span class="nt">&lt;/url-pattern&gt;</span>
+  <span class="nt">&lt;/servlet-mapping&gt;</span>
+
+<span class="nt">&lt;/web-app&gt;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="applicationcontextxml">ApplicationContext.xml</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&#34;http://www.springframework.org/schema/beans&#34;</span>
+       <span class="na">xmlns:xsi=</span><span class="s">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+       <span class="na">xmlns:context=</span><span class="s">&#34;http://www.springframework.org/schema/context&#34;</span>
+       <span class="na">xmlns:tx=</span><span class="s">&#34;http://www.springframework.org/schema/tx&#34;</span>
+       <span class="na">xmlns:mybatis-spring=</span><span class="s">&#34;http://www.springframework.org/schema/c&#34;</span>
+       <span class="na">xsi:schemaLocation=</span><span class="s">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd&#34;</span><span class="nt">&gt;</span>
+
+    <span class="c">&lt;!--</span><span class="c"> spring希望管理所有业务逻辑组件.数据源、事务控制、aop 等  </span><span class="c">--&gt;</span>
+
+    <span class="c">&lt;!--</span><span class="c">
+</span><span class="c">    开启组件扫描
+</span><span class="c">    不扫描Controller，其他都扫描
+</span><span class="c">    </span><span class="c">--&gt;</span>
+    <span class="nt">&lt;context:component-scan</span> <span class="na">base-package=</span><span class="s">&#34;com.demo&#34;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;context:exclude-filter</span> <span class="na">type=</span><span class="s">&#34;annotation&#34;</span> <span class="na">expression=</span><span class="s">&#34;org.springframework.stereotype.Controller&#34;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/context:component-scan&gt;</span>
+
+
+    <span class="c">&lt;!--</span><span class="c">    引入数据库的配置文件</span><span class="c">--&gt;</span>
+    <span class="nt">&lt;context:property-placeholder</span> <span class="na">location=</span><span class="s">&#34;classpath:config.properties&#34;</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!--</span><span class="c">   引入数据源c3p0，从配置文件中读取数据库4个基本信息 </span><span class="c">--&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&#34;pooledDataSource&#34;</span> <span class="na">class=</span><span class="s">&#34;com.mchange.v2.c3p0.ComboPooledDataSource&#34;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;jdbcUrl&#34;</span> <span class="na">value=</span><span class="s">&#34;${url}&#34;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;driverClass&#34;</span> <span class="na">value=</span><span class="s">&#34;${driver}&#34;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;user&#34;</span> <span class="na">value=</span><span class="s">&#34;${username}&#34;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;password&#34;</span> <span class="na">value=</span><span class="s">&#34;${password}&#34;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="c">&lt;!--</span><span class="c">
+</span><span class="c">        spring事务管理器
+</span><span class="c">            需要控制数据库连接池中所有的连接，包括连接的开启、提交、关闭
+</span><span class="c">    </span><span class="c">--&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&#34;dataSourceTransactionManager&#34;</span> <span class="na">class=</span><span class="s">&#34;org.springframework.jdbc.datasource.DataSourceTransactionManager&#34;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;dataSource&#34;</span> <span class="na">ref=</span><span class="s">&#34;pooledDataSource&#34;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="c">&lt;!--</span><span class="c">    开启基于注解的事务</span><span class="c">--&gt;</span>
+    <span class="nt">&lt;tx:annotation-driven</span> <span class="na">transaction-manager=</span><span class="s">&#34;dataSourceTransactionManager&#34;</span><span class="nt">/&gt;</span>
+
+
+    <span class="c">&lt;!--</span><span class="c">    mybatis的配置</span><span class="c">--&gt;</span>
+    <span class="c">&lt;!--</span><span class="c">
+</span><span class="c">    会创建出sqlSessionFactory对象
+</span><span class="c">    这就相当于spring已启动就代替我们去创建sqlSessionFactory对象，
+</span><span class="c">    通过sqlSessionFactory来获取sqlSession
+</span><span class="c">
+</span><span class="c">    之前创建sqlSessionFactory需要写一长串的代码，但是现在不需要了
+</span><span class="c">    String resource = &#34;MyBatis.xml&#34;;
+</span><span class="c">    InputStream inputStream = Resources.getResourceAsStream(resource);
+</span><span class="c">    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+</span><span class="c">     </span><span class="c">--&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&#34;sessionFactoryBean&#34;</span> <span class="na">class=</span><span class="s">&#34;org.mybatis.spring.SqlSessionFactoryBean&#34;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!--</span><span class="c">        指定数据源，</span><span class="c">--&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;dataSource&#34;</span> <span class="na">ref=</span><span class="s">&#34;pooledDataSource&#34;</span><span class="nt">/&gt;</span>
+        <span class="c">&lt;!--</span><span class="c">        指定mybatis全局配置文件，配合使用</span><span class="c">--&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;configLocation&#34;</span> <span class="na">value=</span><span class="s">&#34;classpath:mybatis.xml&#34;</span><span class="nt">/&gt;</span>
+        <span class="c">&lt;!--</span><span class="c">       指定mapper.xml文件的位置 </span><span class="c">--&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;mapperLocations&#34;</span> <span class="na">value=</span><span class="s">&#34;classpath:mybatis.mapper&#34;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+
+    <span class="c">&lt;!--</span><span class="c">
+</span><span class="c">    扫描所有mapper接口的实现，让这些mapper能够自动注入
+</span><span class="c">    base</span><span class="c">-</span><span class="c">package=&#34;com.demo.dao&#34;：指定mapper接口的路径
+</span><span class="c">    </span><span class="c">--&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&#34;org.mybatis.spring.mapper.MapperScannerConfigurer&#34;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;basePackage&#34;</span> <span class="na">value=</span><span class="s">&#34;com.demo.dao&#34;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="c">&lt;!--</span><span class="c">
+</span><span class="c">    整合mybatis
+</span><span class="c">        目的：
+</span><span class="c">            1.spring管理所有组件，包括mybatis中mapper的实现类；
+</span><span class="c">                这样业务逻辑层（service）要调用Dao层的时候，只需要使用依赖注入（@Autowired）自动注入mapper
+</span><span class="c">
+</span><span class="c">            2.spring用来管理事务
+</span><span class="c">    </span><span class="c">--&gt;</span>
+
+
+<span class="nt">&lt;/beans&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="dispatcher-servletxml">dispatcher-servlet.xml</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&#34;http://www.springframework.org/schema/beans&#34;</span>
+       <span class="na">xmlns:xsi=</span><span class="s">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+       <span class="na">xmlns:context=</span><span class="s">&#34;http://www.springframework.org/schema/context&#34;</span>
+       <span class="na">xmlns:mvc=</span><span class="s">&#34;http://www.springframework.org/schema/mvc&#34;</span>
+       <span class="na">xsi:schemaLocation=</span><span class="s">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&#34;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!--</span><span class="c">
+</span><span class="c">    springMVC只是控制网站跳转逻辑
+</span><span class="c">    </span><span class="c">--&gt;</span>
+
+    <span class="c">&lt;!--</span><span class="c">
+</span><span class="c">    开启组件扫描功能
+</span><span class="c">    只在com.demo路径下扫描 
+</span><span class="c">    只扫描@Controller注解的类只扫描控制器
+</span><span class="c">    禁用默认的过滤行为
+</span><span class="c"></span><span class="c">--&gt;</span>
+    <span class="nt">&lt;context:component-scan</span> <span class="na">base-package=</span><span class="s">&#34;com.demo&#34;</span> <span class="na">use-default-filters=</span><span class="s">&#34;false&#34;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;context:include-filter</span> <span class="na">type=</span><span class="s">&#34;annotation&#34;</span> <span class="na">expression=</span><span class="s">&#34;org.springframework.stereotype.Controller&#34;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/context:component-scan&gt;</span>
+
+   <span class="c">&lt;!--</span><span class="c">    视图解析器</span><span class="c">--&gt;</span>
+    <span class="c">&lt;!--</span><span class="c">
+</span><span class="c">		1.使用@RequestMapping	注解来映射请求的URL
+</span><span class="c">		2.返回值会通过视图解析器解析为实际的物理视图，对于InternalResourceViewResolver视图解析器会做如下解			析:通过prefix+return value+suffix  得到实际的物理视图
+</span><span class="c">	</span><span class="c">--&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&#34;org.springframework.web.servlet.view.InternalResourceViewResolver&#34;</span><span class="nt">&gt;</span>
+<span class="c">&lt;!--</span><span class="c">        在/WEB</span><span class="c">-</span><span class="c">INF/pages目录下寻找以return value.jsp为结尾的文件</span><span class="c">--&gt;</span>
+<span class="c">&lt;!--</span><span class="c">        prefix+return value+suffix</span><span class="c">--&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;prefix&#34;</span> <span class="na">value=</span><span class="s">&#34;/WEB-INF/pages&#34;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;suffix&#34;</span> <span class="na">value=</span><span class="s">&#34;.jsp&#34;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+
+    <span class="c">&lt;!--</span><span class="c">    处理动态资源</span><span class="c">--&gt;</span>
+    <span class="nt">&lt;mvc:annotation-driven</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!--</span><span class="c">    处理静态资源</span><span class="c">--&gt;</span>
+    <span class="nt">&lt;mvc:default-servlet-handler</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/beans&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="helloworld实例">helloworld实例</h2>
+<ul>
+<li>在配置文件中配置dispatcher-servlet</li>
+<li>加入springMVC的配置文件dispatcher-servlet.xml</li>
+<li>编写处理请求的处理器，并表示为处理器</li>
+<li>编写视图</li>
+</ul>
+<h1 id="url地址映射配置">URL地址映射配置</h1>
+<h2 id="requestmapping">@RequestMapping</h2>
+<p>通过注解@RequestMapping将请求地址与方法进行绑定，可以在类级别和方法级别声明。类级别的注解负责将一个特定的请求路径映射道一个控制器上，将URL和类绑定；通过方法级别的注解可以细化映射，能够将一个特定的请求映射到某个具体的方法上，将url和方法进行绑定。</p>
+<h3 id="映射单个url">映射单个URL</h3>
+<p>@RequsetMapping或@RequsetMapping（value=“ ”）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainController</span> <span class="o">{</span>
+
+    <span class="cm">/**
+</span><span class="cm">    声明在方法上面，映射单个URL
+</span><span class="cm">    访问地址：http://ip:port/hello
+</span><span class="cm">    
+</span><span class="cm">    路径开头是否加斜杠/都可以
+</span><span class="cm">    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/hello&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">test</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="映射多个url">映射多个URL</h3>
+<p>@RequsetMapping({“”  ,  “”})</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainController</span> <span class="o">{</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="o">{</span><span class="s">&#34;/hello&#34;</span><span class="o">,</span><span class="s">&#34;/world&#34;</span><span class="o">}</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">test02</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="映射url在控制器上">映射URL在控制器上</h3>
+<p>用于类上，表示类中所有响应请求方法都是以该地址作为父路径。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="cm">/*
+</span><span class="cm">
+</span><span class="cm">*/</span>
+
+<span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/beijng&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Controller1</span> <span class="o">{</span>
+    
+    <span class="c1">//test1处理的url为http://ip:port/beijng/hello
+</span><span class="c1"></span>    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/hello&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">test1</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="设置url映射的请求方式">设置URL映射的请求方式</h3>
+<p>默认没有设置请求方式，在HTTP请求中最常用的方式时GET和POST，还有一些其他的方法，例如：DELETE,PUT,HEAD。</p>
+<p>可以通过method属性设置支持的请求方式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&#34;/hello&#34;</span><span class="o">,</span><span class="n">method</span> <span class="o">=</span> <span class="n">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span><span class="c1">//设置请求方式为GET--&gt;获取资源
+</span><span class="c1"></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">control2</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">test1</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="通过参数名称映射url">通过参数名称映射URL</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">
+<span class="cm">/*
+</span><span class="cm">//test1处理的url为http://ip:port/url?hello
+</span><span class="cm">*/</span>
+<span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">params</span> <span class="o">=</span> <span class="s">&#34;/hello&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">control2</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">test1</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">modelAndView</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="getmapping">@GetMapping</h2>
+<blockquote>
+<h6 id="requestmapping和getmapping区别">@RequestMapping和@GetMapping区别</h6>
+<ul>
+<li>@RequestMapping可以指定GET、POST请求方式</li>
+<li>@GetMapping等价于@RequestMapping的GET请求方式</li>
+</ul>
+</blockquote>
+<h1 id="参数绑定">参数绑定</h1>
+<p>参数绑定，简单来说就是客户端发送请求，而请求中包含一些数据，那么这些数据怎么到达 Controller</p>
+<p>　在 SpringMVC 中，提交请求的数据是通过<strong>方法形参</strong>来接收的。从客户端请求的 key/value 数据，经过参数绑定，将 key/value 数据绑定到 Controller 的形参上，然后在 Controller 就可以直接使用该形参。</p>
+<p>SpringMVC 有支持的默认参数类型，我们直接在形参上给出这些默认类型的声明，就能直接使用了。如下：</p>
+<p>　　①、HttpServletRequest 对象</p>
+<p>　　②、HttpServletResponse 对象</p>
+<p>　　③、HttpSession 对象</p>
+<p>　　④、Model/ModelMap 对象　</p>
+<h2 id="基本数据类型">基本数据类型</h2>
+<ul>
+<li>参数如果未传递会报500异常   &ndash;&gt;<strong>注意基本数据类型不能为null</strong></li>
+<li>参数可以通过地址栏的URL直接传入<code>http://localhost:8080/hello?age=20&amp;money=200</code></li>
+<li>参数名和形参名对应</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/hello&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test01</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">,</span><span class="kt">double</span> <span class="n">money</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;age=&#34;</span><span class="o">+</span><span class="n">age</span><span class="o">+</span><span class="s">&#34; money=&#34;</span><span class="o">+</span><span class="n">money</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>可以设置参数的默认值，当参数传递的时候，参数对应的值为默认值<code>@RequestParam(defaultValue = &quot;10&quot;)</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/hello&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test01</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="s">&#34;10&#34;</span><span class="o">)</span> <span class="kt">int</span> <span class="n">age</span><span class="o">,</span> <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="s">&#34;200&#34;</span><span class="o">)</span> <span class="kt">double</span> <span class="n">money</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;age=&#34;</span><span class="o">+</span><span class="n">age</span><span class="o">+</span><span class="s">&#34; money=&#34;</span><span class="o">+</span><span class="n">money</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>通过<code>@RequestParam</code>设置<strong>参数别名</strong>,请求参数地址需要与<code>name</code>属性值一致，<code>(@RequestParam(defaultValue = &quot;10&quot;,name = &quot;userage&quot;)</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/hello&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test01</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="s">&#34;10&#34;</span><span class="o">,</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;userage&#34;</span><span class="o">)</span> <span class="kt">int</span> <span class="n">age</span><span class="o">,</span> <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="s">&#34;200&#34;</span><span class="o">)</span> <span class="kt">double</span> <span class="n">money</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;age=&#34;</span><span class="o">+</span><span class="n">age</span><span class="o">+</span><span class="s">&#34; money=&#34;</span><span class="o">+</span><span class="n">money</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="包装类型">包装类型</h2>
+<ul>
+<li>包装数据类型可以为null，即当参数未传递时不会报错    &ndash;&gt;推荐使用</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/hello&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test01</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="s">&#34;10&#34;</span><span class="o">,</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#34;userage&#34;</span><span class="o">)</span> <span class="n">Integer</span> <span class="n">age</span><span class="o">,</span> <span class="nd">@RequestParam</span><span class="o">(</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="s">&#34;200&#34;</span><span class="o">)</span> <span class="n">Double</span> <span class="n">money</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;age=&#34;</span><span class="o">+</span><span class="n">age</span><span class="o">+</span><span class="s">&#34; money=&#34;</span><span class="o">+</span><span class="n">money</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="数组类型">数组类型</h2>
+<ul>
+<li>传参形式：参数名=值&amp;参数名=值&amp;参数名=值&hellip;</li>
+<li>参数名需要和形参名保持一致<code>http://localhost:8888/test02?ids=100&amp;ids=200</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"> <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test02&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">test02</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">ids</span><span class="o">)</span><span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">id</span><span class="o">:</span><span class="n">ids</span><span class="o">)</span><span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">id</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="s">&#34;hello wodld&#34;</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="字符串类型">字符串类型</h2>
+<ul>
+<li>可以接收null。<code>http://localhost:8888/test03?id=%22beijignnihao%22</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test03&#34;</span><span class="o">)</span>
+    <span class="kd">public</span>  <span class="n">String</span> <span class="nf">test03</span><span class="o">(</span><span class="n">String</span> <span class="n">id</span><span class="o">)</span><span class="o">{</span>
+        <span class="k">return</span> <span class="s">&#34;hello world&#34;</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="javabean类型">JavaBean类型</h2>
+<ul>
+<li>参数名和JavaBean的属性字段名一致</li>
+</ul>
+<p>创建一个类</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.demo.po</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">pwd</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&#34;User{&#34;</span> <span class="o">+</span>
+                <span class="s">&#34;id=&#34;</span> <span class="o">+</span> <span class="n">id</span> <span class="o">+</span>
+                <span class="s">&#34;, name=&#39;&#34;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">&#39;\&#39;&#39;</span> <span class="o">+</span>
+                <span class="s">&#34;, pwd=&#39;&#34;</span> <span class="o">+</span> <span class="n">pwd</span> <span class="o">+</span> <span class="sc">&#39;\&#39;&#39;</span> <span class="o">+</span>
+                <span class="sc">&#39;}&#39;</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">getId</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="n">Integer</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getPwd</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">pwd</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setPwd</span><span class="o">(</span><span class="n">String</span> <span class="n">pwd</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">pwd</span> <span class="o">=</span> <span class="n">pwd</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>控制器,<code>http://localhost:8888/test04?id=100&amp;name=%22beijign%22&amp;pwd=%22shanghai%22</code></p>
+<p>输出<code>User{id=100, name='&quot;beijign&quot;', pwd='&quot;shanghai&quot;'}</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test03&#34;</span><span class="o">)</span>
+    <span class="kd">public</span>  <span class="n">String</span> <span class="nf">test03</span><span class="o">(</span><span class="n">String</span> <span class="n">id</span><span class="o">)</span><span class="o">{</span>
+        <span class="k">return</span> <span class="s">&#34;hello world&#34;</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="list类型">List类型</h2>
+<p>list需要在JavaBean中使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.demo.po</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">pwd</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">strList</span><span class="o">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&#34;User{&#34;</span> <span class="o">+</span>
+                <span class="s">&#34;id=&#34;</span> <span class="o">+</span> <span class="n">id</span> <span class="o">+</span>
+                <span class="s">&#34;, name=&#39;&#34;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">&#39;\&#39;&#39;</span> <span class="o">+</span>
+                <span class="s">&#34;, pwd=&#39;&#34;</span> <span class="o">+</span> <span class="n">pwd</span> <span class="o">+</span> <span class="sc">&#39;\&#39;&#39;</span> <span class="o">+</span>
+                <span class="s">&#34;, strList=&#34;</span> <span class="o">+</span> <span class="n">strList</span> <span class="o">+</span>
+                <span class="sc">&#39;}&#39;</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getStrList</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">strList</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setStrList</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">strList</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">strList</span> <span class="o">=</span> <span class="n">strList</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">getId</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="n">Integer</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getPwd</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">pwd</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setPwd</span><span class="o">(</span><span class="n">String</span> <span class="n">pwd</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">pwd</span> <span class="o">=</span> <span class="n">pwd</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>控制器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test05&#34;</span><span class="o">)</span>
+    <span class="kd">public</span>  <span class="kt">void</span> <span class="nf">test05</span><span class="o">(</span><span class="n">User</span> <span class="n">user</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">user</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">
+<span class="o">&lt;</span><span class="o">!</span><span class="n">DOCTYPE</span> <span class="n">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">meta</span> <span class="n">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span><span class="n">Title</span><span class="o">&lt;</span><span class="o">/</span><span class="n">title</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="o">/</span><span class="n">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="o">!</span><span class="o">-</span><span class="o">-</span><span class="n">准备一个表单</span><span class="err">，</span><span class="n">在一个页面中填写相应的数据</span><span class="err">，</span><span class="n">通过提交表单将参数进行提交到test05中</span><span class="err">，</span><span class="n">并进行打印</span><span class="o">-</span><span class="o">-</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">form</span> <span class="n">action</span><span class="o">=</span><span class="s">&#34;test05&#34;</span> <span class="n">method</span><span class="o">=</span><span class="s">&#34;post&#34;</span><span class="o">&gt;</span>
+        <span class="n">姓名</span><span class="err">：</span><span class="o">&lt;</span><span class="n">input</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;name&#34;</span> <span class="n">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+        <span class="n">密码</span><span class="err">：</span><span class="o">&lt;</span><span class="n">input</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;pwd&#34;</span> <span class="n">type</span><span class="o">=</span><span class="s">&#34;password&#34;</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+        <span class="n">List</span><span class="o">:</span> <span class="o">&lt;</span><span class="n">input</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;strList[0]&#34;</span> <span class="n">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">nbsp</span><span class="o">;</span>
+        <span class="o">&lt;</span><span class="n">input</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;strList[1]&#34;</span> <span class="n">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">button</span><span class="o">&gt;</span><span class="n">提交</span><span class="o">&lt;</span><span class="o">/</span><span class="n">button</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="o">/</span><span class="n">form</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="o">/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="o">/</span><span class="n">html</span><span class="o">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="map类型">Map类型</h2>
+<p>Map最为灵活，它也需要绑定在对象上，二不能直接写在Controller方法的参数中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">set</span><span class="o">=</span><span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">map</span><span class="o">=</span><span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="o">.</span><span class="o">.</span><span class="o">.</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test06&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">test06</span><span class="o">(</span><span class="n">User</span> <span class="n">user</span><span class="o">)</span><span class="o">{</span>
+        <span class="k">return</span> <span class="s">&#34;hello world&#34;</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;test05&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;post&#34;</span><span class="p"></span><span class="p">&gt;</span>
+        姓名：<span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;name&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span><span class="p"></span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">br</span><span class="p"></span><span class="p">&gt;</span>
+        密码：<span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;pwd&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;password&#34;</span><span class="p"></span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">br</span><span class="p"></span><span class="p">&gt;</span>
+        List: <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;strList[0]&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span><span class="p"></span><span class="p">&gt;</span> <span class="ni">&amp;nbsp;</span>
+        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;strList[1]&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span><span class="p"></span><span class="p">&gt;</span>
+        Map:<span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;map[&#39;sh&#39;]&#34;</span><span class="p"></span><span class="p">&gt;</span> <span class="ni">&amp;nbsp;</span>
+        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;map[&#39;bj&#39;]&#34;</span><span class="p"></span><span class="p">&gt;</span> <span class="ni">&amp;nbsp;</span>
+        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;map[&#39;sz&#39;]&#34;</span><span class="p"></span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span><span class="p"></span><span class="p">&gt;</span>提交<span class="p">&lt;</span><span class="p">/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">form</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="请求重发和重定向">请求重发和重定向</h1>
+<p>SpringMVC默认采用服务器内部转发的形式展示页面信息。同样也支持重定向页面。</p>
+<h2 id="重定向">重定向</h2>
+<p>重定向是发一个302状态码（临时重定向）给浏览器，浏览器自己取请求跳转的页面。<u>地址栏会发生变化</u></p>
+<p><strong>请求转发以<code>forward</code>开头</strong></p>
+<p><strong>重定向以<code>redirect</code></strong>开头，可以重定向到视图或者是方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">	<span class="cm">/**     
+</span><span class="cm">	* 重定向到视图方法1
+</span><span class="cm">    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test07&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">test07</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="c1">//        设置重定向的地址
+</span><span class="c1"></span>        <span class="n">modelAndView</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">&#34;redirect:view.html&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+</span><span class="cm">     * 重定向到视图方法2
+</span><span class="cm">     * 返回视图名称（字符串）  --&gt;常用
+</span><span class="cm">     */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test077&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">test077</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="k">return</span> <span class="s">&#34;redirect:view.html&#34;</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+</span><span class="cm">     * 重定向到方法
+</span><span class="cm">     */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test08&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">test08</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="c1">//        设置重定向的方法
+</span><span class="c1"></span>        <span class="n">modelAndView</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">&#34;redirect:hello&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>重定向中传递参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+</span><span class="cm">     * 重定向到视图
+</span><span class="cm">     * 返回视图名称（字符串）  --&gt;常用
+</span><span class="cm">     * 并且进行传递参数
+</span><span class="cm">     */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test0777&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">test0777</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="k">return</span> <span class="s">&#34;redirect:view.html?name=zhangsan&amp;pwd=123&#34;</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p"></span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p"></span><span class="p">&gt;</span>Title<span class="p">&lt;</span><span class="p">/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p"></span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h2</span><span class="p"></span><span class="p">&gt;</span>请求转发和重定向<span class="p">&lt;</span><span class="p">/</span><span class="nt">h2</span><span class="p">&gt;</span>
+<span class="c">&lt;!--</span><span class="c">接收参数：${param.参数名}</span><span class="c">--&gt;</span>
+ ${param.name}
+${param.pwd}
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>重定向中传递中文参数（直接传可能会出现乱码），所以需要使用<code>RedirectAttributes</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/test0778&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">test0778</span><span class="o">(</span><span class="n">RedirectAttributes</span> <span class="n">redirectAttributes</span><span class="o">)</span> <span class="o">{</span>
+<span class="c1">//        设置参数
+</span><span class="c1"></span>        <span class="n">redirectAttributes</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;name&#34;</span><span class="o">,</span> <span class="s">&#34;张三&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">redirectAttributes</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;pwd&#34;</span><span class="o">,</span> <span class="s">&#34;123&#34;</span><span class="o">)</span><span class="o">;</span>
+
+
+        <span class="k">return</span> <span class="s">&#34;redirect:view.html&#34;</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="请求转发">请求转发</h2>
+<p>请求转发，直接调用跳转的页面，让他返回。对于浏览器来说，它无法感觉服务器有么有<code>forward</code>。<strong>地址栏不发生改变</strong>。可以获取请求域中的数据。</p>
+<p>请求转发以<code>forward</code>开头</p>
+<p>可以请求转发到视图或方法</p>
+<h3 id="设置request请求域">设置Request请求域</h3>
+<ol>
+<li>
+<p>ModelAndView对象
+addObject(&ldquo;变量名&rdquo;,&ldquo;值&rdquo;)</p>
+</li>
+<li>
+<p>HttpServletRequest
+setAttribute(&ldquo;变量名&rdquo;,&ldquo;值&rdquo;)</p>
+</li>
+<li>
+<p>Model</p>
+<p>addAttribute(&ldquo;变量名&rdquo;,&ldquo;值&rdquo;)</p>
+</li>
+<li>
+<p>ModelMap</p>
+<p>addAttribute(&ldquo;变量名&rdquo;,&ldquo;值&rdquo;)</p>
+</li>
+<li>
+<p>Map</p>
+<p>put(&ldquo;变量名&rdquo;,&ldquo;值&rdquo;)</p>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.demo.controller</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Controller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.ui.Model</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.ui.ModelMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.ModelAndView</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+
+<span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">IndexController</span> <span class="o">{</span>
+   <span class="cm">/**
+</span><span class="cm">    * 默认请求转发访问
+</span><span class="cm">    * 视图存放在springmvc配置文件中设置的目录（视图解析器设置的前缀）
+</span><span class="cm">    */</span>
+   <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/view01&#34;</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">view01</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+<span class="c1">//        设置默认请求域
+</span><span class="c1"></span>       <span class="n">request</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&#34;msg&#34;</span><span class="o">,</span> <span class="s">&#34;hello&#34;</span><span class="o">)</span><span class="o">;</span>
+       <span class="k">return</span> <span class="s">&#34;hello&#34;</span><span class="o">;</span>
+   <span class="o">}</span>
+
+   <span class="cm">/**
+</span><span class="cm">    * 设置请求域
+</span><span class="cm">    *  1.ModelAndView对象
+</span><span class="cm">    *      addObject(&#34;变量名&#34;,&#34;值&#34;)
+</span><span class="cm">    *
+</span><span class="cm">    *  2.HttpServletRequest
+</span><span class="cm">    *      setAttribute(&#34;变量名&#34;,&#34;值&#34;)
+</span><span class="cm">    * */</span>
+   <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/view02&#34;</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">view02</span><span class="o">(</span><span class="o">)</span><span class="o">{</span>
+       <span class="n">ModelAndView</span> <span class="n">modelAndView</span><span class="o">=</span><span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+       <span class="n">modelAndView</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">&#34;msg&#34;</span><span class="o">,</span><span class="s">&#34;beijing&#34;</span><span class="o">)</span><span class="o">;</span>
+       <span class="n">modelAndView</span><span class="o">.</span><span class="na">setViewName</span><span class="o">(</span><span class="s">&#34;model&#34;</span><span class="o">)</span><span class="o">;</span>
+       <span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+   <span class="o">}</span>
+
+   <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/view03&#34;</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">view03</span><span class="o">(</span><span class="n">Model</span> <span class="n">model</span><span class="o">)</span><span class="o">{</span>
+       <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;msg&#34;</span><span class="o">,</span><span class="s">&#34;shenzhen&#34;</span><span class="o">)</span><span class="o">;</span>
+       <span class="k">return</span> <span class="s">&#34;model&#34;</span><span class="o">;</span>
+
+   <span class="o">}</span>
+
+   <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/view04&#34;</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">view04</span><span class="o">(</span><span class="n">ModelMap</span> <span class="n">modelMap</span><span class="o">)</span><span class="o">{</span>
+       <span class="n">modelMap</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&#34;msg&#34;</span><span class="o">,</span><span class="s">&#34;shenzhen&#34;</span><span class="o">)</span><span class="o">;</span>
+       <span class="k">return</span> <span class="s">&#34;model&#34;</span><span class="o">;</span>
+
+   <span class="o">}</span>
+
+   
+   <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/view05&#34;</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">view05</span><span class="o">(</span><span class="n">Map</span> <span class="n">map</span><span class="o">)</span><span class="o">{</span>
+       <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;msg&#34;</span><span class="o">,</span><span class="s">&#34;shenzhen&#34;</span><span class="o">)</span><span class="o">;</span>
+       <span class="k">return</span> <span class="s">&#34;model&#34;</span><span class="o">;</span>
+
+   <span class="o">}</span>
+
+
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="设置request请求域-1">设置Request请求域</h3>
+<ol>
+<li>
+<p>HttpSession</p>
+<p>setAttribute(&ldquo;变量名&rdquo;,&ldquo;值&rdquo;)</p>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/view06&#34;</span><span class="o">)</span>
+    <span class="kd">public</span>  <span class="n">String</span> <span class="nf">view06</span><span class="o">(</span><span class="n">HttpSession</span> <span class="n">session</span><span class="o">)</span><span class="o">{</span>
+        <span class="n">session</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&#34;msg&#34;</span><span class="o">,</span><span class="s">&#34;hsanghai&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="s">&#34;model&#34;</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="json数据开发">JSON数据开发</h1>
+<h2 id="基本概念">基本概念</h2>
+<p>JSON在企业开发中已经作为通用的接口参数类型，在页面（客户端）解析很方便。SpringMVC对于json提供了良好的支持，这里需要修改相关的配置，添加json数据支持功能</p>
+<h3 id="responsebody">@ResponseBody</h3>
+<ul>
+<li>将返回的对象转换为指定格式,</li>
+</ul>
+<p>该注解将用于将Controller的方法返回的对象，通过适当的<code>HttpMessageConverter</code>转换为指定格式后，写入到HTTP响应报文中(<code>Response</code>对象)的<code>body</code>数据区。</p>
+<p>返回的数据不是<code>html</code>标签页面，而是其他某种格式的数据时(如jsp,xml等)使用（通常用于<code>ajax</code>请求）</p>
+<h3 id="requestbody">@RequestBody</h3>
+<ul>
+<li>用于将请求的参数转换为特定的格式</li>
+</ul>
+<p>该注解用于读取<code>Request</code>请求的<code>body</code>部分数据，使用系统默认配置的<code>HttpMessageConverter</code>进行解析，然后把相应的数据绑定到要返回的对象上，再把<code>HttpMessageConverter</code>返回的对象数据绑定到<code>controller</code>中方法的参数上。</p>
+<h2 id="使用配置">使用配置</h2>
+<p>&hellip;&hellip;</p>
+<h1 id="常见参数">常见参数</h1>
+<h2 id="control--以及-restcontroller">@Control  以及 @RestController</h2>
+<blockquote>
+<p>@Control +@@ResponseBody=@RestController</p>
+</blockquote>
+<ul>
+<li>单独使用@Control 不加@@ResponseBody的话返回一个视图。这种情况属于传统的SpringMVC应用，对应于前后端不分离的情况</li>
+<li>@RestController只返回对象，对象数据直接以JSON或XML形式写入HTTP响应中。这是最常接触的情况，即前后端分离</li>
+</ul>
+<p><a href="https://blog.csdn.net/yamadeee/article/details/80313068" target="_blank" rel="noopener noreffer">参考</a></p>
+<h2 id="httpsession">HttpSession</h2>
 <p><a href="https://www.cnblogs.com/myseries/p/11588267.html" target="_blank" rel="noopener noreffer">参考</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -246,7 +1703,7 @@ HttpSession原理
 </code></pre></td></tr></table>
 </div>
 </div><p><a href="https://blog.csdn.net/qq_39949109/article/details/82454060" target="_blank" rel="noopener noreffer">参考</a></p>
-<h1 id="postmapping">@PostMapping</h1>
+<h2 id="postmapping">@PostMapping</h2>
 <p><a href="https://www.cnblogs.com/niexinlei/p/9704075.html" target="_blank" rel="noopener noreffer">参考</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -306,7 +1763,7 @@ headers：指定request中必须包含某些指定的header值，才让该方法
 @postMapping = @requestMapping(method = RequestMethod.POST)。
 </code></pre></td></tr></table>
 </div>
-</div><h1 id="redirect">redirect</h1>
+</div><h2 id="redirect">redirect</h2>
 <p><a href="https://www.cnblogs.com/selene/p/4518246.html" target="_blank" rel="noopener noreffer">参考</a></p>
 <p>下图所示的间接转发请求的过程如下：</p>
 <ol>
@@ -323,7 +1780,7 @@ headers：指定request中必须包含某些指定的header值，才让该方法
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316154329.png"
         title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316154329.png" /></p>
-<h1 id="什么是javabean">什么是JavaBean</h1>
+<h2 id="什么是javabean">什么是JavaBean</h2>
 <p><a href="https://www.zhihu.com/question/19773379" target="_blank" rel="noopener noreffer">参考</a></p>
 <p><img
         class="lazyload"
@@ -341,8 +1798,10 @@ headers：指定request中必须包含某些指定的header值，才让该方法
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312150412.png"
         title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210312150412.png" /></p>
+<hr>
 <h1 id="参考">参考</h1>
 <p><a href="http://c.biancheng.net/spring_mvc/" target="_blank" rel="noopener noreffer">链接</a></p>
+<p>JavaGuide面试突击版</p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">

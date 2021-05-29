@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
         <title>Java基础总结 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="Java基础总结" />
 <meta property="og:description" content="String.getBytes(String decode)方法会根据指定的decode编码返回某字符串在该编码下的byte数组表示，如：
-1 2 3 4 5 6 7 8 9 10  byte[] a= &#34;shen&#34;.getBytes();//java默认的编码方式为unicode  for (byte s:a){ System.out.println(s); } /* 115 104 101 110 */   final，static关键字    final 关键字 表示常量，即变量被赋值后不能被更改。例如：final double number=24; 被final修饰的类不能被继承，被final修饰的方法不能被重写，能被重载。final不能修饰接口和抽象类。     static 关键字 静态字段属于类而不属于对象，通过类名.静态字段来访问；静态方法属于类，通过类名.静态方法来使用。静态方法只能访问静态字段，不能访问实例字段。    this关键字，super关键字    this this指向当前对象     super super指向父类    自动装箱和自动拆箱  装箱：将基本类型用它们对应的引用类型包装起来； 拆箱：将包装类型转换为基本数据类型；  1 2 3 4 5  //自动装箱 //向ArrayList&lt;Integer&gt;中添加int元素 list." />
+1 2 3 4 5 6 7 8 9 10  byte[] a= &#34;shen&#34;.getBytes();//java默认的编码方式为unicode  for (byte s:a){ System.out.println(s); } /* 115 104 101 110 */   final，static关键字    final 关键字 表示常量，即变量被赋值后不能被更改。例如：final double number=24; 被final修饰的类不能被继承，被final修饰的方法不能被重写，能被重载。final不能修饰接口和抽象类。     static 关键字 静态字段属于类而不属于对象，通过类名.静态字段来访问；静态方法属于类，通过类名.静态方法来使用。静态方法只能访问静态字段，不能访问实例字段。     在类中使用final定义常量必须进行初始化操作。  this关键字，super关键字    this this指向当前对象     super super指向父类    自动装箱和自动拆箱  装箱：将基本类型用它们对应的引用类型包装起来； 拆箱：将包装类型转换为基本数据类型；  1 2 3 4 5  //自动装箱 //向ArrayList&lt;Integer&gt;中添加int元素 list." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
@@ -18,11 +18,11 @@
 
 <meta name="twitter:title" content="Java基础总结"/>
 <meta name="twitter:description" content="String.getBytes(String decode)方法会根据指定的decode编码返回某字符串在该编码下的byte数组表示，如：
-1 2 3 4 5 6 7 8 9 10  byte[] a= &#34;shen&#34;.getBytes();//java默认的编码方式为unicode  for (byte s:a){ System.out.println(s); } /* 115 104 101 110 */   final，static关键字    final 关键字 表示常量，即变量被赋值后不能被更改。例如：final double number=24; 被final修饰的类不能被继承，被final修饰的方法不能被重写，能被重载。final不能修饰接口和抽象类。     static 关键字 静态字段属于类而不属于对象，通过类名.静态字段来访问；静态方法属于类，通过类名.静态方法来使用。静态方法只能访问静态字段，不能访问实例字段。    this关键字，super关键字    this this指向当前对象     super super指向父类    自动装箱和自动拆箱  装箱：将基本类型用它们对应的引用类型包装起来； 拆箱：将包装类型转换为基本数据类型；  1 2 3 4 5  //自动装箱 //向ArrayList&lt;Integer&gt;中添加int元素 list."/>
+1 2 3 4 5 6 7 8 9 10  byte[] a= &#34;shen&#34;.getBytes();//java默认的编码方式为unicode  for (byte s:a){ System.out.println(s); } /* 115 104 101 110 */   final，static关键字    final 关键字 表示常量，即变量被赋值后不能被更改。例如：final double number=24; 被final修饰的类不能被继承，被final修饰的方法不能被重写，能被重载。final不能修饰接口和抽象类。     static 关键字 静态字段属于类而不属于对象，通过类名.静态字段来访问；静态方法属于类，通过类名.静态方法来使用。静态方法只能访问静态字段，不能访问实例字段。     在类中使用final定义常量必须进行初始化操作。  this关键字，super关键字    this this指向当前对象     super super指向父类    自动装箱和自动拆箱  装箱：将基本类型用它们对应的引用类型包装起来； 拆箱：将包装类型转换为基本数据类型；  1 2 3 4 5  //自动装箱 //向ArrayList&lt;Integer&gt;中添加int元素 list."/>
 <meta name="application-name" content="LoveIt">
 <meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" /><link rel="prev" href="https://shilongshen.github.io/mysql/" /><link rel="next" href="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93/" /><link rel="prev" href="https://shilongshen.github.io/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" /><link rel="next" href="https://shilongshen.github.io/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -31,7 +31,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/shilongshen.github.io\/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93\/"
-        },"genre": "posts","wordcount":  831 ,
+        },"genre": "posts","wordcount":  880 ,
         "url": "https:\/\/shilongshen.github.io\/java%E5%9F%BA%E7%A1%80%E6%80%BB%E7%BB%93\/","datePublished": "2020-11-21T13:26:17+08:00","dateModified": "2020-11-21T13:26:17+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -108,8 +108,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Java基础总结</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-21">2020-11-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;831 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-21">2020-11-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;880 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;5 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -144,6 +144,9 @@
             <li><a href="#基本数据类型">基本数据类型</a></li>
             <li><a href="#java类的访问权限">Java类的访问权限</a></li>
             <li><a href="#深拷贝和浅拷贝">深拷贝和浅拷贝</a></li>
+            <li><a href="#java内存模型">Java内存模型</a></li>
+            <li><a href="#tcpip中分为几层每层的作用是什么">TCP/IP中分为几层，每层的作用是什么</a></li>
+            <li><a href="#stringstringbuilder和stringbuffer">String、StringBuilder和StringBuffer</a></li>
           </ul>
         </li>
       </ul>
@@ -192,6 +195,9 @@
 </tr>
 </tbody>
 </table>
+<ul>
+<li>在类中使用<code>final</code>定义常量必须进行初始化操作。</li>
+</ul>
 <h3 id="this关键字super关键字">this关键字，super关键字</h3>
 <table>
 <thead>
@@ -362,6 +368,9 @@
 <p>首先定义方法的签名：方法的签名包括方法名和参数类型。注意返回类型不是方法的签名。也就是说不能有两个名字相同，参数类型也相同却有不同返回类型的方法。</p>
 <p>重载（overlode）：如果有多个方法具有相同的方法名，不同的参数，便出现了方法重载。</p>
 <p>重写（override）：当子类继承父类，子类必须对父类的某一个方法进行改变时，就发生了重写。注意重写要求方法签名相同，并且返回类型也要相同。</p>
+<ul>
+<li>注意构造方法不能够被重写，但是能够被重载</li>
+</ul>
 <h3 id="成员变量和局部变量的区别">成员变量和局部变量的区别</h3>
 <ul>
 <li>
@@ -804,6 +813,7 @@
 <hr>
 <h4 id="封装"><strong>封装</strong></h4>
 <p>将对象的字段（field）隐藏在对象内部，不让外部直接操作，而是通过一些公有方法来间接的操作</p>
+<p>把过程和数据包围起来，对数据的访问只能通过已定义的接口。面向对象计算始于这个基本概念。<u>封装实际上使用方法将类的数据隐藏起来，控制用户对类的修改和访问数据的程度。 适当的封装可以让程式码更容易理解和维护，也加强了程式码的安全性。</u></p>
 <h3 id="抽象类和接口">抽象类和接口</h3>
 <table>
 <thead>
@@ -841,12 +851,13 @@
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316214101.png"
         title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210316214101.png" /></p>
+<p>常见问题：实现接口的类必须实现该接口的所有抽象方法？回答：如果是抽象类的话 就不需要实现所有的方法。</p>
 <h3 id="和equals的区别">==和equals的区别</h3>
 <ul>
 <li>== 它的作用是判断两个对象的地址是不是相等。即，判断两个对象是不是同一个对象。如果为基本数据类型==比较的是值。如果是引用数据类型，比较的是内存地址。</li>
 <li>equals 分为两种情况
 <ul>
-<li>类没有重写equals,则通过Object类的equals方法进行比较，用来比较两个对象的引用是否相等。</li>
+<li>类没有重写equals,则通过Object类的equals方法进行比较，用来比较两个对象的引用是否相等，即内存地址。</li>
 <li>类重写了equals方法，一般我们重写equals方法来比较对象<strong>内容</strong>是否相等，若相等则返回true。</li>
 </ul>
 </li>
@@ -859,6 +870,9 @@
 </li>
 <li>
 <p>如果两个对象相等，那么哈希码一定相等</p>
+</li>
+<li>
+<p>但是两个对象的hashcode相等，两个对象不一定相等</p>
 </li>
 </ul>
 <p>所以</p>
@@ -890,15 +904,16 @@ java反射机制使用java.lang.Class或java.lang.reflect.Constructor的newInsta
 <pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">int</span> <span class="n">m</span><span class="o">=</span><span class="n">7</span><span class="o">;</span>
 <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">7</span><span class="o">;</span>
 <span class="kt">int</span> <span class="n">a</span><span class="o">=</span><span class="n">2</span><span class="o">*</span> <span class="o">+</span><span class="o">+</span><span class="n">m</span>  <span class="o">(</span><span class="n">此时a</span><span class="o">=</span><span class="n">16</span><span class="o">,</span><span class="n">m</span><span class="o">=</span><span class="n">8</span><span class="o">)</span>  <span class="o">-</span><span class="o">-</span><span class="o">&gt;</span><span class="n">先进行加法运再进行乘法</span>
-<span class="kt">int</span> <span class="n">b</span><span class="o">=</span><span class="n">2</span><span class="o">*</span> <span class="o">+</span><span class="o">+</span><span class="n">n</span>  <span class="o">(</span><span class="n">此时a</span><span class="o">=</span><span class="n">14</span><span class="o">,</span><span class="n">n</span><span class="o">=</span><span class="n">8</span><span class="o">)</span>  <span class="o">-</span><span class="o">-</span><span class="o">&gt;</span><span class="n">先进行乘法运算再进行加法</span>    
+<span class="kt">int</span> <span class="n">b</span><span class="o">=</span><span class="n">2</span><span class="o">*</span> <span class="n">n</span><span class="o">+</span><span class="o">+</span>  <span class="o">(</span><span class="n">此时a</span><span class="o">=</span><span class="n">14</span><span class="o">,</span><span class="n">n</span><span class="o">=</span><span class="n">8</span><span class="o">)</span>  <span class="o">-</span><span class="o">-</span><span class="o">&gt;</span><span class="n">先进行乘法运算再进行加法</span>    
 </code></pre></td></tr></table>
 </div>
 </div><p>i&ndash;和&ndash;i同理</p>
 <h3 id="string-s和-new-string的区别">String s和 new String的区别</h3>
 <p>String s1 = &ldquo;a&rdquo; 时，首先会在<strong>字符串常量池</strong>中查找有无 “a” 这个对象。 若没找到，就创建一个 &ldquo;a&rdquo; 对象。然后，以 s1 为它的引用。若在字符串常量池中找到了“a”这个对象， 同样也将s1作为它的引用。若再执行一次 String s2 = &ldquo;a&rdquo; , 那么 s1 和 s2 都是同一个对象的引用，即 逻辑判断 s1 == s2 的结果是 true。</p>
 <p>String s3 = new String(&ldquo;a&rdquo;) 时，将在<strong>字符串常量池外的堆</strong>里，创建一个 &ldquo;a&rdquo; 对象。然后，以 s3 为它的引用。这时，s3 对应的是字符串常量池外的一个对象。因此，无论 s3 == s2，还是 s3 ==s1，其结果都是 false。但是s3.equals( s2) ，结果为true，因为内容是相同的。</p>
-<p>Q: String str=new String(&ldquo;hello&rdquo;);我只想问下这个hello是放在堆里面还是放在字符串常量中？</p>
+<p>Q: String str=new String(&ldquo;hello&rdquo;);我只想问下这个hello是放在堆里面还是放在字符串常量中？  &ndash;&gt;<code>new</code>操作一定会在堆中建立一个对象</p>
 <p>A: 如果字符串常量池里存在hello这个字符串的话，则只在堆中创建一个hello对象，否则也要在字符串常量池中也创建一个hello常量，前者是新建了一个对象，后者是两个对象。</p>
+<p>字符串常量池在方法区中，即在运行时常量池中，即方法区中。</p>
 <p><a href="https://www.nowcoder.com/test/question/done?tid=42152683&amp;qid=3450#summary" target="_blank" rel="noopener noreffer">参考题</a></p>
 <h3 id="基本数据类型">基本数据类型</h3>
 <p>1、整数类型byte（1个字节）short（2个字节）int（4个字节）long（8个字节）</p>
@@ -908,12 +923,69 @@ java反射机制使用java.lang.Class或java.lang.reflect.Constructor的newInsta
 <p>Java有四种访问权限， 其中三种有访问权限修饰符，分别为private，public和protected，还有一种不带任何修饰符。</p>
 <ol>
 <li>private: Java语言中对访问权限限制的最窄的修饰符，一般称之为“私有的”。被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问。</li>
-<li>default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，只允许在同一个包中进行访问。</li>
-<li>protect: 介于public 和 private 之间的一种访问修饰符，一般称之为“保护形”。被其修饰的类、属性以及方法只能被类本身的方法及子类访问，即使子类在不同的包中也可以访问。</li>
+<li>default：即不加任何访问修饰符，通常称为“默认访问模式“。该模式下，<strong>只允许在同一个包中进行访问</strong>。</li>
+<li>protect: 介于public 和 private 之间的一种访问修饰符，一般称之为“保护形”。<strong>被其修饰的类、属性以及方法只能被类本身的方法及子类访问，即使子类在不同的包中也可以访问</strong>。</li>
 <li>public： Java语言中访问限制最宽的修饰符，一般称之为“公共的”。被其修饰的类、属性以及方法不仅可以跨类访问，而且允许跨包（package）访问。</li>
 </ol>
 <p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210317230809.png" style="zoom:80%;" /></p>
 <h3 id="深拷贝和浅拷贝">深拷贝和浅拷贝</h3>
+<p>浅拷贝：只复制对象本身</p>
+<p>深拷贝：不仅会复制对象本身，还会同时克隆所有子对象。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210326224959.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210326224959.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210326224959.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210326224959.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210326224959.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210326224959.png" /></p>
+<h3 id="java内存模型">Java内存模型</h3>
+<p>在Java内存模型下，线程可以将变量保存到本地内存（比如计算机的寄存器）中，而不是直接在主存中进行读写，线程需要将主存中的变量拷贝到本地内存中进行操作。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20201129211018.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20201129211018.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20201129211018.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20201129211018.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20201129211018.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20201129211018.png" /></p>
+<h3 id="tcpip中分为几层每层的作用是什么">TCP/IP中分为几层，每层的作用是什么</h3>
+<p>TCP/IP中可以分为5层，分别是应用层、传输层、网络层、数据链路层和物理层。</p>
+<p>应用层中针对不同的应用使用不同的应用协议，来实现应用在网络之间的交互。</p>
+<p>传输层是用于建立网络中两个节点之间的数据通信，负责数据的可靠传输</p>
+<p>网络层用于将网络中的节点的地址管理和路由选择</p>
+<p>数据链路用于将同一个链路中的节点进行连接</p>
+<p>物理层指的是实际的数据传输的硬件，例如电话线路等，不同的传输设备的特性是不一样的，物理层要尽可能的屏蔽掉这些差异</p>
+<h3 id="stringstringbuilder和stringbuffer">String、StringBuilder和StringBuffer</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">
+<span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&#34;Test string&#34;</span><span class="o">;</span>
+<span class="n">StringBuilder</span> <span class="n">strBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">(</span><span class="n">str</span><span class="o">)</span><span class="o">;</span>
+<span class="n">strBuilder</span><span class="o">.</span><span class="na">setCharAt</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="sc">&#39;X&#39;</span><span class="o">)</span><span class="o">;</span>
+<span class="n">str</span><span class="o">=</span><span class="n">Builder</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+ 
+ 
+<span class="n">String不可变</span>    <span class="o">-</span><span class="o">-</span><span class="o">&gt;</span><span class="n">cu</span>
+<span class="n">StringBuilder可变</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>String：字符串常量，不可变</li>
+<li>StringBuilder：字符串常量，可变，线程不安全</li>
+<li>StringBuffer：字符串常量，可变，线程安全</li>
+</ul>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
@@ -937,7 +1009,7 @@ java反射机制使用java.lang.Class或java.lang.reflect.Constructor的newInsta
         </section>
     </div>
 
-    <div class="post-nav"><a href="/mysql/" class="prev" rel="prev" title="MySQL"><i class="fas fa-angle-left fa-fw"></i>MySQL</a>
+    <div class="post-nav"><a href="/towards-fine-grained-human-pose-transfer-with-detail-replenishing-network/" class="prev" rel="prev" title="Towards Fine-grained Human Pose Transfer with Detail Replenishing Network"><i class="fas fa-angle-left fa-fw"></i>Towards Fine-grained Human Pose Transfer with Detail Replenishing Network</a>
             <a href="/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="next" rel="next" title="lambda表达式">lambda表达式<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 <div id="comments"></div></article></div>

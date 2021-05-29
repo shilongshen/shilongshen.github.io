@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title> - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="" />
+<meta property="og:description" content="华为海思通用软件开发：
+给芯片设计软件
+主要是项目，基础，撸代码这三块吧，项目有亮点，基础就问的少一点，撸代码平均leetcode中等难度，当然也有简单和困难；就得自我介绍的时候靠自己引导
+自我介绍，优缺点
+数字化IT应用工程师这个岗相比更偏向具体场景，企业应用，可能偏大数据和人工智能
+链接
+链接
+ 最大子数组和
+字符串翻转&#43;找出出现次数大于2的并删除；2. 随机生成整数数组，并实现排序算法
+1 2 3 4 5 6 7 8 9 10 11 12 13  public void method(int[] nums){HashMap&lt;Integer, Integer&gt; map=new HashMap&lt;&gt;();for(int num:nums){map.put(num,map.getOrDefault(num,0)&#43;1);//getOrDefault(Object key, V defaultValue)的用法：当Map集合中有这个key时，就使用这个key值对应的value，如果没有就使用默认值defaultValue}for(Map.Entry&lt;Integer,Integer&gt; entry : map.entrySet()){if(entry.getValue()&gt;2){entry.getKey();}}}  二分查找
+ 面向对象特点
+​	多态、封装、继承
+​	封装就是将类的属性和方法进行封装，只提供一个接口给外籍进行访问
+​	继承就是子类对父类进行继承，子类可以拥有父类的属性和方法，同时子类也可以重写父类的子类和方法，即子类可以对父类进行拓展。
+​	多态就是当父类引用指向子类对象时，通过父类引用调用方法时调用的方法究竟父类的还是子类的在编译期间是不知道的，只有在运行期间才知道。
+讲一讲线程实现方式
+​	方式1：继承Thread,重写run方法
+​	方式2 ： 实现Runnable接口，重写run方 法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="华为海思通用软件开发：
+给芯片设计软件
+主要是项目，基础，撸代码这三块吧，项目有亮点，基础就问的少一点，撸代码平均leetcode中等难度，当然也有简单和困难；就得自我介绍的时候靠自己引导
+自我介绍，优缺点
+数字化IT应用工程师这个岗相比更偏向具体场景，企业应用，可能偏大数据和人工智能
+链接
+链接
+ 最大子数组和
+字符串翻转&#43;找出出现次数大于2的并删除；2. 随机生成整数数组，并实现排序算法
+1 2 3 4 5 6 7 8 9 10 11 12 13  public void method(int[] nums){HashMap&lt;Integer, Integer&gt; map=new HashMap&lt;&gt;();for(int num:nums){map.put(num,map.getOrDefault(num,0)&#43;1);//getOrDefault(Object key, V defaultValue)的用法：当Map集合中有这个key时，就使用这个key值对应的value，如果没有就使用默认值defaultValue}for(Map.Entry&lt;Integer,Integer&gt; entry : map.entrySet()){if(entry.getValue()&gt;2){entry.getKey();}}}  二分查找
+ 面向对象特点
+​	多态、封装、继承
+​	封装就是将类的属性和方法进行封装，只提供一个接口给外籍进行访问
+​	继承就是子类对父类进行继承，子类可以拥有父类的属性和方法，同时子类也可以重写父类的子类和方法，即子类可以对父类进行拓展。
+​	多态就是当父类引用指向子类对象时，通过父类引用调用方法时调用的方法究竟父类的还是子类的在编译期间是不知道的，只有在运行期间才知道。
+讲一讲线程实现方式
+​	方式1：继承Thread,重写run方法
+​	方式2 ： 实现Runnable接口，重写run方 法"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" /><link rel="prev" href="https://shilongshen.github.io/%E7%BE%8E%E5%9B%A2%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" /><link rel="next" href="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%AF%95%E9%A2%98/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86\/"
+        },"genre": "posts","wordcount":  205 ,
+        "url": "https:\/\/shilongshen.github.io\/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86\/","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX"></h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="0001-01-01">0001-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;205 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
+            </div><div class="content" id="content"><p>华为海思通用软件开发：</p>
+<p>给芯片设计软件</p>
+<p>主要是项目，基础，撸代码这三块吧，项目有亮点，基础就问的少一点，撸代码平均leetcode中等难度，当然也有简单和困难；就得自我介绍的时候靠自己引导</p>
+<p>自我介绍，优缺点</p>
+<p>数字化IT应用工程师这个岗相比更偏向具体场景，企业应用，可能偏大数据和人工智能</p>
+<p><a href="https://www.nowcoder.com/discuss/617066?type=post&amp;order=time&amp;pos=&amp;page=1&amp;channel=-1&amp;source_id=search_post_nctrack" target="_blank" rel="noopener noreffer">链接</a></p>
+<p><a href="https://www.nowcoder.com/discuss/619473?type=post&amp;order=time&amp;pos=&amp;page=1&amp;channel=-1&amp;source_id=search_post_nctrack" target="_blank" rel="noopener noreffer">链接</a></p>
+<hr>
+<p>最大子数组和</p>
+<p>字符串翻转+找出出现次数大于2的并删除；2. 随机生成整数数组，并实现排序算法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">method</span><span class="o">(</span><span class="kt">int</span><span class="o">[</span><span class="o">]</span> <span class="n">nums</span><span class="o">)</span><span class="o">{</span>
+    <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">map</span><span class="o">=</span><span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+	<span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">num</span><span class="o">:</span><span class="n">nums</span><span class="o">)</span><span class="o">{</span>
+    	<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">num</span><span class="o">,</span><span class="n">map</span><span class="o">.</span><span class="na">getOrDefault</span><span class="o">(</span><span class="n">num</span><span class="o">,</span><span class="n">0</span><span class="o">)</span><span class="o">+</span><span class="n">1</span><span class="o">)</span><span class="o">;</span><span class="c1">//getOrDefault(Object key, V defaultValue)的用法：当Map集合中有这个key时，就使用这个key值对应的value，如果没有就使用默认值defaultValue
+</span><span class="c1"></span>
+	<span class="o">}</span>
+    <span class="k">for</span><span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">map</span><span class="o">.</span><span class="na">entrySet</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="o">)</span><span class="o">&gt;</span><span class="n">2</span><span class="o">)</span><span class="o">{</span>
+            <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>二分查找</p>
+<hr>
+<p><strong>面向对象特点</strong></p>
+<p>​	多态、封装、继承</p>
+<p>​	封装就是将类的属性和方法进行封装，只提供一个接口给外籍进行访问</p>
+<p>​	继承就是子类对父类进行继承，子类可以拥有父类的属性和方法，同时子类也可以重写父类的子类和方法，即子类可以对父类进行拓展。</p>
+<p>​	多态就是当父类引用指向子类对象时，通过父类引用调用方法时调用的方法究竟父类的还是子类的在编译期间是不知道的，只有在运行期间才知道。</p>
+<p><strong>讲一讲线程实现方式</strong></p>
+<p>​	方式1：继承Thread,重写run方法</p>
+<p>​	方式2 ： 实现Runnable接口，重写run方 法</p>
+<p>​	方式3： 实现Callable接口，重写call方法，并通过FutureTask将Callable类型包装成Runnable类型</p>
+<p>​	Runnable和Callable的区别在于，Runnable没有返回值，但是Callable有返回值，并且会抛出异常。</p>
+<p><strong>讲一下锁？（悲观锁，乐观锁）</strong>
+<strong>加锁会出现什么问题？ （死锁）</strong></p>
+<p><strong>介绍一下死锁（死锁的定义，条件）</strong></p>
+<p>​	每个进程都在等待其他进程占用的资源，就会造成死锁</p>
+<p>​	出现的条件是每个资源只能够分配给一个进程，资源分配后不能够强行抢夺，一个进程拥有一个资源后还可以等待其他的资源以及出现环路现象，即至少存在两个进程再相互等待对方占有的资源</p>
+<p>**进程间通信方式（ IPC）有哪几种？**进程线程间通信</p>
+<p>​	共享变量，通道，信号量</p>
+<p><strong>封装的权限修饰符又追问default不同包能不能访问，</strong></p>
+<p>​	default只能在同一个包中进行访问，不能跨包访问</p>
+<p>​	private只允许该类进行访问</p>
+<p>​	protect允许该类和子类进行访问</p>
+<p>​	public允许所有的类进行访问</p>
+<p><strong>链路层网络层数据结构实现</strong></p>
+<p><strong>线程进程区别（共享资源）</strong></p>
+<p>​	进程是资源调度的最小单位，是正在运行程序的实例化，一个程序可以拥有多个进程；</p>
+<p>​	而线程可以看成是更小的进程，是cpu调度的最小单位，同一个进程中的线程共享进程中的资源，包括了全局变量，程序计数器，打开的文件，</p>
+<p><strong>处理线程并发/线程同步机制</strong></p>
+<p>​	通过synchronized关键字或者是volatile关键字来处理线程并发</p>
+<p>​	synchronized是通过锁的机制来实现进程同步，volatile是通过线程直接访问主存中的共享变量来实现进程同步。</p>
+<p>​	volatile更加的轻量化，但是volatile只能够修饰变量，volatile通过直接在主存中修改共享变量来保证变量在实现多个线程间的可见性。而synchronized可以修饰方法和代码块</p>
+<p>​	通过threadlocal来防止出现线程安全问题</p>
+<p>​	通过访问不可变变量</p>
+<p>​	通过乐观锁&ndash;&gt;通过共享变量的版本控制</p>
+<p><strong>系统调用</strong></p>
+<p>​	当用户态需要调用内核态的功能的时候，例如进程管理，内存管理和文件管理，就会使用系统调用，从用户态陷入内核态，由操作系统进行功能的调用。使用系统调用的作用是更好的保护硬件资源。</p>
+<p><strong>虚拟内存的目的,作用</strong></p>
+<p><strong>AVL树与BSTree的区别</strong></p>
+<p><strong>介绍一下树</strong></p>
+<p><strong>发一个邮件，经过了哪些网络层，把每层的数据结构说说</strong></p>
+<p>应用层-&gt;传输层-&gt;网络层-&gt;数据链路层-&gt;物理层</p>
+<p><strong>浏览器输入url发生了什么？</strong></p>
+<p><strong>继承有几种方式？</strong></p>
+<p><strong>多态两种讲一下？</strong></p>
+<p>​	通过继承和接口实现</p>
+<p><strong>Overload和 Override说一下</strong></p>
+<p>​	Overload是重载，即一个类中可以拥有同一个方法名，不同方法参数的方法</p>
+<p>​	Override是重写，就是子类可以对父类的方法进行重写</p>
+<p><strong>DHCP了解吗</strong></p>
+<p>为计算机自动分配IP地址</p>
+<p><strong>TCP三次握手知道吧，为啥是三次不是两次</strong></p>
+<p>三次握手，首先是客户端向服务端发送建立连接请求，服务端接收到连接请求后返回一个确认应答信号，客户端接收到服务端返回的确认应答信号后再向服务端发送一个确认应答信号，然后客户端和服务端建立连接。</p>
+<p>三次握手的原因是避免建立多个连接，<code>为了避免失效的连接请求到达服务器，让服务器错误打开连接</code>。客户端向服务端发送建立请求连接的时候可能会由于某些原因导致请求没有及时的发送到服务端，客户端在长时间没有接收到服务端返回的确认应答信号就会重新发送一个建立连接请求，新发送的连接请求到达服务端后并接收到返回的确认应答信号，客户端和服务端就会建立连接；如果之前的连接请求到达服务端并且客户端接收到了服务端的确认应答信号又会再次建立一个连接，这样的话就建立了两个连接。为了避免出现这种情况就需要进行第三次握手，客户端在接收到服务端的确认应答信号后再向服务端发送一个确认应答信号，这时就可以忽略之间发送的连接请求</p>
+<p><strong>Hash的底层实现</strong></p>
+<p>Hash的底层是一个数组+链表的结构。如果想向哈希表中添加元素，首先会计算这个元素对应的hashcoe，再通过hashcode计算数组的下标，如果这个数组下标下没有元素，就可以直接将元素插入，如果有元素，就需要比较这个数组下标中的元素是否和待插入的元素相等，如果相等就不能够插入，如果不相等就可以插入。</p>
+<p><strong>JVM内存区域</strong></p>
+<p>​	JVM内存模型包括了堆，虚拟机栈，本地方法栈，程序计数器，方法区</p>
+<p>堆存储的是对象</p>
+<p>虚拟机栈中存放者栈帧，每一个方法的开始执行到结束执行，对象者一个栈帧的入栈和出栈</p>
+<p>程序计数器是字节码文件执行时的行号指示器</p>
+<p>方法区中存放类型变量，静态变量，方法信息和字段信息</p>
+<p><strong>类的加载流程</strong></p>
+<p>​	类加载流程包括了加载，验证，准备，解析，初始化；其中加载就是将二进制字节流中的类中的数据放到方法区，在堆中创建一个对象，验证就是验证类的正确性，准备就是为静态变量赋初值，解析，初始化就是将静态变量按照程序员的意愿赋给初值。</p>
+<p>类加载器【最后说到了双亲委派】</p>
+<p>​	类加载器包括了启动类加载器、拓展类加载器以及应用类加载器以及用户自定义类加载器。其中启动类加载器用于加载核心类，拓展类加载器用于加载拓展类，应用类加载器用于加载用户目录下的类。</p>
+<p>​	双亲委派指的是类加载器间的层次结构，这规定了除了启动类加载器外，每一个类加载器都应该由一个父类加载器，当收到类加载请求时，会先将这个请求交给父类加载器进行处理，如果父类加载器不能够处理这一请求，才由子类加载器进行处理。</p>
+<p>采用双亲委派模型的优点是，例如我们需要加载一个Object类，无论这个请求发送给哪个类加载器，最终都会交给启动类加载器进行加载，这样就可以保证每次加载得到的对象是相同的。因为如果采用不同类加载器加载得到的对象一定是不相同的</p>
+<p><strong>where orderby having groupby的执行顺序</strong></p>
+<p><strong>多路复用相关</strong></p>
+<p><strong>操作系统本身使用什么通信</strong></p>
+<p><strong>如果遍历list的时候使用remove方法，如何保证不会越界</strong></p>
+<p>HashMap是否线程安全？具体说一下(jdk7头插法成环的具体情况、jdk8尾插法put操作的覆盖情况)</p>
+<p>问delete、truncate、【还有个啥关键字忘了】了解吗(除了delete，其他从没听过)
+b+树结构、为何选用b+树(磁盘io次数)
+MVCC说一下？有什么缺点呢？(缺点确实有点忘了，说了下一致性视图的资源消耗问题)</p>
+<p>解决hash冲突的方法，除了链地址法呢</p>
+<p>synchronized和lock的区别</p>
+<p>volatile关键字，以及原理</p>
+<p>偏向锁、轻量级锁、重量级锁(其中的cas的应用)</p>
+<p>Integer 127的两个对象是否相等？(缓冲池)</p>
+<hr>
+<p>如何看待<a href="https://www.nowcoder.com/jump/super-jump/word?word=%e5%8d%8e%e4%b8%ba" target="_blank" rel="noopener noreffer">华为</a>奋斗者文化</p>
+<p>说一下自己的优缺点</p>
+<p>说一下自己压力最大的时候</p>
+<p>说一下自己最自豪的时候</p>
+<p>说一下会<a href="https://www.nowcoder.com/jump/super-jump/word?word=%e5%8d%8e%e4%b8%ba" target="_blank" rel="noopener noreffer">华为</a>的了解/看法</p>
+<p>为什么想面[华为]</p>
+<p>对<a href="https://www.nowcoder.com/jump/super-jump/word?word=%e5%8d%8e%e4%b8%ba" target="_blank" rel="noopener noreffer">华为</a>的看法，我就说励志、奋斗、加班</p>
+<hr>
+<p>面试官，您好！我叫某某。大学时间我主要利用课外时间学习某某。在校期间参与过一个某某系统的开发，另外，自己学习过程中也写过很多系统比如某某系统。在学习之余，我比较喜欢通过博客整理分享自己所学知识。我现在是某某社区的认证作者，写过某某很不错的文章。另外，我获得过某某奖,我的Github上开源的某个项目已经有多少Star了。</p>
+<blockquote>
+<p>面试官，您好！我叫沈世龙。本硕都在哈工大就读，读研期间的研究方向是深度学习相关的，研究内容是基于生成对抗网络的人物图像生成算法研究，目前已经申请了专利一项；除此之外，在课余时间自学了一些计算机相关的一些基础知识，包括了Java、JVM、计算机网络、操纵系统、MySQL以及工厂模式、单例模式。在空闲的时候，我比较喜欢通过博客整理和分享自己所学知识，包括了自己在阅读论文中的一些总结、以及计算机相关的一些知识点的记录。生活中我是一个比较积极乐观的人，一般会通过跑步打球等方式来放松。最后，感谢贵公司能给我这次面试的机会，谢谢！</p>
+</blockquote>
+<p>大学时间我主要利用课外时间学习了 Java 以及 Spring、MyBatis等框架 。在校期间参与过一个考试系统的开发，这个系统的主要用了 Spring、MyBatis 和 shiro 这三种框架。我在其中主要担任后端开发，主要负责了权限管理功能模块的搭建。另外，我在大学的时候参加过一次软件编程大赛，我和我的团队做的在线订餐系统成功获得了第二名的成绩。我还利用自己的业余时间写了一个简单的 RPC 框架，这个框架用到了Netty进行网络通信， 目前我已经将这个项目开源，在 Github 上收获了 2k的 Star! 说到业余爱好的话，我比较喜欢通过博客整理分享自己所学知识，现在已经是多个博客平台的认证作者。生活中我是一个比较积极乐观的人，一般会通过运动打球的方式来放松。我一直都非常想加入贵公司，我觉得贵公司的文化和技术氛围我都非常喜欢，期待能与你共事！</p>
+<p>面试官您好，我叫###，来自###，现为###计算机学院硕士二年级学生，主修专业是计算机技术；读研以来，我一共参与了三个项目的研发，那我就按照时间的先后来说吧。
+在2018年6月到2019年5月我参与了第一个项目：电厂外委工程管理系统，该软件主要是为了电厂的信息化管理而开发的一套系统，分为微信公众号开发和web端开发。该项目前端采用Vue框架，后台部分使用的是Java语言，基于Spring+ SpringMvc+Mybatis框架进行开发的，其中运用Activity工作流框架对工作流程的进行管理。数据库运用mysql来支持。版本控制使用的gitlab。
+在2019年5月至2019年8月参与第二个项目CSTK软件1.0版本的开发，因项目需要在此期间于中国空间技术研究院钱学森实验室边实习边开发。该项目使用的是C#语言，运用WPF框架以及Unity3D引擎，开发一套航空三维场景仿真软件。
+在2019年9月至今参与第三个项目的CSTK软件2.0版本的开发。因为实验室一直是以航天任务为主的，由于实验室之前的航天软件难以维护，二次开发很困难，所以在实习结束后在老师和师兄师弟们的一起努力下运用所学知识以及经验对以前开发的航天软件进行重新开发。该项使用的是C#语言，运用WPF框架以及Unity3D引擎。这两个项目版本控制都使用的是SVN。但是从技术到性能以及开发效率都有了很大的提升。
+以上就是我研究生期间所参与的项目。对于学生工作方面我从本科到目前做了5年的学生工作。（由于在本科期间着重于学生工作，分别担任了计算机学院大一班级班主任，心理健康教育中心学生副主席、学生会综合实践部部长以及辩论队队长等职务。因此，在多重压力下，我学会了如何去合理安排时间，让我的学习、工作和业余爱好都不耽误。最后，感谢贵公司能给我这次面试的机会，谢谢！</p>
+<p>作者：JavaGuide
+链接：https://www.zhihu.com/question/27858692/answer/692965043
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 0001-01-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" data-title=""><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" data-title="" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" data-title=""><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" data-title=""><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" data-title="" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" data-title="" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E5%8D%8E%E4%B8%BA%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" data-title=""><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E7%BE%8E%E5%9B%A2%E8%B5%84%E6%96%99%E6%94%B6%E9%9B%86/" class="prev" rel="prev" title=""><i class="fas fa-angle-left fa-fw"></i></a>
+            <a href="/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%AF%95%E9%A2%98/" class="next" rel="next" title=""><i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

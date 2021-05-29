@@ -14,13 +14,13 @@ In summary, our contributions include the following.
   We demonstrate personalized motion transfer on videos from the Internet.
   We propose a novel two-stage frame-work to synthesize people performing new movements and fuse them seamlessly with background scenes. （主要贡献：实现复杂背景下的姿态转换）
   We perform qualitative and quantitative evaluations validating the superiority of our method over existing state-of-the-art.
-  method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过阶段进行修正）]]></description>
+  method: (主要的思想是先将利用语义分割图将前景中的人物进行分割，采用STN 将前景人物与目标人物进行对齐。随后通过第二阶段进行修正）]]></description>
 </item><item>
     <title>group convolution.</title>
-    <link>https://shilongshen.github.io/group-______/</link>
+    <link>https://shilongshen.github.io/group-convolution./</link>
     <pubDate>Sat, 12 Dec 2020 13:26:17 &#43;0800</pubDate>
     <author>Author</author>
-    <guid>https://shilongshen.github.io/group-______/</guid>
+    <guid>https://shilongshen.github.io/group-convolution./</guid>
     <description><![CDATA[参考
 第一张图代表标准卷积操作。若输入特征图尺寸为 ，卷积核尺寸为 ，输出特征图尺寸为 ，标准卷积层的参数量为： 。（一个滤波器在输入特征图 大小的区域内操作，输出结果为1个数值，所以需要 个滤波器。）
 第二张图代表分组卷积操作。将输入特征图按照通道数分成 组，则每组输入特征图的尺寸为 ，对应的卷积核尺寸为 ，每组输出特征图尺寸为 。将 组结果拼接(concat)，得到最终尺寸为 的输出特征图。分组卷积层的参数量为 。

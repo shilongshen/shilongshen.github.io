@@ -22,8 +22,8 @@ Localisation net 以$U$为输入，经过卷积层或者全连接层输出仿射
 针对后向映射的插值方法：当输出图像上的整数坐标$(x&rsquo;,y&rsquo;)$经过映射后，对应的原图像上的坐标$(x,y)$为非整数，利用其周围整数点位置的输入图像像素值进行插值，就得到了该点的像素值。我们遍历输出图像，经过坐标变换、插值两步操作，我们就能将其像素值一个个地计算出来，因此向后映射又叫图像填充映射。如下图所示。
  Sampler 由于计算得到的$\begin{bmatrix}x^s\y^s \end{bmatrix}$为浮点数时会造成无法进行梯度传播，因此使用双线性插值进行采样：
 其中$U_{nm}^c$表示距离$(x^s,y^s)$最近的四个坐标所对应的$U$中的像素值，$V_i^c$表示使用双线性插值后$V$中某点像素值。
-反向传播 前向的传递过程为Localisation net $\rightarrow^{\Large\theta}$ Grid generator $\rightarrow^{\Large\begin{bmatrix}x^s\y^s\end{bmatrix}}$ Sampler $\rightarrow^{\Large V_i^c}$
- 因此反向传播的过程需要先计算出$V_i^c$关于$\begin{bmatrix}x^s\y^s\end{bmatrix}$的梯度，在计算出$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的梯度。  同理可以计算出$V_i^c$关于$y^s$的导数，以及$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的导数（这个比较简单）
+反向传播 前向的传递过程为$U\rightarrow^{}$Localisation net $\rightarrow^{\Large\theta}$ Grid generator $\rightarrow^{\Large\begin{bmatrix}x^s\y^s\end{bmatrix}}$ Sampler $\rightarrow^{\Large V_i^c}$
+ 因此反向传播的过程需要先计算出$V_i^c$关于$\begin{bmatrix}x^s\y^s\end{bmatrix}$的梯度，再计算出$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的梯度。  同理可以计算出$V_i^c$关于$y^s$的导数，以及$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的导数（这个比较简单）
  通过以上的前向传播以及反向传播可以学习到仿射参数$\theta$，进而通过双线性插值得到经过warp后的特征。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://shilongshen.github.io/stn%E7%9A%84%E7%90%86%E8%A7%A3/" />
@@ -50,8 +50,8 @@ Localisation net 以$U$为输入，经过卷积层或者全连接层输出仿射
 针对后向映射的插值方法：当输出图像上的整数坐标$(x&rsquo;,y&rsquo;)$经过映射后，对应的原图像上的坐标$(x,y)$为非整数，利用其周围整数点位置的输入图像像素值进行插值，就得到了该点的像素值。我们遍历输出图像，经过坐标变换、插值两步操作，我们就能将其像素值一个个地计算出来，因此向后映射又叫图像填充映射。如下图所示。
  Sampler 由于计算得到的$\begin{bmatrix}x^s\y^s \end{bmatrix}$为浮点数时会造成无法进行梯度传播，因此使用双线性插值进行采样：
 其中$U_{nm}^c$表示距离$(x^s,y^s)$最近的四个坐标所对应的$U$中的像素值，$V_i^c$表示使用双线性插值后$V$中某点像素值。
-反向传播 前向的传递过程为Localisation net $\rightarrow^{\Large\theta}$ Grid generator $\rightarrow^{\Large\begin{bmatrix}x^s\y^s\end{bmatrix}}$ Sampler $\rightarrow^{\Large V_i^c}$
- 因此反向传播的过程需要先计算出$V_i^c$关于$\begin{bmatrix}x^s\y^s\end{bmatrix}$的梯度，在计算出$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的梯度。  同理可以计算出$V_i^c$关于$y^s$的导数，以及$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的导数（这个比较简单）
+反向传播 前向的传递过程为$U\rightarrow^{}$Localisation net $\rightarrow^{\Large\theta}$ Grid generator $\rightarrow^{\Large\begin{bmatrix}x^s\y^s\end{bmatrix}}$ Sampler $\rightarrow^{\Large V_i^c}$
+ 因此反向传播的过程需要先计算出$V_i^c$关于$\begin{bmatrix}x^s\y^s\end{bmatrix}$的梯度，再计算出$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的梯度。  同理可以计算出$V_i^c$关于$y^s$的导数，以及$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的导数（这个比较简单）
  通过以上的前向传播以及反向传播可以学习到仿射参数$\theta$，进而通过双线性插值得到经过warp后的特征。"/>
 <meta name="application-name" content="LoveIt">
 <meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
@@ -229,9 +229,9 @@ $$</p>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200711173807.png" style="zoom: 200%;" /></p>
 <p>其中$U_{nm}^c$表示距离$(x^s,y^s)$最近的四个坐标所对应的$U$中的像素值，$V_i^c$表示使用双线性插值后$V$中某点像素值。</p>
 <h4 id="反向传播">反向传播</h4>
-<p>前向的传递过程为<strong>Localisation net</strong>  $\rightarrow^{\Large\theta}$  <strong>Grid generator</strong>  $\rightarrow^{\Large\begin{bmatrix}x^s\y^s\end{bmatrix}}$   <strong>Sampler</strong>   $\rightarrow^{\Large V_i^c}$</p>
+<p>前向的传递过程为$U\rightarrow^{}$<strong>Localisation net</strong>  $\rightarrow^{\Large\theta}$  <strong>Grid generator</strong>  $\rightarrow^{\Large\begin{bmatrix}x^s\y^s\end{bmatrix}}$   <strong>Sampler</strong>   $\rightarrow^{\Large V_i^c}$</p>
 <ul>
-<li><i class="far fa-square fa-fw"></i>因此反向传播的过程需要先计算出$V_i^c$关于$\begin{bmatrix}x^s\y^s\end{bmatrix}$的梯度，在计算出$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的梯度。</li>
+<li><i class="far fa-square fa-fw"></i>因此反向传播的过程需要先计算出$V_i^c$关于$\begin{bmatrix}x^s\y^s\end{bmatrix}$的梯度，再计算出$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的梯度。</li>
 </ul>
 <p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20200711175159.png" style="zoom:200%;" /></p>
 <p>同理可以计算出$V_i^c$关于$y^s$的导数，以及$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的导数（这个比较简单）</p>

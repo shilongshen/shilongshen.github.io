@@ -6,7 +6,7 @@
         <meta name="robots" content="noodp" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
         <title>JDBC - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="JDBC" />
-<meta property="og:description" content="什么是JDBC JDBC API 允许用户访问任何形式的表格数据，尤其是存储在关系数据库中的数据。
+<meta property="og:description" content="数据的持久化 什么是JDBC JDBC API 允许用户访问任何形式的表格数据，尤其是存储在关系数据库中的数据。
 JDBC(Java DataBase Connectivity, 简称JDBC)是Java中用于规范应用程序如何来访问数据库的应用程序接口(API),它提供了查询和更新数据库中数据的方法。
 执行流程：
  连接数据源，如：数据库。 为数据库传递查询和更新指令。 处理数据库响应并返回的结果。  在Java程序和数据库之间的一个桥梁。
@@ -23,7 +23,7 @@ JDBC架构 两层 三层 JDBC 编程步骤 加载驱动程序：
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
 <meta name="twitter:title" content="JDBC"/>
-<meta name="twitter:description" content="什么是JDBC JDBC API 允许用户访问任何形式的表格数据，尤其是存储在关系数据库中的数据。
+<meta name="twitter:description" content="数据的持久化 什么是JDBC JDBC API 允许用户访问任何形式的表格数据，尤其是存储在关系数据库中的数据。
 JDBC(Java DataBase Connectivity, 简称JDBC)是Java中用于规范应用程序如何来访问数据库的应用程序接口(API),它提供了查询和更新数据库中数据的方法。
 执行流程：
  连接数据源，如：数据库。 为数据库传递查询和更新指令。 处理数据库响应并返回的结果。  在Java程序和数据库之间的一个桥梁。
@@ -43,7 +43,7 @@ JDBC架构 两层 三层 JDBC 编程步骤 加载驱动程序：
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/shilongshen.github.io\/jdbc\/"
-        },"genre": "posts","wordcount":  139 ,
+        },"genre": "posts","wordcount":  140 ,
         "url": "https:\/\/shilongshen.github.io\/jdbc\/","datePublished": "2021-02-10T09:54:48+08:00","dateModified": "2021-02-10T09:54:48+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -120,7 +120,7 @@ JDBC架构 两层 三层 JDBC 编程步骤 加载驱动程序：
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">JDBC</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-02-10">2021-02-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;139 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-02-10">2021-02-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;140 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
@@ -129,18 +129,26 @@ JDBC架构 两层 三层 JDBC 编程步骤 加载驱动程序：
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#数据的持久化">数据的持久化</a></li>
+    <li><a href="#什么是jdbc">什么是JDBC</a></li>
+    <li><a href="#jdbc架构">JDBC架构</a>
       <ul>
         <li>
           <ul>
-            <li><a href="#什么是jdbc">什么是JDBC</a></li>
-            <li><a href="#jdbc架构">JDBC架构</a>
+            <li>
               <ul>
                 <li><a href="#两层">两层</a></li>
                 <li><a href="#三层">三层</a></li>
               </ul>
             </li>
-            <li><a href="#jdbc-编程步骤">JDBC 编程步骤</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#jdbc-编程步骤">JDBC 编程步骤</a>
+      <ul>
+        <li>
+          <ul>
             <li><a href="#完整实例">完整实例</a></li>
             <li><a href="#参考">参考</a></li>
           </ul>
@@ -149,7 +157,8 @@ JDBC架构 两层 三层 JDBC 编程步骤 加载驱动程序：
     </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h3 id="什么是jdbc">什么是JDBC</h3>
+            </div><div class="content" id="content"><h1 id="数据的持久化">数据的持久化</h1>
+<h1 id="什么是jdbc">什么是JDBC</h1>
 <p>JDBC API 允许用户访问任何形式的表格数据，尤其是存储在关系数据库中的数据。</p>
 <p><code>JDBC(Java DataBase Connectivity, 简称JDBC)是Java中用于规范应用程序如何来访问数据库的应用程序接口(API),它提供了查询和更新数据库中数据的方法。</code></p>
 <p>执行流程：</p>
@@ -159,7 +168,7 @@ JDBC架构 两层 三层 JDBC 编程步骤 加载驱动程序：
 <li>处理数据库响应并返回的结果。</li>
 </ul>
 <p>在Java程序和数据库之间的一个桥梁。</p>
-<h3 id="jdbc架构">JDBC架构</h3>
+<h1 id="jdbc架构">JDBC架构</h1>
 <h4 id="两层">两层</h4>
 <p><img
         class="lazyload"
@@ -178,7 +187,7 @@ JDBC架构 两层 三层 JDBC 编程步骤 加载驱动程序：
         data-sizes="auto"
         alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210302192756.png"
         title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210302192756.png" /></p>
-<h3 id="jdbc-编程步骤">JDBC 编程步骤</h3>
+<h1 id="jdbc-编程步骤">JDBC 编程步骤</h1>
 <p>加载驱动程序：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

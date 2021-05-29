@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://shilongshen.github.io/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
-<meta property="og:updated_time" content="2021-03-22T09:54:48+08:00" />
+<meta property="og:updated_time" content="2021-05-28T09:54:48+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
@@ -103,93 +103,78 @@
         alt="/images/avatar.jpg"
         title="/images/avatar.jpg" /></a></div><h1 class="home-title">我的个人博客</h1><div class="links"><a href="https://github.com/shilongshen" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a><a href="mailto:1319144765@qq.com" title="Email" rel=" me"><i class="far fa-envelope fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E7%AE%97%E6%B3%95%E9%A2%98%E8%AE%B0%E5%BD%95/">算法题记录</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-03-22">2021-03-22</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>算法</a></span></div><div class="content">树 重建二叉树 链接
-最大二叉树 链接
-合并二叉树 链接
-二叉搜索树中的搜索 链接
-验证二叉搜索树 链接
-二叉搜索树的绝对值之差 链接
-二叉搜索树的众数 链接
-二叉树的最近公共祖先 链接
-二叉搜索树的最近公共祖先 链接
-二叉搜索树的插入操作 链接
-二叉搜索树的删除操作 链接
-二叉搜索树的修剪 链接
-将二叉树转换为累加树 链接
-翻转二叉树 链接
-二叉树的前序遍历 链接
-二叉树的中序遍历 链接
-二叉树的后序遍历 链接
-二叉树的层序遍历 链接
-二叉树的层序遍历2 链接
-N叉树的层序遍历 链接
-从上到下打印二叉树 链接
-二叉搜索树中第k小的元素 链接
-将有序数组转换为二叉搜索树 链接
-将有序链表转换为二叉搜索树 链接
-二叉树的右视图 链接
-二叉树的层平均值 链接
-二叉树的层最大值 链接
-填充每个节点的下一个右侧节点指针 链接
-树的子结构 链接
-另一棵树的子树 链接
-对称二叉树 链接
-相同的树 链接
-二叉树的最大深度 链接
-N叉树的最大深度 链接
-二叉树的最小深度 链接</div><div class="post-footer">
-        <a href="/%E7%AE%97%E6%B3%95%E9%A2%98%E8%AE%B0%E5%BD%95/">Read More</a></div>
+        <a href="/%E5%89%AA%E7%BB%B3%E5%AD%90/">剪绳子</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-05-28">2021-05-28</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>数据结构和算法</a></span></div><div class="content">算术几何均值不等式： $$ \frac{n_1+n_2+&hellip;+n_a}{a}\geq a\sqrt{n_1n_2&hellip;n_a} $$ 当且仅当$n_1=n_2=&hellip;=n_a$时等号成立,$\sqrt{n_1n_2&hellip;n_a}$取最大值。
+根据上述不等式可以得知，当每段绳子的相等时，乘积最大。设绳子的总长度为n，每段绳子的长度为x，共有a段绳子，即$ax=n$，则最大的乘积为$x^a$,即 $$ x^a=x^{\frac{n}{x}}=(x^{\frac{1}{x}})^{n} $$ 设$y=x^\frac{1}{x}$，问题转换为求$y$的最大值，对$y$进行分析 $$ \begin{align} y&amp;=x^\frac{1}{x}\
+\ln y&amp;=\frac{1}{x} \ln x \end{align} $$ 两端求导 $$ \begin{align} \frac{1}{y}\dot{y}&amp;=\frac{-1}{x^2} \ln x+\frac{1}{x^2} \end{align} $$ 整理得 $$ \begin{align} \dot{y}&amp;=y(\frac{-1}{x^2} \ln x+\frac{1}{x^2})\
+\dot{y}&amp;=x^\frac{1}{x}(\frac{1- \ln x}{x^2}) \end{align} $$ 令$\dot{y}=0$得$x=e\approx2.7$，又有当$x&gt;e$时，$\dot{y}$小于0，当$x&lt;e$时，$\dot{y}$大于0，所以$x=e$为最大值点。但是绳子的长度$x$必须为整数，比较 $$ y(3)=3^{\frac{1}{3}}\approx1.44 y(3)=2^{\frac{1}{2}}\approx1.41 $$ 所以当$x=3$时，可以取得乘积得最大值。
+切分规则：
+当将绳子尽可能多以长度为3进行切分时，乘积最大，当存在余数得时候，存在3种情况
+ 余数为0，最大乘积为$3^a$ 余数为1，因为$2\times 2 &gt;1\times 3$,所以最大乘积为$3^{a-1}\times 4$ 当余数为2时，最大乘积为$3^a*2$  </div><div class="post-footer">
+        <a href="/%E5%89%AA%E7%BB%B3%E5%AD%90/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-03-22">2021-03-22</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>算法</a></span></div><div class="content">0-1背包 背包问题的关键因素：
- 背包的重量 物品的重量以及物品的价值 如果物品不可以重复放入则是0-1背包问题 &ndash;&gt;背包进行倒序遍历 每个物品只有两种状态：放入背包/不放入背包 &ndash;&gt;max(dp[i-1][j],dp[i-1][j-weight[i]]+value[i])  使用二维数组进行解决
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38  package Dynamic;import java.util.Arrays;public class bean12 {public static void main(String[] args) {int[] weight={1,3,4};int[] value={15,20,30};int bagweight=4;int[][] dp=new int[weight.</div><div class="post-footer">
-        <a href="/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">Read More</a></div>
+        <a href="/%E5%B0%9A%E7%A1%85%E8%B0%B7_%E5%AE%8B%E7%BA%A2%E5%BA%B7_jdbc/">JDBC核心技术-宋红康</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-05-25">2021-05-25</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">JDBC核心技术 讲师：宋红康
+微博：尚硅谷-宋红康
+ 第1章：JDBC概述 1.1 数据的持久化   持久化(persistence)：把数据保存到可掉电式存储设备中以供之后使用。大多数情况下，特别是企业级应用，数据持久化意味着将内存中的数据保存到硬盘上加以”固化”，而持久化的实现过程大多通过各种关系数据库来完成。
+  持久化的主要应用是将内存中的数据存储在关系型数据库中，当然也可以存储在磁盘文件、XML数据文件中。
+  1.2 Java中的数据存储技术   在Java中，数据库存取技术可分为如下几类：
+  JDBC直接访问数据库
+  JDO (Java Data Object )技术
+  第三方O/R工具，如Hibernate, Mybatis 等
+    JDBC是java访问数据库的基石，JDO、Hibernate、MyBatis等只是更好的封装了JDBC。
+  1.3 JDBC介绍  JDBC(Java Database Connectivity)是一个独立于特定数据库管理系统、通用的SQL数据库存取和操作的公共接口（一组API），定义了用来访问数据库的标准Java类库，（java.sql,javax.sql）使用这些类库可以以一种标准的方法、方便地访问数据库资源。 JDBC为访问不同的数据库提供了一种统一的途径，为开发者屏蔽了一些细节问题。 JDBC的目标是使Java程序员使用JDBC可以连接任何提供了JDBC驱动程序的数据库系统，这样就使得程序员无需对特定的数据库系统的特点有过多的了解，从而大大简化和加快了开发过程。 如果没有JDBC，那么Java程序访问数据库时是这样的：    有了JDBC，Java程序访问数据库时是这样的：    总结如下：  1.4 JDBC体系结构  JDBC接口（API）包括两个层次：  面向应用的API：Java API，抽象接口，供应用程序开发人员使用（连接数据库，执行SQL语句，获得结果）。 面向数据库的API：Java Driver API，供开发商开发数据库驱动程序用。     JDBC是sun公司提供一套用于数据库操作的接口，java程序员只需要面向这套接口编程即可。</div><div class="post-footer">
+        <a href="/%E5%B0%9A%E7%A1%85%E8%B0%B7_%E5%AE%8B%E7%BA%A2%E5%BA%B7_jdbc/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/maven/">Maven</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-03-10">2021-03-10</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">Maven的核心概念 约定的目录结果 例如在com.maven中建立Hello项目
-Hello |&mdash;src |&mdash;|&mdash;main |&mdash;|&mdash;|&mdash;java |&mdash;|&mdash;|&mdash;resources |&mdash;|&mdash;test |&mdash;|&mdash;|&mdash;java |&mdash;|&mdash;|&mdash;resources |&mdash;pom.xml
-POM Project Object Model,项目对象模型
-pom.xml对于Maven工程是核心配置文件，与构建过程相关的一切设置都在这个文件中进行设置。
-坐标 使用下面三个坐标在仓库中唯一定位一个maven工程
-  group：公司或组织域名倒序+项目名
-1  &lt;groupid&gt;com.maven&lt;/groupid&gt;    artifactid：模块名
-1  &lt;artifactid&gt;Hello&lt;/artifactid&gt;    version：版本
-1  &lt;version&gt;1.0.0&lt;/version&gt;    1 2 3 4 5 6 7  &lt;！--例--&gt;&lt;groupId&gt;junit&lt;/groupId&gt;&lt;artifactId&gt;junit&lt;/artifactId&gt;&lt;version&gt;4.12&lt;/version&gt;对应路径C:\Users\ssl\.m2\repository\junit\junit\4.12\junit-4.12.jar  依赖   maven解析依赖信息时会到本地仓库中查找被依赖的jar包
- 对于我们自己开发的maven工程，使用**mvn install **命令安装后就可以进入仓库    依赖的范围</div><div class="post-footer">
-        <a href="/maven/">Read More</a></div>
+        <a href="/mybatis/">MyBatis</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-05-25">2021-05-25</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">参考
+参考
+中文文档
+基本概念 业务层—处理业务需求 持久层—和数据库交互，
+ 持久层技术解决方案 JDBC技术（最底层）：Connection、PreparedStatement、ResultSet Spring的JdbcTemplate：Spring中对jdbc的简单封装 Apache的DBUtils：和Spring的JdbcTemplate类似 以上都不是框架，jdbc是规范，剩下两个是工具包  封装不够细致，需要关注加载驱动、创建连接、创建Statement等繁杂过程。 功能简单，sql语句编写在java代码里，硬编码高耦合（sql变化时需要修改源码）    框架：整体解决方案
+Hibernate：全自动全映射ORM框架，旨在消除sql。但是存在开发人员无法自主优化sql语句的缺点。
+mybatis是优秀的基于java持久层的框架（半自动），它内部封装了jdbc，sql与java编码分离（sql单独提取到配置文件中，由开发者控制），开发者只需要关注sql语句本身（剩下的预编译、设置参数、执行sql、封装结果由框架完成）。它使用了ORM的思想实现了结果集的封装。
+MyBatis实现总结  全局配置文件MyBatis.xml 包含数据源、事务管理器、运行环境的信息 sql映射文件EmployeeMapper.xml &ndash;&gt;关键文件，mybatis从该文件抽取出sql 配置每个sql，以及sql的封装规则（查出相应记录后如何封装） 将sql映射文件注册在全局配置文件中 写测试代码（EmployeeTest.java） 关键：  根据配置文件获得SqlSessionFactory     使用SqlSessionFactory获取到SqlSession对象，使用该SqlSession对象中的方法进行增删查改  一个SqlSession就是和数据库的一次会话，使用完要关闭 使用sql的唯一标识（如selectOne方法的第一个参数）来告诉mybatis执行哪个sql    SqlSession对象中的方法:
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76  //// Source code recreated from a .</div><div class="post-footer">
+        <a href="/mybatis/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/springboot/">SpringBoot</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-03-10">2021-03-10</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">1、Spring Boot简介 什么是Spring Boot ：
- Spring Boot用于简化Spring应用开发的一个框架； 整个Spring技术栈的一个大整合； J2EE开发的一站式解决方案  优点：
- 快速创建独立运行的Spring项目以及与主流框架集成 使用嵌入式的Servlet容器，应用无需打包WAR包 starters自动依赖与版本控制 大量的自动配置，简化开发，也可以修改默认值 无需配置XML，无代码生成，开箱即用 准生产环境的运行时应用监控 与云计算的天然集成  2、微服务 微服务是一种架构风格
-一个应用应该是一组小型服务；可以通过HTTP的方式进行沟通；
-每一个功能元素最终都是一个可独立替换和独立升级的软件单元；
-基本介绍 HelloWorld   创建maven工程
-  引入依赖
-1 2 3 4 5 6 7 8 9 10 11 12  &lt;parent&gt;&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;&lt;version&gt;2.4.3&lt;/version&gt;&lt;/parent&gt;&lt;dependencies&gt;&lt;dependency&gt;&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;&lt;/dependency&gt;&lt;/dependencies&gt;    编写主程序
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  package com.</div><div class="post-footer">
-        <a href="/springboot/">Read More</a></div>
+        <a href="/nginx%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/">Nginx基本原理</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-05-25">2021-05-25</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">参考
+参考
+(engine x)是一个高性能的HTTP和反向代理web服务器，同时也提供了IMAP/POP3/SMTP服务。其特点是占有内存少，并发能力强，事实上nginx的并发能力在同类型的网页服务器中表现较好，中国大陆使用nginx网站用户有：百度、京东、新浪、网易、腾讯、淘宝等。
+Nginx不仅能做反向代理，实现负载均衡；还能可以作正向代理来进行上网等功能。
+反向代理 客户端不需要任何配置就能访问，只需要将请求发送到反向代理服务器，由反向代理服务器去选择目标服务器，获取数据后再返回给客户端。对外就一个服务器，暴露的是反向代理服务器地址，隐藏了真实服务器IP地址。代理对象是服务端，不知道客户端是谁。
+负载均衡 客户端发送多个请求到服务器，服务器处理请求，有些可能要访问数据库，服务器处理完毕后再将结果返回客户端。
+这种架构模式单一，适合并发请求少的情况，但并发量大的时候如何解决？
+首先可能想到升级服务器配置，但硬件的性能提升不能满足日益增长的需求，此时想到服务器集群，增加服务器数量，然后将原先请求单个服务器的情况改为将请求分发到多个服务器上，将负载分发到多个服务器上，也就是我们讲的负载均衡。
+动静分离 为了加快网站的解析速度，可以把动态页面和静态页面交由不同的服务器来解析，减少服务器压力，加快解析速度。
+原理 master和worker master接收信号后将任务分配给worker进行执行，worker可有多个。
+worker如何工作 客户端发送一个请求到master后，worker获取任务的机制不是直接分配也不是轮询，而是一种争抢的机制，“抢”到任务后再执行任务，即选择目标服务器tomcat等，然后返回结果。</div><div class="post-footer">
+        <a href="/nginx%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/springmvc/">SpringMVC</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-03-10">2021-03-10</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">什么是SpringMVC Spring MVC 是 Spring 提供给 Web 应用的框架设计
-MVC 参考
-首先用户的请求会到达 Servlet，然后根据请求调用相应的 Java Bean，并把所有的显示结果交给 JSP 去完成，这样的模式我们就称为 MVC 模式。
- M 代表 模型（Model） 模型是什么呢？ 模型就是数据，就是 dao,bean V 代表 视图（View） 视图是什么呢？ 就是网页, JSP，用来展示模型中的数据;主要负责接受Servlet传递的内容，调用JavaBean，将内容显示给用户 C 代表 控制器（controller) 控制器是什么？ 控制器的作用就是把不同的数据(Model)，显示在不同的视图(View)上，Servlet 扮演的就是这样的角色。主要负责所有用户的请求参数，判断请求参数是否合法，根据请求的类型调用JavaBean，将最终的处理结果交给显示层显示！    传统的模型层被拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。 在 Service 下可以通过 Spring 的声明式事务操作数据访问层，而在业务层上还允许我们访问 NoSQL ，这样就能够满足异军突起的 NoSQL 的使用了，它可以大大提高互联网系统的性能。
- 特点： 结构松散，几乎可以在 Spring MVC 中使用各类视图 松耦合，各个模块分离 与 Spring 无缝集成   从图 1 可总结出 Spring MVC 的工作流程如下：</div><div class="post-footer">
-        <a href="/springmvc/">Read More</a></div>
+        <a href="/tomcat/">Toncat</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-05-24">2021-05-24</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">Toncat运行原理分析   Tomcat 是一个免费的、开源的、轻量级的 Web 应用服务器。
+  Web项目的本质，是一大堆的资源文件和方法。Web项目没有入口方法(main方法)，，意味着Web项目中的方法不会自动运行起来。
+  Web项目部署进Tomcat的webapp中的目的是很明确的，那就是希望Tomcat去调用 写好的方法去为客户端返回需要的资源和数据。
+  对于Tomcat而言，它并不知道我们会有什么样的方法，这些都只是在项目被部署进webapp下后才确定的，由此分析，必然用到了Java的反射来实现类的动态加载、实例化、获取方法、调用方法。但是我们部署到Tomcat的中的Web项目必须是按照规定好的接口来进行编写，以便进行调用
+  Tomcat如何确定调用什么方法呢。这取却于客户端的请求，http://127.0.0.1:8080/JayKing.Tomcat.Study/index.java?show这样的一个请求，通过http协议，在浏览器发往本机的8080端口，携带的参数show方法，包含此方法的路径为JayKing.Tomcat.Study，文件名为：index.java。
+  HTTP工作原理 浏览器发送给服务端的是一个HTTP格式的请求，HTTP服务器接收到这个请求后，需要调用服务端程序来处理，所谓的服务端程序就是你写的Java类（业务类），一般来说不同的请求需要由不同的Java类来处理。
+图1表示HTTP服务器直接调用具体业务类，他们是紧耦合的
+图2中Http服务器不直接调用业务类，而是将请求交给容器进行处理，容器通过Servlet接口调用业务类。
+功能组件结构 Tomcat 的核心功能有两个，分别是负责接收和反馈外部请求的连接器 Connector，和负责处理请求的容器 Container。其中连接器和容器相辅相成，一起构成了基本的 web 服务 Service。每个 Tomcat 服务器可以管理多个 Service。
+连接器（Connector） 核心功能 一、监听网络端口，接收和响应网络请求。
+二、网络字节流处理。将收到的网络字节流转换成 Tomcat Request 再转成标准的 ServletRequest 给容器，同时将容器传来的 ServletResponse 转成 Tomcat Response 再转成网络字节流。
+连接器模块设计 为满足连接器的两个核心功能，我们需要
+  通讯端点：监听端口；
+  处理器来：处理网络字节流；
+  适配器：将处理后的结果转成容器需要的结构。
+  对应的源码包路径 org.apache.coyote
+容器（Container） 容器结构分析 每个 Service 会包含一个容器。容器由一个引擎可以管理多个虚拟主机。每个虚拟主机可以管理多个 Web 应用。每个 Web 应用会有多个 Servlet 包装器。Engine、Host、Context 和 Wrapper，四个容器之间属于父子关系。</div><div class="post-footer">
+        <a href="/tomcat/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/jdbc/">JDBC</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-02-10">2021-02-10</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">什么是JDBC JDBC API 允许用户访问任何形式的表格数据，尤其是存储在关系数据库中的数据。
-JDBC(Java DataBase Connectivity, 简称JDBC)是Java中用于规范应用程序如何来访问数据库的应用程序接口(API),它提供了查询和更新数据库中数据的方法。
-执行流程：
- 连接数据源，如：数据库。 为数据库传递查询和更新指令。 处理数据库响应并返回的结果。  在Java程序和数据库之间的一个桥梁。
-JDBC架构 两层 三层 JDBC 编程步骤 加载驱动程序：
-1 2 3 4 5  Class.forName(driverClass)//加载MySql驱动Class.forName(&#34;com.mysql.jdbc.Driver&#34;)//加载Oracle驱动Class.forName(&#34;oracle.jdbc.driver.OracleDriver&#34;)  获得数据库连接：
-1  DriverManager.getConnection(&#34;jdbc:mysql://127.0.0.1:3306/imooc&#34;, &#34;root&#34;, &#34;root&#34;);  创建Statement或PreparedStatement对象：
-1 2  conn.createStatement();conn.prepareStatement(sql);  完整实例 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31  package com.</div><div class="post-footer">
-        <a href="/jdbc/">Read More</a></div>
+        <a href="/%E6%A1%86%E6%9E%B6%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/">框架常见面试问题</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2021-05-20">2021-05-20</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>框架学习</a></span></div><div class="content">Spring 、SpringMVC  Spring Bean 的生命周期？ Spring有几种方式定义Bean? Spring两个重要的特性是什么(AOP, IOC), 原理? IOC和DI的关系 依赖注入的方式 Spring中, 你用过@Controller, @Service, @Component注解吗? 他们的作用是什么? (作用一样) 为什么要单独弄出来这么多个作用一样的? @Autowired和@Inject注解都是用来干嘛的, 有什么区别? @RequestBody的原理 springmvc的工作流程 MVC设计模式 SpringMVC 如何将URL映射到指定的方法上 SpringMVC的注解 @HandleMapping接收的是什么  MyBatis  MyBatis中#和$的区别？ MyBatis你写的XML怎么绑定对应的接口？namespace.id  </div><div class="post-footer">
+        <a href="/%E6%A1%86%E6%9E%B6%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/">Read More</a></div>
 </article><ul class="pagination"><li class="page-item active">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -206,7 +191,7 @@ JDBC架构 两层 三层 JDBC 编程步骤 加载驱动程序：
                     <span class="page-link" aria-hidden="true">&hellip;</span>
                 </li><li class="page-item ">
                     <span class="page-link">
-                        <a href="/page/16/">16</a>
+                        <a href="/page/21/">21</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">

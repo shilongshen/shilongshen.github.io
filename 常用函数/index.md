@@ -138,4 +138,11 @@ int[] nums = {1, 3, -1, -3, 5, 3, 6, 7};
 System.out.println(Arrays.toString(a));
 ```
 
+### 将字符数组转换为字符串
+
+```java
+char[]   data={'a','b','c'};   
+String  s=new   String(data);
+```
+
 

@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://shilongshen.github.io/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
-<meta property="og:updated_time" content="2021-03-22T09:54:48+08:00" />
+<meta property="og:updated_time" content="2021-05-28T09:54:48+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
@@ -103,54 +103,78 @@
         alt="/images/avatar.jpg"
         title="/images/avatar.jpg" /></a></div><h1 class="home-title">我的个人博客</h1><div class="links"><a href="https://github.com/shilongshen" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a><a href="mailto:1319144765@qq.com" title="Email" rel=" me"><i class="far fa-envelope fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/___________________________________________________/">训练集、验证集和测试集的区别和联系</a>
+        <a href="/%E5%8D%B7%E7%A7%AF%E6%A0%B8%E7%B1%BB%E5%9E%8B%E7%AE%80%E4%BB%8B/">卷积核类型简介</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考</div><div class="post-footer">
+        <a href="/%E5%8D%B7%E7%A7%AF%E6%A0%B8%E7%B1%BB%E5%9E%8B%E7%AE%80%E4%BB%8B/">Read More</a></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E7%82%B9/">卷积神经网络的特点</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考1
+参考2
+1.稀疏连接 卷积层与下一层的连接数大大减小
+或者可以说是上一层的某一个神经元只影响了下一层的某些神经元，而不是全部神经元
+或者说是下一层的某一神经元只被上一层的某些神经元所影响，而不是全部神经元
+2.参数共享 作为参数的卷积核$w^(l)$对于第$l$层的所有的神经元都是相同的。
+参数共享可以理解为一个卷积核直捕捉输入数据中的一种特定的局部特征，因此，如果要提取多种特征就需要使用多个不同的卷积核。
+3.等变表示  卷积层负责提取特征，采样层负责特征选择，全连接层负责分类
+ </div><div class="post-footer">
+        <a href="/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E7%82%B9/">Read More</a></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/">可控人物图像生成综述</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">1.姿态表示的错误 2.由于身体自遮挡造成的姿态表示的模棱两可 3.稀少的姿态 4.稀少的外观 5.
+从2D的层面来说肢体的遮挡是无可避免的
+ 姿态引导下任务图像生成是计算机视觉领域一个热门的研究方向。该任务的目标为在目标姿态的引导下，在保留源图像外观的基础上进行人物姿态的转变。姿态引导下人物图像生成研究具有广泛的应用价值：例如图像编辑、电影制作、AR技术、虚拟换装、以及数据增强等。在这些应用中，用户通常会关注语义和细节更加丰富的部分，例如脸部和服装的细节。因此对语义信息进行保留以及对细粒度外观特征进行补充对于姿态引导下图像生成模型具有重要的意义。
+姿态引导下的图像生成研究大致可以分为三种方法：全局预测方法、局部映射方法以及混合方法
+全局预测方法 受到图像翻译工作的启发，早期的姿态引导下图像生成研究通常采用了全局预测的方法来直接将源图像姿态直接转换为目标姿态。例如文献【】中提出的模型中采用了具有跳跃连接的U-net进行图像的生成，其中跳跃连接用于前向传递解码特征给编码器。但是这种基于全局预测的方法缺乏捕获相应局部特征的能力，这会导致生成图像中细节的缺失，例如生成平滑的服装或者是变形的姿态。究其原因在于U-net首先文献【】被提出用于解决图像分割问题，其原域的图像与目标域的图像的局部结构是对齐的，解码器的特征映射与编码器的特征映射具有相同的空间分布，属于强约束。而对于姿态转换问题，由于人体非刚性的特点，（由于视角变化或者是姿态变化）输入图像和目标图像具有不同的空间位置，其特征映射是未对齐的，对于未对齐的特征映射则不属于强约束。因此直接使用U-net的跳跃连接只能够为解码器提供未对齐的特征映射，这对于进行姿态转换并不能取得很好的效果。
+ 具体解释：
+假设U-net的结构如上，其中Encoder中进行的是的是源图像$I_s$和目标姿态$P_t$的信息融合，所以Encoder中的特征Encoder feature表示的是源姿态$P_s$和目标姿态$P_t$的一种融合信息（当然还包括了源图像的外观），而latent code可以理解为源图像的姿态已经转变为目标姿态（保留了源图像的外观），因此latent code可以视为生成$I_g$.(需要经过Decoder编码)。所以Encoder feature和latent code（可以理解为Decoder feature）在局部是不对齐的。
+思考一下U-net中的跳跃连接的作用是什么：是为了前向传递Encoder feature，这能够有效的保留源图像中的信息。（保留图像中的局部信息，保留细节）
+但是在姿态引导下的图像生成研究中，前向传递的特征是不对齐的，这会导致导致模型无法很好的捕获局部的信息，使得生成的图像细节的缺失，例如生成平滑的服装或者是变形的姿态
+ 局部映射方法 针对全局预测方法存在的缺陷，文献【】提出了一种改进的特征融合机制，对前向传递的解码器特征进行仿射变换后再传递给编码器。受到该方法的启发，有许多的研究人员采用了局部映射方法来进行姿态引导下的图像生成研究进行细粒度挖掘，例如例如引入薄板样条函数来进一步促进了非线性局部映射、引入了局部注意力机制增强了在局部映射建模中的灵活性、除此之外还有光流法以及3D 建模法等。由于局部映射方法往往需要对应的精确特征来进行细节重构，然而在实际的情况中，图像中人物往往由于视角的变化、遮挡或者姿态变化出现不可见的区域，这会导致源图像和目标图像中的某些部分区域无法对应，这些无法对应的部分就无法使用局部映射方法，这会导致相应部分的生成内容不确定。
+ 常用的局部映射方法：仿射变换，薄板样条，局部注意力机制，光流法，3D建模
+仿射变换和薄板样条不够灵活
+3D建模的计算量太大
+ 混合方法 针对局部映射方法存在的缺陷，混合方法尝试利用另外一个全局预测分支在不对应部分生成新的内容，并与局部映射方法生成的内容相结合。但是现有的混合方法只是尝试在图像级别将生成结果进行混合，中间层的特征融合很少被研究。具体来说全局预测分支通常独立于局部映射方法，这使得两者生成的内容在风格上是不一致的。</div><div class="post-footer">
+        <a href="/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/">Read More</a></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">各种激活函数</a>
     </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
-1 三者的区别  训练集（train set） —— 用于模型拟合的数据样本。 验证集（development set）—— 是模型训练过程中单独留出的样本集，它可以用于调整模型的超参数和用于对模型的能力进行初步评估。  ​ 在神经网络中， 我们用验证数据集去寻找最优的网络深度（number of hidden layers)，或者决定反向传播算法的停止点或者在神经网络中选择隐藏层神经元的数量；
-​ 在普通的机器学习中常用的交叉验证（Cross Validation) 就是把训练数据集本身再细分成不同的验证数据集去训练模型。
- 测试集 —— 用来评估模最终模型的泛化能力。但不能作为调参、选择特征等算法相关的选择的依据。     类别 验证集 测试集     是否被训练到 否 否   作用 用于调超参数，监控模型是否发生过拟合（以决定是否停止训练） 为了评估最终模型泛化能力   使用次数 多次使用，以不断调参 仅仅一次使用   缺陷 模型在一次次重新手动调参并继续训练后所逼近的验证集，可能只代表一部分非训练集，导致最终训练好的模型泛化性能不够 测试集为了具有泛化代表性，往往数据量比较大，测试一轮要很久，所以往往只取测试集的其中一小部分作为训练过程中的验证集     验证集的作用：
-使用验证集是为了 快速调参，也就是用验证集选择超参数（网络层数，网络节点数，迭代次数，学习率这些）。另外用验证集还可以监控模型是否异常（过拟合啦什么的），然后决定是不是要提前停止训练。
-验证集的关键在于 选择超参数，我们手动调参是为了让模型在验证集上的表现越来越好，如果把测试集作为验证集，调参去拟合测试集，就有点像作弊了。
-而测试集既 不参与参数的学习过程，也 不参与参数的选择过程，仅仅用于模型评价。
-验证集的正确打开方式：
-验证集可以看做参与了 “人工调参” 的训练过程</div><div class="post-footer">
-        <a href="/___________________________________________________/">Read More</a></div>
+sigmoid $$ f(z)=\frac{1}{1+e^{-z}} $$
+其图像如下:
+特点  能够将输入的连续实值变换为0到1之间的输出  缺点  在深度神经网络中梯度反向传播是容易造成梯度爆炸和梯度消失  sigmoid导数 $$ f&rsquo;(z)=\frac{e^{-z}}{(1+e^{-z})^2} $$
+其导数图像如下:
+tanh $$ tanh(x)=\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}} $$
+其图像如下:
+特点 解决了sigmoid函数不是zero-centered的问题, 但是梯度消失依旧存在
+导数 $$ tanh&rsquo;(x)=1-(\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}})^2 $$
+导数图像
+Relu $$ Relu(x)=max(0,x) $$
+函数图像
+导数 $$ Relu&rsquo;(x)=\left{ \begin{array}{lr} 1 &amp;x&gt;0 \
+0 &amp;x&lt;0
+ \end{array}  \right. $$
+优点  解决了梯度消失问题 计算速度非常快 收敛速度远快于sigmoid和tanh  缺点  输出的不是zero-centered 有些神经元可能永远不会被激活(Dead ReLU)  不好的参数初始化 学习率过高, 导致网络不幸进入这种情况    Leaky Relu(PRelu) $$ f(x)=max(\alpha x,x) $$</div><div class="post-footer">
+        <a href="/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E8%B0%B1%E5%BD%92%E4%B8%80%E5%8C%96/">谱归一化</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">1. Lipschitz定义 2. Lipschitz常数 3.深度学习中的Lipschitz约束：泛化与生成模型 L约束与泛化 扰动敏感
-记输入为 x，输出为 y，模型为 f，模型参数为 w，记为：
-很多时候，我们希望得到一个“稳健”的模型。何为稳健？一般来说有两种含义，一是对于参数扰动的稳定性，比如模型变成了 fw+Δw(x) 后是否还能达到相近的效果？如果在动力学系统中，还要考虑模型最终是否能恢复到 fw(x)；二是对于输入扰动的稳定性，比如输入从 x 变成了 x+Δx 后，fw(x+Δx) 是否能给出相近的预测结果。
-读者或许已经听说过深度学习模型存在“对抗攻击样本”，比如图片只改变一个像素就给出完全不一样的分类结果，这就是模型对输入过于敏感的案例。
-L约束
-所以，大多数时候我们都希望模型对输入扰动是不敏感的，这通常能提高模型的泛化性能。也就是说，我们希望 ||x1−x2|| 很小时：
-也尽可能地小。当然，“尽可能”究竟是怎样，谁也说不准。于是 Lipschitz 提出了一个更具体的约束，那就是存在某个常数 C（它只与参数有关，与输入无关），使得下式恒成立
-也就是说，希望整个模型被一个线性函数“控制”住。这便是 L 约束了。
-**换言之，在这里我们认为满足 L 约束的模型才是一个好模型。**并且对于具体的模型，我们希望估算出 C(w) 的表达式，并且希望 C(w) 越小越好，越小意味着它对输入扰动越不敏感，泛化性越好。
-神经网络 在这里我们对具体的神经网络进行分析，以观察神经网络在什么时候会满足 L 约束。
-简单而言，我们考虑单层的全连接 f(Wx+b)，这里的 f 是激活函数，而 W,b 则是参数矩阵/向量，这时候 (3) 变为：
-让 x1,x2 充分接近，那么就可以将左边用一阶项近似，得到：
-显然，要希望左边不超过右边，**∂f/∂x 这一项（每个元素）的绝对值必须不超过某个常数。这就要求我们要使用“导数有上下界”的激活函数，不过我们目前常用的激活函数，比如sigmoid、tanh、relu等，都满足这个条件。**假定激活函数的梯度已经有界，尤其是我们常用的 relu 激活函数来说这个界还是 1，因此 ∂f/∂x 这一项只带来一个常数，我们暂时忽略它，剩下来我们只需要考虑 ||W(x1−x2)||。
-多层的神经网络可以逐步递归分析，从而最终还是单层的神经网络问题，而 CNN、RNN 等结构本质上还是特殊的全连接，所以照样可以用全连接的结果。因此，对于神经网络来说，问题变成了：如果下式恒成立，那么 C 的值可以是多少？
-找出 C 的表达式后，我们就可以希望 C 尽可能小，从而给参数带来一个正则化项。</div><div class="post-footer">
-        <a href="/%E8%B0%B1%E5%BD%92%E4%B8%80%E5%8C%96/">Read More</a></div>
+        <a href="/%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E8%B0%83%E6%95%B4/">学习率的调整</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
+目标函数损失值 曲线   曲线 初始时 上扬 [红线]： Solution：初始 学习率过大 导致 振荡，应减小学习率，并 从头 开始训练 。
+  曲线 初始时 强势下降 没多久 归于水平 [紫线]： Solution：后期 学习率过大 导致 无法拟合，应减小学习率，并 重新训练 后几轮 。
+  曲线 全程缓慢 [黄线]： Solution：初始 学习率过小 导致 收敛慢，应增大学习率，并从头 开始训练。
+  </div><div class="post-footer">
+        <a href="/%E5%AD%A6%E4%B9%A0%E7%8E%87%E7%9A%84%E8%B0%83%E6%95%B4/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/convolutional-neural-network-architecture-for-geometric-matching/">Convolutional neural network architecture for geometric matching</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-10-13">2020-10-13</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">it is empty!</div><div class="post-footer">
-        <a href="/convolutional-neural-network-architecture-for-geometric-matching/">Read More</a></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/gan%E7%9A%84%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/">GAN的训练技巧总结</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-10-13">2020-10-13</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
-参考</div><div class="post-footer">
-        <a href="/gan%E7%9A%84%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/">Read More</a></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E7%89%9B%E5%AE%A2%E7%BD%91%E9%94%99%E9%A2%98%E6%95%B4%E7%90%86/"></a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="0001-01-01">0001-01-01</time></span></div><div class="content">下列说法正确的是（A B）  链接
-1 2 3 4  A JAVA程序的main方法必须写在类里面B JAVA程序中可以有多个名字为main方法 --&gt;main方法重载，C JAVA程序中类名必须与文件名一样 --&gt;内部类可以不同D JAVA程序的main方法中，如果只有一条语句，可以不用{}（大括号）括起来  Java是一门支持反射的语言,基于反射为Java提供了丰富的动态性支持，下面关于Java反射的描述，哪些是错误的：( A D F )  链接
-1 2 3 4 5 6  A Java反射主要涉及的类如Class, Method, Filed,等，他们都在java.lang.reflet包下B 通过反射可以动态的实现一个接口，形成一个新的类，并可以用这个类创建对象，调用对象方法C 通过反射，可以突破Java语言提供的对象成员、类成员的保护机制，访问一般方式不能访问的成员D Java反射机制提供了字节码修改的技术，可以动态的修剪一个类E Java的反射机制会给内存带来额外的开销。例如对永生堆的要求比不通过反射要求的更多F Java反射机制一般会带来效率问题，效率问题主要发生在查找类的方法和字段对象，因此通过缓存需要反射类的字段和方法就能达到与之间调用类的方法和访问类的字段一样的效率  1 2 3 4 5 6  A：Class类在java.lang包下，错；B：动态代理可以通过接口与类实现，通过反射形成新的代理类，这个代理类增强了原来类的方法。对；C：反射可以强制访问private类型的成员，对；D：反射并不能对类进行修改，只能对类进行访问，错；E：反射机制对永生堆要求较多，对；F：即使使用换成，反射的效率也比调用类的方法低，错；  下面有关forward和redirect的描述，正确的是(B C D) ？  链接</div><div class="post-footer">
-        <a href="/%E7%89%9B%E5%AE%A2%E7%BD%91%E9%94%99%E9%A2%98%E6%95%B4%E7%90%86/">Read More</a></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/"></a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="0001-01-01">0001-01-01</time></span></div><div class="content"></div><div class="post-footer">
-        <a href="/%E7%AE%97%E6%B3%95%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%92%8C%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90/">Read More</a></div>
+        <a href="/%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%9C%80%E5%A4%A7%E5%90%8E%E9%AA%8C%E4%BC%B0%E8%AE%A1%E4%BB%A5%E5%8F%8A%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%85%AC%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/">最大似然估计、最大后验估计以及贝叶斯公式的理解</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">概率和统计的区别？
+概率（probabilty）和统计（statistics）看似两个相近的概念，其实研究的问题刚好相反。
+概率研究的问题是，已知一个模型和参数，怎么去预测这个模型产生的结果的特性（例如均值，方差，协方差等等）。 举个例子，我想研究怎么养猪（模型是猪），我选好了想养的品种、喂养方式、猪棚的设计等等（选择参数），我想知道我养出来的猪大概能有多肥，肉质怎么样（预测结果）。
+统计研究的问题则相反。统计是，有一堆数据，要利用这堆数据去预测模型和参数。仍以猪为例。现在我买到了一堆肉，通过观察和判断，我确定这是猪肉（这就确定了模型。在实际研究中，也是通过观察数据推测模型是／像高斯分布的、指数分布的、拉普拉斯分布的等等），然后，可以进一步研究，判定这猪的品种、这是圈养猪还是跑山猪还是网易猪，等等（推测模型参数）。
+一句话总结：概率是已知模型和参数，推数据。统计是已知数据，推模型和参数。
+显然，本文解释的MLE和MAP都是统计领域的问题。它们都是用来推测参数的方法。为什么会存在着两种不同方法呢？ 这需要理解贝叶斯思想。我们来看看贝叶斯公式。
+什么是贝叶斯公式？ &hellip;
+极大似然估计 极大似然估计，通俗 理解来说，就是利用已知的样本结果信息，反推最具有可能（最大概率）导致这些样本结果出现的模型参数值！
+换句话说，极大似然估计提供了一种给定观察数据来评估模型参数的方法，即：“模型已定，参数未知”。（给定样本来推测模型的参数）
+极大后验估计 </div><div class="post-footer">
+        <a href="/%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%9C%80%E5%A4%A7%E5%90%8E%E9%AA%8C%E4%BC%B0%E8%AE%A1%E4%BB%A5%E5%8F%8A%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%85%AC%E5%BC%8F%E7%9A%84%E7%90%86%E8%A7%A3/">Read More</a></div>
 </article><ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -168,6 +192,20 @@ L约束
                 </li><li class="page-item active">
                     <span class="page-link">
                         <a href="/page/16/">16</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/17/">17</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/18/">18</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link" aria-hidden="true">&hellip;</span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/21/">21</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">

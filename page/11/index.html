@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://shilongshen.github.io/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
-<meta property="og:updated_time" content="2021-03-22T09:54:48+08:00" />
+<meta property="og:updated_time" content="2021-05-28T09:54:48+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
@@ -103,49 +103,80 @@
         alt="/images/avatar.jpg"
         title="/images/avatar.jpg" /></a></div><h1 class="home-title">我的个人博客</h1><div class="links"><a href="https://github.com/shilongshen" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a><a href="mailto:1319144765@qq.com" title="Email" rel=" me"><i class="far fa-envelope fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">python学习笔记</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">map 函数 1 2 3 4 5 6 7  #map 函数 接收一个函数和一个序列 &gt;&gt;&gt; def f(x): ... return x * x ... &gt;&gt;&gt; r = map(f, [1, 2, 3, 4, 5, 6, 7, 8, 9]) &gt;&gt;&gt; list(r) [1, 4, 9, 16, 25, 36, 49, 64, 81]   filter 函数 1 2 3  #filter 函数 #filter()把传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该元素。   匿名函数 1 2 3 4 5 6 7  #匿名函数 lambda x:x*x #等价于 def f(x): return x*x #关键字lambda表示匿名函数，冒号前面的x表示函数参数。 #匿名函数有个限制，就是只能有一个表达式，不用写return，返回值就是该表达式的结果。   函数的装饰器 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19  #首先需要明确函数可以作为参数传递给其他函数 #函数也可以作为其他函数的返回值 #装饰器的作用就是为已经存在的对象添加额外的功能。 #简单的装饰器使用 def use_logging(func): def wrapper(): print(&#39;nihao&#39;) return func() # 把 foo 当做参数传递进来时，执行func()就相当于执行foo() return wrapper def foo(): print(&#39;i am foo&#39;) foo = use_logging(foo) # 因为装饰器 use_logging(foo) 返回的时函数对象 wrapper，这条语句相当于 foo = wrapper foo() # 执行foo()就相当于执行 wrapper() &gt;&gt;nihao i am foo   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  # @ 符号就是装饰器的语法糖，它放在函数开始定义的地方，这样就可以省略最后一步再次赋值的操作。 def use_logging(func): def wrapper(): print(&#39;nihao&#39;) return func() return wrapper @use_logging def foo(): print(&#34;i am foo&#34;) foo() &gt;&gt;nihao i am foo #如上所示，有了 @ ，我们就可以省去foo = use_logging(foo)这一句了，直接调用 foo() 即可得到想要的结果。   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19  #装饰器在 Python 使用如此方便都要归因于 Python 的函数能像普通的对象一样能作为参数传递给其他函数，可以被赋值给其他变量，可以作为返回值，可以被定义在另外一个函数内。 #可能有人问，如果我的业务逻辑函数 foo 需要参数怎么办？比如： def foo(name): print(&#34;i am %s&#34; % name) 我们可以在定义 wrapper 函数的时候指定参数： def use_logging(func): def wrapper(*arg,**kw): print(&#39;nihao&#39;) return func(*arg,**kw) return wrapper @use_logging def foo(*arg,**kw): print(&#34;i am foo&#34;) foo()   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24  #装饰器还有更大的灵活性，例如带参数的装饰器 def use_logging(level): def decorator(func): def wrapper(*args, **kwargs): if level == &#34;warn&#34;: print(&#39;nihao&#39;) elif level == &#34;info&#34;: print(&#39;china&#39;) return func(*args) return wrapper return decorator @use_logging(level=&#34;warn&#34;) def foo(name=&#39;foo&#39;): print(&#34;i am %s&#34; % name) foo() &gt;&gt;nihao i am foo #上面的 use_logging 是允许带参数的装饰器。它实际上是对原有装饰器的一个函数封装，并返回一个装饰器。我们可以将它理解为一个含有参数的闭包。当我 们使用@use_logging(level=&#34;warn&#34;)调用的时候，Python 能够发现这一层的封装，并把参数传递到装饰器的环境中。 @use_logging(level=&#34;warn&#34;) 等价于 @decorator   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18  #没错，装饰器不仅可以是函数，还可以是类，相比函数装饰器，类装饰器具有灵活度大、高内聚、封装性等优点。使用类装饰器主要依靠类的__call__方法，当使用 @ 形式将装饰器附加到函数上时，就会调用此方法。 class Foo(object): def __init__(self, func): self.</div><div class="post-footer">
-        <a href="/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Read More</a></div>
+        <a href="/correspondence-networks-with-adaptive-neighbourhood-consensus/">Correspondence Networks with Adaptive Neighbourhood Consensus</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文提出了一种建立两张图像间密集语义对应关系的模型（ANC-Net）,
+ non-isotrppic（非各向同性） 4D convolution kernel &ndash; 核心， multi-scale self-similarity module orthogonal loss  ANC-Net 以两张图像作为输入，输出为4D correlation map &ndash; 包含两张图像间所有可能匹配的匹配分数。
+Method 网络结构如图所示。
+ 输入$(I^s,I^t)$ feature extractor $\mathcal{F}$ -&gt;输出 $F^s$和$F^t$ multi-scale self-similarity $\mathcal{S}$ -&gt;输出 multi-scale self-similarity $S^s$和$S^t$-&gt;captures the complex self-similarity feature map We can then obtain the 4D correlation map $C_s$ from $S^s$ and $S^t$ , and the 4D correlation map $C_f$ from $F^s$ and $F^t$ . However, $C_s$ and $C_f$ are often noisy as they lack the constraints to enforce the correspondence validity, and thus are unreliable for directly extracting correspondences.</div><div class="post-footer">
+        <a href="/correspondence-networks-with-adaptive-neighbourhood-consensus/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">pytorch学习笔记</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">tensor的一些性质
-1 2 3 4 5  import torch x=torch.tensor(2.5) print(x.dtype) &gt;&gt;torch.float32#torch默认的数据类型为float32   数据类型包括：
-1 2 3 4  #如何将tensor的数据类型转换？ #在Tensor后加 .long(), .int(), .float(), .double()等即可 x.half() &gt;&gt;tensor(2.5000, dtype=torch.float16)   1 2 3 4 5 6 7  #将numpy.ndarray转换为tensor: a=numpy.array([1,2,3]) a.dtype &gt;&gt;dtype(&#39;int32&#39;) t=torch.from_numpy(a) t &gt;&gt;tensor([1, 2, 3], dtype=torch.int32)   1 2 3 4 5  #torch.zeros_like(input)-&gt;生成一个与input相同size的零矩阵,同理还有torch.ones_like(input);torch.randn_like(input) input=torch.ones(2,3) torch.zeros_like(input) &gt;&gt;tensor([[0., 0., 0.], [0., 0., 0.]])   1 2 3 4 5 6  #torch.</div><div class="post-footer">
-        <a href="/pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Read More</a></div>
+        <a href="/cross-domain-correspondence-learning-for-exemplar-based-image-translation/">Cross-domain Correspondence Learning for Exemplar-based Image Translation</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文提出了一种新颖的图像翻译网络框架。
+cross-domain correspondence network： 网络的输入为style input和content input，由于style input和content input在结构上是不对齐的，为了建立style input和content input之间的对应关系，提出了一种cross-domain correspondence network,如图所示：
+该部分首先通过特征金字塔网络提取多尺度图像特征（这能够利用到局部和全局的图像内容），之后将提取到的多尺度特征通过下采样网络映射到相同的域$S$中（只有当$x_s$和$y_s$在同一个域时才能用某种相似性度量方法进行匹配（对齐））。数学表达式如下： $$ x_s=\mathcal{F}{A\rightarrow S}(x_A;\theta{A\rightarrow S}) \quad x_s\in\mathbb{R}^{HW \times C}\
+y_s=\mathcal{F}{B\rightarrow S}(x_B;\theta{B\rightarrow S}) \quad y_s\in\mathbb{R}^{HW \times C} $$ 接下来使用空间自注意力机制操作计算$x_s$与$y_s$间pixel与pixel之间的相关性，如下图所示:
+translation network： cross-domain correspondence network的输出视为将content input warping 之后的结果，translation network采用了类似style GAN的网络结构，如下图所示：
+与style GAN不同的是，这里将AdaIN模块进行了替换，替换的模块为SPADE block与PN的结合，表达式为： $$ \alpha {h,w}^i(r{y \rightarrow x}) \times\frac{F_{c,h,w}^i-\mu_{h,w}^i}{\sigma_{h,w}^i}+\beta_{h,w}^i(r_{y \rightarrow x}) $$ $F_{c,h,w}^i$为输入值，注意此处的统计特征$\mu_{h,w}^i$和$\sigma_{h,w}^i$是在空间方向进行统计的，目的是为了保存$r_{y \rightarrow x}$的结构信息。
+损失函数： 该文采用了无监督的训练方式。
+总的网络结构： </div><div class="post-footer">
+        <a href="/cross-domain-correspondence-learning-for-exemplar-based-image-translation/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/semantic-hierarchy-emerges-in-deep-generative-representations-for-scene-synthesis/">Semantic Hierarchy Emerges in Deep Generative Representations for Scene Synthesis</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">GAN的可解释性研究：从latent space出发 latent space的优点：  语义最高级-包含丰富的语义信息 维度比较低-比较好控制 可通过解码器生成image-可唯一确定image  assumptions  code连续变化时，生成图片也在连续变化-不会发生跳变 基于上一观点的基础上，latent space线性可分-可认为latent space中有一个超平面，latent code越过超平面后，相应的属性会发生变化。  </div><div class="post-footer">
-        <a href="/semantic-hierarchy-emerges-in-deep-generative-representations-for-scene-synthesis/">Read More</a></div>
+        <a href="/deep-image-spatial-transformation-for-person-image-generation/">Deep Image Spatial Transformation for Person Image Generation</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">姿态引导下的图像生成研究就是要在保留原图像外观的同时将原图像中人物的姿态转换为目标姿态。这一任务需要对原图像进行空间转换。但实际上基于卷积的神经网络更擅长于特征的提取而不擅长于特征的空间转换，所以单纯的使用卷积神经网络并不能很好的完成这一任务。
+这篇文章提出了一种global-flow local-attention 模型进行姿态应引导下的图像生成研究。具体来说第一步使用全局流场估计器计算原图像和目标图像之间的全局相关性，以此来预测flow fileds。第二步为使用从feature maps提取出来的flowed local patch pairs来计算局部注意力系数。第三步为使用局部注意力机制作为content aware sampling method来进行图像的外观渲染。
+ 该文将注意力机制和流场操作相结合，使得每一个输出位置只与原图像的局部特征块相关
+将目标图像视为原图像的变形结果
+该文的观点是将目标图像视为原图像的变形结果，每一个输出位置只与原图像的局部特征相关。
+ Introduction 图像的空间转换可以用于解决许多输入图像和目标图像空间不对齐的图像生成任务，这些不对齐可能是由于姿态变换或者是视角的变换。这一类任务包括了姿态引导下的图像生成研究
+卷积神经网络使用共享参数的卷积核来计算输出，这也是卷积神经网络的一个重要特性，称为平移等变（equivariance to transformation），这意味着当输入发生平移空间变化时，输出也会发生平移相同的空间变化。这一特性对于输入输出的空间结构是对齐的任务来说是十分有益的，例如图像分割，图像检测以及图像翻译。但是这一特性也限制了卷积神经网络对输入数据进行空间变换。
+ 卷积神经网络具有平移等变得性质，但是并不能够对旋转、缩放等操作具有等变性，特别是对于人体这种非刚体，卷积神经网络并不能对输入数据进行空间变换
+ STN的通过引入空间转换模块来解决这一问题，该模块对全局转换参数进行回归，并通过仿射转换来扭曲输入特征。但是，由于它假定了源和目标之间的全局仿射变换，因此该方法无法处理非刚性对象的变换。
+注意力机制通过利用非局部信息，建立特征之间的长程依赖。但是对于空间转换任务，目标图像和原图像在空间上是不对齐的，每一个输出图像上位置与原图像上的位置有明确的对应关系。因此原图像和目标图像之间的注意力权重矩阵应该是一个稀疏矩阵。
+基于流场的操作通过为每一个输出位置采样一个局部的原图像块会迫使注意力权重矩阵变为稀疏矩阵。这些方法预测二维坐标偏移量，指定可以对源中的哪些位置进行采样以生成目标。
+然而为了稳定训练，大多数的基于流场的方法会在像素级别扭曲数据，这会限制模型生成新的内容。由于需要生成全分辨率流场，因此难以提取大的运动。在特征级别进行输入数据的扭曲能够解决这一问题，然而，这些网络很容易陷入局部最小值由于以下两个原因：（1）输入特征和流场相互限制。没有准确的流场，输入特征无法获得合理的梯度，没有如果没有合理的特征，网络也无法提取相似性以生成正确的流场。（2）常用的双线性采样方法提供的不良梯度传播进一步导致训练中的不稳定。
+Approach 对于姿态引导下的图像生成研究，目标图像是原图像的变形结果，这意味着目标图像中的每一个点是与原图像中的某个特定的局部区域唯一对应。
+该文设计了global-flow local-attention 网络结构来合理的对原图像特征进行采样和重构。网络包含两个部分：全局流场估计器F和局部自然纹理渲染器G。F负责估计原图像和目标图像的运动（差别），其生成全局流场w和二进制掩模m。利用w和m，G利用局部注意力模块将原图像的纹理渲染在目标图像。
+Global Flow Filed Estimator $$ w,m=F(x_s,p_s,p_t) $$
+其中$x_s$表示原图像，$p_s$表示原图像姿态，$p_t$表示目标姿态。$w$包含了原图像和目标图像的坐标偏移量。$m$的值在0至1之间，表示原图像中是否存在目标位置的信息。F为全卷积网络，w和m权重共享。
+由于真实的坐标偏移量是未知的，这里使用了sampling correctness loss来计算$w$。$v_s,v_t$分别表示原图像和目标图像通过预训练的VGG19的特定层提取出来的特征。$v_{s,w}=w(v_s)$表示$v_s$通过$w$转换之后的结果。sampling correctness loss计算$v_{s,w}$和$v_t$之间的余弦相似性。 $$ \mathcal{L}_c=\frac{1}{N}\sum_{l\in \Omega}exp(-\frac{\mu(v_{s,w}^l,v_t^l)}{\mu_{max}^l}) $$ $\mu$表示余弦相似度。$\Omega$表示特征图中的所有的N个点，$l$表示其中的一个点$(x,y)$。$\mu_{max}^l$表示正则项。也就是说需要对**所有的点**计算余弦相似度，然后再求平均值。
+​	sampling correctness loss能够限制流场采样语义相关的区域。由于图像领域之间的变形是高度相关的，如果能够将这种关系提取出来是十分有益的，因此进一步在流场中添加了正则项。令$c_t$表示目标特征的二位坐标。$\mathcal{N}(c_t,l)$表示$c_t$的$n\times n$个领域图像块，假设$\mathcal{N}(c_t,l)$和$\mathcal{N}(c s,l)$之间的变换为仿射变换 $$ T_l=A_l S_l $$ $T_l$表示$\mathcal{N}(C_l,l)$的坐标集合，$S_l$表示$\mathcal{N}(c_s,l)$的坐标集合，$A_l$表示仿射参数，通过最小二乘法计算出来 $$ \hat{A_l}=(S_l^HS_l)^{-1}S_l^HT_l $$ 因此正则损失函数为 $$ \mathcal{L}r=\sum{l\in\Omega}|| T_l-\hat{A}_lS_l ||^2 $$</div><div class="post-footer">
+        <a href="/deep-image-spatial-transformation-for-person-image-generation/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/semantic-image-synthesis-with-spatially-adaptive-normalization/">Semantic Image Synthesis with Spatially-Adaptive Normalization</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">SPADE 为一个新颖的网络归一化层。
-SPADE和AdaIN十分的相似，不同的是利用了batch norm进行归一化，类似的使用segmentation mask来提取调剂参数。这能够更好的保存segmentation mask的语义信息。
-其中$\gamma_{c,y,x}^i(m)$和$\beta_{c,y,x}^i(m)$是归一化层的调剂参数，它与输入语义图有关并会随着位置$(y,x)$变化
-SPADE生成器网络结构 why does the SPADE work better? 传统的生成器以segmentation mask（有不同的标签）直接作为网络的输入，经过卷积层和归一化层处理。无论输入的segmentation mask的标签的怎样的，当卷积层的输出经过归一化层处理后，其均值为0，因此其语义信息就会丢失。
-而在SPADE中，语义图经过卷积操作映射成为调剂参数，而没有经过归一化层处理。仅仅只有上一层的激活值被归一化了。因此SPADE能够更好的保存语义信息。</div><div class="post-footer">
-        <a href="/semantic-image-synthesis-with-spatially-adaptive-normalization/">Read More</a></div>
+        <a href="/deep-sketch-guided-cartoon-video-synthesis/">Deep Sketch-guided Cartoon Video Synthesis</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该工作为根据提供的两张视频帧和草图，来来生成连续的视频帧。
+  将粗糙的草图进行简化，提取出主要的结构
+  建立草图与图像之间的语义对应关系：
+2.1 通过以两帧图片为条件的transformation module来将草图中的大部分空白区域进行填充，
+2.2 然后通过来两个独立的特征提取模块将图像和草图映射到一个common space
+2.3 为了解决遮挡问题，通过两张图像间光流来估计occlusion mask,并通过blending module使用mask来动态的从两帧之间挑选和结合像素。（合成与草图空间结构一样的视频帧）
+  利用 arbitrary-time frame interpolation module生成任意中间的视频帧
+  利用video post processing进一步改善结果
+Sketch Simplification and Generation   由于草图可能是粗糙且随意的，所以通过该模块来将草图多余的细节清除，只留下清晰的线条。采用的是现有的方法。
+Sketch-guided Frame Synthesis 2.1 通过以两帧图片为条件的transformation module来将草图中的大部分空白区域进行填充： The transformer consists of several dilated residual
+2.2 然后通过来两个独立的特征提取模块将图像和草图映射到一个common space 2.3 利用现有的光流预测模型预测光流，注意：预测的光流为双向光流：$f_{0-t}，f_{t-1}$。 损失函数：</div><div class="post-footer">
+        <a href="/deep-sketch-guided-cartoon-video-synthesis/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/">SieveNet: A Unified Framework for Robust Image-Based Virtual Try-On</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">two-stage spatial-transformer - to capture fine details in the geometric iwarping stage conditional segmentation mask generation module - to prevent garment textures from bleeding onto skin and other areas. perceptual geometric matching loss - to impove warping output duelling triplet loss strategy - to improve output from the translation network  inputs   $I_P$ : try-on cloth image
-  $I_{priors}$ : 19 channel pose and body-shape map</div><div class="post-footer">
-        <a href="/sievenet_-a-unified-framework-for-robust-image-based-virtual-try-on/">Read More</a></div>
+        <a href="/fashion-editing-with-adversarial-parsing-learning/">Fashion Editing with Adversarial Parsing Learning</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文为人物的时尚编辑
+网络包含三个部分：
+  Free-form Parsing Network
+  Parsing-aware Inpainting Network
+  Attention Normalization Layers
+   Free-form Parsing Network  给定不完整的人体语义分析图以及任意的草图和笔画，能够合成完整的人体语义分析图。  网络结构 ： U-net
+输入：
+  an incomplete parsing map,
+ 2. a binary sketch that describes the structure of the removed region 3. a noise sampled from the Gaussian distribution, 4. sparse color strokes 5. a mask.    注意：相同的incomplete parsing map和不同的sketch和strokes能够合成不同的parsing map,这意味这parsing generation model是可控的。</div><div class="post-footer">
+        <a href="/fashion-editing-with-adversarial-parsing-learning/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/soft-gatedwarping-gan-for-pose-guided-person-image-synthesis/">Soft-GatedWarping-GAN for Pose-Guided Person Image Synthesis</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">target parsing:在特定的segmentation 区域进行纹理的渲染
-warping block ：align the image features
- 通过仿射变换和TSP计算出transformation map用于warping condition image以减缓姿态不对齐问题
-  第一阶段生成目标姿态的part segmentation map
-第二阶段首先训练geometric matcher 来估计condition segmentation和synthesized segmentation的transformation 参数。基于这个参数将condition image 的feature map进行warping，并渲染到target segmentation map
-warping GAN的好处：1）如果存在大的姿态变换就会进行大的transformation，小的姿态变形就会进行小的transformation
-2）在feature-level进行warping，能够合成更加真实的图片
-3）warping block 能够通过attention layers自动选择有效的feature map 进行warping
- Stage I: Pose-Guided Parsing
-为了在part-level上学习condition image到target pose之间的映射，引入了pose-guide parser. Geometric Matcher 将仿射变换和TPS相结合，通过孪生卷积神经网络来获得transformation map。
-首先估计condition segmentation 和synthesized segmentation之间的仿射参数，基于仿射变换参数，估计经过仿射变换后的warping result和target parsing之间的TPS参数。
-提取出来的transformation map用于warping条件图像的feature，减缓不对齐问题。
-Soft-gatedWarping-Block  网络结构
- 消融实验</div><div class="post-footer">
-        <a href="/soft-gatedwarping-gan-for-pose-guided-person-image-synthesis/">Read More</a></div>
+        <a href="/gan%E8%AE%AD%E7%BB%83%E4%B8%AD%E7%94%9F%E6%88%90%E5%99%A8%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%98%E5%8C%96%E5%BA%94%E8%AF%A5%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84/">GAN训练中生成器损失函数的变化应该是怎么样的？</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
+注意到图c，此时生成器的损失函数是平稳上升的，训练过程是稳定的（在实际的GAN训练过程中，生成器的损失函数是上升的，判别器的损失函数是下降的？还是生成器和判别器的损失函数最终都是下降的？）从该论文的观点来看似乎是前者是正确的。
+但是可以肯定的是，如果生成器的损失函数出现了a，b的情况就表示GAN的训练过程是不稳定的。
+ DCGAN验证实验 code
+实验1：没有进行谱归一化 训练过程中损失函数的变化：
+真实图像和生成图像的对比：
+从损失函数的变化来看，生成器的损失函数是逐渐增大的，而判别器的损失函数似乎并没有发生多大的变化。从生成图像来看，生成的图像虽然不太逼真，但是似乎并没有发生模型崩溃的情况，似乎可以认定训练过程是稳定的。</div><div class="post-footer">
+        <a href="/gan%E8%AE%AD%E7%BB%83%E4%B8%AD%E7%94%9F%E6%88%90%E5%99%A8%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%98%E5%8C%96%E5%BA%94%E8%AF%A5%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84/">Read More</a></div>
 </article><ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -176,7 +207,7 @@ Soft-gatedWarping-Block  网络结构
                     <span class="page-link" aria-hidden="true">&hellip;</span>
                 </li><li class="page-item ">
                     <span class="page-link">
-                        <a href="/page/16/">16</a>
+                        <a href="/page/21/">21</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">

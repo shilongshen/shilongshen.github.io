@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>B树、B&#43;树和红黑树 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="B树、B&#43;树和红黑树" />
+<meta property="og:description" content="B树 2-3树和2-3-4树 多路查找树，其每个节点的孩子数可以多于两个，且每一个结点处可以存储多个元素，所有的元素之间存在某种特定的排序关系。
+ 首先聊一聊2-3树：    每个节点具有两个孩子（2结点）或 三个孩子（3结点）
+  2结点具有一个元素和两个孩子（或没有孩子），左子树元素小于该元素，右子树元素大于该元素。这个2节点要么没有孩子，要有就有两个，不能只有一个孩子。
+  3结点具有两个元素和三个孩子（或没有孩子），左子树元素小于较小元素，右子树元素大于较大元素，中子树包含介于两元素之间的元素。这个3节点要么没有孩子，要有就有3个。
+  2-3树中的所有叶子都在一个层次上。
+  同理，2-3-4树是2-3树的拓展，包括了4结点的使用。一个4结点包含了小中大三个元素和四个孩子（或没有孩子）
+而2-3树和2-3-4树都是B树的特例
+2-3树的插入和删除 再聊一聊2-3树的插入和删除操作  插入操作：与二叉排序树相同，插入操作一定是发生在叶子结点的。
+  对于空树，直接插入一个2结点
+  对于2结点的插入：直接将2结点转换为3结点即可
+  对于3结点的插入一个新元素：因为3结点本身已经是2-3树结点的最大容量，因此需要将其拆分，将树中两元素或插入元素的三者中选择其一向上移动一层。
+例如插入元素5，需要将6向上移动一层
+  删除操作：
+  所删除元素位于一个3结点的叶子节点上，直接将该节点删除
+  所删除的元素位于一个2结点的叶子节点上，分为4种情况
+   此节点的父结点也是2结点，且拥有一个3结点的右孩子  例如删除结点1，只需要进行左旋，让6成为父节点，4成为6的左孩子，7为6的右孩子
+ 此节点的父结点也是2结点，且拥有一个2结点的孩子    此节点的父结点是3结点
+  当前树是一颗满二叉树
+  所删除元素位于非叶子结点。此时通常是将树按中序遍历后得到此元素的前驱或后继元素，考虑让他们来补位即可   描述一颗B树时需要指定它的阶数
+每一个结点都可以存储多个数据，我们可以进一步的将其细分为
+B&#43;树 B&#43;树的优点   单一节点存储更多的元素，使得查询的IO次数更少。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2021-04-23T09:54:48+08:00" />
+<meta property="article:modified_time" content="2021-04-23T09:54:48+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="B树、B&#43;树和红黑树"/>
+<meta name="twitter:description" content="B树 2-3树和2-3-4树 多路查找树，其每个节点的孩子数可以多于两个，且每一个结点处可以存储多个元素，所有的元素之间存在某种特定的排序关系。
+ 首先聊一聊2-3树：    每个节点具有两个孩子（2结点）或 三个孩子（3结点）
+  2结点具有一个元素和两个孩子（或没有孩子），左子树元素小于该元素，右子树元素大于该元素。这个2节点要么没有孩子，要有就有两个，不能只有一个孩子。
+  3结点具有两个元素和三个孩子（或没有孩子），左子树元素小于较小元素，右子树元素大于较大元素，中子树包含介于两元素之间的元素。这个3节点要么没有孩子，要有就有3个。
+  2-3树中的所有叶子都在一个层次上。
+  同理，2-3-4树是2-3树的拓展，包括了4结点的使用。一个4结点包含了小中大三个元素和四个孩子（或没有孩子）
+而2-3树和2-3-4树都是B树的特例
+2-3树的插入和删除 再聊一聊2-3树的插入和删除操作  插入操作：与二叉排序树相同，插入操作一定是发生在叶子结点的。
+  对于空树，直接插入一个2结点
+  对于2结点的插入：直接将2结点转换为3结点即可
+  对于3结点的插入一个新元素：因为3结点本身已经是2-3树结点的最大容量，因此需要将其拆分，将树中两元素或插入元素的三者中选择其一向上移动一层。
+例如插入元素5，需要将6向上移动一层
+  删除操作：
+  所删除元素位于一个3结点的叶子节点上，直接将该节点删除
+  所删除的元素位于一个2结点的叶子节点上，分为4种情况
+   此节点的父结点也是2结点，且拥有一个3结点的右孩子  例如删除结点1，只需要进行左旋，让6成为父节点，4成为6的左孩子，7为6的右孩子
+ 此节点的父结点也是2结点，且拥有一个2结点的孩子    此节点的父结点是3结点
+  当前树是一颗满二叉树
+  所删除元素位于非叶子结点。此时通常是将树按中序遍历后得到此元素的前驱或后继元素，考虑让他们来补位即可   描述一颗B树时需要指定它的阶数
+每一个结点都可以存储多个数据，我们可以进一步的将其细分为
+B&#43;树 B&#43;树的优点   单一节点存储更多的元素，使得查询的IO次数更少。"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" /><link rel="prev" href="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" /><link rel="next" href="https://shilongshen.github.io/git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "B树、B+树和红黑树",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91\/"
+        },"genre": "posts","wordcount":  107 ,
+        "url": "https:\/\/shilongshen.github.io\/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91\/","datePublished": "2021-04-23T09:54:48+08:00","dateModified": "2021-04-23T09:54:48+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">B树、B&#43;树和红黑树</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>数据结构和算法</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-04-23">2021-04-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;107 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#b树">B树</a>
+      <ul>
+        <li><a href="#2-3树和2-3-4树">2-3树和2-3-4树</a>
+          <ul>
+            <li><a href="#2-3树的插入和删除">2-3树的插入和删除</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#b树-1">B+树</a>
+      <ul>
+        <li><a href="#b树的优点">B+树的优点</a></li>
+        <li><a href="#b树和b树的区别">B+树和B树的区别</a>
+          <ul>
+            <li>
+              <ul>
+                <li><a href="#为什么索引结构默认使用b树而不是b-treehash哈希二叉树红黑树">为什么索引结构默认使用B+树，而不是B-Tree，Hash哈希，二叉树，红黑树？</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#红黑树">红黑树</a>
+      <ul>
+        <li><a href="#红黑树与2-3树间的关系">红黑树与2-3树间的关系</a></li>
+        <li><a href="#红黑树的5条特性">红黑树的5条特性</a></li>
+        <li><a href="#变色和旋转">变色和旋转</a></li>
+        <li><a href="#左倾红黑树的插入操作">左倾红黑树的插入操作</a></li>
+        <li><a href="#左倾红黑树的删除操作">左倾红黑树的删除操作</a></li>
+        <li><a href="#讨论">讨论</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="b树">B树</h1>
+<h2 id="2-3树和2-3-4树">2-3树和2-3-4树</h2>
+<p>多路查找树，其每个节点的孩子数可以多于两个，且<strong>每一个结点处可以存储多个元素</strong>，所有的元素之间存在某种特定的排序关系。</p>
+<ol>
+<li>首先聊一聊2-3树：</li>
+</ol>
+<ul>
+<li>
+<p>每个节点具有两个孩子（2结点）或 三个孩子（3结点）</p>
+</li>
+<li>
+<p><strong>2结点具有一个元素和两个孩子</strong>（或没有孩子），左子树元素小于该元素，右子树元素大于该元素。这个2节点要么没有孩子，要有就有两个，不能只有一个孩子。</p>
+</li>
+<li>
+<p>3结点具有两个元素和三个孩子（或没有孩子），左子树元素小于较小元素，右子树元素大于较大元素，中子树包含介于两元素之间的元素。这个3节点要么没有孩子，要有就有3个。</p>
+</li>
+<li>
+<p>2-3树中的所有叶子都在一个层次上。</p>
+</li>
+</ul>
+<p>同理，2-3-4树是2-3树的拓展，包括了4结点的使用。一个4结点包含了小中大三个元素和四个孩子（或没有孩子）</p>
+<p><strong>而2-3树和2-3-4树都是B树的特例</strong></p>
+<h3 id="2-3树的插入和删除">2-3树的插入和删除</h3>
+<ol start="2">
+<li>再聊一聊2-3树的插入和删除操作</li>
+</ol>
+<p>插入操作：与<a href="https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/solution/er-cha-sou-suo-shu-de-cha-ru-cao-zuo-by-qclrw/" target="_blank" rel="noopener noreffer">二叉排序树</a>相同，插入操作一定是发生在叶子结点的。</p>
+<ul>
+<li>
+<p>对于空树，直接插入一个2结点</p>
+</li>
+<li>
+<p>对于2结点的插入：直接将2结点转换为3结点即可</p>
+</li>
+<li>
+<p>对于3结点的插入一个新元素：因为3结点本身已经是2-3树结点的最大容量，因此需要将其拆分，将树中两元素或插入元素的三者中选择其一<strong>向上移动一层</strong>。</p>
+<p>例如插入元素5，需要将6向上移动一层</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094157.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094157.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094157.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094157.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094157.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094157.png" /></p>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094326.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094326.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094326.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094326.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094326.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423094326.png" /></p>
+<p>删除操作：</p>
+<ol>
+<li>
+<p>所删除元素位于一个3结点的叶子节点上，直接将该节点删除</p>
+</li>
+<li>
+<p>所删除的元素位于一个2结点的叶子节点上，分为4种情况</p>
+</li>
+</ol>
+<ul>
+<li>此节点的父结点也是2结点，且拥有一个3结点的右孩子</li>
+</ul>
+<p>例如删除结点1，只需要进行<strong>左旋</strong>，让6成为父节点，4成为6的左孩子，7为6的右孩子</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100657.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100657.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100657.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100657.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100657.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100657.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100822.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100822.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100822.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100822.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100822.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423100822.png" /></p>
+<ul>
+<li>此节点的父结点也是2结点，且拥有一个2结点的孩子</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151605.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151605.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151605.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151605.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151605.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151605.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151458.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151458.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151458.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151458.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151458.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151458.png" /></p>
+<ul>
+<li>
+<p>此节点的父结点是3结点</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151725.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151725.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151725.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151725.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151725.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151725.png" /></p>
+</li>
+<li>
+<p>当前树是一颗满二叉树</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151821.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151821.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151821.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151821.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151821.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151821.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151931.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151931.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151931.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151931.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151931.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423151931.png" /></p>
+</li>
+</ul>
+<ol start="3">
+<li>所删除元素位于非叶子结点。此时通常是将树按中序遍历后得到此元素的前驱或后继元素，考虑让他们来补位即可</li>
+</ol>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423152135.png" style="zoom:150%;" /></p>
+<hr>
+<p>描述一颗B树时需要指定它的阶数</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423085630.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423085630.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423085630.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423085630.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423085630.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423085630.png" /></p>
+<p>每一个结点都可以存储多个数据，我们可以进一步的将其细分为</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412113814.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412113814.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412113814.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412113814.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412113814.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412113814.png" /></p>
+<h1 id="b树-1">B+树</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412115449.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412115449.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412115449.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412115449.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412115449.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412115449.png" /></p>
+<h2 id="b树的优点">B+树的优点</h2>
+<ul>
+<li>
+<p>单一节点存储更多的元素，使得查询的IO次数更少。</p>
+</li>
+<li>
+<p>所有查询都要查找到叶子节点，查询性能稳定。</p>
+</li>
+<li>
+<p>所有叶子节点形成有序链表，便于范围查询。（并且B树和B+树的结点是按照顺序进行存储的）</p>
+</li>
+</ul>
+<h2 id="b树和b树的区别">B+树和B树的区别</h2>
+<ul>
+<li>B树内部节点是保存数据的;而B+树内部节点是不保存数据的，只作索引作用，它的叶子节点才保存数据。</li>
+<li>B+树相邻的叶子节点之间是通过链表指针连起来的，B树却不是。</li>
+<li>查找过程中，B树在找到具体的数值以后就结束，而B+树则需要通过索引找到叶子结点中的数据才结束</li>
+<li>B树中任何一个关键字出现且只出现在一个结点中，而B+树可以出现多次。</li>
+</ul>
+<h4 id="为什么索引结构默认使用b树而不是b-treehash哈希二叉树红黑树">为什么索引结构默认使用B+树，而不是B-Tree，Hash哈希，二叉树，红黑树？</h4>
+<p>简单版回答如下：</p>
+<ul>
+<li>Hash哈希，只适合等值查询，不适合范围查询。</li>
+<li>一般二叉树，可能会特殊化为一个链表，相当于全表扫描。</li>
+<li>红黑树，是一种特化的平衡二叉树，MySQL 数据量很大的时候，索引的体积也会很大，内存放不下的而从磁盘读取，树的层次太高的话，读取磁盘的次数就多了。</li>
+<li>B-Tree，叶子节点和非叶子节点都保存数据，相同的数据量，B+树更矮壮，也是就说，相同的数据量，B+树数据结构，查询磁盘的次数会更少。</li>
+</ul>
+<h1 id="红黑树">红黑树</h1>
+<p><a href="https://zhuanlan.zhihu.com/p/273829162" target="_blank" rel="noopener noreffer">参考</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/139907457" target="_blank" rel="noopener noreffer">参考</a></p>
+<h2 id="红黑树与2-3树间的关系">红黑树与2-3树间的关系</h2>
+<p>红黑树是对2-3-4树的一种实现。</p>
+<p>在2-3-4树中加入一个颜色属性来表示2-3-4树中的不同结点。2-3-4树中的2节点对应着红黑树中的黑色节点，而2-3-4树中的非2节点是以<strong>红节点+黑节点</strong>的方式存在</p>
+<ul>
+<li>2结点直接转换为黑色结点</li>
+<li>3结点这里有两种转换方式：左倾红节点和右倾红节点</li>
+<li>4结点被转换为一个黑色父节点带着两个左右红色孩子</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423090804.png" style="zoom: 80%;" /></p>
+<p>本文的研究主体是<strong>2-3树</strong>（原因会在后文给出），并且是2-3树中较为特殊的一种转化&ndash;<strong>左倾红黑树</strong>。顾名思义，左倾红黑树限制了如果在树中出现了红色节点，那么这个节点必须是左儿子。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423090858.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423090858.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423090858.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423090858.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423090858.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423090858.png" /></p>
+<hr>
+<p>可以将红黑树转换为2-3树</p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423110942.png" style="zoom:80%;" /></p>
+<h2 id="红黑树的5条特性">红黑树的5条特性</h2>
+<ul>
+<li>结点颜色有红色和黑色</li>
+<li>根结点必为黑色
+<ul>
+<li>2-3树种如果根节点为2结点，那么它本来就对应红黑树种黑节点；如果根节点为3结点，也可以将转换为左倾红黑树，黑色结点为父节点，黑结点表示较大的元素</li>
+</ul>
+</li>
+<li>所有叶子结点都是黑色
+<ul>
+<li>此处提到的叶子其实是空链接</li>
+</ul>
+</li>
+<li>任意结点到每个叶子结点经过的黑色结点数目都相同    &ndash;&gt;根节点到每个叶子结点经过的黑色结点数目都相同
+<ul>
+<li>红黑树中的红节点是和黑色父节点绑定的，在2-3树中本来就是同一层的，只有黑色节点才会在2-3树中真正<strong>贡献高度</strong>，由于2-3树的任一节点到空链接距离相同，因此反应在红黑树中就是<strong>黑色完美平衡</strong></li>
+</ul>
+</li>
+<li>不会有连续的红色结点
+<ul>
+<li>2-3树中本来就规定没有4节点，2-3-4树中虽然有4节点，但是要求在红黑树中体现为一黑色节点带两红色儿子，分布左右，所以也不会有连续红节点</li>
+</ul>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423142834.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423142834.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423142834.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423142834.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423142834.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423142834.png" /></p>
+<h2 id="变色和旋转">变色和旋转</h2>
+<ul>
+<li>变色：将黑色结点变为红色结点，或将红色结点变为黑色结点；可以参考2-3树的插入操作，本质上就是将其中一个元素上移一层</li>
+<li>旋转：可以参考2-3的删除操作，</li>
+</ul>
+<h2 id="左倾红黑树的插入操作">左倾红黑树的插入操作</h2>
+<ul>
+<li>
+<p>如果待插入的结点比黑父小，这种情况不会破坏红黑树的规则，直接在插入即可。</p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423142607.png" style="zoom:80%;" /></p>
+</li>
+</ul>
+<hr>
+<p>以下三种情况都会对原来的红黑树进行调整</p>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423111516.png" style="zoom:80%;" /></p>
+<ul>
+<li>
+<p>第一种，待插入元素比黑父大</p>
+<p>插在了黑父的右边，而黑父左边是红色儿子。这种情况会导致在红黑树中出现右倾红节点。
+注意，这种情况对应着2-3树中出现了<strong>临时4节点</strong>，我们在2-3树中的处理是将这个临时4节点分裂，左右元素各自形成一个2节点，中间元素<strong>上升</strong>到上层跟父节点结合。</p>
+<p>所以，我们在红黑树中的动作是，将原本红色的左右儿子染黑（左右分裂），将黑父染红（等待上升结合）。</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423111640.png" style="zoom:80%;" /></p>
+<ul>
+<li>
+<p>第二种情况，待插入元素比红父小，且红父自身就是左倾。</p>
+<p>听起来有点绕，看图就会明白，其实就是说红父和待插入元素<strong>同时靠在了左边</strong>，形成了连续的红节点。</p>
+<p>这种情况我们需要用两步来调整。由于我们插入的是红色节点，其实不会破坏黑色完美平衡，所以要注意的是在旋转和染色的过程种继续保持这种<strong>完美黑色平衡</strong>。</p>
+<p>S首先对红父的父亲进行一次<strong>右旋</strong>，这次右旋不会破坏黑色平衡，但是也没有解决连续红色的问题。
+接下来将12所在节点与15所在节点交换颜色，这样的目的是为了消除连续红色，并且这个操作依旧维持了黑色平衡。现在我们已经得到了情况1的场景，直接按<strong>情况1</strong>处理即可。</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423111826.png" style="zoom:80%;" /></p>
+<ul>
+<li>
+<p>第三种情况，待插入元素比红父大，且红父自身就是左倾。
+也就是说插入的这个节点形成了一个右倾的红色节点，对<strong>右倾</strong>的处理很简单，将红父进行一次左旋，就能使得右倾红节点变为左倾，现在出现了连续的左倾红节点，直接按<strong>情况2</strong>处理即可。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423112034.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423112034.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423112034.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423112034.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423112034.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210423112034.png" /></p>
+</li>
+</ul>
+<h2 id="左倾红黑树的删除操作">左倾红黑树的删除操作</h2>
+<p>&hellip;</p>
+<h2 id="讨论">讨论</h2>
+<ul>
+<li>为什么用红黑树而不用2-3树呢？其实是因为在C语言的数据结构上，实现2-3-4 tree比较啰嗦，使用二叉树更容易实现</li>
+<li>二叉查找树(查询时间不稳定)-&gt;avl树(增删时间不稳定) -&gt; 红黑树 逐步变为查询与增删消费时间均衡的数据结构   ？</li>
+</ul>
+<p><a href="https://www.cnblogs.com/wuchanming/p/4444961.html" target="_blank" rel="noopener noreffer">参考</a></p>
+<p><strong>红黑树的各种操作的时间复杂度是多少？</strong></p>
+<p>能保证在最坏情况下，基本的动态几何操作的时间均为O（lgn）</p>
+<p><strong>红黑树相比于BST和AVL树有什么优点？</strong></p>
+<p>红黑树是牺牲了严格的高度平衡的优越条件为代价，它只要求部分地达到平衡要求，降低了对旋转的要求，从而提高了性能。红黑树能够以O(log2 n)的时间复杂度进行搜索、插入、删除操作。此外，由于它的设计，任何不平衡都会在三次旋转之内解决。当然，还有一些更好的，但实现起来更复杂的数据结构能够做到一步旋转之内达到平衡，但红黑树能够给我们一个比较“便宜”的解决方案。</p>
+<p>相比于BST，因为红黑树可以能确保树的最长路径不大于两倍的最短路径的长度，所以可以看出它的查找效果是有最低保证的。在最坏的情况下也可以保证O(logN)的，这是要好于二叉查找树的。因为二叉查找树最坏情况可以让查找达到O(N)。</p>
+<p>红黑树的算法时间复杂度和AVL相同，但统计性能比AVL树更高，所以在插入和删除中所做的后期维护操作肯定会比红黑树要耗时好多，但是他们的查找效率都是O(logN)，所以红黑树应用还是高于AVL树的. 实际上插入 AVL 树和红黑树的速度取决于你所插入的数据.如果你的数据分布较好,则比较宜于采用 AVL树(例如随机产生系列数),但是如果你想处理比较杂乱的情况,则红黑树是比较快的</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-04-23</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" data-title="B树、B&#43;树和红黑树"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" data-title="B树、B&#43;树和红黑树" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" data-title="B树、B&#43;树和红黑树"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" data-title="B树、B&#43;树和红黑树"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" data-title="B树、B&#43;树和红黑树" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" data-title="B树、B&#43;树和红黑树" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" data-title="B树、B&#43;树和红黑树"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="prev" rel="prev" title="二分查找"><i class="fas fa-angle-left fa-fw"></i>二分查找</a>
+            <a href="/git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" class="next" rel="next" title="git常用指令">git常用指令<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

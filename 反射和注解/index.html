@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>反射和注解 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="反射和注解" />
+<meta property="og:description" content="反射 定义 在运行状态中，
+ 对于任意一个类，都能够知道这个类的所有属性和方法 对于任意一个对象，都可以调用这个对象的任意属性和方法  这种动态获取信息以及调用方法的功能称为反射机制。
+作用  我的理解是class对象就是将.class文件加载到方法区中的二进制类型的类的数据
+  根据类名创建实例（类名可以从配置文件读取，不用new，达到解耦） &ndash;&gt;在运行的时候才动态加载类 用Method.invoke执行方法  1 2 3 4  反射是一种可以间接操作目标对象的机制。当使用反射时，JVM 在运行的时候才动态加载类，对于任意类，知道其属性和方法，并不需要提前在编译期知道运行的对象是谁，允许运行时的 Java 程序获取类的信息并对其进行操作。对象的类型在编译期就可以确定，但程序运行时可能需要动态加载一些类（之前没有用到，故没有加载进 jvm），使用反射可以在运行期动态生成对象实例并对其进行操作。在获取到 Class 对象之后，反向获取和操作对象的各种信息   假如你写了一段代码：Object o=new Object();
+运行了起来！
+首先JVM会启动，你的代码会编译成一个.class文件，然后被类加载器加载进jvm的内存中，你的类Object加载到方法区中，创建了Object类的class对象到堆中，注意这个不是new出来的对象，而是类的类型对象，每个类只有一个class对象，作为方法区类的数据结构的接口。jvm创建对象前，会先检查类是否加载，寻找类对应的class对象，若加载好，则为你的对象分配内存，初始化也就是代码:new Object()。
+上面的流程就是你自己写好的代码扔给jvm去跑，跑完就over了，jvm关闭，你的程序也停止了。
+为什么要讲这个呢？因为要理解反射必须知道它在什么场景下使用。
+题主想想上面的程序对象是自己new的，程序相当于写死了给jvm去跑。假如一个服务器上突然遇到某个请求哦要用到某个类，哎呀但没加载进jvm，是不是要停下来自己写段代码，new一下，哦启动一下服务器。
+反射是什么呢？当我们的程序在运行时，需要动态的加载一些类这些类可能之前用不到所以不用加载到jvm，而是在运行时根据需要才加载。
+作者：CaryTseng 链接：https://www.zhihu.com/question/24304289/answer/147529485 来源：知乎 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ 获取 Class 类对象三种方式：
+•使用 Class.forName（String className）静态方法，该方法最常用。如JDBC中使用这个方法来加载驱动。
+•使用类的.class方法。任何数据类型都拥有的 class 属性。
+•使用实例对象的 getClass() 方法。
+1  Java的反射机制的实现要借助于4个类：class，Constructor，Field，Method;  其中class代表的是类对 象，Constructor－类的构造器对象，Field－类的属性对象，Method－类的方法对象。通过这四个对象我们可以粗略的看到一个类的各个组 成部分。
+Demo 作者：蛙课网 链接：https://www." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-21T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-21T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="反射和注解"/>
+<meta name="twitter:description" content="反射 定义 在运行状态中，
+ 对于任意一个类，都能够知道这个类的所有属性和方法 对于任意一个对象，都可以调用这个对象的任意属性和方法  这种动态获取信息以及调用方法的功能称为反射机制。
+作用  我的理解是class对象就是将.class文件加载到方法区中的二进制类型的类的数据
+  根据类名创建实例（类名可以从配置文件读取，不用new，达到解耦） &ndash;&gt;在运行的时候才动态加载类 用Method.invoke执行方法  1 2 3 4  反射是一种可以间接操作目标对象的机制。当使用反射时，JVM 在运行的时候才动态加载类，对于任意类，知道其属性和方法，并不需要提前在编译期知道运行的对象是谁，允许运行时的 Java 程序获取类的信息并对其进行操作。对象的类型在编译期就可以确定，但程序运行时可能需要动态加载一些类（之前没有用到，故没有加载进 jvm），使用反射可以在运行期动态生成对象实例并对其进行操作。在获取到 Class 对象之后，反向获取和操作对象的各种信息   假如你写了一段代码：Object o=new Object();
+运行了起来！
+首先JVM会启动，你的代码会编译成一个.class文件，然后被类加载器加载进jvm的内存中，你的类Object加载到方法区中，创建了Object类的class对象到堆中，注意这个不是new出来的对象，而是类的类型对象，每个类只有一个class对象，作为方法区类的数据结构的接口。jvm创建对象前，会先检查类是否加载，寻找类对应的class对象，若加载好，则为你的对象分配内存，初始化也就是代码:new Object()。
+上面的流程就是你自己写好的代码扔给jvm去跑，跑完就over了，jvm关闭，你的程序也停止了。
+为什么要讲这个呢？因为要理解反射必须知道它在什么场景下使用。
+题主想想上面的程序对象是自己new的，程序相当于写死了给jvm去跑。假如一个服务器上突然遇到某个请求哦要用到某个类，哎呀但没加载进jvm，是不是要停下来自己写段代码，new一下，哦启动一下服务器。
+反射是什么呢？当我们的程序在运行时，需要动态的加载一些类这些类可能之前用不到所以不用加载到jvm，而是在运行时根据需要才加载。
+作者：CaryTseng 链接：https://www.zhihu.com/question/24304289/answer/147529485 来源：知乎 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ 获取 Class 类对象三种方式：
+•使用 Class.forName（String className）静态方法，该方法最常用。如JDBC中使用这个方法来加载驱动。
+•使用类的.class方法。任何数据类型都拥有的 class 属性。
+•使用实例对象的 getClass() 方法。
+1  Java的反射机制的实现要借助于4个类：class，Constructor，Field，Method;  其中class代表的是类对 象，Constructor－类的构造器对象，Field－类的属性对象，Method－类的方法对象。通过这四个对象我们可以粗略的看到一个类的各个组 成部分。
+Demo 作者：蛙课网 链接：https://www."/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/" /><link rel="prev" href="https://shilongshen.github.io/%E5%A4%9A%E6%80%81/" /><link rel="next" href="https://shilongshen.github.io/%E5%8C%BF%E5%90%8D%E5%86%85%E9%83%A8%E7%B1%BB/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "反射和注解",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3\/"
+        },"genre": "posts","wordcount":  495 ,
+        "url": "https:\/\/shilongshen.github.io\/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3\/","datePublished": "2020-11-21T13:26:17+08:00","dateModified": "2020-11-21T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">反射和注解</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-21">2020-11-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;495 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#反射">反射</a>
+      <ul>
+        <li><a href="#定义">定义</a></li>
+        <li><a href="#作用">作用</a></li>
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#反射常用api">反射常用API</a>
+          <ul>
+            <li><a href="#获取反射中的class对象">获取反射中的Class对象</a></li>
+            <li><a href="#通过反射创建类对象">通过反射创建类对象</a></li>
+            <li><a href="#通过反射获取类属性方法构造器">通过反射获取类属性、方法、构造器</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#注解">注解</a>
+      <ul>
+        <li><a href="#注解的作用">注解的作用</a></li>
+        <li><a href="#注解的本质">注解的本质</a></li>
+        <li><a href="#反射注解信息">反射注解信息</a></li>
+        <li><a href="#元注解">元注解</a></li>
+        <li><a href="#属性的数据类型及特别的属性value和数组">属性的数据类型及特别的属性：value和数组</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="反射">反射</h1>
+<h2 id="定义">定义</h2>
+<p>在运行状态中，</p>
+<ul>
+<li>对于任意一个类，都能够知道这个类的所有属性和方法</li>
+<li>对于任意一个对象，都可以调用这个对象的任意属性和方法</li>
+</ul>
+<p>这种动态获取信息以及调用方法的功能称为反射机制。</p>
+<h2 id="作用">作用</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210407201936.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210407201936.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210407201936.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210407201936.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210407201936.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210407201936.png" /></p>
+<blockquote>
+<p>我的理解是class对象就是将.class文件加载到方法区中的二进制类型的类的数据</p>
+</blockquote>
+<ul>
+<li>根据类名创建实例（类名可以从配置文件读取，不用new，达到解耦）  &ndash;&gt;<strong>在运行的时候才动态加载类</strong></li>
+<li>用Method.invoke执行方法</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"> 反射是一种可以间接操作目标对象的机制。当使用反射时，JVM 在运行的时候才动态加载类，对于任意类，知道其属性和方法，并不需要提前在编译期知道运行的对象是谁，允许运行时的 Java 程序获取类的信息并对其进行操作。
+    对象的类型在编译期就可以确定，但程序运行时可能需要动态加载一些类（之前没有用到，故没有加载进 jvm），使用反射可以在运行期动态生成对象实例并对其进行操作。
+在获取到 Class 对象之后，反向获取和操作对象的各种信息
+
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>假如你写了一段代码：Object o=new Object();</p>
+<p>运行了起来！</p>
+<p>首先JVM会启动，你的代码会编译成一个.class文件，然后被类加载器加载进jvm的内存中，你的类Object加载到方法区中，创建了Object类的class对象到堆中，注意这个不是new出来的对象，而是类的类型对象，每个类只有一个class对象，作为方法区类的数据结构的接口。jvm创建对象前，会先检查类是否加载，寻找类对应的class对象，若加载好，则为你的对象分配内存，初始化也就是代码:new Object()。</p>
+<p>上面的流程就是你自己写好的代码扔给jvm去跑，跑完就over了，jvm关闭，你的程序也停止了。</p>
+<p>为什么要讲这个呢？因为要理解反射必须知道它在什么场景下使用。</p>
+<p>题主想想上面的程序对象是自己new的，程序相当于写死了给jvm去跑。假如一个服务器上突然遇到某个请求哦要用到某个类，哎呀但没加载进jvm，是不是要停下来自己写段代码，new一下，哦启动一下服务器。</p>
+<p>反射是什么呢？当我们的程序在运行时，需要动态的加载一些类这些类可能之前用不到所以不用加载到jvm，而是在运行时根据需要才加载。</p>
+<p>作者：CaryTseng
+链接：https://www.zhihu.com/question/24304289/answer/147529485
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</blockquote>
+<p>获取 Class 类对象三种方式：</p>
+<p>•使用 Class.forName（String className）静态方法，该方法最常用。如JDBC中使用这个方法来加载驱动。</p>
+<p>•使用类的.class方法。任何数据类型都拥有的 class 属性。</p>
+<p>•使用实例对象的 getClass() 方法。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Java的反射机制的实现要借助于4个类：class，Constructor，Field，Method;
+</code></pre></td></tr></table>
+</div>
+</div><p>其中class代表的是类对 象，Constructor－类的构造器对象，Field－类的属性对象，Method－类的方法对象。通过这四个对象我们可以粗略的看到一个类的各个组 成部分。</p>
+<h2 id="demo">Demo</h2>
+<p>作者：蛙课网
+链接：https://www.zhihu.com/question/24304289/answer/964247763
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Apple</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">price</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getPrice</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">price</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setPrice</span><span class="o">(</span><span class="kt">int</span> <span class="n">price</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">price</span> <span class="o">=</span> <span class="n">price</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="o">{</span>
+        <span class="c1">//正常的调用
+</span><span class="c1"></span>        <span class="n">Apple</span> <span class="n">apple</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Apple</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">apple</span><span class="o">.</span><span class="na">setPrice</span><span class="o">(</span><span class="n">5</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Apple Price:&#34;</span> <span class="o">+</span> <span class="n">apple</span><span class="o">.</span><span class="na">getPrice</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="c1">//使用反射调用
+</span><span class="c1"></span>        <span class="n">Class</span> <span class="n">clz</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">&#34;com.chenshuyi.api.Apple&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">Method</span> <span class="n">setPriceMethod</span> <span class="o">=</span> <span class="n">clz</span><span class="o">.</span><span class="na">getMethod</span><span class="o">(</span><span class="s">&#34;setPrice&#34;</span><span class="o">,</span> <span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">Constructor</span> <span class="n">appleConstructor</span> <span class="o">=</span> <span class="n">clz</span><span class="o">.</span><span class="na">getConstructor</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">Object</span> <span class="n">appleObj</span> <span class="o">=</span> <span class="n">appleConstructor</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">setPriceMethod</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">appleObj</span><span class="o">,</span> <span class="n">14</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">Method</span> <span class="n">getPriceMethod</span> <span class="o">=</span> <span class="n">clz</span><span class="o">.</span><span class="na">getMethod</span><span class="o">(</span><span class="s">&#34;getPrice&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Apple Price:&#34;</span> <span class="o">+</span> <span class="n">getPriceMethod</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">appleObj</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从代码中可以看到我们使用反射调用了 setPrice 方法，并传递了 14 的值。之后使用反射调用了 getPrice 方法，输出其价格。上面的代码整个的输出结果是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Apple</span> <span class="n">Price</span><span class="o">:</span><span class="n">5</span>
+<span class="n">Apple</span> <span class="n">Price</span><span class="o">:</span><span class="n">14</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从这个简单的例子可以看出，一般情况下我们使用反射获取一个对象的步骤：</p>
+<ul>
+<li>获取类的 Class 对象实例</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Class clz = Class.forName(&#34;com.zhenai.api.Apple&#34;);
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>根据 Class 对象实例获取 Constructor 对象  &ndash;&gt;<strong>必须保证有一个无参构造方法</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Constructor</span> <span class="n">appleConstructor</span> <span class="o">=</span> <span class="n">clz</span><span class="o">.</span><span class="na">getConstructor</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>使用 Constructor 对象的 newInstance 方法获取反射类对象</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">Object appleObj = appleConstructor.newInstance();
+</code></pre></td></tr></table>
+</div>
+</div><p>而如果要调用某一个方法，则需要经过下面的步骤：</p>
+<ul>
+<li>获取方法的 Method 对象</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Method</span> <span class="n">setPriceMethod</span> <span class="o">=</span> <span class="n">clz</span><span class="o">.</span><span class="na">getMethod</span><span class="o">(</span><span class="s">&#34;setPrice&#34;</span><span class="o">,</span> <span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>利用 invoke 方法调用方法</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">setPriceMethod</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">appleObj</span><span class="o">,</span> <span class="n">14</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><hr>
+<p><strong>反射就是在运行时才知道要操作的类是什么，并且可以在运行时获取类的完整构造，并调用对应的方法。</strong></p>
+<p>作者：蛙课网
+链接：https://www.zhihu.com/question/24304289/answer/964247763
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<h2 id="反射常用api"><strong>反射常用API</strong></h2>
+<h3 id="获取反射中的class对象"><strong>获取反射中的Class对象</strong></h3>
+<p>在反射中，要获取一个类或调用一个类的方法，我们首先需要获取到该类的 Class 对象。</p>
+<p>在 Java API 中，获取 Class 类对象有三种方法：</p>
+<p>**第一种，使用 Class.forName 静态方法。**当你知道该类的全路径名时，你可以使用该方法获取 Class 类对象。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Class</span> <span class="n">clz</span> <span class="o">=</span> <span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">&#34;java.lang.String&#34;</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>第二种，使用 .class 方法。</strong></p>
+<p>这种方法只适合在编译前就知道操作的 Class。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Class</span> <span class="n">clz</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>第三种，使用类对象的 getClass() 方法。</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">&#34;Hello&#34;</span><span class="o">)</span><span class="o">;</span>
+<span class="n">Class</span> <span class="n">clz</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">getClass</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="通过反射创建类对象"><strong>通过反射创建类对象</strong></h3>
+<p>通过反射创建类对象主要有两种方式：通过 Class 对象的 newInstance() 方法、通过 Constructor 对象的 newInstance() 方法。</p>
+<p>第一种：通过 Class 对象的 newInstance() 方法。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Class</span> <span class="n">clz</span> <span class="o">=</span> <span class="n">Apple</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+<span class="n">Apple</span> <span class="n">apple</span> <span class="o">=</span> <span class="o">(</span><span class="n">Apple</span><span class="o">)</span><span class="n">clz</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>第二种：通过 Constructor 对象的 newInstance() 方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Class</span> <span class="n">clz</span> <span class="o">=</span> <span class="n">Apple</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+<span class="n">Constructor</span> <span class="n">constructor</span> <span class="o">=</span> <span class="n">clz</span><span class="o">.</span><span class="na">getConstructor</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="n">Apple</span> <span class="n">apple</span> <span class="o">=</span> <span class="o">(</span><span class="n">Apple</span><span class="o">)</span><span class="n">constructor</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>通过 Constructor 对象创建类对象可以选择特定构造方法，而通过 Class 对象则只能使用默认的无参数构造方法。下面的代码就调用了一个有参数的构造方法进行了类对象的初始化。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Class</span> <span class="n">clz</span> <span class="o">=</span> <span class="n">Apple</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+<span class="n">Constructor</span> <span class="n">constructor</span> <span class="o">=</span> <span class="n">clz</span><span class="o">.</span><span class="na">getConstructor</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">)</span><span class="o">;</span>
+<span class="n">Apple</span> <span class="n">apple</span> <span class="o">=</span> <span class="o">(</span><span class="n">Apple</span><span class="o">)</span><span class="n">constructor</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="s">&#34;红富士&#34;</span><span class="o">,</span> <span class="n">15</span><span class="o">)</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="通过反射获取类属性方法构造器"><strong>通过反射获取类属性、方法、构造器</strong></h3>
+<p>我们通过 Class 对象的 getFields() 方法可以获取 Class 类的属性，但无法获取私有属性。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Class</span> <span class="n">clz</span> <span class="o">=</span> <span class="n">Apple</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+<span class="n">Field</span><span class="o">[</span><span class="o">]</span> <span class="n">fields</span> <span class="o">=</span> <span class="n">clz</span><span class="o">.</span><span class="na">getFields</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Field</span> <span class="n">field</span> <span class="o">:</span> <span class="n">fields</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>输出结果是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">price</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>而如果使用 Class 对象的 getDeclaredFields() 方法则可以获取包括私有属性在内的所有属性：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Class</span> <span class="n">clz</span> <span class="o">=</span> <span class="n">Apple</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+<span class="n">Field</span><span class="o">[</span><span class="o">]</span> <span class="n">fields</span> <span class="o">=</span> <span class="n">clz</span><span class="o">.</span><span class="na">getDeclaredFields</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Field</span> <span class="n">field</span> <span class="o">:</span> <span class="n">fields</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>输出结果是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">name</span>
+<span class="n">price</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>与获取类属性一样，当我们去获取类方法、类构造器时，如果要获取私有方法或私有构造器，则必须使用有 declared 关键字的方法。</p>
+<h1 id="注解">注解</h1>
+<h2 id="注解的作用"><strong>注解的作用</strong></h2>
+<p><strong>格式</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="nd">@interface</span> <span class="n">注解名称</span><span class="o">{</span>
+    <span class="n">属性列表</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>格式有点奇怪，我们稍后再研究。</p>
+<p><strong>分类</strong></p>
+<p>大致分为三类：自定义注解、JDK内置注解、还有第三方框架提供的注解。</p>
+<p>自定义注解就是我们自己写的注解。JDK内置注解，比如@Override检验方法重写，@Deprecated标识方法过期等。第三方框架定义的注解比如SpringMVC的@Controller等。</p>
+<p><strong>使用位置</strong></p>
+<p>实际开发中，注解常常出现在类、方法、成员变量、形参位置。当然还有其他位置，这里不提及。</p>
+<p><strong>作用</strong></p>
+<p>如果说注释是写给人看的，那么注解就是写给程序看的。**它更像一个标签，贴在一个类、一个方法或者字段上。它的目的是为当前读取该注解的程序提供判断依据。**比如程序只要读到加了@Test的方法，就知道该方法是待测试方法，又比如@Before注解，程序看到这个注解，就知道该方法要放在@Test方法之前执行。</p>
+<p><strong>级别</strong></p>
+<p>注解和类、接口、枚举是同一级别的。</p>
+<hr>
+<h2 id="注解的本质"><strong>注解的本质</strong></h2>
+<p>@interface和interface这么相似，我猜注解的本质是一个接口。</p>
+<p>为了验证这个猜测，我们做个实验。先按上面的格式写一个注解</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-cf7d3faafd55af5faa5b7c0dbfc638ea_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-cf7d3faafd55af5faa5b7c0dbfc638ea_720w.jpg, https://pic3.zhimg.com/80/v2-cf7d3faafd55af5faa5b7c0dbfc638ea_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-cf7d3faafd55af5faa5b7c0dbfc638ea_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-cf7d3faafd55af5faa5b7c0dbfc638ea_720w.jpg"
+        title="img" />属性先不写</p>
+<p>编译后得到字节码文件</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic2.zhimg.com/80/v2-3944093fa24382397bdde952b78243d1_720w.png"
+        data-srcset="https://pic2.zhimg.com/80/v2-3944093fa24382397bdde952b78243d1_720w.png, https://pic2.zhimg.com/80/v2-3944093fa24382397bdde952b78243d1_720w.png 1.5x, https://pic2.zhimg.com/80/v2-3944093fa24382397bdde952b78243d1_720w.png 2x"
+        data-sizes="auto"
+        alt="https://pic2.zhimg.com/80/v2-3944093fa24382397bdde952b78243d1_720w.png"
+        title="img" /></p>
+<p>通过XJad工具反编译MyAnnotation.class</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic4.zhimg.com/80/v2-eb80156703d811f8d57c11840272f01b_720w.jpg"
+        data-srcset="https://pic4.zhimg.com/80/v2-eb80156703d811f8d57c11840272f01b_720w.jpg, https://pic4.zhimg.com/80/v2-eb80156703d811f8d57c11840272f01b_720w.jpg 1.5x, https://pic4.zhimg.com/80/v2-eb80156703d811f8d57c11840272f01b_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic4.zhimg.com/80/v2-eb80156703d811f8d57c11840272f01b_720w.jpg"
+        title="img" /></p>
+<p>我们发现，@interface变成了interface，而且自动继承了Annotation</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic1.zhimg.com/80/v2-4fca230e3eddace36a242176c6b3bcdc_720w.jpg"
+        data-srcset="https://pic1.zhimg.com/80/v2-4fca230e3eddace36a242176c6b3bcdc_720w.jpg, https://pic1.zhimg.com/80/v2-4fca230e3eddace36a242176c6b3bcdc_720w.jpg 1.5x, https://pic1.zhimg.com/80/v2-4fca230e3eddace36a242176c6b3bcdc_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic1.zhimg.com/80/v2-4fca230e3eddace36a242176c6b3bcdc_720w.jpg"
+        title="img" /></p>
+<p>既然确实是个接口，那么我们自然可以在里面写方法</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic1.zhimg.com/80/v2-24a76ea2b964b4c18115b5e62d3544ec_720w.jpg"
+        data-srcset="https://pic1.zhimg.com/80/v2-24a76ea2b964b4c18115b5e62d3544ec_720w.jpg, https://pic1.zhimg.com/80/v2-24a76ea2b964b4c18115b5e62d3544ec_720w.jpg 1.5x, https://pic1.zhimg.com/80/v2-24a76ea2b964b4c18115b5e62d3544ec_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic1.zhimg.com/80/v2-24a76ea2b964b4c18115b5e62d3544ec_720w.jpg"
+        title="img" /></p>
+<p>得到class文件后反编译</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic4.zhimg.com/80/v2-374f6221e27fd35cd366894de93fd103_720w.jpg"
+        data-srcset="https://pic4.zhimg.com/80/v2-374f6221e27fd35cd366894de93fd103_720w.jpg, https://pic4.zhimg.com/80/v2-374f6221e27fd35cd366894de93fd103_720w.jpg 1.5x, https://pic4.zhimg.com/80/v2-374f6221e27fd35cd366894de93fd103_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic4.zhimg.com/80/v2-374f6221e27fd35cd366894de93fd103_720w.jpg"
+        title="img" /></p>
+<p>由于接口默认方法的修饰符就是public abstract，所以可以省略，直接写成：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic1.zhimg.com/80/v2-9dec5abb162b5484fe151e88ddcfdbc4_720w.jpg"
+        data-srcset="https://pic1.zhimg.com/80/v2-9dec5abb162b5484fe151e88ddcfdbc4_720w.jpg, https://pic1.zhimg.com/80/v2-9dec5abb162b5484fe151e88ddcfdbc4_720w.jpg 1.5x, https://pic1.zhimg.com/80/v2-9dec5abb162b5484fe151e88ddcfdbc4_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic1.zhimg.com/80/v2-9dec5abb162b5484fe151e88ddcfdbc4_720w.jpg"
+        title="img" /></p>
+<p>虽说注解的本质是接口，但是仍然有很多怪异的地方，比如使用注解时，我们竟然可以给getValue赋值：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-7506d841deabeecbbf021f45e469a8c2_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-7506d841deabeecbbf021f45e469a8c2_720w.jpg, https://pic3.zhimg.com/80/v2-7506d841deabeecbbf021f45e469a8c2_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-7506d841deabeecbbf021f45e469a8c2_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-7506d841deabeecbbf021f45e469a8c2_720w.jpg"
+        title="img" /></p>
+<p>你见过给方法赋值的操作吗？（别闹了，你脑中想到的是给方法传参）。虽然这里的getValue可能不是指getValue()，底层或许是getValue()返回的一个同名变量。但不管怎么说，还是太怪异了。所以在注解里，类似于String getValue()这种，被称为“属性”。给属性赋值显然听起来好接受多了。</p>
+<p>另外，我们还可以为属性指定默认值：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic4.zhimg.com/80/v2-fdd0c92796d162345fee12133b8a98cb_720w.jpg"
+        data-srcset="https://pic4.zhimg.com/80/v2-fdd0c92796d162345fee12133b8a98cb_720w.jpg, https://pic4.zhimg.com/80/v2-fdd0c92796d162345fee12133b8a98cb_720w.jpg 1.5x, https://pic4.zhimg.com/80/v2-fdd0c92796d162345fee12133b8a98cb_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic4.zhimg.com/80/v2-fdd0c92796d162345fee12133b8a98cb_720w.jpg"
+        title="img" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-cd77bb34b3cc593ca5a6a87d7d8b1802_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-cd77bb34b3cc593ca5a6a87d7d8b1802_720w.jpg, https://pic3.zhimg.com/80/v2-cd77bb34b3cc593ca5a6a87d7d8b1802_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-cd77bb34b3cc593ca5a6a87d7d8b1802_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-cd77bb34b3cc593ca5a6a87d7d8b1802_720w.jpg"
+        title="img" /></p>
+<p>当没有赋值时，属性将使用默认值，比如上面的defaultMethod()，它的getValue就是“no description&rdquo;。</p>
+<p>基于以上差异，以后还是把注解单独归为一类，不要当成接口使用。</p>
+<hr>
+<h2 id="反射注解信息"><strong>反射注解信息</strong></h2>
+<p>上文已经说过，注解就像一个标签，是贴在程序代码上供另一个程序读取的。所以三者关系是：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-3c4bab856af60100a255bdafecb3ce1e_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-3c4bab856af60100a255bdafecb3ce1e_720w.jpg, https://pic3.zhimg.com/80/v2-3c4bab856af60100a255bdafecb3ce1e_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-3c4bab856af60100a255bdafecb3ce1e_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-3c4bab856af60100a255bdafecb3ce1e_720w.jpg"
+        title="img" /></p>
+<p>**要牢记，只要用到注解，必然有三角关系：定义注解，使用注解，读取注解。**仅仅完成前两步，是没什么卵用的。就好比你写了一本武林秘籍却没人去学，那么这门武功还不如一把菜刀。</p>
+<p>所以，接下来我们写一个程序读取注解。读取注解的思路是：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic4.zhimg.com/80/v2-cf58ff26dcce9378cf0d237d7f35cb17_720w.jpg"
+        data-srcset="https://pic4.zhimg.com/80/v2-cf58ff26dcce9378cf0d237d7f35cb17_720w.jpg, https://pic4.zhimg.com/80/v2-cf58ff26dcce9378cf0d237d7f35cb17_720w.jpg 1.5x, https://pic4.zhimg.com/80/v2-cf58ff26dcce9378cf0d237d7f35cb17_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic4.zhimg.com/80/v2-cf58ff26dcce9378cf0d237d7f35cb17_720w.jpg"
+        title="img" /></p>
+<p>反射获取注解信息：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-23366472182783e8b2f116c7e336dc9e_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-23366472182783e8b2f116c7e336dc9e_720w.jpg, https://pic3.zhimg.com/80/v2-23366472182783e8b2f116c7e336dc9e_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-23366472182783e8b2f116c7e336dc9e_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-23366472182783e8b2f116c7e336dc9e_720w.jpg"
+        title="img" /></p>
+<p>我们发现，Class、Method、Field对象都有个getAnnotation()，可以获取各自位置的注解信息。</p>
+<p>但是控制台提示“空指针异常”，IDEA提示我们：Annotation &lsquo;MyAnnotation.class&rsquo; is not retained for reflective。直译的话就是：注解MyAnnotation并没有为反射保留。</p>
+<p>这是因为注解其实有所谓“保留策略”的说法。大家学习JSP时，应该学过<!-- -->和&lt;%&ndash; &ndash;&gt;的区别：前者可以在浏览器检查网页源代码时看到，而另一个在服务器端输出时就被抹去了。同样的，注解通过保留策略，控制自己可以保留到哪个阶段。保留策略也是通过注解实现，它属于元注解，也叫元数据。</p>
+<hr>
+<h2 id="元注解"><strong>元注解</strong></h2>
+<p>所谓元注解，就是加在注解上的注解。作为普通程序员，常用的就是：</p>
+<ul>
+<li>@Documented</li>
+</ul>
+<p>用于制作文档，不是很重要，忽略便是</p>
+<ul>
+<li>@Target</li>
+</ul>
+<p>加在注解上，限定该注解的使用位置。不写的话，好像默认各个位置都是可以的。如果需要限定注解的使用位置，可以在自定义的注解上使用该注解。我们本次默认即可，不特别限定。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic1.zhimg.com/80/v2-b118cf13e71e7c0fd8698de17e018274_720w.jpg"
+        data-srcset="https://pic1.zhimg.com/80/v2-b118cf13e71e7c0fd8698de17e018274_720w.jpg, https://pic1.zhimg.com/80/v2-b118cf13e71e7c0fd8698de17e018274_720w.jpg 1.5x, https://pic1.zhimg.com/80/v2-b118cf13e71e7c0fd8698de17e018274_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic1.zhimg.com/80/v2-b118cf13e71e7c0fd8698de17e018274_720w.jpg"
+        title="img" /></p>
+<ul>
+<li>@Retention（注解的保留策略）</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic2.zhimg.com/80/v2-f338eaee843420505b24548bc63eb8b9_720w.jpg"
+        data-srcset="https://pic2.zhimg.com/80/v2-f338eaee843420505b24548bc63eb8b9_720w.jpg, https://pic2.zhimg.com/80/v2-f338eaee843420505b24548bc63eb8b9_720w.jpg 1.5x, https://pic2.zhimg.com/80/v2-f338eaee843420505b24548bc63eb8b9_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic2.zhimg.com/80/v2-f338eaee843420505b24548bc63eb8b9_720w.jpg"
+        title="img" /></p>
+<p>注解的保留策略有三种：SOURCE/ClASS/RUNTIME</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic2.zhimg.com/80/v2-d8c81ca3bcf6b35370d45e0035da1f69_720w.jpg"
+        data-srcset="https://pic2.zhimg.com/80/v2-d8c81ca3bcf6b35370d45e0035da1f69_720w.jpg, https://pic2.zhimg.com/80/v2-d8c81ca3bcf6b35370d45e0035da1f69_720w.jpg 1.5x, https://pic2.zhimg.com/80/v2-d8c81ca3bcf6b35370d45e0035da1f69_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic2.zhimg.com/80/v2-d8c81ca3bcf6b35370d45e0035da1f69_720w.jpg"
+        title="img" /></p>
+<ul>
+<li>注解主要被反射读取</li>
+<li>反射只能读取内存中的字节码信息</li>
+<li>RetentionPolicy.CLASS指的是保留到字节码文件，它在磁盘内，而不是内存中。虚拟机将字节码文件加载进内存后注解会消失</li>
+<li>要想被反射读取，保留策略只能用RUNTIME，即运行时仍可读取</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-9443c07bb515c3c29aac25086cc1dd7e_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-9443c07bb515c3c29aac25086cc1dd7e_720w.jpg, https://pic3.zhimg.com/80/v2-9443c07bb515c3c29aac25086cc1dd7e_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-9443c07bb515c3c29aac25086cc1dd7e_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-9443c07bb515c3c29aac25086cc1dd7e_720w.jpg"
+        title="img" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic2.zhimg.com/80/v2-136297dc24497f9d722c165f1e5d573d_720w.jpg"
+        data-srcset="https://pic2.zhimg.com/80/v2-136297dc24497f9d722c165f1e5d573d_720w.jpg, https://pic2.zhimg.com/80/v2-136297dc24497f9d722c165f1e5d573d_720w.jpg 1.5x, https://pic2.zhimg.com/80/v2-136297dc24497f9d722c165f1e5d573d_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic2.zhimg.com/80/v2-136297dc24497f9d722c165f1e5d573d_720w.jpg"
+        title="img" /></p>
+<p>重新运行程序，成功读取注解信息：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-a84dbe9c316c1f99bf05f6d901e4d89a_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-a84dbe9c316c1f99bf05f6d901e4d89a_720w.jpg, https://pic3.zhimg.com/80/v2-a84dbe9c316c1f99bf05f6d901e4d89a_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-a84dbe9c316c1f99bf05f6d901e4d89a_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-a84dbe9c316c1f99bf05f6d901e4d89a_720w.jpg"
+        title="img" /></p>
+<p>注意，defaultMethod()反射得到的注解信息是：no description。就是MyAnnotion中getValue的默认值。</p>
+<p>但是，注解的读取并不只有反射一种途径。比如@Override，它由编译器读取（你写完代码ctrl+s时就编译了），而编译器只是检查语法错误，此时程序尚未运行。所以，我猜@Override的保留策略肯定不是RUNTIME：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic1.zhimg.com/80/v2-bce935e0f2d982358491ae2b9fc0f358_720w.jpg"
+        data-srcset="https://pic1.zhimg.com/80/v2-bce935e0f2d982358491ae2b9fc0f358_720w.jpg, https://pic1.zhimg.com/80/v2-bce935e0f2d982358491ae2b9fc0f358_720w.jpg 1.5x, https://pic1.zhimg.com/80/v2-bce935e0f2d982358491ae2b9fc0f358_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic1.zhimg.com/80/v2-bce935e0f2d982358491ae2b9fc0f358_720w.jpg"
+        title="img" />保留策略为SOURCE，仅仅是源码阶段，编译成.class文件后就消失</p>
+<hr>
+<h2 id="属性的数据类型及特别的属性value和数组"><strong>属性的数据类型及特别的属性：value和数组</strong></h2>
+<p><strong>属性的数据类型</strong></p>
+<ul>
+<li>八种基本数据类型</li>
+<li>String</li>
+<li>枚举</li>
+<li>Class</li>
+<li>注解类型</li>
+<li>以上类型的一维数组</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-d376ea9865ad5f9519ebe2630ee1e356_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-d376ea9865ad5f9519ebe2630ee1e356_720w.jpg, https://pic3.zhimg.com/80/v2-d376ea9865ad5f9519ebe2630ee1e356_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-d376ea9865ad5f9519ebe2630ee1e356_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-d376ea9865ad5f9519ebe2630ee1e356_720w.jpg"
+        title="img" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-9349bfe7cc9a47d20751751e6fafb65e_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-9349bfe7cc9a47d20751751e6fafb65e_720w.jpg, https://pic3.zhimg.com/80/v2-9349bfe7cc9a47d20751751e6fafb65e_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-9349bfe7cc9a47d20751751e6fafb65e_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-9349bfe7cc9a47d20751751e6fafb65e_720w.jpg"
+        title="img" /></p>
+<p><strong>value属性</strong></p>
+<p>如果注解的属性只有一个，且叫value，那么使用该注解时，可以不用指定属性名，因为默认就是给value赋值：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-c5a8091357e0d9096ba4edac15ce0ed2_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-c5a8091357e0d9096ba4edac15ce0ed2_720w.jpg, https://pic3.zhimg.com/80/v2-c5a8091357e0d9096ba4edac15ce0ed2_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-c5a8091357e0d9096ba4edac15ce0ed2_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-c5a8091357e0d9096ba4edac15ce0ed2_720w.jpg"
+        title="img" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic1.zhimg.com/80/v2-6603c035c52a4e4931a672438319e600_720w.jpg"
+        data-srcset="https://pic1.zhimg.com/80/v2-6603c035c52a4e4931a672438319e600_720w.jpg, https://pic1.zhimg.com/80/v2-6603c035c52a4e4931a672438319e600_720w.jpg 1.5x, https://pic1.zhimg.com/80/v2-6603c035c52a4e4931a672438319e600_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic1.zhimg.com/80/v2-6603c035c52a4e4931a672438319e600_720w.jpg"
+        title="img" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic4.zhimg.com/80/v2-c23e384f1cb5f308f873a744299a909f_720w.jpg"
+        data-srcset="https://pic4.zhimg.com/80/v2-c23e384f1cb5f308f873a744299a909f_720w.jpg, https://pic4.zhimg.com/80/v2-c23e384f1cb5f308f873a744299a909f_720w.jpg 1.5x, https://pic4.zhimg.com/80/v2-c23e384f1cb5f308f873a744299a909f_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic4.zhimg.com/80/v2-c23e384f1cb5f308f873a744299a909f_720w.jpg"
+        title="img" /></p>
+<p>但是注解的属性如果有多个，无论是否叫value，都必须写明属性的对应关系：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic1.zhimg.com/80/v2-e27de8947efcae856be6e4a5296c59b4_720w.jpg"
+        data-srcset="https://pic1.zhimg.com/80/v2-e27de8947efcae856be6e4a5296c59b4_720w.jpg, https://pic1.zhimg.com/80/v2-e27de8947efcae856be6e4a5296c59b4_720w.jpg 1.5x, https://pic1.zhimg.com/80/v2-e27de8947efcae856be6e4a5296c59b4_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic1.zhimg.com/80/v2-e27de8947efcae856be6e4a5296c59b4_720w.jpg"
+        title="img" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic3.zhimg.com/80/v2-7c3a72003f1ac3e31b487a48a78f0f02_720w.jpg"
+        data-srcset="https://pic3.zhimg.com/80/v2-7c3a72003f1ac3e31b487a48a78f0f02_720w.jpg, https://pic3.zhimg.com/80/v2-7c3a72003f1ac3e31b487a48a78f0f02_720w.jpg 1.5x, https://pic3.zhimg.com/80/v2-7c3a72003f1ac3e31b487a48a78f0f02_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic3.zhimg.com/80/v2-7c3a72003f1ac3e31b487a48a78f0f02_720w.jpg"
+        title="img" /></p>
+<p><strong>数组属性</strong></p>
+<p>如果数组的元素只有一个，可以省略{}：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic2.zhimg.com/80/v2-9e9c5fbbf9b66690581d4402b7d6b265_720w.jpg"
+        data-srcset="https://pic2.zhimg.com/80/v2-9e9c5fbbf9b66690581d4402b7d6b265_720w.jpg, https://pic2.zhimg.com/80/v2-9e9c5fbbf9b66690581d4402b7d6b265_720w.jpg 1.5x, https://pic2.zhimg.com/80/v2-9e9c5fbbf9b66690581d4402b7d6b265_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic2.zhimg.com/80/v2-9e9c5fbbf9b66690581d4402b7d6b265_720w.jpg"
+        title="img" /></p>
+<hr>
+<p>小结</p>
+<ul>
+<li>注解就像标签，是程序判断执行的依据。比如，程序读到@Test就知道这个方法是待测试方法，而@Before的方法要在测试方法之前执行</li>
+<li>注解需要三要素：定义、使用、读取并执行</li>
+<li>注解分为自定义注解、JDK内置注解和第三方注解（框架）。自定义注解一般要我们自己定义、使用、并写程序读取，而JDK内置注解和第三方注解我们只要使用，定义和读取都交给它们</li>
+<li>大多数情况下，三角关系中我们只负责使用注解，无需定义和执行，框架会将<strong>注解类</strong>和<strong>读取注解的程序</strong>隐藏起来，除非阅读源码，否则根本看不到。<strong>平时见不到定义和读取的过程，光顾着使用注解，久而久之很多人就忘了注解如何起作用了！</strong></li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://pic1.zhimg.com/80/v2-7310679f5c3ca0159b93132afe8ba3c0_720w.jpg"
+        data-srcset="https://pic1.zhimg.com/80/v2-7310679f5c3ca0159b93132afe8ba3c0_720w.jpg, https://pic1.zhimg.com/80/v2-7310679f5c3ca0159b93132afe8ba3c0_720w.jpg 1.5x, https://pic1.zhimg.com/80/v2-7310679f5c3ca0159b93132afe8ba3c0_720w.jpg 2x"
+        data-sizes="auto"
+        alt="https://pic1.zhimg.com/80/v2-7310679f5c3ca0159b93132afe8ba3c0_720w.jpg"
+        title="img" /></p>
+<p>关于注解的使用案例，请参考注解（下）</p>
+<h1 id="参考">参考</h1>
+<p><a href="https://www.jianshu.com/p/9be58ee20dee" target="_blank" rel="noopener noreffer">参考1</a></p>
+<p><a href="https://www.runoob.com/w3cnote/java-annotation.html" target="_blank" rel="noopener noreffer">参考2</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/60941426" target="_blank" rel="noopener noreffer">参考3</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/60966151" target="_blank" rel="noopener noreffer">参考4</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-21</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/" data-title="反射和注解"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/" data-title="反射和注解" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/" data-title="反射和注解"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/" data-title="反射和注解"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/" data-title="反射和注解" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/" data-title="反射和注解" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E5%8F%8D%E5%B0%84%E5%92%8C%E6%B3%A8%E8%A7%A3/" data-title="反射和注解"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E5%A4%9A%E6%80%81/" class="prev" rel="prev" title="多态的浅显理解"><i class="fas fa-angle-left fa-fw"></i>多态的浅显理解</a>
+            <a href="/%E5%8C%BF%E5%90%8D%E5%86%85%E9%83%A8%E7%B1%BB/" class="next" rel="next" title="匿名内部类">匿名内部类<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -1,5 +1,82 @@
 # 算法题记录
 
+# 查找
+
+## 有序数组的二分查找
+
+[链接](https://leetcode-cn.com/problems/binary-search/solution/you-xu-shu-zu-de-er-fen-cha-zhao-by-shil-hat5/)
+
+## 包含重复元素有序数组的二分查找
+
+[链接](https://www.nowcoder.com/practice/4f470d1d3b734f8aaf2afb014185b395?tpId=188&tqId=38290&rp=1&ru=%2Factivity%2Foj&qru=%2Fta%2Fjob-code-high-week%2Fquestion-ranking&tab=answerKey)
+
+## 猜数字大小
+
+[链接](https://leetcode-cn.com/problems/guess-number-higher-or-lower/solution/cai-shu-zi-da-xiao-by-shilongshen-6o6q/)
+
+## 在排序数组中查找元素的第一个和最后一个位置
+
+[链接](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/zai-pai-xu-shu-zu-zhong-cha-zhao-yuan-su-ebux/)
+
+## 搜索插入位置
+
+[链接](https://leetcode-cn.com/problems/search-insert-position/solution/sou-suo-cha-ru-wei-zhi-by-shilongshen-1jzq/)
+
+## 搜索旋转排序数组
+
+[链接](https://leetcode-cn.com/problems/search-in-rotated-sorted-array/solution/sou-suo-xuan-zhuan-pai-xu-shu-zu-by-shil-6v5l/)
+
+## 搜索旋转排序数组2
+
+[链接](https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii/solution/sou-suo-xuan-zhuan-pai-xu-shu-zu-2-by-sh-wwlq/)
+
+## 寻找排序数组中的最小值
+
+[链接](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/solution/xun-zhao-pai-xu-shu-zu-zhong-de-zui-xiao-y89o/)
+
+## x的平方根
+
+[链接](https://leetcode-cn.com/problems/sqrtx/solution/xde-ping-fang-gen-by-shilongshen-hm5r/)
+
+# 排序
+
+## 基础排序算法
+
+[链接](https://leetcode-cn.com/problems/sort-an-array/solution/pai-xu-shu-zu-by-shilongshen-wcoc/)
+
+## 合并两个有序数组
+
+[链接](https://leetcode-cn.com/problems/merge-sorted-array/solution/he-bing-liang-ge-you-xu-shu-zu-by-shilon-956o/)
+
+## 删除数组中的重复元素
+
+[链接](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/solution/shan-chu-shu-zu-zhong-de-zhong-fu-yuan-s-1ged/)
+
+## 移除元素
+
+[链接](https://leetcode-cn.com/problems/remove-element/solution/yi-chu-yuan-su-by-shilongshen-fb8j/)
+
+## 移动零
+
+[链接](https://leetcode-cn.com/problems/move-zeroes/solution/yi-dong-ling-by-shilongshen-2mco/)
+
+## 数组中出现次数大于一半的数字
+
+[链接](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/solution/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-qsz3/)
+
+## 合并排序数组
+
+[链接](https://leetcode-cn.com/problems/sorted-merge-lcci/solution/he-bing-pai-xu-de-shu-zu-by-shilongshen-ybj6/)
+
+## 寻找第K大的元素
+
+[链接](https://www.nowcoder.com/practice/e016ad9b7f0b45048c58a9f27ba618bf?tpId=190&rp=1&ru=%2Factivity%2Foj&qru=%2Fta%2Fjob-code-high-rd%2Fquestion-ranking&tab=answerKey)
+
+## 最小的K个数（topK问题）
+
+[链接](https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/solution/zui-xiao-de-kge-shu-by-shilongshen-j5ga/)
+
+
 
 # 树
 
@@ -37,7 +114,7 @@
 
 ## 二叉搜索树的最近公共祖先
 
-[链接](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/er-cha-shu-de-zui-jin-gong-gong-zui-xian-vct9/)
+[链接]([二叉搜索树的最近公共祖先 - 二叉搜索树的最近公共祖先 - 力扣（LeetCode） (leetcode-cn.com)](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/er-cha-sou-suo-shu-de-zui-jin-gong-gong-dllwg/))
 
 ## 二叉搜索树的插入操作
 
@@ -78,6 +155,10 @@
 ## 二叉树的层序遍历2
 
 [链接](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/solution/er-cha-shu-de-ceng-xu-bian-li-2-by-shilo-5258/)
+
+## 二叉树的之字形层序遍历
+
+[链接](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/solution/er-cha-shu-de-zhi-zi-xing-ceng-xu-bian-l-yoo5/)
 
 ## N叉树的层序遍历
 
@@ -330,11 +411,15 @@
 
 ## 递增子序列
 
-[链接](https://leetcode-cn.com/problems/increasing-subsequences/submissions/)
+[链接]([递增子序列 - 递增子序列 - 力扣（LeetCode） (leetcode-cn.com)](https://leetcode-cn.com/problems/increasing-subsequences/solution/di-zeng-zi-xu-lie-by-shilongshen-ottx/))
 
 ## 划分为k个相等的子集
 
 [链接](https://leetcode-cn.com/problems/partition-to-k-equal-sum-subsets/submissions/)
+
+## 字符串的排列
+
+[链接](https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/solution/zi-fu-chuan-de-pai-lie-by-shilongshen-pwiy/)
 
 # 动态规划
 
@@ -466,6 +551,252 @@
 
 [链接](https://leetcode-cn.com/problems/longest-common-subsequence/solution/zui-chang-gong-gong-zi-xu-lie-by-shilong-8h0k/)
 
+## 最长公共字符列2
+
+[链接](https://blog.nowcoder.net/n/2d2a0d52104048919c01b7a3945a79df)
+
+## 最长公共子序列3
+
+[链接](https://blog.nowcoder.net/n/16c87e17866e40d193ec041fe7ea074d)
+
 ## 回文子串
 
 [链接](https://leetcode-cn.com/problems/palindromic-substrings/solution/hui-wen-zi-chuan-by-shilongshen-2b4o/)
+
+## 最长回文子串
+
+[链接](https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zui-chang-hui-wen-chuan-by-shilongshen-xhvb/)
+
+## 通配符匹配
+
+[链接](https://leetcode-cn.com/problems/wildcard-matching/solution/tong-pei-fu-pi-pei-by-shilongshen-e56k/)
+
+# 链表
+
+## 反转链表
+
+[链接](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/solution/fan-zhuan-lian-biao-by-shilongshen-gwgm/)
+
+## 反转链表2
+
+[链接](https://leetcode-cn.com/problems/reverse-linked-list-ii/solution/fan-zhuan-lian-biao-ii-by-shilongshen-g09y/)
+
+## K 个一组翻转链表
+
+[链接](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/solution/k-ge-yi-zu-fan-zhuan-lian-biao-by-shilon-ahcb/)
+
+## 删除链表的节点
+
+[链接](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/solution/shan-chu-lian-biao-zhong-de-yi-ge-jie-dian-by-shil/)
+
+## 合并两个排序的链表
+
+[链接](https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/solution/shu-ru-liang-ge-di-zeng-pai-xu-de-lian-biao-he-bin/)
+
+## 合并K个已排序链表
+
+[链接](https://www.nowcoder.com/practice/65cfde9e5b9b4cf2b6bafa5f3ef33fa6?tpId=190&rp=1&ru=%2Factivity%2Foj&qru=%2Fta%2Fjob-code-high-rd%2Fquestion-ranking&tab=answerKey)
+
+## 链表中倒数第k个节点
+
+[链接](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/solution/lian-biao-de-di-kge-jie-dian-by-shilongshen/)
+
+## 两个链表的第一个公共节点
+
+[链接](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/solution/shuang-zhi-zhen-zhao-lian-biao-gong-gong-jie-dian-/)
+
+## 复杂链表的复制
+
+[链接](https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/solution/fu-za-lian-biao-de-fu-zhi-by-shilongshen-x1hb/)
+
+## 从尾到头打印链表
+
+[链接](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/submissions/)
+
+## 二叉搜索树与双向链表
+
+[链接](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/solution/er-cha-sou-suo-shu-yu-shuang-xiang-lian-g6jca/)
+
+## 有序链表转换成二叉搜索树
+
+[链接](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/solution/jiang-you-xu-lian-biao-zhuan-huan-wei-er-iv6o/)
+
+## LRU实现
+
+[链接](https://leetcode-cn.com/problems/lru-cache/solution/lrushi-xian-by-shilongshen-qr6t/)
+
+## 链表相加
+
+[链接](https://leetcode-cn.com/problems/add-two-numbers/solution/lian-biao-xiang-jia-by-shilongshen-hol5/)
+
+## 链表中是否存在环
+
+[链接](https://leetcode-cn.com/problems/linked-list-cycle/solution/lian-biao-zhong-shi-fou-cun-zai-huan-by-houa2/)
+
+## 环状链表2
+
+[链接](https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/huan-xing-lian-biao-2-by-shilongshen-yr2x/)
+
+## 删除链表的倒数第 N 个结点
+
+[链接](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/solution/shan-chu-lian-biao-de-dao-shu-di-n-ge-ji-xygh/)
+
+## 链表排序
+
+链接
+
+# 字符串
+
+## 字符串中的最长无重复子串
+
+[链接](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/wu-zhong-fu-zi-fu-de-zui-chang-zi-chuan-od2fi/)
+
+## 有效的括号字符串
+
+[链接](https://leetcode-cn.com/problems/valid-parentheses/solution/you-xiao-de-gua-hao-by-shilongshen-dnbu/)
+
+## 大数加法
+
+[链接](https://blog.nowcoder.net/n/452c26db3952459ba0c1eea31870e5ff)
+
+## 反转字符串
+
+[链接](https://leetcode-cn.com/problems/reverse-string/solution/fan-zhuan-zi-fu-chuan-by-shilongshen-iwy9/)
+
+# 栈和队列
+
+## 两个栈实现队列
+
+[链接](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/solution/liang-ge-zhan-shi-xian-dui-lie-by-shilon-ogyx/)
+
+## 包含min函数的栈
+
+[链接](https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/solution/bao-han-minhan-shu-de-zhan-by-shilongshe-7vmi/)
+
+
+
+# 滑动窗口
+
+## 和为S的连续正整数
+
+[链接](https://leetcode-cn.com/problems/he-wei-sde-lian-xu-zheng-shu-xu-lie-lcof/solution/he-wei-sde-lian-xu-zheng-zheng-shu-by-sh-r4ix/)
+
+## 和为S的两个数字
+
+[链接](https://leetcode-cn.com/problems/he-wei-sde-liang-ge-shu-zi-lcof/solution/he-wei-sde-liang-ge-shu-zi-by-shilongshe-64y7/)
+
+## 两数之和
+
+[链接](https://leetcode-cn.com/problems/two-sum/solution/liang-shu-zhi-he-by-leetcode-solution/)
+
+## 三数之和
+
+[链接](https://leetcode-cn.com/problems/3sum/solution/san-shu-zhi-he-by-shilongshen-skop/)
+
+## 四数之和
+
+[链接](https://leetcode-cn.com/problems/4sum/solution/si-shu-zhi-he-by-shilongshen-k0gf/)
+
+## 盛最多水的容器
+
+[链接](https://leetcode-cn.com/problems/container-with-most-water/solution/sheng-zui-duo-shui-de-rong-qi-by-shilong-qmet/)
+
+## 容器盛水问题
+
+[链接](https://www.nowcoder.com/practice/31c1aed01b394f0b8b7734de0324e00f?tpId=190&tqId=36005&rp=1&ru=%2Factivity%2Foj&qru=%2Fta%2Fjob-code-high-rd%2Fquestion-ranking&tab=answerKey)
+
+# 其他
+
+## 螺旋矩阵
+
+[链接](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/solution/luo-xuan-shu-zu-by-shilongshen-6teb/)
+
+## 矩阵中的路径
+
+[链接](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/solution/ju-zhen-zhong-de-lu-jing-by-shilongshen-3bco/)
+
+##  整数反转
+
+[链接](https://leetcode-cn.com/problems/reverse-integer/solution/zheng-shu-fan-zhuan-by-leetcode-solution-bccn/)
+
+## 二进制数反转
+
+[链接](https://leetcode-cn.com/problems/reverse-bits/solution/dian-dao-er-jin-zhi-shu-by-shilongshen-8zo4/)
+
+## 二进制中1的个数
+
+[链接](https://shilongshen.github.io/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/)
+
+# 剑指
+
+## 数组中的重复元素
+
+[链接](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/solution/shu-zu-zhong-zhong-fu-de-shu-zi-by-shilo-nkqt/)
+
+## 二维数组中的查找
+
+[链接](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/solution/er-wei-shu-zu-zhong-de-cha-zhao-by-shilo-em9u/)
+
+## 替换空格
+
+[链接](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/solution/ti-huan-kong-ge-by-shilongshen-j8kn/)
+
+## 从尾到头打印链表
+
+[链接](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/solution/cong-wei-dao-tou-da-yin-lian-biao-by-shi-oonn/)
+
+## 重建二叉树
+
+[链接](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/solution/zhong-jian-er-cha-shu-by-shilongshen-mzlm/)
+
+## 两个栈实现队列
+
+[链接](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/solution/yong-liang-ge-zhan-shi-xian-dui-lie-by-s-9vfw/)
+
+## 斐波那契数列
+
+[链接](https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/solution/fei-bo-na-qi-shu-lie-by-shilongshen-lhgx/)
+
+## 旋转数组中的最小值💡
+
+[链接](https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/solution/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-by-fxdtz/)
+
+## 矩阵中的路径
+
+[链接](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/solution/ju-zhen-zhong-de-lu-jing-by-shilongshen-3bco/)
+
+## 机器人的运动范围
+
+[链接](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/solution/ji-qi-ren-de-yun-dong-fan-wei-by-shilong-c7rm/)
+
+## 剪绳子
+
+[链接](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/solution/jian-sheng-zi-shi-yong-dong-tai-gui-hua-4ewou/)
+
+## 剪绳子2
+
+[链接](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/solution/jian-sheng-zi-shi-yong-dong-tai-gui-hua-4ewou/)
+
+## 二进制中1的个数
+
+[链接](https://shilongshen.github.io/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/)
+
+## 数值的整数次方
+
+[链接](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/solution/shu-zhi-de-zheng-shu-ci-fang-by-shilongs-zh7v/)
+
+## 打印从1到最大的n位数🎈
+
+[链接](https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/solution/da-yin-cong-1dao-zui-da-de-nwei-shu-by-s-2n8t/)
+
+## 删除链表的结点
+
+[链接](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/solution/shan-chu-lian-biao-zhong-de-yi-ge-jie-dian-by-shil/)
+
+## 正则式匹配🎈
+
+[链接](https://leetcode-cn.com/problems/zheng-ze-biao-da-shi-pi-pei-lcof/)
+
+## 表示数值的字符串🎈
+
+[链接](https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/)

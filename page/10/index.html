@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://shilongshen.github.io/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
-<meta property="og:updated_time" content="2021-03-22T09:54:48+08:00" />
+<meta property="og:updated_time" content="2021-05-28T09:54:48+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
@@ -103,62 +103,74 @@
         alt="/images/avatar.jpg"
         title="/images/avatar.jpg" /></a></div><h1 class="home-title">我的个人博客</h1><div class="links"><a href="https://github.com/shilongshen" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a><a href="mailto:1319144765@qq.com" title="Email" rel=" me"><i class="far fa-envelope fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/hinge-loss/">hinge loss</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
-Hinge loss专用于二分类问题，标签值y=±1，预测值$\hat{y}\in R$。该二分类问题的目标函数的要求如下： 当$\hat{y}$大于等于+1或者小于等于-1时，都是分类器确定的分类结果，此时的损失函数loss为0；而当预测值$\hat{y}\in (-1,1)$时，分类器对分类结果不确定，loss不为0。显然，当时$\hat{y}=0$,loss达到最大值。
-对于输出y=±1，当前$\hat{y}$的损失为**： $$ \mathcal{L}=max(0,1-y \cdot \hat{y}) $$
-上式是Hinge loss在二分类问题的的变体，可以看做双向Hinge loss。难以理解的话，可以先看单方向的hinge loss。以y=+1，为例。当y⩾1时，loss为0，否则loss线性增大。函数图像如下所示：</div><div class="post-footer">
-        <a href="/hinge-loss/">Read More</a></div>
+        <a href="/a-variational-u-net-for-conditional-appearance-and-shape-generation/">A Variational U-Net for Conditional Appearance and Shape Generation</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该方法能够生成不同的姿态的人物图像以及改变人物的外观。而且这个模型能够在不改变shape的情况下从appearance distribution 中进行采样。
+1 Approach 记$x$为dataset $X$中的一张图片，我们想要理解$x$中的object是如何被其shape $y$和appearance $z$所影响的。因此图像生成器可以被表示为最大化后验概率（极大似然估计：给定$y$和$z$，哪种$x$最有可能发生。） $$ arg\ max\ p(x|y,z) $$
+1.1 VAE based on latent shape and appearance $p(x|y,z)$可以视为隐变量(含两个隐变量)的生成模型，可以求得这个生成模型的联合概率分布$p(x,y,z)$。
+$\because$ $$ p(x|y,z)=\frac{p(x,y,z)}{p(y,z)} $$
+$\therefore$ $$ p(x,y,z)=p(x|y,z)p(y,z) $$ 含隐变量的概率密度估计可以采用VAE的方法进行求解，求解过程包含了两个步骤推断和生成。实际上我们最终的目的是为了求出图像$x$的分布$p(x,\theta),\theta$为参数，给定样本$x$，其对数边际似然函数为 $$ \log p(x,\theta)=ELBO(q,x,\theta,\phi)+KL[q(y,z|x;\phi),p(y,z|x;\theta)] $$ 其中$q(y,z|x;\phi)$为变分密度函数，$\phi$为参数，ELBO为证据下界： $$ ELBO(q,x,\theta,\phi)=\mathbb{E}_q\log \frac{p(x|y,z)p(y,z)}{q(y,z|x;\phi)} $$
+ $$ \begin{aligned} \log p(x)&amp;=\log \int p(x,y,z)dz\ dy\
+&amp;=\log \int \frac{p(x,y,z)}{q(y,z|x)}q(y,z|x)dz\ dy\
+&amp;\geq \int q(y,z|x)\log \frac{p(x,y,z)}{q(y,z|x)}dz\ dy\
+&amp;= \mathbb{E}_q\log \frac{p(x,y,z)}{q(y,z|x;\phi)}\
+&amp;=\mathbb{E}_q\log \frac{p(x|y,z)p(y,z)}{q(y,z|x;\phi)}
+\end{aligned} $$
+实际上 $$ \begin{aligned} \log p(x)&amp;=\int q(y,z|x)\log \frac{p(x,y,z)}{q(y,z|x)}dz\ dy-\int q(y,z|x)\log \frac{p(y,z|x)}{q(y,z|x)}dz\ dy\</div><div class="post-footer">
+        <a href="/a-variational-u-net-for-conditional-appearance-and-shape-generation/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/human-parser/">human parser</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">人体解析是指将在图像中捕获的人分割成多个语义上一致的区域，例如， 身体部位和衣物。作为一种细粒度的语义分割任务，它比仅是寻找人体轮廓的人物分割更具挑战性。 人体解析对于以人为中心的分析非常重要，并且具有许多工业上的应用，例如，虚拟现实，视频监控和人类行为分析等等。</div><div class="post-footer">
-        <a href="/human-parser/">Read More</a></div>
+        <a href="/amt-perceptual-studies/">AMT perceptual study</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考文献
+注意到，这里评判的指标是志愿者将生成图像标记为真实图像的概率，也就是生成图像“欺骗”的概率（G2R）
+ 参考文献
+ 要点：
+ 给出一组真实图像和一组生成图像（以不同的次序），让志愿者为每一张图像进行标记（该张图像是真实图像还是生成图像） 每一张图像只出现1秒 前10张图像由于warming up，会告知志愿者正确的结果 若有多个算法进行比较时，一组实验只进行测试一种算法  注意到评价的指标通常为R2G、G2R，即将真实图像标记为真实图像的概率以及将生成图像标记为生成图像的概率，也就是“fool rate”。</div><div class="post-footer">
+        <a href="/amt-perceptual-studies/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/if-__name____main__%E7%9A%84%E7%90%86%E8%A7%A3/">if __name__==&#39;__main__&#39;的理解</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">直观理解：
-对于当前运行的程序one.py而言，name 变量的值是&rdquo;main&quot;。
-如果two.py调用了one.py，即import one，那么对one.py而言__name__变量的值是&rdquo;one&quot;，对于two.py而言__name__变量的值是&rdquo;main&quot;。
-背后原因：
-有时我们写了可以直接被执行的模块（.py文件），但是在另一个程序中调用它时，我们其实只是想用一用里面写好的函数，而不是全都执行一遍。那么我们就可以把执行的部分放到if name == &lsquo;main&rsquo; 中进行判断。
-如果if name == &lsquo;main&rsquo; 为真，就说明我们是在直接执行这个模块，那么所有的操作都要运行一遍；但如果为假，就说明我们是引用了这个模块，只有在需要用到它的函数时，才会被调用执行。
-1 2 3 4 5 6 7 8 9  定义一个py文件：one.pydef func():print(&#34;func() in one.py&#34;)#此时&#34;__name__&#34;等于“__main_-” if __name__ == &#34;__main__&#34;:print(&#34;one.py is being run directly&#34;)else:print(&#34;one.py is being imported into another module&#34;)  1 2  运行one.py的结果如下：one.py is being run directly  1 2 3 4 5 6 7 8 9 10 11 12 13  定义一个py文件：two.</div><div class="post-footer">
-        <a href="/if-__name____main__%E7%9A%84%E7%90%86%E8%A7%A3/">Read More</a></div>
+        <a href="/arbitrary-style-transfer-in-real-time-with-adaptive-instance-normalization/">Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文提出了一种简单但高效的实时（转换速度更快）的能进行任意风格迁移的模型。该模型的核心为adaptive instance normalization (AdaIN) layer，AdaIN能够对齐content feature 与style feature的均值和方差。
+1 Introduction 深度神经网络能够将图像的内容以及风格信息进行编码，而且图像的内容和风格是可分离的，因此可以实现在保存图像内容的同时对图像的风格进行改变。
+现存的方法存在两个弊端：1.能够实现任意风格的迁移，但是速度较慢。2.速度较快，但是只能够实现单一风格的迁移。
+在这篇文章中实现了速度快且能够实现任意风格转换。
+AdaIN由instance normalization (IN)所启发。IN在feed-forward风格迁移中是十分高效的，IN的作用可以解释为：IN通过归一化包含图像风格信息的feature statistics（特征的统计特性，例如均值和方差）来进行风格归一化。
+AdaINs是IN的拓展，其以内容和风格作为输入，通过调整内容的均值和方差来匹配风格输入d的均值和方差。
+2 related work style transfer ​	风格迁移问题起源于non-photo-realistic rendering（非真实性渲染：通过风格形式的艺术化加工。相对的真实性渲染强调其输出的外观尽可能的与目标图像相同。）,并且与纹理合成和转移密切相关。一些早期使用的方法包括了直方图匹配和非参数采样。这些方法通常依赖于低层次的统计特性并且不能够很好的捕获语义结构信息。Gray等人首次通过在深度神经网络中匹配卷积层的统计特性来进行风格迁移，并达到了十分出色的效果。
+​	Gray等人提出的网络框架由于需要最小化内容损失函数和风格损失函数来迭代更新图像，因此优化的过程十分的缓慢，在实际的应用中常常需要较长的时间来处理图像（文中并没有采用常用的梯度下降的方法，采用的是L-BFGS的优化算法，其实本身这个风格转换只是利用的VGG网络进行特征提取，实际上L-BFGS优化的是从一张由白噪声组成的图片，最终根据定义的损失优化得到最终的风格转换图片）。一种常见的解决为使用训练后的前馈神经网络将优化过程替代，这能够极快的提升处理图像的速度，实现实时的转换。然而这些基于前馈网络的方法存在着局限性：一个网络框架只能够生成有限风格的图像。
+&hellip;
+ 各种归一化方法图例
+3 Background  如果一个机器学习算法在缩放全部或部分特征后不影响它的它的学习和预测，我们就称该算法具有尺度不变性。
+从理论上，神经网络应该具有尺度不变性，可以通过参数的调整来适应不同特征的尺度．但尺度不同的输入特征会增加训练难度．假设一个只有一层的网络𝑦 = tanh(𝑤1𝑥1 + 𝑤2𝑥2 + 𝑏)，其中𝑥1 ∈ [0, 10]，𝑥2 ∈ [0, 1]．之前我们提到tanh 函数的导数在区间[−2, 2] 上是敏感的，其余的导数接近于0．因此，如果𝑤1𝑥1 + 𝑤2𝑥2 + 𝑏 过大或过小，都会导致梯度过小，难以训练．为了提高训练效率，我们需要使𝑤1𝑥1 + 𝑤2𝑥2 + 𝑏 在[−2, 2] 区间，因此需要将𝑤1 设得小一点，比如在[−0.1, 0.1] 之间．可以想象，如果数据维数很多时，我们很难这样精心去选择每一个参数．因此，如果每一个特征的尺度相似，比如[0, 1] 或者[−1, 1]，我们就不太需要区别对待每一个参数，从而减少人工干预。
+除了参数初始化比较困难外，不同输入特征的尺度差异比较大时，梯度下降法的效率也会受到影响。</div><div class="post-footer">
+        <a href="/arbitrary-style-transfer-in-real-time-with-adaptive-instance-normalization/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/java%E5%9F%BA%E7%A1%80/">Java基础</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">Java简介 Java将源代码编译成一种“字节码”，虚拟机（JVM）负责加载字节码并执行。
-名词解释  JDK：Java Development Kit JRE：Java Runtime Environment  简单地说，JRE就是运行Java字节码的虚拟机。但是，如果只有Java源码，要编译成Java字节码，就需要JDK，因为JDK除了包含JRE，还提供了编译器、调试器等开发工具。
-在JDK的bin目录下可以找到很多可执行文件：
- javac : 这是java的编译器，它用于把java源文件（以.java后缀结尾）编译成java字节码文件（以.class后缀结尾）； java : 这其实就是虚拟机（JVM）,负责执行java字节码。  第一个java程序 1 2 3 4 5  public class Hello{ public static mean(String[] args){ System.out.println(&#34;hello,world!&#34;); } }   在java程序中
-1 2 3  public class Hello{ ... }   为类的定义，Hello为类名，public表示这个类是公开的。
-在类中定义了方法：
-1 2 3  public static mean(String[] args){ ... }   方法是可执行代码块，mean为方法名，用()括起来的是方法参数，这里的参数类型为String[],参数名为args,public，static用来修饰方法，表明该方法为公开静态方法，void为方法的返回类型，{}中间为方法的代码，这才是真正执行的代码，必须以;结尾。
- 把代码保存为文件时，文件名必须和类名Hello一样，为Hello.java。
-如何运行Java程序 注意javac是编译器，java是虚拟机</div><div class="post-footer">
-        <a href="/java%E5%9F%BA%E7%A1%80/">Read More</a></div>
+        <a href="/clothflow-a-flow-based-model-for-clothed-person-generation/">ClothFlow A Folw-Based Model for Clothed Person Generation</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文提出了基于外观流（clothflow）的生成模型来进行姿态引导下的人物图像生成研究（以及虚拟试衣）。
+通过估计source clothing 和target clothing之间的光流，能够的建立两者之间的几何变换。
+ 共分为三个阶段:
+第一阶段： 以条件姿态为指导，来生成target person semantic layout 来对生成过程提供丰富的指导。将姿态和外观进行解耦，使得clothflow生成更加空间相关的结果。
+阶段二： 阶段二为clothflow flow 估计阶段（flow的作用是什么：用于表示原图像中的哪些像素可以被用于生成目标图像的二维坐标向量）。
+使用上一阶段得到的target person semantic layout作为输入来得到cloth flow。source cloth region之后通过cloth flow进行warping，以解决几何变形。 预测的外观流提供了视觉对应关系的准确估计，并有助于无缝转移源衣服区域以合成目标图像。
+阶段三： 生成模型以warped clothing region作为输入来对target pose进行渲染。
+ introduction 受到image-to-image translation工作的启发，一些工作直接将原图像和目标姿态作为输入，来生成目标图像。但是这些工作并没有考虑由于人体非刚性的特征引起的变形和遮挡问题，这导致了不能够生成精细的纹理细节。
+为了解决geometric deformation问题以更好的进行appearance transfer，提出了两种不同的方法：deformation-based methods and DensePose-based methods.
+deformation-based methods estimate a transformation，包括了使用affine和TPS来对source image pixel或者是feature map进行deform，以解决由于姿态变化引起的不对齐问题。尽管通过这两种几何建模方法已经取得了很大的进步，但是这种方法的自由度不够高，不能够准确的进行deform。
+DensePose-based methods能够将2Dpixel映射到3D body surface，这能够更容易的获得纹理信息。但是基于dense pose的方法生成的图像引入artifacts，例如在原图像和目标图像中有不对应的部分，生成的图像产生空洞。除此之外，基于dense pose的方法的计算量较大。
+ related work Warping-based Image Matching and Synthesis 在这篇文章中，我们的目标是将source cloth warp 成 target cloth。cloth region是非刚性的，source和target之间没有明确的对应关系。</div><div class="post-footer">
+        <a href="/clothflow-a-flow-based-model-for-clothed-person-generation/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/kl%E6%95%A3%E5%BA%A6/">KL散度</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
-KL散度用来做什么？ KL散度的用途：比较两个概率分布的接近程度。
-在统计应用中，我们经常需要用一个简单的，近似的概率分布f∗
-来描述一个复杂的概率分布f。这个时候，我们需要一个量来衡量我们选择的近似分布 f∗相比原分布f究竟损失了多少信息量，这就是KL散度起作用的地方。
-熵 为了更好的理解KL散度，在这里首先抛出熵的概念。在信息论这门学科中，一个很重要的目标就是量化描述数据中含有多少信息。 为此，提出了熵的概念，记作H，一个概率分布所对应的熵表达如下： $$ H= −\sum_{i=1}^N=p(x_i)⋅\log (p(x_i)) $$ 果我们使用 log⁡2 作为底，熵可以被理解为：我们编码所有信息所需要的最小位数。 需要注意的是：通过计算熵，我们可以知道信息编码需要的最小位数，却不能确定最佳的数据压缩策略。怎样选择最优数据压缩策略，使得数据存储位数与熵计算的位数相同，达到最优压缩，是另一个庞大的课题。
-KL散度的计算 现在，我们能够量化数据中的信息量了，就可以来衡量近似分布带来的信息损失了。KL散度的计算公式其实是熵计算公式的简单变形,在原有概率分布 p 上，加入我们的近似概率分布 q，计算他们的每个取值对应对数的差： $$ D_{KL}(p||q)= ∑_{i=1}^Np(x_i)⋅(log(p(x_i))−log(q(x_i)))\
-=∑_{i=1}^Np(x_i)⋅log \frac{p(x_i)}{q(x_i)} $$ 换句话说，KL散度计算的就是数据的原分布与近似分布的概率的对数差的期望值。 在对数以2为底时，log2 ，可以理解为“我们损失了多少位的信息”
-KL散度的连续定义： $$ D_{KL}(p||q)=\int p(x)⋅log \frac{p(x)}{q(x)}dx $$</div><div class="post-footer">
-        <a href="/kl%E6%95%A3%E5%BA%A6/">Read More</a></div>
+        <a href="/controllable-person-image-synthesis-with-attribute-decomposed-gan/">Controllable Person Image Synthesis with Attribute-Decomposed GAN</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">1. Idea 可控性的图像生成
+提出了具有两个独立pathways的生成器。其中一个pathway是用于pose encoding,另一个用于decomposed component encoding。
+对于后者首先使用预训练的human parser从source person image 中自动地分离出component attributes（得到的是semantic layouts）。得到的component layouts之后通过multi-branch embeddings送入global texture encoder中（得到相应的latent code）。得到的latent code通过一种特殊的形式结合得到style code。之后这些表示component attribute的style code通过AdnIN中的仿射变换与pose code相结合。最后进行图像生成。
+2. Contribution  通过直接提供的的不同的源人物图像来控制人物图像属性的生成，解决pose和component attribute之间错综复杂的关系。 提出了attribute-decomposed GAN来进行人物属性合成。 通过利用off-the-shelf human parser 来提取component layouts，使得component attributes进行自动分离，解决了人物属性不高效的标注问题。  3. Related work image synthesis person image synthesis 目前的person image synthesis方法只是将条件图像转换为具有目标姿态的图像。但是本文中的方法不仅仅能够对姿态进行控制，还能够对component attributes（例如头，上衣和裤子）进行控制。而且生成的图像具有更加真实的纹理和连续的ID信息。
+4. Method description 本文的目标生成具有用户控制属性（例如头发，上衣和裤子）的人物图像。与之前的属性编辑方式不同（之前的方法需要每一个属性都进行标注的标签数据），本文中通过精心设计的生成器来对component attributes进行自动和无监督的分离。因此本文中只需要无需对每一属性进行标注的人物图像训练数据。在训练期间，目标图像$p_t$和条件图像$I_s$送入生成器中，输出生成图像$I_g$。
+4.1 Generator 生成器通过两个独立pathways将$p_t$和$I_s$表示为两个隐变量，分别称为pose encoding和decomposed component encoding。这两个pathways通过一系列的style blocks连接，style blocks将源人物图像的纹理风格嵌入到pose feature。
+4.1.1 pose encoding 在pose pathways中$p_t$通过pose encoder映射到隐空间中，用$C_{pose}$表示，其中pose encoder有N个下采样卷积层构成（N=2）。</div><div class="post-footer">
+        <a href="/controllable-person-image-synthesis-with-attribute-decomposed-gan/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/">MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文章实现了不同背景下多条件人物图像生成。
-该文提出了一个概念：图像生成（image generation）和图像合成（image compositing）
-Introduction 条件人物图像生成可以分为两个阶段：
- conditional generation phase : 在几何条件的基础上，生成人物的细粒度纹理 adaptive compositing phase : 根据不同的背景调整生成人物的色调，使得生成的人物能够和背景更加的融合。  对于conditional generation phase，以三个条件作为输入：geometry、pattern（灰度纹理）和color，对应到具体的输入为parsing mask、Gaussian noise以及multi-valued color attributes。其中patteern 和 color是抽象的并且与geometry相关。因此条件人物图像生成可以视为抽象条件的视觉具体化。
-另一方面，adaptive compositing phase 需要将生成的人物图像更好的与背景相融合。
- ​	MISC包含两个模块：
- conditional person generation model spatially-adaptive image composition model  其中conditional person generation model ：
-对于pattern condition ，将它视为Gaussian noise，引入一个条件归一化层：GAIN，通过Gaussian 来调剂激活值。
-对于color condition，使用bipartite network project method 来讲attribute 映射到人物相应的几何位置上，并使用预训练的cross-modality similarity model 来增强attribute embedding的语义意义。
- 而对于spatially-adaptive image composition model：</div><div class="post-footer">
-        <a href="/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/">Read More</a></div>
+        <a href="/coordinate-based-texture-inpainting-for-pose-guided-human-image-generation/">Coordinate-based Texture Inpainting for Pose-Guided Human Image Generation</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文提出了一种基于深度学习的姿态引导下的图像生成方法。
+该方法的核心是能够基于单一图像估计出完整身体的纹理。</div><div class="post-footer">
+        <a href="/coordinate-based-texture-inpainting-for-pose-guided-human-image-generation/">Read More</a></div>
 </article><ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -189,7 +201,7 @@ Introduction 条件人物图像生成可以分为两个阶段：
                     <span class="page-link" aria-hidden="true">&hellip;</span>
                 </li><li class="page-item ">
                     <span class="page-link">
-                        <a href="/page/16/">16</a>
+                        <a href="/page/21/">21</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">

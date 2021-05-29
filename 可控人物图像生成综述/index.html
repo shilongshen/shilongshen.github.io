@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>可控人物图像生成综述 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="可控人物图像生成综述" />
+<meta property="og:description" content="1.姿态表示的错误 2.由于身体自遮挡造成的姿态表示的模棱两可 3.稀少的姿态 4.稀少的外观 5.
+从2D的层面来说肢体的遮挡是无可避免的
+ 姿态引导下任务图像生成是计算机视觉领域一个热门的研究方向。该任务的目标为在目标姿态的引导下，在保留源图像外观的基础上进行人物姿态的转变。姿态引导下人物图像生成研究具有广泛的应用价值：例如图像编辑、电影制作、AR技术、虚拟换装、以及数据增强等。在这些应用中，用户通常会关注语义和细节更加丰富的部分，例如脸部和服装的细节。因此对语义信息进行保留以及对细粒度外观特征进行补充对于姿态引导下图像生成模型具有重要的意义。
+姿态引导下的图像生成研究大致可以分为三种方法：全局预测方法、局部映射方法以及混合方法
+全局预测方法 受到图像翻译工作的启发，早期的姿态引导下图像生成研究通常采用了全局预测的方法来直接将源图像姿态直接转换为目标姿态。例如文献【】中提出的模型中采用了具有跳跃连接的U-net进行图像的生成，其中跳跃连接用于前向传递解码特征给编码器。但是这种基于全局预测的方法缺乏捕获相应局部特征的能力，这会导致生成图像中细节的缺失，例如生成平滑的服装或者是变形的姿态。究其原因在于U-net首先文献【】被提出用于解决图像分割问题，其原域的图像与目标域的图像的局部结构是对齐的，解码器的特征映射与编码器的特征映射具有相同的空间分布，属于强约束。而对于姿态转换问题，由于人体非刚性的特点，（由于视角变化或者是姿态变化）输入图像和目标图像具有不同的空间位置，其特征映射是未对齐的，对于未对齐的特征映射则不属于强约束。因此直接使用U-net的跳跃连接只能够为解码器提供未对齐的特征映射，这对于进行姿态转换并不能取得很好的效果。
+ 具体解释：
+假设U-net的结构如上，其中Encoder中进行的是的是源图像$I_s$和目标姿态$P_t$的信息融合，所以Encoder中的特征Encoder feature表示的是源姿态$P_s$和目标姿态$P_t$的一种融合信息（当然还包括了源图像的外观），而latent code可以理解为源图像的姿态已经转变为目标姿态（保留了源图像的外观），因此latent code可以视为生成$I_g$.(需要经过Decoder编码)。所以Encoder feature和latent code（可以理解为Decoder feature）在局部是不对齐的。
+思考一下U-net中的跳跃连接的作用是什么：是为了前向传递Encoder feature，这能够有效的保留源图像中的信息。（保留图像中的局部信息，保留细节）
+但是在姿态引导下的图像生成研究中，前向传递的特征是不对齐的，这会导致导致模型无法很好的捕获局部的信息，使得生成的图像细节的缺失，例如生成平滑的服装或者是变形的姿态
+ 局部映射方法 针对全局预测方法存在的缺陷，文献【】提出了一种改进的特征融合机制，对前向传递的解码器特征进行仿射变换后再传递给编码器。受到该方法的启发，有许多的研究人员采用了局部映射方法来进行姿态引导下的图像生成研究进行细粒度挖掘，例如例如引入薄板样条函数来进一步促进了非线性局部映射、引入了局部注意力机制增强了在局部映射建模中的灵活性、除此之外还有光流法以及3D 建模法等。由于局部映射方法往往需要对应的精确特征来进行细节重构，然而在实际的情况中，图像中人物往往由于视角的变化、遮挡或者姿态变化出现不可见的区域，这会导致源图像和目标图像中的某些部分区域无法对应，这些无法对应的部分就无法使用局部映射方法，这会导致相应部分的生成内容不确定。
+ 常用的局部映射方法：仿射变换，薄板样条，局部注意力机制，光流法，3D建模
+仿射变换和薄板样条不够灵活
+3D建模的计算量太大
+ 混合方法 针对局部映射方法存在的缺陷，混合方法尝试利用另外一个全局预测分支在不对应部分生成新的内容，并与局部映射方法生成的内容相结合。但是现有的混合方法只是尝试在图像级别将生成结果进行混合，中间层的特征融合很少被研究。具体来说全局预测分支通常独立于局部映射方法，这使得两者生成的内容在风格上是不一致的。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-15T13:26:17+08:00" />
+<meta property="article:modified_time" content="2020-11-15T13:26:17+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="可控人物图像生成综述"/>
+<meta name="twitter:description" content="1.姿态表示的错误 2.由于身体自遮挡造成的姿态表示的模棱两可 3.稀少的姿态 4.稀少的外观 5.
+从2D的层面来说肢体的遮挡是无可避免的
+ 姿态引导下任务图像生成是计算机视觉领域一个热门的研究方向。该任务的目标为在目标姿态的引导下，在保留源图像外观的基础上进行人物姿态的转变。姿态引导下人物图像生成研究具有广泛的应用价值：例如图像编辑、电影制作、AR技术、虚拟换装、以及数据增强等。在这些应用中，用户通常会关注语义和细节更加丰富的部分，例如脸部和服装的细节。因此对语义信息进行保留以及对细粒度外观特征进行补充对于姿态引导下图像生成模型具有重要的意义。
+姿态引导下的图像生成研究大致可以分为三种方法：全局预测方法、局部映射方法以及混合方法
+全局预测方法 受到图像翻译工作的启发，早期的姿态引导下图像生成研究通常采用了全局预测的方法来直接将源图像姿态直接转换为目标姿态。例如文献【】中提出的模型中采用了具有跳跃连接的U-net进行图像的生成，其中跳跃连接用于前向传递解码特征给编码器。但是这种基于全局预测的方法缺乏捕获相应局部特征的能力，这会导致生成图像中细节的缺失，例如生成平滑的服装或者是变形的姿态。究其原因在于U-net首先文献【】被提出用于解决图像分割问题，其原域的图像与目标域的图像的局部结构是对齐的，解码器的特征映射与编码器的特征映射具有相同的空间分布，属于强约束。而对于姿态转换问题，由于人体非刚性的特点，（由于视角变化或者是姿态变化）输入图像和目标图像具有不同的空间位置，其特征映射是未对齐的，对于未对齐的特征映射则不属于强约束。因此直接使用U-net的跳跃连接只能够为解码器提供未对齐的特征映射，这对于进行姿态转换并不能取得很好的效果。
+ 具体解释：
+假设U-net的结构如上，其中Encoder中进行的是的是源图像$I_s$和目标姿态$P_t$的信息融合，所以Encoder中的特征Encoder feature表示的是源姿态$P_s$和目标姿态$P_t$的一种融合信息（当然还包括了源图像的外观），而latent code可以理解为源图像的姿态已经转变为目标姿态（保留了源图像的外观），因此latent code可以视为生成$I_g$.(需要经过Decoder编码)。所以Encoder feature和latent code（可以理解为Decoder feature）在局部是不对齐的。
+思考一下U-net中的跳跃连接的作用是什么：是为了前向传递Encoder feature，这能够有效的保留源图像中的信息。（保留图像中的局部信息，保留细节）
+但是在姿态引导下的图像生成研究中，前向传递的特征是不对齐的，这会导致导致模型无法很好的捕获局部的信息，使得生成的图像细节的缺失，例如生成平滑的服装或者是变形的姿态
+ 局部映射方法 针对全局预测方法存在的缺陷，文献【】提出了一种改进的特征融合机制，对前向传递的解码器特征进行仿射变换后再传递给编码器。受到该方法的启发，有许多的研究人员采用了局部映射方法来进行姿态引导下的图像生成研究进行细粒度挖掘，例如例如引入薄板样条函数来进一步促进了非线性局部映射、引入了局部注意力机制增强了在局部映射建模中的灵活性、除此之外还有光流法以及3D 建模法等。由于局部映射方法往往需要对应的精确特征来进行细节重构，然而在实际的情况中，图像中人物往往由于视角的变化、遮挡或者姿态变化出现不可见的区域，这会导致源图像和目标图像中的某些部分区域无法对应，这些无法对应的部分就无法使用局部映射方法，这会导致相应部分的生成内容不确定。
+ 常用的局部映射方法：仿射变换，薄板样条，局部注意力机制，光流法，3D建模
+仿射变换和薄板样条不够灵活
+3D建模的计算量太大
+ 混合方法 针对局部映射方法存在的缺陷，混合方法尝试利用另外一个全局预测分支在不对应部分生成新的内容，并与局部映射方法生成的内容相结合。但是现有的混合方法只是尝试在图像级别将生成结果进行混合，中间层的特征融合很少被研究。具体来说全局预测分支通常独立于局部映射方法，这使得两者生成的内容在风格上是不一致的。"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/" /><link rel="prev" href="https://shilongshen.github.io/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" /><link rel="next" href="https://shilongshen.github.io/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E7%82%B9/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "可控人物图像生成综述",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0\/"
+        },"genre": "posts","wordcount":  29 ,
+        "url": "https:\/\/shilongshen.github.io\/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0\/","datePublished": "2020-11-15T13:26:17+08:00","dateModified": "2020-11-15T13:26:17+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">可控人物图像生成综述</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;29 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>
+              <ul>
+                <li><a href="#全局预测方法">全局预测方法</a></li>
+                <li><a href="#局部映射方法">局部映射方法</a></li>
+                <li><a href="#混合方法">混合方法</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><blockquote>
+<p>1.姿态表示的错误
+2.由于身体自遮挡造成的姿态表示的模棱两可
+3.稀少的姿态
+4.稀少的外观
+5.</p>
+<p>从2D的层面来说肢体的遮挡是无可避免的</p>
+</blockquote>
+<p>姿态引导下任务图像生成是计算机视觉领域一个热门的研究方向。该任务的目标为在目标姿态的引导下，在保留源图像外观的基础上进行人物姿态的转变。姿态引导下人物图像生成研究具有广泛的应用价值：例如图像编辑、电影制作、AR技术、虚拟换装、以及数据增强等。在这些应用中，用户通常会关注语义和细节更加丰富的部分，例如脸部和服装的细节。因此对语义信息进行保留以及对细粒度外观特征进行补充对于姿态引导下图像生成模型具有重要的意义。</p>
+<p>姿态引导下的图像生成研究大致可以分为三种方法：全局预测方法、局部映射方法以及混合方法</p>
+<p><img src="https://gitee.com/shilongshen/image-bad/raw/master/20200615210534.png"  /></p>
+<h4 id="全局预测方法">全局预测方法</h4>
+<p>受到图像翻译工作的启发，早期的姿态引导下图像生成研究通常采用了全局预测的方法来直接将源图像姿态直接转换为目标姿态。例如文献【】中提出的模型中采用了具有跳跃连接的U-net进行图像的生成，其中跳跃连接用于前向传递解码特征给编码器。但是这种基于全局预测的方法缺乏捕获相应局部特征的能力，这会导致生成图像中细节的缺失，例如生成平滑的服装或者是变形的姿态。究其原因在于U-net首先文献【】被提出用于解决图像分割问题，其原域的图像与目标域的图像的局部结构是对齐的，解码器的特征映射与编码器的特征映射具有相同的空间分布，属于强约束。而对于姿态转换问题，由于人体非刚性的特点，（由于视角变化或者是姿态变化）输入图像和目标图像具有不同的空间位置，其特征映射是未对齐的，对于未对齐的特征映射则不属于强约束。因此直接使用U-net的跳跃连接只能够为解码器提供未对齐的特征映射，这对于进行姿态转换并不能取得很好的效果。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/image-bad/raw/master/20200615201923.png"
+        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/20200615201923.png, https://gitee.com/shilongshen/image-bad/raw/master/20200615201923.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/20200615201923.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/image-bad/raw/master/20200615201923.png"
+        title="https://gitee.com/shilongshen/image-bad/raw/master/20200615201923.png" /></p>
+<blockquote>
+<p>具体解释：</p>
+<p><img src="https://gitee.com/shilongshen/image-bad/raw/master/20200615204436.png"  /></p>
+<p>假设U-net的结构如上，其中Encoder中进行的是的是源图像$I_s$和目标姿态$P_t$的信息融合，所以Encoder中的特征Encoder feature表示的是源姿态$P_s$和目标姿态$P_t$的一种融合信息（当然还包括了源图像的外观），而latent code可以理解为源图像的姿态已经转变为目标姿态（保留了源图像的外观），因此latent code可以视为生成$I_g$.(需要经过Decoder编码)。所以Encoder feature和latent code（可以理解为Decoder feature）在局部是不对齐的。</p>
+<p>思考一下U-net中的跳跃连接的作用是什么：是为了前向传递Encoder feature，这能够有效的保留源图像中的信息。（保留图像中的局部信息，保留细节）</p>
+<p>但是在姿态引导下的图像生成研究中，前向传递的特征是不对齐的，这会导致导致模型无法很好的捕获局部的信息，使得生成的图像细节的缺失，例如生成平滑的服装或者是变形的姿态</p>
+</blockquote>
+<h4 id="局部映射方法">局部映射方法</h4>
+<p>针对全局预测方法存在的缺陷，文献【】提出了一种改进的特征融合机制，对前向传递的解码器特征进行<strong>仿射变换</strong>后再传递给编码器。受到该方法的启发，有许多的研究人员采用了局部映射方法来进行姿态引导下的图像生成研究进行细粒度挖掘，例如例如引入<strong>薄板样条函数</strong>来进一步促进了非线性局部映射、引入了<strong>局部注意力机制</strong>增强了在局部映射建模中的灵活性、除此之外还有<strong>光流法</strong>以及<strong>3D 建模法</strong>等。由于局部映射方法往往需要对应的精确特征来进行细节重构，然而在实际的情况中，图像中人物往往由于视角的变化、遮挡或者姿态变化出现不可见的区域，这会导致源图像和目标图像中的某些部分区域无法对应，这些无法对应的部分就无法使用局部映射方法，这会导致相应部分的生成内容不确定。</p>
+<blockquote>
+<p>常用的局部映射方法：仿射变换，薄板样条，局部注意力机制，光流法，3D建模</p>
+<p>仿射变换和薄板样条不够灵活</p>
+<p>3D建模的计算量太大</p>
+</blockquote>
+<h4 id="混合方法">混合方法</h4>
+<p>针对局部映射方法存在的缺陷，混合方法尝试利用另外一个全局预测分支在不对应部分生成新的内容，并与局部映射方法生成的内容相结合。但是现有的混合方法只是尝试在图像级别将生成结果进行混合，中间层的特征融合很少被研究。具体来说全局预测分支通常独立于局部映射方法，这使得两者生成的内容在风格上是不一致的。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/" data-title="可控人物图像生成综述"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/" data-title="可控人物图像生成综述" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/" data-title="可控人物图像生成综述"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/" data-title="可控人物图像生成综述"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/" data-title="可控人物图像生成综述" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/" data-title="可控人物图像生成综述" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E5%8F%AF%E6%8E%A7%E4%BA%BA%E7%89%A9%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90%E7%BB%BC%E8%BF%B0/" data-title="可控人物图像生成综述"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E5%90%84%E7%A7%8D%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" class="prev" rel="prev" title="各种激活函数"><i class="fas fa-angle-left fa-fw"></i>各种激活函数</a>
+            <a href="/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E7%82%B9/" class="next" rel="next" title="卷积神经网络的特点">卷积神经网络的特点<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

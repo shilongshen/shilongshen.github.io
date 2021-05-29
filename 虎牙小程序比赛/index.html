@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title> - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="" />
+<meta property="og:description" content="https://dev.huya.com/match2021/index.html
+https://dev.huya.com/docs/#/
+针对唱歌区的主播，做一个猜歌名的小程序，利用这个小程序以猜歌名的形式进行抽奖，然后发送弹幕，从猜对的弹幕中抽到中奖的人。
+ 主播唱歌，观众猜歌名并发送弹幕，在猜对的弹幕中抽到中奖的人。‘
+ 如何参与进游戏？  主播通过小程序打开游戏，并进行游戏设置后可开始游戏
+【参与礼物】：主播设定的观众报名需要送出的礼物，可以根据需求设定更高级的礼物哦
+满足参与礼物数的观众按照先后顺序进入游戏
+ 游戏如何进行  主播必须参赛，与1~7位报名参与的玩家一起进行游戏，参加游戏的玩家们轮流唱歌
+或者将歌曲存在数据库中，开始游戏的时候开始播放歌曲，由各个玩家进行抢答，抢答结果出错则扣分。
+游戏局数由主播自行控制，想玩久就玩多久
+每轮结束后进行成绩统计
+ 我们先找找类似抽奖和连麦的项目参考下吧
+相关的学习资源可以在这里进行观看 1、小程序学习资源： 1）《小程序开发文档》，链接：https://dev.huya.com/docs#/ 2） 开发者工具，链接：https://dev.huya.com/docs#/hyext-cli 2、小游戏学习资源： 1）《虎牙小游戏开发指南》，链接：https://github.com/huya-ext/miniapp/blob/master/doc/game.md 2）《游戏美术设计工具及流程介绍》&amp;游戏素材资源网站分享，链接：https://github.com/huya-ext/miniapp/blob/master/doc/game/design.md 3）虎牙小游戏开发渲染引擎整理：https://github.com/huya-ext/miniapp/blob/master/doc/game/engine.md
+【一、语音连麦】 说明：基于小程序SDK的语音连麦接口，开发“主播-观众”语音连麦场景的互动小程序，如猜歌名、剧本杀、问答等 案例：全民你画我猜 【二、直播小游戏】 说明：基于虎牙小程序的游戏开发框架，开发直播间多人一起玩互动小游戏 案例：连连看（房间号：24257862） 【三、直播AI/AR互动】 说明：（1）基于lua小游戏框架，开发小游戏&#43;AI的主播端互动玩法 （2）基于小程序SDK，监听AI关键点信息开发主播互动玩法 案例：表情大战、表情PK 【四、直播与游戏互通】 说明： 两种类型，（1）基于小程序平台开发直播场景小游戏，一键云端开播，观众可通过发弹幕/送礼交互等方式连通游戏 （2）基于已有游戏，监听直播间事件，实现观众连通游戏 案例：一起玩扫雷（房间号：24257826）、麦块盒子
+PC主播端/观众端面板
+(20条消息) 关于JAVA虎牙小程序后端开发的一点经验_jerry1131的博客-CSDN博客
+ 小程序开发流程：
+ 注册小程序 代码开发  参考快速开始章节中创建的小程序模版：
+ project.config.json：项目的配置文件，指定每个小程序类型的入口文件和一些其他配置 index.js：观众端的入口文件 index_streamer.js：主播端的入口文件  " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="https://dev.huya.com/match2021/index.html
+https://dev.huya.com/docs/#/
+针对唱歌区的主播，做一个猜歌名的小程序，利用这个小程序以猜歌名的形式进行抽奖，然后发送弹幕，从猜对的弹幕中抽到中奖的人。
+ 主播唱歌，观众猜歌名并发送弹幕，在猜对的弹幕中抽到中奖的人。‘
+ 如何参与进游戏？  主播通过小程序打开游戏，并进行游戏设置后可开始游戏
+【参与礼物】：主播设定的观众报名需要送出的礼物，可以根据需求设定更高级的礼物哦
+满足参与礼物数的观众按照先后顺序进入游戏
+ 游戏如何进行  主播必须参赛，与1~7位报名参与的玩家一起进行游戏，参加游戏的玩家们轮流唱歌
+或者将歌曲存在数据库中，开始游戏的时候开始播放歌曲，由各个玩家进行抢答，抢答结果出错则扣分。
+游戏局数由主播自行控制，想玩久就玩多久
+每轮结束后进行成绩统计
+ 我们先找找类似抽奖和连麦的项目参考下吧
+相关的学习资源可以在这里进行观看 1、小程序学习资源： 1）《小程序开发文档》，链接：https://dev.huya.com/docs#/ 2） 开发者工具，链接：https://dev.huya.com/docs#/hyext-cli 2、小游戏学习资源： 1）《虎牙小游戏开发指南》，链接：https://github.com/huya-ext/miniapp/blob/master/doc/game.md 2）《游戏美术设计工具及流程介绍》&amp;游戏素材资源网站分享，链接：https://github.com/huya-ext/miniapp/blob/master/doc/game/design.md 3）虎牙小游戏开发渲染引擎整理：https://github.com/huya-ext/miniapp/blob/master/doc/game/engine.md
+【一、语音连麦】 说明：基于小程序SDK的语音连麦接口，开发“主播-观众”语音连麦场景的互动小程序，如猜歌名、剧本杀、问答等 案例：全民你画我猜 【二、直播小游戏】 说明：基于虎牙小程序的游戏开发框架，开发直播间多人一起玩互动小游戏 案例：连连看（房间号：24257862） 【三、直播AI/AR互动】 说明：（1）基于lua小游戏框架，开发小游戏&#43;AI的主播端互动玩法 （2）基于小程序SDK，监听AI关键点信息开发主播互动玩法 案例：表情大战、表情PK 【四、直播与游戏互通】 说明： 两种类型，（1）基于小程序平台开发直播场景小游戏，一键云端开播，观众可通过发弹幕/送礼交互等方式连通游戏 （2）基于已有游戏，监听直播间事件，实现观众连通游戏 案例：一起玩扫雷（房间号：24257826）、麦块盒子
+PC主播端/观众端面板
+(20条消息) 关于JAVA虎牙小程序后端开发的一点经验_jerry1131的博客-CSDN博客
+ 小程序开发流程：
+ 注册小程序 代码开发  参考快速开始章节中创建的小程序模版：
+ project.config.json：项目的配置文件，指定每个小程序类型的入口文件和一些其他配置 index.js：观众端的入口文件 index_streamer.js：主播端的入口文件  "/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/" /><link rel="prev" href="https://shilongshen.github.io/%E5%A7%BF%E6%80%81%E5%BC%95%E5%AF%BC%E7%9A%84%E4%BA%BA%E7%89%A9%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E7%A0%94%E7%A9%B6%E6%80%9D%E8%B7%AF/" /><link rel="next" href="https://shilongshen.github.io/html%E5%9F%BA%E7%A1%80/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B\/"
+        },"genre": "posts","wordcount":  48 ,
+        "url": "https:\/\/shilongshen.github.io\/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B\/","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX"></h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="0001-01-01">0001-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;48 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
+            </div><div class="content" id="content"><p><a href="https://dev.huya.com/match2021/index.html">https://dev.huya.com/match2021/index.html</a></p>
+<p><a href="https://dev.huya.com/docs/#/">https://dev.huya.com/docs/#/</a></p>
+<p>针对唱歌区的主播，做一个猜歌名的小程序，利用这个小程序以猜歌名的形式进行抽奖，然后发送弹幕，从猜对的弹幕中抽到中奖的人。</p>
+<blockquote>
+<p>主播唱歌，观众猜歌名并发送弹幕，在猜对的弹幕中抽到中奖的人。‘</p>
+<ul>
+<li>如何参与进游戏？</li>
+</ul>
+<p>主播通过小程序打开游戏，并进行游戏设置后可开始游戏</p>
+<p>【参与礼物】：主播设定的观众报名需要送出的礼物，可以根据需求设定更高级的礼物哦</p>
+<p>满足参与礼物数的观众按照先后顺序进入游戏</p>
+<ul>
+<li>游戏如何进行</li>
+</ul>
+<p>主播必须参赛，与1~7位报名参与的玩家一起进行游戏，参加游戏的玩家们轮流唱歌</p>
+<p>或者将歌曲存在数据库中，开始游戏的时候开始播放歌曲，由各个玩家进行抢答，抢答结果出错则扣分。</p>
+<p>游戏局数由主播自行控制，想玩久就玩多久</p>
+<p>每轮结束后进行成绩统计</p>
+</blockquote>
+<p>我们先找找类似抽奖和连麦的项目参考下吧</p>
+<p>相关的学习资源可以在这里进行观看
+1、小程序学习资源：
+1）《小程序开发文档》，链接：https://dev.huya.com/docs#/
+2） 开发者工具，链接：https://dev.huya.com/docs#/hyext-cli
+2、小游戏学习资源：
+1）《虎牙小游戏开发指南》，链接：https://github.com/huya-ext/miniapp/blob/master/doc/game.md
+2）《游戏美术设计工具及流程介绍》&amp;游戏素材资源网站分享，链接：https://github.com/huya-ext/miniapp/blob/master/doc/game/design.md
+3）虎牙小游戏开发渲染引擎整理：https://github.com/huya-ext/miniapp/blob/master/doc/game/engine.md</p>
+<p>【一、语音连麦】
+说明：基于小程序SDK的语音连麦接口，开发“主播-观众”语音连麦场景的互动小程序，如猜歌名、剧本杀、问答等
+案例：<a href="http://blog.huya.com/news/21027" target="_blank" rel="noopener noreffer">全民你画我猜</a>
+【二、直播小游戏】
+说明：基于虎牙小程序的游戏开发框架，开发直播间多人一起玩互动小游戏
+案例：连连看（房间号：24257862）
+【三、直播AI/AR互动】
+说明：（1）基于lua小游戏框架，开发小游戏+AI的主播端互动玩法  （2）基于小程序SDK，监听AI关键点信息开发主播互动玩法
+案例：表情大战、表情PK
+【四、直播与游戏互通】
+说明： 两种类型，（1）基于小程序平台开发直播场景小游戏，一键云端开播，观众可通过发弹幕/送礼交互等方式连通游戏  （2）基于已有游戏，监听直播间事件，实现观众连通游戏
+案例：一起玩扫雷（房间号：24257826）、麦块盒子</p>
+<p>PC主播端/观众端面板</p>
+<p><a href="https://blog.csdn.net/qq_45689630/article/details/107121527" target="_blank" rel="noopener noreffer">(20条消息) 关于JAVA虎牙小程序后端开发的一点经验_jerry1131的博客-CSDN博客</a></p>
+<hr>
+<p>小程序开发流程：</p>
+<ul>
+<li>注册小程序</li>
+<li>代码开发</li>
+</ul>
+<p>参考<a href="https://dev.huya.com/docs/#/quickstart/createPro" target="_blank" rel="noopener noreffer">快速开始</a>章节中创建的小程序模版：</p>
+<ul>
+<li><code>project.config.json</code>：项目的配置文件，指定每个小程序类型的入口文件和一些其他配置</li>
+<li><code>index.js</code>：观众端的入口文件</li>
+<li><code>index_streamer.js</code>：主播端的入口文件</li>
+</ul>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 0001-01-01</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/" data-title=""><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/" data-title="" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/" data-title=""><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/" data-title=""><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/" data-title="" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/" data-title="" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E8%99%8E%E7%89%99%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%AF%94%E8%B5%9B/" data-title=""><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E5%A7%BF%E6%80%81%E5%BC%95%E5%AF%BC%E7%9A%84%E4%BA%BA%E7%89%A9%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E7%A0%94%E7%A9%B6%E6%80%9D%E8%B7%AF/" class="prev" rel="prev" title=""><i class="fas fa-angle-left fa-fw"></i></a>
+            <a href="/html%E5%9F%BA%E7%A1%80/" class="next" rel="next" title=""><i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

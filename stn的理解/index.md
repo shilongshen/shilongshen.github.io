@@ -27,7 +27,6 @@
   $$
   \begin{bmatrix}x^s\\y^s \end{bmatrix}=\begin{bmatrix}\theta_{11}&\theta_{12}&\theta_{13}\\ \theta_{21}&\theta_{22}&\theta_{23}  \end{bmatrix}\begin{bmatrix}x^t\\y^t\\1 \end{bmatrix}
   $$
-  
 
 > 注意此处的目标坐标和原坐标的对应关系，这里使用的是图像变换中的**向后映射**，[参考5](https://blog.csdn.net/glorydream2015/article/details/44873703)
 >
@@ -67,9 +66,9 @@
 
 #### 反向传播
 
-前向的传递过程为**Localisation net**  $\rightarrow^{\Large\theta}$  **Grid generator**  $\rightarrow^{\Large\begin{bmatrix}x^s\\y^s\end{bmatrix}}$   **Sampler**   $\rightarrow^{\Large V_i^c}$
+前向的传递过程为$U\rightarrow^{}$**Localisation net**  $\rightarrow^{\Large\theta}$  **Grid generator**  $\rightarrow^{\Large\begin{bmatrix}x^s\\y^s\end{bmatrix}}$   **Sampler**   $\rightarrow^{\Large V_i^c}$
 
-- [ ] 因此反向传播的过程需要先计算出$V_i^c$关于$\begin{bmatrix}x^s\\y^s\end{bmatrix}$的梯度，在计算出$\begin{bmatrix}x^s\\y^s\end{bmatrix}$关于$\theta$的梯度。
+- [ ] 因此反向传播的过程需要先计算出$V_i^c$关于$\begin{bmatrix}x^s\\y^s\end{bmatrix}$的梯度，再计算出$\begin{bmatrix}x^s\\y^s\end{bmatrix}$关于$\theta$的梯度。
 
 
 

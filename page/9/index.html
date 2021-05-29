@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://shilongshen.github.io/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
-<meta property="og:updated_time" content="2021-03-22T09:54:48+08:00" />
+<meta property="og:updated_time" content="2021-05-28T09:54:48+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
@@ -103,80 +103,84 @@
         alt="/images/avatar.jpg"
         title="/images/avatar.jpg" /></a></div><h1 class="home-title">我的个人博客</h1><div class="links"><a href="https://github.com/shilongshen" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a><a href="mailto:1319144765@qq.com" title="Email" rel=" me"><i class="far fa-envelope fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/correspondence-networks-with-adaptive-neighbourhood-consensus/">Correspondence Networks with Adaptive Neighbourhood Consensus</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文提出了一种建立两张图像间密集语义对应关系的模型（ANC-Net）,
- non-isotrppic（非各向同性） 4D convolution kernel &ndash; 核心， multi-scale self-similarity module orthogonal loss  ANC-Net 以两张图像作为输入，输出为4D correlation map &ndash; 包含两张图像间所有可能匹配的匹配分数。
-Method 网络结构如图所示。
- 输入$(I^s,I^t)$ feature extractor $\mathcal{F}$ -&gt;输出 $F^s$和$F^t$ multi-scale self-similarity $\mathcal{S}$ -&gt;输出 multi-scale self-similarity $S^s$和$S^t$-&gt;captures the complex self-similarity feature map We can then obtain the 4D correlation map $C_s$ from $S^s$ and $S^t$ , and the 4D correlation map $C_f$ from $F^s$ and $F^t$ . However, $C_s$ and $C_f$ are often noisy as they lack the constraints to enforce the correspondence validity, and thus are unreliable for directly extracting correspondences.</div><div class="post-footer">
-        <a href="/correspondence-networks-with-adaptive-neighbourhood-consensus/">Read More</a></div>
+        <a href="/%E5%A4%9A%E6%80%81/">多态的浅显理解</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-21">2020-11-21</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">多态：   定义：一个对象变量（对象引用）可以指向多个实际类型的现象称为多态。
+ 例如：父类引用指向子类对象，父类引用可以指向父类对象。但是子类引用不能指向父类对象    对象引用调用的方法究竟属于哪一个对象（实际类型）是在运行期间动态确定的，这称为动态绑定。
+ 当父类引用指向子类对象。如果子类重写了父类的方法，真正执行的是子类覆盖的方法，如果子类没有覆盖父类的方法，执行的是父类的方法。    例：
+son的实际类型是Son,它是Father的子类。如果Son定义了方法（重写）method1，则调用Son中的method1,否则调用Father中的method1。这是在运行期间动态决定的。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31  public class test01 { public static void main(String[] args) { Son son=new Son(); son.method1(); } } class Father{ public void method1(){ System.</div><div class="post-footer">
+        <a href="/%E5%A4%9A%E6%80%81/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/cross-domain-correspondence-learning-for-exemplar-based-image-translation/">Cross-domain Correspondence Learning for Exemplar-based Image Translation</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文提出了一种新颖的图像翻译网络框架。
-cross-domain correspondence network： 网络的输入为style input和content input，由于style input和content input在结构上是不对齐的，为了建立style input和content input之间的对应关系，提出了一种cross-domain correspondence network,如图所示：
-该部分首先通过特征金字塔网络提取多尺度图像特征（这能够利用到局部和全局的图像内容），之后将提取到的多尺度特征通过下采样网络映射到相同的域$S$中（只有当$x_s$和$y_s$在同一个域时才能用某种相似性度量方法进行匹配（对齐））。数学表达式如下： $$ x_s=\mathcal{F}{A\rightarrow S}(x_A;\theta{A\rightarrow S}) \quad x_s\in\mathbb{R}^{HW \times C}\
-y_s=\mathcal{F}{B\rightarrow S}(x_B;\theta{B\rightarrow S}) \quad y_s\in\mathbb{R}^{HW \times C} $$ 接下来使用空间自注意力机制操作计算$x_s$与$y_s$间pixel与pixel之间的相关性，如下图所示:
-translation network： cross-domain correspondence network的输出视为将content input warping 之后的结果，translation network采用了类似style GAN的网络结构，如下图所示：
-与style GAN不同的是，这里将AdaIN模块进行了替换，替换的模块为SPADE block与PN的结合，表达式为： $$ \alpha {h,w}^i(r{y \rightarrow x}) \times\frac{F_{c,h,w}^i-\mu_{h,w}^i}{\sigma_{h,w}^i}+\beta_{h,w}^i(r_{y \rightarrow x}) $$ $F_{c,h,w}^i$为输入值，注意此处的统计特征$\mu_{h,w}^i$和$\sigma_{h,w}^i$是在空间方向进行统计的，目的是为了保存$r_{y \rightarrow x}$的结构信息。
-损失函数： 该文采用了无监督的训练方式。
-总的网络结构： </div><div class="post-footer">
-        <a href="/cross-domain-correspondence-learning-for-exemplar-based-image-translation/">Read More</a></div>
+        <a href="/%E9%80%92%E5%BD%92%E7%9A%84%E6%B5%85%E6%98%BE%E7%90%86%E8%A7%A3/">递归的浅显理解</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-17">2020-11-17</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>数据结构和算法</a></span></div><div class="content">参考
+假设我们要计算一个函数：$f(n)=n*f(n-1)$
+递归三要素 递归的定义：接受什么参数，返回什么值，代表什么意思 。当函数直接或者间接调⽤⾃⼰时，则发⽣了递归
+递归的拆解：每次递归都是为了让问题规模变⼩
+**递归的出⼝：**必须有⼀个明确的结束条件。因为递归就是有“递”有“归”，所以必须又有一个明确的点，到了这个点，就不用“递下去”，而是开始“归来”。
+1 2  return表示开始返回，即“归” 递归的结束条件十分的重要，在Java中即return回来的的条件    我调用了这个函数，函数需要给我返回一个值，而这个值又取决于我这个函数，只不过函数的变量发生了变化
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28  /* * 请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。 * https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/ * * 思路： * 对于两个对称的结点 * 如果L.value==R.value &amp;&amp;L.left.value==R.right.value &amp;&amp; L.right.value==R.left.value * * 算法流程： * 如果root==null ，直接返回true * 否则调用recur(root.left,root.right) * * recur中的逻辑： * 递归终止条件：如果L.</div><div class="post-footer">
+        <a href="/%E9%80%92%E5%BD%92%E7%9A%84%E6%B5%85%E6%98%BE%E7%90%86%E8%A7%A3/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/deep-image-spatial-transformation-for-person-image-generation/">Deep Image Spatial Transformation for Person Image Generation</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">姿态引导下的图像生成研究就是要在保留原图像外观的同时将原图像中人物的姿态转换为目标姿态。这一任务需要对原图像进行空间转换。但实际上基于卷积的神经网络更擅长于特征的提取而不擅长于特征的空间转换，所以单纯的使用卷积神经网络并不能很好的完成这一任务。
-这篇文章提出了一种global-flow local-attention 模型进行姿态应引导下的图像生成研究。具体来说第一步使用全局流场估计器计算原图像和目标图像之间的全局相关性，以此来预测flow fileds。第二步为使用从feature maps提取出来的flowed local patch pairs来计算局部注意力系数。第三步为使用局部注意力机制作为content aware sampling method来进行图像的外观渲染。
- 该文将注意力机制和流场操作相结合，使得每一个输出位置只与原图像的局部特征块相关
-将目标图像视为原图像的变形结果
-该文的观点是将目标图像视为原图像的变形结果，每一个输出位置只与原图像的局部特征相关。
- Introduction 图像的空间转换可以用于解决许多输入图像和目标图像空间不对齐的图像生成任务，这些不对齐可能是由于姿态变换或者是视角的变换。这一类任务包括了姿态引导下的图像生成研究
-卷积神经网络使用共享参数的卷积核来计算输出，这也是卷积神经网络的一个重要特性，称为平移等变（equivariance to transformation），这意味着当输入发生平移空间变化时，输出也会发生平移相同的空间变化。这一特性对于输入输出的空间结构是对齐的任务来说是十分有益的，例如图像分割，图像检测以及图像翻译。但是这一特性也限制了卷积神经网络对输入数据进行空间变换。
- 卷积神经网络具有平移等变得性质，但是并不能够对旋转、缩放等操作具有等变性，特别是对于人体这种非刚体，卷积神经网络并不能对输入数据进行空间变换
- STN的通过引入空间转换模块来解决这一问题，该模块对全局转换参数进行回归，并通过仿射转换来扭曲输入特征。但是，由于它假定了源和目标之间的全局仿射变换，因此该方法无法处理非刚性对象的变换。
-注意力机制通过利用非局部信息，建立特征之间的长程依赖。但是对于空间转换任务，目标图像和原图像在空间上是不对齐的，每一个输出图像上位置与原图像上的位置有明确的对应关系。因此原图像和目标图像之间的注意力权重矩阵应该是一个稀疏矩阵。
-基于流场的操作通过为每一个输出位置采样一个局部的原图像块会迫使注意力权重矩阵变为稀疏矩阵。这些方法预测二维坐标偏移量，指定可以对源中的哪些位置进行采样以生成目标。
-然而为了稳定训练，大多数的基于流场的方法会在像素级别扭曲数据，这会限制模型生成新的内容。由于需要生成全分辨率流场，因此难以提取大的运动。在特征级别进行输入数据的扭曲能够解决这一问题，然而，这些网络很容易陷入局部最小值由于以下两个原因：（1）输入特征和流场相互限制。没有准确的流场，输入特征无法获得合理的梯度，没有如果没有合理的特征，网络也无法提取相似性以生成正确的流场。（2）常用的双线性采样方法提供的不良梯度传播进一步导致训练中的不稳定。
-Approach 对于姿态引导下的图像生成研究，目标图像是原图像的变形结果，这意味着目标图像中的每一个点是与原图像中的某个特定的局部区域唯一对应。
-该文设计了global-flow local-attention 网络结构来合理的对原图像特征进行采样和重构。网络包含两个部分：全局流场估计器F和局部自然纹理渲染器G。F负责估计原图像和目标图像的运动（差别），其生成全局流场w和二进制掩模m。利用w和m，G利用局部注意力模块将原图像的纹理渲染在目标图像。
-Global Flow Filed Estimator $$ w,m=F(x_s,p_s,p_t) $$
-其中$x_s$表示原图像，$p_s$表示原图像姿态，$p_t$表示目标姿态。$w$包含了原图像和目标图像的坐标偏移量。$m$的值在0至1之间，表示原图像中是否存在目标位置的信息。F为全卷积网络，w和m权重共享。
-由于真实的坐标偏移量是未知的，这里使用了sampling correctness loss来计算$w$。$v_s,v_t$分别表示原图像和目标图像通过预训练的VGG19的特定层提取出来的特征。$v_{s,w}=w(v_s)$表示$v_s$通过$w$转换之后的结果。sampling correctness loss计算$v_{s,w}$和$v_t$之间的余弦相似性。 $$ \mathcal{L}_c=\frac{1}{N}\sum_{l\in \Omega}exp(-\frac{\mu(v_{s,w}^l,v_t^l)}{\mu_{max}^l}) $$ $\mu$表示余弦相似度。$\Omega$表示特征图中的所有的N个点，$l$表示其中的一个点$(x,y)$。$\mu_{max}^l$表示正则项。也就是说需要对**所有的点**计算余弦相似度，然后再求平均值。
-​	sampling correctness loss能够限制流场采样语义相关的区域。由于图像领域之间的变形是高度相关的，如果能够将这种关系提取出来是十分有益的，因此进一步在流场中添加了正则项。令$c_t$表示目标特征的二位坐标。$\mathcal{N}(c_t,l)$表示$c_t$的$n\times n$个领域图像块，假设$\mathcal{N}(c_t,l)$和$\mathcal{N}(c s,l)$之间的变换为仿射变换 $$ T_l=A_l S_l $$ $T_l$表示$\mathcal{N}(C_l,l)$的坐标集合，$S_l$表示$\mathcal{N}(c_s,l)$的坐标集合，$A_l$表示仿射参数，通过最小二乘法计算出来 $$ \hat{A_l}=(S_l^HS_l)^{-1}S_l^HT_l $$ 因此正则损失函数为 $$ \mathcal{L}r=\sum{l\in\Omega}|| T_l-\hat{A}_lS_l ||^2 $$</div><div class="post-footer">
-        <a href="/deep-image-spatial-transformation-for-person-image-generation/">Read More</a></div>
+        <a href="/jvm/">JVM</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">参考
+ 虚拟机与Java虚拟机 虚拟机 所谓虚拟机（Virtual Machine），就是一台虚拟的计算机。它是一款软件，用来执行一系列虚拟计算机指令。大体上，虚拟机可以分为系统虚拟机和程序虚拟机。
+ 大名鼎鼎的Visual Box，Mware就属于系统虚拟机，它们完全是对物理计算机的仿真，提供了一个可运行完整操作系统的软件平台。 程序虚拟机的典型代表就是Java虚拟机，它专门为执行单个计算机程序而设计，在Java虚拟机中执行的指令我们称为Java字节码指令。  无论是系统虚拟机还是程序虚拟机，在上面运行的软件都被限制于虚拟机提供的资源中。
+Java虚拟机 Java虚拟机是一台执行Java字节码的虚拟计算机，它拥有独立的运行机制，其运行的Java字节码也未必由Java语言编译而成。
+JVM平台的各种语言可以共享Java虚拟机带来的跨平台性、优秀的垃圾回器，以及可靠的即时编译器。
+Java技术的核心就是Java虚拟机（JVM，Java Virtual Machine），因为所有的Java程序都运行在Java虚拟机内部。
+Java虚拟机就是二进制字节码的运行环境，负责装载字节码到其内部，解释/编译为对应平台上的机器指令执行。每一条Java指令，Java虚拟机规范中都有详细定义，如怎么取操作数，怎么处理操作数，处理结果放在哪里。
+特点：
+ 一次编译，到处运行 自动内存管理 自动垃圾回收功能  JVM的位置 JVM是运行在操作系统之上的，它与硬件没有直接的交互
+Java的体系结构 java代码执行流程  JVM内存区域 Java虚拟机所管理的内存包括以下几个运行时数据区
+程序计数器 当前线程所执行的字节码的行号指示器,每条线程都有一个独立的程序计数器。如果一个线程正在执行一个Java方法，则计数器记录的是字节码的指令的地址，如果执行的一个Native方法，则计数器的记录为空。此内存区域是唯一一个没有规定任何OutOfMemoryError的区域。
+虚拟机栈 虚拟机栈描述的是Java方法执行的线程内存模型： 每个方法被执行的时候， Java虚拟机都会同步创建一个栈帧，用于存储局部变量表、 操作数栈、 动态连接、 方法出口等信息。 方法的执行过程就是栈帧在JVM中出栈和入栈的过程。
+ 方法只有在调用的时候才会在栈中分配空间，并且调用时是在压栈，方法执行结束后，该方法所需要的空间就会被释放了。
+ 栈帧（Frame）是用来存储数据和部分过程结果的数据结构，同时也被用来处理动态链接(Dynamic Linking)、方法返回值和异常分派（Dispatch Exception）。
+局部变量表中存放的是各种基本数据类型，如boolean、byte、char、等8种，及引用类型（存放的是指向各个对象的内存地址），因此，它有一个特点：内存空间可以在编译期间就确定，运行期不在改变。
+ 对于虚拟机栈这个内存区域规定了两种异常情况；如果线程请求的栈的深度大于虚拟机所允许的区域，将抛出StackOverflowError。
+如果java虚拟机栈的容量可以动态拓展，当栈拓展时无法申请到足够的内存会抛出OutOfMenoryError
+  栈不会有垃圾回收
+ 本地方法栈 与虚拟机栈所发挥的作用是非常相似的，其区别只是虚拟机栈为虚拟机执行Java方法（也就是字节码）服务， 而本地方法栈则是为虚拟机使用到的本地方法服务。
+堆 Java堆是虚拟机所管理的内存中最大的一块。 Java堆是被所有线程共享的一块内存区域， 在虚拟机启动时创建。 此内存区域的唯一目的就是存放对象实例， Java世界里“几乎”所有的对象实例都在这里分配内存。 Java堆是垃圾收集器管理的内存区域， 因此一些资料中它也被称作“GC堆”。
+由于现代 JVM 采用分代收集算法, 因此 Java 堆从 GC 的角度还可以细分为: 新生代(Eden 区、 From Survivor 区和 To Survivor 区)和老年代。</div><div class="post-footer">
+        <a href="/jvm/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/deep-sketch-guided-cartoon-video-synthesis/">Deep Sketch-guided Cartoon Video Synthesis</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该工作为根据提供的两张视频帧和草图，来来生成连续的视频帧。
-  将粗糙的草图进行简化，提取出主要的结构
-  建立草图与图像之间的语义对应关系：
-2.1 通过以两帧图片为条件的transformation module来将草图中的大部分空白区域进行填充，
-2.2 然后通过来两个独立的特征提取模块将图像和草图映射到一个common space
-2.3 为了解决遮挡问题，通过两张图像间光流来估计occlusion mask,并通过blending module使用mask来动态的从两帧之间挑选和结合像素。（合成与草图空间结构一样的视频帧）
-  利用 arbitrary-time frame interpolation module生成任意中间的视频帧
-  利用video post processing进一步改善结果
-Sketch Simplification and Generation   由于草图可能是粗糙且随意的，所以通过该模块来将草图多余的细节清除，只留下清晰的线条。采用的是现有的方法。
-Sketch-guided Frame Synthesis 2.1 通过以两帧图片为条件的transformation module来将草图中的大部分空白区域进行填充： The transformer consists of several dilated residual
-2.2 然后通过来两个独立的特征提取模块将图像和草图映射到一个common space 2.3 利用现有的光流预测模型预测光流，注意：预测的光流为双向光流：$f_{0-t}，f_{t-1}$。 损失函数：</div><div class="post-footer">
-        <a href="/deep-sketch-guided-cartoon-video-synthesis/">Read More</a></div>
+        <a href="/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">我的第一篇博客</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E9%9A%8F%E7%AC%94/"><i class="far fa-folder fa-fw"></i>随笔</a></span></div><div class="content">2020-11-15创建了我的个人博客，并上传了之前做的一些笔记。
+希望能够养成坚持做笔记，坚持更新博客的习惯。
+最重要的是始终坚持独立思考，每天进步一点点！</div><div class="post-footer">
+        <a href="/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/fashion-editing-with-adversarial-parsing-learning/">Fashion Editing with Adversarial Parsing Learning</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文为人物的时尚编辑
-网络包含三个部分：
-  Free-form Parsing Network
-  Parsing-aware Inpainting Network
-  Attention Normalization Layers
-   Free-form Parsing Network  给定不完整的人体语义分析图以及任意的草图和笔画，能够合成完整的人体语义分析图。  网络结构 ： U-net
-输入：
-  an incomplete parsing map,
- 2. a binary sketch that describes the structure of the removed region 3. a noise sampled from the Gaussian distribution, 4. sparse color strokes 5. a mask.    注意：相同的incomplete parsing map和不同的sketch和strokes能够合成不同的parsing map,这意味这parsing generation model是可控的。</div><div class="post-footer">
-        <a href="/fashion-editing-with-adversarial-parsing-learning/">Read More</a></div>
+        <a href="/%E5%9F%BA%E4%BA%8Ehugo%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">基于hugo的个人博客搭建</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/"><i class="far fa-folder fa-fw"></i>技术分享与记录</a></span></div><div class="content">本文是基于ubuntu16.04进行搭建 注意：本文是基于ubuntu16.04进行搭建
+下载安装hugo 1 2  下载地址：https://github.com/gohugoio/hugo/releases/download/v0.56.0/hugo_0.56.0_Linux-64bit.deb 安装：sudo dpkg -i hugo_0.56.0_Linux-64bit.deb   注意如果直接使用
+1  sudo apt install hugo   进行安装，安装的版本可能过低，导致一些主题不能够使用。要尽可能下载新版本！
+安装完成后可以使用
+1  hugo version   来检查是否安装成功。
+生成站点 1  hugo new site /path   /path站点表示路径，我这里设为了‘myblog’ , myblog中的结构
+ archetypes config.toml content data layouts static themes  创建文章 1  hugo new post/about.md   这是会在content/post文件夹下生成一个about.md文件
+安装皮肤 1 2  cd theme //将下载的主题文件夹存放在这里   hugo提供的皮肤可以在这里找到</div><div class="post-footer">
+        <a href="/%E5%9F%BA%E4%BA%8Ehugo%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/gan_______________________________________________________________/">GAN训练中生成器损失函数的变化应该是怎么样的？</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
-注意到图c，此时生成器的损失函数是平稳上升的，训练过程是稳定的（在实际的GAN训练过程中，生成器的损失函数是上升的，判别器的损失函数是下降的？还是生成器和判别器的损失函数最终都是下降的？）从该论文的观点来看似乎是前者是正确的。
-但是可以肯定的是，如果生成器的损失函数出现了a，b的情况就表示GAN的训练过程是不稳定的。
- DCGAN验证实验 code
-实验1：没有进行谱归一化 训练过程中损失函数的变化：
-真实图像和生成图像的对比：
-从损失函数的变化来看，生成器的损失函数是逐渐增大的，而判别器的损失函数似乎并没有发生多大的变化。从生成图像来看，生成的图像虽然不太逼真，但是似乎并没有发生模型崩溃的情况，似乎可以认定训练过程是稳定的。</div><div class="post-footer">
-        <a href="/gan_______________________________________________________________/">Read More</a></div>
+        <a href="/a-style-based-generator-architecture-for-generative-adversarial-networks/">A Style-Based Generator Architecture for Generative Adversarial Networks</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考：
+参考1
+参考2
+ 该文章基于GAN设计风格迁移模型。该模型能够自动学习，无监督的分离高层属性（例如 pose，identity）以及能对生成图像进行随机变化（例如雀斑，头发）并且 能够对生成图像的分辨率进行控制。
+ StyleGAN中的style借用自图像风格迁移，这篇文章是PG-GAN之后的，主要改变了生成器的结构实现无监督地生成可控性强的图像。
+PG-GAN中是通过一层层地给生成器和判别器增添卷积层同时提高分辨率的方法来生成高质量图像的。StyleGAN的motivation就是发现这种渐进的方法其实能控制图像的不同特性，低分辨率也就是coarse层主要影响图像的姿态，脸型等高级特征，高分辨率主要影响背景发色等低级特征(结合感受野的概念理解，低分辨率的特征获取更多全局信息并加以处理，比如特征从线条经过多次卷积一步步会组合出形状，会更加抽象，具有更高级的语义信息)。但PG-GAN这种结构在递进添加层的时候没有任何控制条件，导致整体的特征和细微的特征间存在耦合，耦合就导致了图像可控性差，没办法对单个特征进行调节。StyleGAN于是寻找了一种无监督但又可控性强的方法：对不同level的卷积层进行操作。
+ProGAN的网络框架：
+ 在之前的传统的生成网络中，有一个问题存在，就是特征耦合，那么这个是什么呢？如上图左边，传统的生成网络，我们可以看到，其输入一个latent Z
+Z，一般为512的一个向量。假设这个向量代表一个人的脸，那么该向量就会存在特征耦合。因为一个脸是有很多特征的，并不是一个512维的向量就能完全表示的，如果非要表示，只能是这种方式，如下：
+假设：维度1代表头发粗细，维度2代表皮肤颜色，维度3代表鼻子大小…，当512个维度全部是用完之后，其只能通过多个维度再去表示其他的特征，如：维度1与维度2综合起来表示了头发的颜色。这样，通过两个或者多个组合，512的向量，就能表示出接近无数的特征。
+但是这样就很明显出现了一个问题，那就是我们怎么去控制我们想要图片的单个特征呢？如，我只想改变头发的粗细，但是又不能直接去修改第一个维度，因为第一个维度会影响其他的维度，可能会影响到皮肤的颜色，但是有的时候，我偏偏需要该表他头发的颜色，不修改皮肤的颜色。不同的特征是互相关联的（特征耦合）。
+ 1 Introduction GAN能够生成高分辨率和高质量的图像，但是生成器仍然被视为一个黑箱子。尽管最近已经有了一些工作，但是对图像生成过程中变化因素的理解，例如随机特征的起源，仍然是缺乏的。latent space的性质也没有很好的被理解。
+该文设计了一个能够设计了一个能够控制生成过程的生成器模型。生成器的输入为一个learned constant，根据latent code在每一个卷积层调整图像的style，从而直接控制不同尺度下图像特征的强度。通过将noise直接送入网络中，来实现从随机变化（）中进行高层属性（）的自动、无监督分离，并实现直观的特定尺度的混合和插值操作。
+生成器首先将input latent code映射到intermediate latent space，这对于factors of variation在网络中是如何表达到有很重要的影响。input latent code的分布（input latent space）是符合training data的概率密度的，这会导致某种程度上信息的耦合。而intermediate latent space是没有这一限制的，因此可以进行信息的解耦。该文提出了两种新的评估latent space解耦程度的方法：感知路径长度和线性可分离性。该文的方法具有更高的线性度和更少的耦合度。
+并且提出了了一个新的dataset of human faces（Flickr-Faces-HQ, FFHQ）。
+2 style-based generator 传统的方法是将input code通过input layer送入生成器。该文抛弃了这个设计，完全忽略了输入层，而是从一个learned constant开始。给定latent space $\mathcal{Z}$ 中的一个latent code $z$，非线性映射网络 $f:\mathcal{Z \rightarrow W }$, 将$z$映射为$w$：$w=f(z)$.其中$f$ 为8层的MLP。随后将$w$变换为styles:$y=(y_s,y_b)$来作为AdaIN的仿射参数： $$ AdaIN(x_i,y)=y_{(s,i)}{\large(}\frac{x_i-\mu(x_i)}{\sigma(x_i)}{\large)}+y_{(b,i)} $$
+ $$ z\rightarrow w \rightarrow y (仿射参数)\rightarrow style\</div><div class="post-footer">
+        <a href="/a-style-based-generator-architecture-for-generative-adversarial-networks/">Read More</a></div>
 </article><ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -207,7 +211,7 @@ Sketch-guided Frame Synthesis 2.1 通过以两帧图片为条件的transformatio
                     <span class="page-link" aria-hidden="true">&hellip;</span>
                 </li><li class="page-item ">
                     <span class="page-link">
-                        <a href="/page/16/">16</a>
+                        <a href="/page/21/">21</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">

@@ -49,7 +49,7 @@ tty1～6是文本型控制台，tty7是X Window图形显示管理器。
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/shilongshen.github.io\/linux%E7%9B%B8%E5%85%B3\/"
-        },"genre": "posts","wordcount":  3827 ,
+        },"genre": "posts","wordcount":  4021 ,
         "url": "https:\/\/shilongshen.github.io\/linux%E7%9B%B8%E5%85%B3\/","datePublished": "2020-12-28T09:54:48+08:00","dateModified": "2020-12-28T09:54:48+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -126,8 +126,8 @@ tty1～6是文本型控制台，tty7是X Window图形显示管理器。
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Linux相关</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-12-28">2020-12-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;3827 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;18 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-12-28">2020-12-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;4021 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;19 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -289,7 +289,7 @@ tty1～6是文本型控制台，tty7是X Window图形显示管理器。
             <li><a href="#3-xz">3. xz</a></li>
           </ul>
         </li>
-        <li><a href="#打包">打包</a></li>
+        <li><a href="#tar">tar</a></li>
       </ul>
     </li>
     <li><a href="#bash">bash</a>
@@ -374,6 +374,13 @@ tty1～6是文本型控制台，tty7是X Window图形显示管理器。
       <ul>
         <li><a href="#新建只能在控制台下登录的用户">新建只能在控制台下登录的用户</a></li>
         <li><a href="#新建可登录图形用户界面的用户">新建可登录图形用户界面的用户</a></li>
+        <li><a href="#常用命令">常用命令</a>
+          <ul>
+            <li><a href="#赋予用户root权限">赋予用户root权限</a></li>
+            <li><a href="#查看系统中所有用户">查看系统中所有用户</a></li>
+            <li><a href="#用户切换">用户切换</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li><a href="#参考">参考</a></li>
@@ -576,6 +583,44 @@ tty1～6是文本型控制台，tty7是X Window图形显示管理器。
 <li>按下 冒号 ：</li>
 <li>输入set number</li>
 </ol>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dd</td>
+<td>删除光标所在行</td>
+</tr>
+<tr>
+<td>#dd</td>
+<td>例如，6dd表示删除从光标所在的该行往下数6行之文字</td>
+</tr>
+<tr>
+<td>x</td>
+<td>每按一次删除光标所在位置的后面一个字符</td>
+</tr>
+<tr>
+<td>/word</td>
+<td>在文件中查找内容为word的字符串（向下查找）</td>
+</tr>
+<tr>
+<td>?word</td>
+<td>在文件中查找内容为word的字符串（向上查找）</td>
+</tr>
+<tr>
+<td>Ctrl+B</td>
+<td>屏幕往上移动一页</td>
+</tr>
+<tr>
+<td>Ctrl+F</td>
+<td>屏幕往下移动一页</td>
+</tr>
+</tbody>
+</table>
 <h1 id="磁盘">磁盘</h1>
 <h2 id="heading"></h2>
 <h2 id="磁盘结构">磁盘结构</h2>
@@ -908,14 +953,7 @@ tty1～6是文本型控制台，tty7是X Window图形显示管理器。
 </li>
 <li>x(eXecute): 表示用户能否<strong>进入该目录</strong>成为工作目录</li>
 </ul>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210102105023.png"
-        data-srcset="https://gitee.com/shilongshen/image-bad/raw/master/img/20210102105023.png, https://gitee.com/shilongshen/image-bad/raw/master/img/20210102105023.png 1.5x, https://gitee.com/shilongshen/image-bad/raw/master/img/20210102105023.png 2x"
-        data-sizes="auto"
-        alt="https://gitee.com/shilongshen/image-bad/raw/master/img/20210102105023.png"
-        title="https://gitee.com/shilongshen/image-bad/raw/master/img/20210102105023.png" /></p>
+<p><img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210102105023.png" style="zoom:50%;" /></p>
 <blockquote>
 <p>我们以王三毛为例，王三毛这个“文件”的拥有者为王三毛，他属于王大毛这个群组，而张小猪相对于王三毛，则是一个“其他人（others）”</p>
 <p>天神为“root”，可以到达任何想去的地方</p>
@@ -1939,7 +1977,8 @@ example: find . -name &#34;shadow*&#34;
 <pre class="chroma"><code class="language-fallback" data-lang="fallback">$ xz [-dtlkc#] filename
 </code></pre></td></tr></table>
 </div>
-</div><h2 id="打包">打包</h2>
+</div><h2 id="tar">tar</h2>
+<p><strong>tar — The GNU version of the tar archiving utility</strong></p>
 <p>压缩指令只能对一个文件进行压缩，而打包能够<u>将多个文件打包成一个大文件</u>。tar 不仅可以用于打包，也可以使用 gzip、bzip2、xz 将打包文件进行压缩。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1955,19 +1994,27 @@ example: find . -name &#34;shadow*&#34;
 </span><span class="lnt">10
 </span><span class="lnt">11
 </span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ tar [-z|-j|-J] [cv] [-f 新建的 tar 文件] filename...  ==打包压缩
-$ tar [-z|-j|-J] [tv] [-f 已有的 tar 文件]              ==查看
-$ tar [-z|-j|-J] [xv] [-f 已有的 tar 文件] [-C 目录]    ==解压缩
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ tar [cv] [-z|-j|-J]  [-f 新建的 tar 文件] filename...  ==打包压缩
+$ tar [tv] [-z|-j|-J]  [-f 已有的 tar 文件]              ==查看
+$ tar [xv] [-z|-j|-J]  [-f 已有的 tar 文件] [-C 目录]    ==解压缩
+
 -z ：使用 zip；
 -j ：使用 bzip2；
 -J ：使用 xz；
--c ：新建打包文件；
--t ：查看打包文件里面有哪些文件；
--x ：解打包或解压缩的功能；
--v ：在压缩/解压缩的过程中，显示正在处理的文件名；
--f : filename：要处理的文件；
+-c ：新建打包文件；常用  --create, create a new archive
+           
+-t ：查看打包文件里面有哪些文件；常用 --list, list the contents of an archive
+           
+-x ：解打包或解压缩的功能；常用 -x, --extract, --get, extract files from an archive
+           
+-v ：在压缩/解压缩的过程中，显示正在处理的文件名；常用
+-f : filename：要处理的文件，这个参数是最后一个参数，后面只能接档案名。；常用
 -C 目录 ： 在特定目录解压缩。
 </code></pre></td></tr></table>
 </div>
@@ -1981,18 +2028,19 @@ $ tar [-z|-j|-J] [xv] [-f 已有的 tar 文件] [-C 目录]    ==解压缩
 <tbody>
 <tr>
 <td>打包压缩</td>
-<td>tar -jcv -f filename.tar.bz2 要被压缩的文件或目录名称</td>
+<td>tar  cvf filename.tar.bz2 ‘要被压缩的文件或目录名称’</td>
 </tr>
 <tr>
 <td>查 看</td>
-<td>tar -jtv -f filename.tar.bz2</td>
+<td>tar tvf filename.tar.bz2</td>
 </tr>
 <tr>
 <td>解压缩</td>
-<td>tar -jxv -f filename.tar.bz2 -C 要解压缩的目录</td>
+<td>tar xvf filename.tar.bz2</td>
 </tr>
 </tbody>
 </table>
+<p><a href="https://www.cnblogs.com/luozeng/p/8674529.html" target="_blank" rel="noopener noreffer">查看</a></p>
 <h1 id="bash">bash</h1>
 <p>Linux中的命令行界面称为shell （图形界面称为GUI）。</p>
 <p>bash shell（bash）是大多数Linux系统的默认shell，还用很多其他的shell ,例如ksh和csh。</p>
@@ -2504,7 +2552,7 @@ arod:x:1002:1003::/home/arod:/bin/bash
 <ul>
 <li>简单来说，正则表达式就是处理字符串的方法，他<strong>以行为单位</strong>来进行字符串的处理行为，可以让使用者轻易的达到“搜寻/删除/取代”某个特定字符串。</li>
 </ul>
-<p>g/re/p（globally search a regular expression and print)，<strong>使用正则表示式进行全局查找并打印</strong>。</p>
+<p>grep（globally search a regular expression and print)，<strong>使用正则表示式进行全局查找并打印</strong>。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -2679,7 +2727,7 @@ dmtsai lines: 5 columns: 9
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">## ps -l
+<pre class="chroma"><code class="language-shell" data-lang="shell">ps -l
 </code></pre></td></tr></table>
 </div>
 </div><p>示例：查看系统所有进程</p>
@@ -2688,28 +2736,72 @@ dmtsai lines: 5 columns: 9
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">## ps aux
+<pre class="chroma"><code class="language-shell" data-lang="shell">ps aux
 </code></pre></td></tr></table>
 </div>
-</div><p>示例：查看特定的进程</p>
+</div><p>示例：查看含有threadx的进程 （<strong>常用</strong>）</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">## ps aux | grep threadx
+<pre class="chroma"><code class="language-shell" data-lang="shell">ps aux <span class="p">|</span> grep threadx
+<span class="c1">#或则使用</span>
+ps ef <span class="p">|</span> grep thraad
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-markdown" data-lang="markdown">ps [-aefFly] [-p pid] [-u userid]
+
+-a 与任何用户标识和终端相关的进程
+
+-e 所有进程（包括守护进程）
+
+-p pid 与指定PID相关的进程
+
+-u userid 与指定用户标识userid相关的进程
+
+-ef 显示所有用户进程，完整输出
+
+-a 显示所有非守护进程
+
+-t 仅显示所有守护进程
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="heading-16"></h4>
 <h3 id="2-pstree">2. pstree</h3>
 <p>查看进程树。</p>
-<p>示例：查看所有进程树</p>
+<p>示例：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">## pstree -A
+<pre class="chroma"><code class="language-shell" data-lang="shell">pstree -A  <span class="c1">#查看所有进程树</span>
+pstree -p <span class="m">22772</span>  <span class="c1">#查看进程22772中的线程数</span>
+pstree -p <span class="m">22772</span> <span class="p">|</span> wc -l  <span class="c1">#查看进程下的线程数量</span>
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="heading-17"></h4>
@@ -2719,9 +2811,11 @@ dmtsai lines: 5 columns: 9
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">## top -d 2
+<pre class="chroma"><code class="language-shell" data-lang="shell">top -d <span class="m">2</span>
+top -H  <span class="c1">#查看机器性能</span>
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="heading-18"></h4>
@@ -2733,10 +2827,15 @@ dmtsai lines: 5 columns: 9
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">## netstat -anp | grep port
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">## netstat -anp | grep &#39;port&#39;
 </code></pre></td></tr></table>
 </div>
-</div><h2 id="进程状态">进程状态</h2>
+</div><ul>
+<li>-a或&ndash;all 显示所有连线中的Socket。</li>
+<li>-n或&ndash;numeric 直接使用IP地址，而不通过域名服务器。</li>
+<li>-p或&ndash;programs 显示正在使用Socket的程序识别码和程序名称。</li>
+</ul>
+<h2 id="进程状态">进程状态</h2>
 <table>
 <thead>
 <tr>
@@ -2890,8 +2989,9 @@ test4@ssl-H310M-S2:~$ <span class="nb">pwd</span>
 test4@ssl-H310M-S2:~$
 </code></pre></td></tr></table>
 </div>
-</div><p>可以看到登陆以后的用户test4当前所在目录仍为“/home”;<strong>这种方式只能在控制台中互相切换用户</strong>，一旦重启系统，用该用户还是无法登陆（只能用原来的用户或root登陆）。</p>
+</div><p>可以看到登陆以后的用户t 录仍为“/home”;<strong>这种方式只能在控制台中互相切换用户</strong>，一旦重启系统，用该用户还是无法登陆（只能用原来的用户或root登陆）。</p>
 <h2 id="新建可登录图形用户界面的用户">新建可登录图形用户界面的用户</h2>
+<p><strong>推荐使用这种方式</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -2926,12 +3026,12 @@ test4@ssl-H310M-S2:~$
 ---
 adduser <span class="o">[</span>--home DIR<span class="o">]</span> <span class="o">[</span>--shell SHELL<span class="o">]</span> <span class="o">[</span>--no-create-home<span class="o">]</span> <span class="o">[</span>--uid ID<span class="o">]</span>
 <span class="o">[</span>--firstuid ID<span class="o">]</span> <span class="o">[</span>--lastuid ID<span class="o">]</span> <span class="o">[</span>--gecos GECOS<span class="o">]</span> <span class="o">[</span>--ingroup GROUP <span class="p">|</span> --gid ID<span class="o">]</span>
-<span class="o">[</span>--disabled-password<span class="o">]</span> <span class="o">[</span>--disabled-login<span class="o">]</span> <span class="o">[</span>--encrypt-home<span class="o">]</span> USER
+<span class="o">[</span>--disabled-password<span class="o">]</span> <span class="o">[</span>--disabled-login<span class="o">]</span> <span class="o">[</span>--encrypt-home<span class="o">]</span> UserName
    添加普通用户
 
 
 ---
-root@ssl-H310M-S2:/home# adduser test4
+root@ssl-H310M-S2:/home# adduser --home DIR test4     //使用--home指定新用户的家目录
 正在添加用户<span class="s2">&#34;test4&#34;</span>...
 正在添加新组<span class="s2">&#34;test4&#34;</span> <span class="o">(</span>1003<span class="o">)</span>...
 正在添加新用户<span class="s2">&#34;test4&#34;</span> <span class="o">(</span>1003<span class="o">)</span> 到组<span class="s2">&#34;test4&#34;</span>...
@@ -2971,6 +3071,69 @@ useradd：需要使用参数选项指定上述基本设置，如果不使用任�
 /etc/default/useradd - 定 义 资 讯
 /etc/login.defs - 系 统 广 义 设 定
 /etc/skel - 内 含 定 义 档 的 目 录
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="常用命令">常用命令</h2>
+<h3 id="赋予用户root权限">赋予用户root权限</h3>
+<p><a href="https://blog.csdn.net/yzf279533105/article/details/88704233" target="_blank" rel="noopener noreffer">参考</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">方法一： 修改 /etc/sudoers 文件，找到下面一行，把前面的注释（#）去掉
+
+<span class="c1">## Allows people in group wheel to run all commands</span>
+%wheel    <span class="nv">ALL</span><span class="o">=</span><span class="o">(</span>ALL<span class="o">)</span>    ALL
+
+然后修改用户，使其属于root组（wheel），命令如下：
+
+<span class="c1">#usermod -g root UserName</span>
+
+修改完毕，现在可以用UserName帐号登录，然后用命令 su – ，即可获得root权限进行操作。
+
+方法二： 修改 /etc/sudoers 文件，找到下面一行，在root下面添加一行，如下所示：
+
+<span class="c1">## Allow root to run any commands anywhere</span>
+root    <span class="nv">ALL</span><span class="o">=</span><span class="o">(</span>ALL<span class="o">)</span>     ALL
+UserName   <span class="nv">ALL</span><span class="o">=</span><span class="o">(</span>ALL<span class="o">)</span>     ALL
+
+修改完毕，现在可以用UserName帐号登录，然后用命令 su – ，即可获得root权限进行操作。
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="查看系统中所有用户">查看系统中所有用户</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">grep bash /etc/passwd
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="用户切换">用户切换</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">su UserName
 </code></pre></td></tr></table>
 </div>
 </div><h1 id="参考">参考</h1>

@@ -3,7 +3,31 @@
         <title>技术分享与记录 - Category - 我的个人博客</title>
         <link>https://shilongshen.github.io/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/</link>
         <description>技术分享与记录 - Category - 我的个人博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 25 Dec 2020 13:27:05 &#43;0800</lastBuildDate><atom:link href="https://shilongshen.github.io/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 08 May 2021 13:27:05 &#43;0800</lastBuildDate><atom:link href="https://shilongshen.github.io/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB%E4%B8%8E%E8%AE%B0%E5%BD%95/" rel="self" type="application/rss+xml" /><item>
+    <title>LabelMe简单使用</title>
+    <link>https://shilongshen.github.io/labelme%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</link>
+    <pubDate>Sat, 08 May 2021 13:27:05 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://shilongshen.github.io/labelme%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</guid>
+    <description><![CDATA[LabelMe安装 参考
+ Ubuntu  1 2 3 4 5 6 7 8 9  # Ubuntu 14.04 / Ubuntu 16.04# Python2# sudo apt-get install python-qt4 # PyQt4sudo apt-get install python-pyqt5 # PyQt5sudo pip install labelme# Python3sudo apt-get install python3-pyqt5 # PyQt5sudo pip3 install labelme  基本操作 1 2 3 4 5 6 7 8 9 10  labelme # 打开labelme软件labelme apc2016_obj3.]]></description>
+</item><item>
+    <title>git常用指令</title>
+    <link>https://shilongshen.github.io/git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</link>
+    <pubDate>Sat, 01 May 2021 13:27:05 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://shilongshen.github.io/git%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</guid>
+    <description><![CDATA[如何在本地创建一个本地仓库并推送到github 1 2 3 4 5 6 7 8  git init #通过git init命令把这个目录变成Git可以管理的仓库git add *** #用命令git add告诉Git，把文件添加到仓库,可以多次add不同的文件（git add .）#添加所有文件git commit -m &#34;***&#34; #用命令git commit告诉Git，把文件提交到仓库,简单解释一下git commit命令，-m后面输入的是本次提交的说明，可以输入任意内容，当然最好是有意义的，这样你就能从历史记录里方便地找到改动记录。commit可以一次提交很多文件.4. 登陆GitHub，创建一个新的仓库，（选择建立readme文件）5. git remote add origin git@github.com:shilongshen/learngit.git #将本地库与远程库关联,其中learngit为仓库名6. git pull --rebase origin master#将github中的README.md文件合并到本地代码目录中7. git push -u origin master#把本地仓库的内容推送到GitHub仓库  将修改提交到仓库 1 2 3 4 5 6 7 8 9  git add #(将文件提交到缓冲区)#几种git add 命令：git add -A #保存所有的修改git add .]]></description>
+</item><item>
+    <title>IEEE会议论文Latex模板的使用</title>
+    <link>https://shilongshen.github.io/ieee%E4%BC%9A%E8%AE%AE%E8%AE%BA%E6%96%87latex%E6%A8%A1%E6%9D%BF%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+    <pubDate>Sat, 17 Apr 2021 13:27:05 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://shilongshen.github.io/ieee%E4%BC%9A%E8%AE%AE%E8%AE%BA%E6%96%87latex%E6%A8%A1%E6%9D%BF%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+    <description><![CDATA[注意，此处是会议论文模板的使用（期刊模板类似）；解决的问题为外部bib文件的引用
+ 模板下载地址：链接或链接  注意此时参考文献只能够在tex文件内部编辑，比较麻烦。如果我们已经有了外部的bib文件，例如
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20  @inproceedings{goodfellow2014generative,title={Generative Adversarial Nets},author={Goodfellow, Ian and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},booktitle={Advances in neural information processing systems},pages={2672--2680},year={2014},}@inproceedings{men2020controllable,title={Controllable Person Image Synthesis with Attribute-Decomposed GAN},author={Men, Yifang and Mao, Yiming and Jiang, Yuning and Ma, Wei-Ying and Lian, Zhouhui},booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},pages={5084--5093},year={2020}}  我们可以直接通过外部bib文件的引用的方式导入已有的参考文献。首先下载链接，打开bibtex文件夹，这里面包含了ieee的参考文献格式定义。将IEEEtran.]]></description>
+</item><item>
     <title>给不同版本Pytorch指定特定CUDA版本</title>
     <link>https://shilongshen.github.io/ubuntu-%E7%BB%99%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACpytorch%E6%8C%87%E5%AE%9A%E7%89%B9%E5%AE%9Acuda%E7%89%88%E6%9C%AC/</link>
     <pubDate>Fri, 25 Dec 2020 13:27:05 &#43;0800</pubDate>

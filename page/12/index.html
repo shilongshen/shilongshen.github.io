@@ -11,7 +11,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://shilongshen.github.io/" />
 <meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
-<meta property="og:updated_time" content="2021-03-22T09:54:48+08:00" />
+<meta property="og:updated_time" content="2021-05-28T09:54:48+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
 
@@ -103,80 +103,62 @@
         alt="/images/avatar.jpg"
         title="/images/avatar.jpg" /></a></div><h1 class="home-title">我的个人博客</h1><div class="links"><a href="https://github.com/shilongshen" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw"></i></a><a href="mailto:1319144765@qq.com" title="Email" rel=" me"><i class="far fa-envelope fa-fw"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/ssimis%E7%AD%89%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F%E8%AF%84%E5%88%A4%E6%A0%87%E5%87%86/">SSIM，IS等生成图像评价指标</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">IS参考
-Inception Score 的基本原理 众所周知，评价一个生成模型，我们需要考验它两方面性能：1. 生成的图片是否清晰 2. 生成的图片是否多样。生成的图片不够清晰，显然说明生成模型表现欠佳；生成的图片够清晰了，我们还要看是不是能生成足够多样的图片，有些生成模型只能生成有限的几种清晰图片，陷入了所谓 mode collapse，也不是好的模型。
-Inception Score 是这样考虑这两个方面的：
-  清晰度：把生成的一张图片 输入 Inception V3 中，将输出1000维的向量 ，向量的每个维度的值对应图片属于某类的概率。对于一个清晰的图片，它属于某一类的概率应该非常大，而属于其它类的概率应该很小（这个假设本身是有问题的，有可能有些图片很清晰，但是具体属于哪个类却是模棱两可的）。用专业术语说， 的熵应该很小（熵代表混乱度，均匀分布的混乱度最大，熵最大）。
-  多样性：如果一个模型能生成足够多样的图片，那么它生成的图片在各个类别中的分布应该是平均的，假设生成了 10000 张图片，那么最理想的情况是，1000类中每类生成了10张。转换成术语，就是生成图片在所有类别概率的边缘分布 熵很大（均匀分布）。具体计算时，可以先用生成器生成 N 张图片，然后用公式 (1) 的经验分布来代替：
-  综合上面两方面，Inception Score 的公式为：
-：仅仅是为了好看，没有具体含义
-：表示从生成器中生成图片
-：把生成的图片 输入到 Inception V3，得到一个 1000 维的向量 ，也就是该图片属于各个类别的概率分布。IS 提出者的假设是，对于清晰的生成图片，这个向量的某个维度值格外大，而其余的维度值格外小（也就是概率密度图十分尖）。
-：N个生成的图片（N 通常取5000），每个生成图片都输入到 Inception V3 中，各自得到一个自己的概率分布向量，把这些向量求一个平均，得到生成器生成的图片全体在所有类别上的边缘分布，见公式 (1)。
-：对 和 求 KL 散度。KL 散度离散形式的公式如下：
-KL 散度用以衡量两个概率分布的距离，它是非负的，值越大说明这两个概率分布越不像。但这个距离不是对称的，观察公式， 很大 很小的地方对 KL 距离贡献很大，而 很小 很大的地方对 KL 距离的贡献很小。我们预期 的某个维度值很大，而 总体均匀，因此需要把 放在公式 (2) 中双竖线的前面。放到后面可能会造成 的极端值被忽略，而正是这个极端值的存在告诉了我们这个生成的图片是否清晰。</div><div class="post-footer">
-        <a href="/ssimis%E7%AD%89%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F%E8%AF%84%E5%88%A4%E6%A0%87%E5%87%86/">Read More</a></div>
+        <a href="/hinge-loss/">hinge loss</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
+Hinge loss专用于二分类问题，标签值y=±1，预测值$\hat{y}\in R$。该二分类问题的目标函数的要求如下： 当$\hat{y}$大于等于+1或者小于等于-1时，都是分类器确定的分类结果，此时的损失函数loss为0；而当预测值$\hat{y}\in (-1,1)$时，分类器对分类结果不确定，loss不为0。显然，当时$\hat{y}=0$,loss达到最大值。
+对于输出y=±1，当前$\hat{y}$的损失为**： $$ \mathcal{L}=max(0,1-y \cdot \hat{y}) $$
+上式是Hinge loss在二分类问题的的变体，可以看做双向Hinge loss。难以理解的话，可以先看单方向的hinge loss。以y=+1，为例。当y⩾1时，loss为0，否则loss线性增大。函数图像如下所示：</div><div class="post-footer">
+        <a href="/hinge-loss/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/stn%E7%9A%84%E7%90%86%E8%A7%A3/">STN的理解</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">网络结构 网络分为三个部分：Localisation net、Grid generator以及Sampler
-输入为feature map $U$，输出为feature map $V$。
-Localisation net 以$U$为输入，经过卷积层或者全连接层输出仿射参数$\theta \in (2,3)$
-假设$\theta=\begin{bmatrix}\theta_{11}&amp;\theta_{12}&amp;\theta_{13}\ \theta_{21}&amp;\theta_{22}&amp;\theta_{23} \end{bmatrix}$
- 在编程实现中最好将$\theta$进行初始化为$\begin{bmatrix}1&amp;0&amp;0\0&amp;1&amp;0\end{bmatrix}$  Grid generator 已知$V$的坐标，使用仿射变换求出$U$中对应的坐标。
-  在编程实现中需要预先定义$V$的shape, pytorch会根据shape的大小自动初始化一个坐标
-假设$V$的坐标为$\begin{bmatrix}x^t\y^t\1 \end{bmatrix}$ ，$U$中对应的坐标为$\begin{bmatrix}x^s\y^s \end{bmatrix}$。则两者之间的关系为 $$ \begin{bmatrix}x^s\y^s \end{bmatrix}=\begin{bmatrix}\theta_{11}&amp;\theta_{12}&amp;\theta_{13}\ \theta_{21}&amp;\theta_{22}&amp;\theta_{23} \end{bmatrix}\begin{bmatrix}x^t\y^t\1 \end{bmatrix} $$
-   注意此处的目标坐标和原坐标的对应关系，这里使用的是图像变换中的向后映射，参考5
-图像变换的本质是将像素点的坐标通过一种函数关系映射到另外的位置，并根据对应关系进行采样
-向前映射：已知原图像上的坐标，并且已知原图像坐标到目标图像坐标的映射关系，因此可以求得原图像上一点经过映射后在目标图像上的位置。
-向后映射：已知目标图像上的坐标，并且已知目标图像坐标到原图像坐标的映射关系，因此可以求得目标图像上一点经过映射后在原图像上的位置。
- 插值：通常情况下一个整数的坐标$(x,y)$经过映射后往往都位于非整数位置，此时就要采用插值方法进行采样。（此处以双线性插值为例）
-针对前向映射的插值方法：当输入图像上的整数坐标$(x,y)$经过映射后，对应的目标图像上的坐标$(x&rsquo;,y&rsquo;)$为非整数，需要将其像素值按照一定的权重分配到其周围的四个像素点上。因此输出图像上的整数坐标的像素值是由多个输入图像像素点映射并按照一定权重叠加的结果。
-针对后向映射的插值方法：当输出图像上的整数坐标$(x&rsquo;,y&rsquo;)$经过映射后，对应的原图像上的坐标$(x,y)$为非整数，利用其周围整数点位置的输入图像像素值进行插值，就得到了该点的像素值。我们遍历输出图像，经过坐标变换、插值两步操作，我们就能将其像素值一个个地计算出来，因此向后映射又叫图像填充映射。如下图所示。
- Sampler 由于计算得到的$\begin{bmatrix}x^s\y^s \end{bmatrix}$为浮点数时会造成无法进行梯度传播，因此使用双线性插值进行采样：
-其中$U_{nm}^c$表示距离$(x^s,y^s)$最近的四个坐标所对应的$U$中的像素值，$V_i^c$表示使用双线性插值后$V$中某点像素值。
-反向传播 前向的传递过程为Localisation net $\rightarrow^{\Large\theta}$ Grid generator $\rightarrow^{\Large\begin{bmatrix}x^s\y^s\end{bmatrix}}$ Sampler $\rightarrow^{\Large V_i^c}$
- 因此反向传播的过程需要先计算出$V_i^c$关于$\begin{bmatrix}x^s\y^s\end{bmatrix}$的梯度，在计算出$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的梯度。  同理可以计算出$V_i^c$关于$y^s$的导数，以及$\begin{bmatrix}x^s\y^s\end{bmatrix}$关于$\theta$的导数（这个比较简单）
- 通过以上的前向传播以及反向传播可以学习到仿射参数$\theta$，进而通过双线性插值得到经过warp后的特征。</div><div class="post-footer">
-        <a href="/stn%E7%9A%84%E7%90%86%E8%A7%A3/">Read More</a></div>
+        <a href="/human-parser/">human parser</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">人体解析是指将在图像中捕获的人分割成多个语义上一致的区域，例如， 身体部位和衣物。作为一种细粒度的语义分割任务，它比仅是寻找人体轮廓的人物分割更具挑战性。 人体解析对于以人为中心的分析非常重要，并且具有许多工业上的应用，例如，虚拟现实，视频监控和人类行为分析等等。</div><div class="post-footer">
+        <a href="/human-parser/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/swapnet_-image-based-garment-transfer/">SwapNet: Image Based Garment Transfer</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文提出了Swapnet，能够实现任意姿态下的虚拟换装。
-网络分为两阶段：
- warping : 将desired clothing根据pose进行warping,生成clothing segmentation。 texturing : 利用desired clothing information 对clothing segmentation进行细节的服装纹理合成。  给定包含desired clothing的图像A，以及包含desired pose的图像B，目标是生成具有B的姿态且有A的服装的图像$B'$ （B中的人物穿上了A的服装）。
-Warping Module 以A的语义分割图$A_{cs}$和B的语义分割图$B_{cs}$为输入，合成$B&rsquo;_{CS}$,其同时具有A的语义形状、标签以及B的体型和姿态。
-生成的结果strongly conditioned on the body segmentation以及weakly conditioned on the clothing segmentation。这是通过将 clothing segmentation经过下采样再上采样的操作（？）。这种设计网络结构的好处在于：（？）
-损失函数部分：
-没看懂
-Texturing Module 损失函数: $$ \mathcal{L}{L1}=|| f_g-A ||_1 \ \mathcal{L}{feat}=\sum_l\lambda_l || \phi_l(f_g)-\phi_l(A) ||_2 \ \mathcal{L}_{GAN}s $$</div><div class="post-footer">
-        <a href="/swapnet_-image-based-garment-transfer/">Read More</a></div>
+        <a href="/if-__name____main__%E7%9A%84%E7%90%86%E8%A7%A3/">if __name__==&#39;__main__&#39;的理解</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">直观理解：
+对于当前运行的程序one.py而言，name 变量的值是&rdquo;main&quot;。
+如果two.py调用了one.py，即import one，那么对one.py而言__name__变量的值是&rdquo;one&quot;，对于two.py而言__name__变量的值是&rdquo;main&quot;。
+背后原因：
+有时我们写了可以直接被执行的模块（.py文件），但是在另一个程序中调用它时，我们其实只是想用一用里面写好的函数，而不是全都执行一遍。那么我们就可以把执行的部分放到if name == &lsquo;main&rsquo; 中进行判断。
+如果if name == &lsquo;main&rsquo; 为真，就说明我们是在直接执行这个模块，那么所有的操作都要运行一遍；但如果为假，就说明我们是引用了这个模块，只有在需要用到它的函数时，才会被调用执行。
+1 2 3 4 5 6 7 8 9  定义一个py文件：one.pydef func():print(&#34;func() in one.py&#34;)#此时&#34;__name__&#34;等于“__main_-” if __name__ == &#34;__main__&#34;:print(&#34;one.py is being run directly&#34;)else:print(&#34;one.py is being imported into another module&#34;)  1 2  运行one.py的结果如下：one.py is being run directly  1 2 3 4 5 6 7 8 9 10 11 12 13  定义一个py文件：two.</div><div class="post-footer">
+        <a href="/if-__name____main__%E7%9A%84%E7%90%86%E8%A7%A3/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/the-contextual-loss-for-image-transformation-with-non-aligned-data/">The Contextual Loss for Image Transformation with Non-Aligned Data</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">前馈卷积神经网络用于图像翻译任务时的一个关键在于损失函数能够准确的度量真实图像和生成图像之间的相似性。大多数的损失函数假设真实图像和生成图像在空间上是对齐的，直接比较在相应位置pixel的相似性。然而在大多数任务中，在空间上对齐的训练数据对是难以得到的。
-该文提出了一种不需要对齐训练数据对的损失函数，该损失函数基于content和semantics&ndash;在考虑整张图像的content的同时比较具有相似semantics meaning的区域。
-Introduction 在图像翻译任务中常用的损失函数有：
-（1）pixel-to-pixel 损失函数，在在相应的空间位置进行比较。包括了L1,L2和感知损失函数。
-（2）Global 损失函数，例如Gram 损失函数能够通过比较整张图像的统计特性来很好的捕获风格和纹理。
-（3）对抗损失函数（GAN）
-存在问题：
-pixel-to-pixel 损失函数适用与生成图像和目标图像在空间上是对齐的情况，对于风格迁移等任务不是特别适合。
- 该损失函数的关键思想是将图像作为特征的集合，在忽视特征的空间位置，基于特征之间的相似性的基础上进行图像相似性的度量。我们在度量生成图像特征和真实图像特征相似性时考虑了生成图像的所有特征，因此将整张图像的语境(global image content)合并到了相似性度量中。两张图像的相似性是通过匹配的特征的相似性来定义的。
-感知损失函数的一大优点是能够保证目标图像的外观。
- Method 3.1 contextual similarity between images 将每一张图像表示为一系列高维的点（特征），如果两张图像相应的点是相似的则认为两张图像是相似的。我们认为如果两张图像大多数特征相似，则认为两张图像相似。
-假设生成图像为$x$，目标图像为$y$，将其表示为一系列的点（特征，可以通过预训练的VGG来提取）：$X={ x_i },Y={ y_i }$,并假设$|Y|=|X|=N$（有$N$个点）。我们为每一个$y_i$从$X={ x_i}$中寻找最相似的$x_i$,然后将所有$y_i$相应的特征相似值进行相加： $$ CX(x,y)=CX(X,Y)=\frac{1}{N}\sum_j \max_i CX_{i,j} $$ 其中$CX_{i,j}$定义的是$x_i$和$y_j$之间的相似性。
- 通过$CX_{i,j}$将整张图像的语境(global image content)引入。
- 我们称$x_i$与$y_j$是contextually similar的，如果$x_i$与$Y$中其他点相比与$y_j$更加的接近。当$x_i$与$Y$中所有的点都不接近时，$CX_{i,j}$会非常的的小。
- 设$d_{i,j}$为$x_i$与$y_j$的余弦距离，当$d_{i,j}&laquo;d_{i,k},k \neq j$时我们认为$x_i$和$y_j$是相似的。
-pytorch 实现 </div><div class="post-footer">
-        <a href="/the-contextual-loss-for-image-transformation-with-non-aligned-data/">Read More</a></div>
+        <a href="/java%E5%9F%BA%E7%A1%80/">Java基础</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>Java学习笔记</a></span></div><div class="content">Java简介 Java将源代码编译成一种“字节码”，虚拟机（JVM）负责加载字节码并执行。
+名词解释  JDK：Java Development Kit JRE：Java Runtime Environment  简单地说，JRE就是运行Java字节码的虚拟机。但是，如果只有Java源码，要编译成Java字节码，就需要JDK，因为JDK除了包含JRE，还提供了编译器、调试器等开发工具。
+在JDK的bin目录下可以找到很多可执行文件：
+ javac : 这是java的编译器，它用于把java源文件（以.java后缀结尾）编译成java字节码文件（以.class后缀结尾）； java : 这其实就是虚拟机（JVM）,负责执行java字节码。  第一个java程序 1 2 3 4 5  public class Hello{ public static mean(String[] args){ System.out.println(&#34;hello,world!&#34;); } }   在java程序中
+1 2 3  public class Hello{ ... }   为类的定义，Hello为类名，public表示这个类是公开的。
+在类中定义了方法：
+1 2 3  public static mean(String[] args){ ... }   方法是可执行代码块，mean为方法名，用()括起来的是方法参数，这里的参数类型为String[],参数名为args,public，static用来修饰方法，表明该方法为公开静态方法，void为方法的返回类型，{}中间为方法的代码，这才是真正执行的代码，必须以;结尾。
+ 把代码保存为文件时，文件名必须和类名Hello一样，为Hello.java。
+如何运行Java程序 注意javac是编译器，java是虚拟机</div><div class="post-footer">
+        <a href="/java%E5%9F%BA%E7%A1%80/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/towards-multi-pose-guided-virtual-try-on-network/">Towards Multi-pose Guided Virtual Try-on Network</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">Contribution  We introduce a novel task of virtual try-on conditioned on multiple poses, and collect a new dataset that covers different poses and various clothes. We propose a novel Multi-pose Guided Virtual Try-On Network (MG-VTON) that handles large pose varia- tions by disentangling the warping of clothes appear- ance and the pose manipulation in multiple stages. Specifically, we propose a pose-clothes guided human parsing network to first synthesize the human parsing with the desired clothes and pose, which effectively guides the virtual try-on to achieve reasonable results via the correct region parts.</div><div class="post-footer">
-        <a href="/towards-multi-pose-guided-virtual-try-on-network/">Read More</a></div>
+        <a href="/kl%E6%95%A3%E5%BA%A6/">KL散度</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">参考
+KL散度用来做什么？ KL散度的用途：比较两个概率分布的接近程度。
+在统计应用中，我们经常需要用一个简单的，近似的概率分布f∗
+来描述一个复杂的概率分布f。这个时候，我们需要一个量来衡量我们选择的近似分布 f∗相比原分布f究竟损失了多少信息量，这就是KL散度起作用的地方。
+熵 为了更好的理解KL散度，在这里首先抛出熵的概念。在信息论这门学科中，一个很重要的目标就是量化描述数据中含有多少信息。 为此，提出了熵的概念，记作H，一个概率分布所对应的熵表达如下： $$ H= −\sum_{i=1}^N=p(x_i)⋅\log (p(x_i)) $$ 果我们使用 log⁡2 作为底，熵可以被理解为：我们编码所有信息所需要的最小位数。 需要注意的是：通过计算熵，我们可以知道信息编码需要的最小位数，却不能确定最佳的数据压缩策略。怎样选择最优数据压缩策略，使得数据存储位数与熵计算的位数相同，达到最优压缩，是另一个庞大的课题。
+KL散度的计算 现在，我们能够量化数据中的信息量了，就可以来衡量近似分布带来的信息损失了。KL散度的计算公式其实是熵计算公式的简单变形,在原有概率分布 p 上，加入我们的近似概率分布 q，计算他们的每个取值对应对数的差： $$ D_{KL}(p||q)= ∑_{i=1}^Np(x_i)⋅(log(p(x_i))−log(q(x_i)))\
+=∑_{i=1}^Np(x_i)⋅log \frac{p(x_i)}{q(x_i)} $$ 换句话说，KL散度计算的就是数据的原分布与近似分布的概率的对数差的期望值。 在对数以2为底时，log2 ，可以理解为“我们损失了多少位的信息”
+KL散度的连续定义： $$ D_{KL}(p||q)=\int p(x)⋅log \frac{p(x)}{q(x)}dx $$</div><div class="post-footer">
+        <a href="/kl%E6%95%A3%E5%BA%A6/">Read More</a></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/towards-photo-realistic-virtual-try-on-by-adaptively-generating___preserving-image-content/">Towards Photo-Realistic Virtual Try-On by Adaptively Generating↔Preserving Image Content</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">it is empty!</div><div class="post-footer">
-        <a href="/towards-photo-realistic-virtual-try-on-by-adaptively-generating___preserving-image-content/">Read More</a></div>
+        <a href="/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/">MISC: Multi-condition Injection and Spatially-adaptive Compositing for Conditional Person Image Synthesis</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-11-15">2020-11-15</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div><div class="content">该文章实现了不同背景下多条件人物图像生成。
+该文提出了一个概念：图像生成（image generation）和图像合成（image compositing）
+Introduction 条件人物图像生成可以分为两个阶段：
+ conditional generation phase : 在几何条件的基础上，生成人物的细粒度纹理 adaptive compositing phase : 根据不同的背景调整生成人物的色调，使得生成的人物能够和背景更加的融合。  对于conditional generation phase，以三个条件作为输入：geometry、pattern（灰度纹理）和color，对应到具体的输入为parsing mask、Gaussian noise以及multi-valued color attributes。其中patteern 和 color是抽象的并且与geometry相关。因此条件人物图像生成可以视为抽象条件的视觉具体化。
+另一方面，adaptive compositing phase 需要将生成的人物图像更好的与背景相融合。
+ ​	MISC包含两个模块：
+ conditional person generation model spatially-adaptive image composition model  其中conditional person generation model ：
+对于pattern condition ，将它视为Gaussian noise，引入一个条件归一化层：GAIN，通过Gaussian 来调剂激活值。
+对于color condition，使用bipartite network project method 来讲attribute 映射到人物相应的几何位置上，并使用预训练的cross-modality similarity model 来增强attribute embedding的语义意义。
+ 而对于spatially-adaptive image composition model：</div><div class="post-footer">
+        <a href="/misc_-multi-condition-injection-and-spatially-adaptive-compositing-for-conditional-person-image-synthesis/">Read More</a></div>
 </article><ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -207,7 +189,7 @@ pytorch 实现 </div><div class="post-footer">
                     <span class="page-link" aria-hidden="true">&hellip;</span>
                 </li><li class="page-item ">
                     <span class="page-link">
-                        <a href="/page/16/">16</a>
+                        <a href="/page/21/">21</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">

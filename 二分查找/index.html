@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>二分查找 - 我的个人博客</title><meta name="Description" content="这是我的全新 Hugo 网站"><meta property="og:title" content="二分查找" />
+<meta property="og:description" content="二分查找思路1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18  public int Search(int[] nums,int target){int left=0;int right=nums.length-1;while(left&lt;=right){int mid=left&#43;(right-left)/2;if(nums[mid]==target){return nums[mid];}else if(nums[mid]&gt;target){right=mid-1；}else{left=mid&#43;1;}}return -1;}  二分查找的思路2  排除法：考虑中间元素nums[mid] 在什么情况下不是目标元素 思路：将待搜索区间分为2个部分，一部分一定不存在目标元素，另一部分可能存在目标元素  写二分查找的一般步骤：
+ 将循环条件设置为while(left&lt;right) 写if和else语句的时候，思考nums[i]满足什么性质时，nums[mid]不是目标元素，接着判断mid的左边有没有可能存在目标元素，mid的右边有没有可能存在目标元素。 根据“边界收缩行为”修改中间数的行为  int mid = left &#43;(right - left)/2 “/” 是整数除法，默认的取整行为是向下取整，这会带来一个问题：int mid = left &#43;(right - left)/2 永远取不到右边界right，对应的是mid被分到了左边区间。在面对left=mid和right=mid-1这种边界收缩时，就有可能产生死循环。   退出循环后，看是否需要对nums[left]是否是目标元素再做一次检查。  参考 链接" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" />
+<meta property="og:image" content="https://shilongshen.github.io/logo.png"/>
+<meta property="article:published_time" content="2021-04-23T09:54:48+08:00" />
+<meta property="article:modified_time" content="2021-04-23T09:54:48+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shilongshen.github.io/logo.png"/>
+
+<meta name="twitter:title" content="二分查找"/>
+<meta name="twitter:description" content="二分查找思路1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18  public int Search(int[] nums,int target){int left=0;int right=nums.length-1;while(left&lt;=right){int mid=left&#43;(right-left)/2;if(nums[mid]==target){return nums[mid];}else if(nums[mid]&gt;target){right=mid-1；}else{left=mid&#43;1;}}return -1;}  二分查找的思路2  排除法：考虑中间元素nums[mid] 在什么情况下不是目标元素 思路：将待搜索区间分为2个部分，一部分一定不存在目标元素，另一部分可能存在目标元素  写二分查找的一般步骤：
+ 将循环条件设置为while(left&lt;right) 写if和else语句的时候，思考nums[i]满足什么性质时，nums[mid]不是目标元素，接着判断mid的左边有没有可能存在目标元素，mid的右边有没有可能存在目标元素。 根据“边界收缩行为”修改中间数的行为  int mid = left &#43;(right - left)/2 “/” 是整数除法，默认的取整行为是向下取整，这会带来一个问题：int mid = left &#43;(right - left)/2 永远取不到右边界right，对应的是mid被分到了左边区间。在面对left=mid和right=mid-1这种边界收缩时，就有可能产生死循环。   退出循环后，看是否需要对nums[left]是否是目标元素再做一次检查。  参考 链接"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" /><link rel="prev" href="https://shilongshen.github.io/ieee%E4%BC%9A%E8%AE%AE%E8%AE%BA%E6%96%87latex%E6%A8%A1%E6%9D%BF%E7%9A%84%E4%BD%BF%E7%94%A8/" /><link rel="next" href="https://shilongshen.github.io/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "二分查找",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/shilongshen.github.io\/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE\/"
+        },"genre": "posts","wordcount":  74 ,
+        "url": "https:\/\/shilongshen.github.io\/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE\/","datePublished": "2021-04-23T09:54:48+08:00","dateModified": "2021-04-23T09:54:48+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "shilongshen"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="我的个人博客">首页</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="我的个人博客">首页</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">二分查找</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/"><i class="far fa-folder fa-fw"></i>数据结构和算法</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-04-23">2021-04-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;74 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#二分查找思路1">二分查找思路1</a></li>
+    <li><a href="#二分查找的思路2">二分查找的思路2</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="二分查找思路1">二分查找思路1</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">int</span> <span class="nf">Search</span><span class="o">(</span><span class="kt">int</span><span class="o">[</span><span class="o">]</span> <span class="n">nums</span><span class="o">,</span><span class="kt">int</span> <span class="n">target</span><span class="o">)</span><span class="o">{</span>
+	<span class="kt">int</span> <span class="n">left</span><span class="o">=</span><span class="n">0</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">right</span><span class="o">=</span><span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="n">1</span><span class="o">;</span>
+    <span class="k">while</span><span class="o">(</span><span class="n">left</span><span class="o">&lt;</span><span class="o">=</span><span class="n">right</span><span class="o">)</span><span class="o">{</span>
+        <span class="kt">int</span> <span class="n">mid</span><span class="o">=</span><span class="n">left</span><span class="o">+</span><span class="o">(</span><span class="n">right</span><span class="o">-</span><span class="n">left</span><span class="o">)</span><span class="o">/</span><span class="n">2</span><span class="o">;</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">]</span><span class="o">=</span><span class="o">=</span><span class="n">target</span><span class="o">)</span><span class="o">{</span>
+            <span class="k">return</span> <span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">]</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">mid</span><span class="o">]</span><span class="o">&gt;</span><span class="n">target</span><span class="o">)</span><span class="o">{</span>
+            <span class="n">right</span><span class="o">=</span><span class="n">mid</span><span class="o">-</span><span class="n">1</span><span class="err">；</span>
+        <span class="o">}</span>
+        <span class="k">else</span><span class="o">{</span>
+            <span class="n">left</span><span class="o">=</span><span class="n">mid</span><span class="o">+</span><span class="n">1</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="二分查找的思路2">二分查找的思路2</h1>
+<ul>
+<li>排除法：考虑中间元素nums[mid] 在什么情况下不是目标元素</li>
+<li>思路：将待搜索区间分为2个部分，一部分一定不存在目标元素，另一部分可能存在目标元素</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327165030.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327165030.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327165030.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327165030.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327165030.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327165030.png" /></p>
+<p>写二分查找的一般步骤：</p>
+<ul>
+<li>将循环条件设置为<code>while(left&lt;right)</code></li>
+<li>写<code>if</code>和<code>else</code>语句的时候，思考<code>nums[i]</code>满足什么性质时，<code>nums[mid]</code>不是目标元素，接着判断<code>mid</code>的左边有没有可能存在目标元素，<code>mid</code>的右边有没有可能存在目标元素。</li>
+<li>根据“边界收缩行为”修改中间数的行为
+<ul>
+<li><code>int mid = left +(right - left)/2</code></li>
+<li>“/” 是整数除法，默认的取整行为是向下取整，这会带来一个问题：<code>int mid = left +(right - left)/2</code> 永远取不到右边界<code>right</code>，对应的是<code>mid</code>被分到了左边区间。在面对<code>left=mid</code>和<code>right=mid-1</code>这种边界收缩时，就有可能产生死循环。</li>
+</ul>
+</li>
+<li><strong>退出循环后</strong>，看是否需要对<code>nums[left]</code>是否是目标元素再做一次检查。</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327185441.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327185441.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327185441.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327185441.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327185441.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327185441.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327191214.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327191214.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327191214.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327191214.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327191214.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210327191214.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210404085454.png"
+        data-srcset="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210404085454.png, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210404085454.png 1.5x, https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210404085454.png 2x"
+        data-sizes="auto"
+        alt="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210404085454.png"
+        title="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210404085454.png" /></p>
+<h1 id="参考">参考</h1>
+<p><a href="https://www.bilibili.com/video/av83911694?p=1" target="_blank" rel="noopener noreffer">链接</a></p>
+<p><a href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/da-jia-bu-yao-kan-labuladong-de-jie-fa-fei-chang-2/" target="_blank" rel="noopener noreffer">链接</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-04-23</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-title="二分查找"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-title="二分查找" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-title="二分查找"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-title="二分查找"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="Share on Myspace" data-sharer="myspace" data-url="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-title="二分查找" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="Share on Blogger" data-sharer="blogger" data-url="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-title="二分查找" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="Share on Evernote" data-sharer="evernote" data-url="https://shilongshen.github.io/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-title="二分查找"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/ieee%E4%BC%9A%E8%AE%AE%E8%AE%BA%E6%96%87latex%E6%A8%A1%E6%9D%BF%E7%9A%84%E4%BD%BF%E7%94%A8/" class="prev" rel="prev" title="IEEE会议论文Latex模板的使用"><i class="fas fa-angle-left fa-fw"></i>IEEE会议论文Latex模板的使用</a>
+            <a href="/b%E6%A0%91b-%E6%A0%91%E5%92%8C%E7%BA%A2%E9%BB%91%E6%A0%91/" class="next" rel="next" title="B树、B&#43;树和红黑树">B树、B&#43;树和红黑树<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.63.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">shilongshen</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

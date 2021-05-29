@@ -163,6 +163,16 @@ Linux 发行版是 Linux 内核及各种应用软件的集成版本。
 1. 按下 冒号 ：
 2. 输入set number
 
+| 命令   | 作用                                             |
+| ------ | ------------------------------------------------ |
+| dd     | 删除光标所在行                                   |
+| \#dd   | 例如，6dd表示删除从光标所在的该行往下数6行之文字 |
+| x      | 每按一次删除光标所在位置的后面一个字符           |
+| /word  | 在文件中查找内容为word的字符串（向下查找）       |
+| ?word  | 在文件中查找内容为word的字符串（向上查找）       |
+| Ctrl+B | 屏幕往上移动一页                                 |
+| Ctrl+F | 屏幕往下移动一页                                 |
+
 
 
 # 磁盘
@@ -500,7 +510,7 @@ Linux一般将文件可存取的身份分为三个类别，分别是Owner/group/
   - 移动该目录中的文件、目录位置
 - x(eXecute): 表示用户能否**进入该目录**成为工作目录
 
-![](https://gitee.com/shilongshen/image-bad/raw/master/img/20210102105023.png)
+<img src="https://gitee.com/shilongshen/image-bad/raw/master/img/20210102105023.png" style="zoom:50%;" />
 
 
 
@@ -1222,30 +1232,38 @@ $ bzip2 [-cdkzv#] filename
 $ xz [-dtlkc#] filename
 ```
 
-## 打包
+## tar
+
+**tar — The GNU version of the tar archiving utility**
 
 压缩指令只能对一个文件进行压缩，而打包能够<u>将多个文件打包成一个大文件</u>。tar 不仅可以用于打包，也可以使用 gzip、bzip2、xz 将打包文件进行压缩。
 
 ```
-$ tar [-z|-j|-J] [cv] [-f 新建的 tar 文件] filename...  ==打包压缩
-$ tar [-z|-j|-J] [tv] [-f 已有的 tar 文件]              ==查看
-$ tar [-z|-j|-J] [xv] [-f 已有的 tar 文件] [-C 目录]    ==解压缩
+$ tar [cv] [-z|-j|-J]  [-f 新建的 tar 文件] filename...  ==打包压缩
+$ tar [tv] [-z|-j|-J]  [-f 已有的 tar 文件]              ==查看
+$ tar [xv] [-z|-j|-J]  [-f 已有的 tar 文件] [-C 目录]    ==解压缩
+
 -z ：使用 zip；
 -j ：使用 bzip2；
 -J ：使用 xz；
--c ：新建打包文件；
--t ：查看打包文件里面有哪些文件；
--x ：解打包或解压缩的功能；
--v ：在压缩/解压缩的过程中，显示正在处理的文件名；
--f : filename：要处理的文件；
+-c ：新建打包文件；常用  --create, create a new archive
+           
+-t ：查看打包文件里面有哪些文件；常用 --list, list the contents of an archive
+           
+-x ：解打包或解压缩的功能；常用 -x, --extract, --get, extract files from an archive
+           
+-v ：在压缩/解压缩的过程中，显示正在处理的文件名；常用
+-f : filename：要处理的文件，这个参数是最后一个参数，后面只能接档案名。；常用
 -C 目录 ： 在特定目录解压缩。
 ```
 
-| 使用方式 | 命令                                                  |
-| -------- | ----------------------------------------------------- |
-| 打包压缩 | tar -jcv -f filename.tar.bz2 要被压缩的文件或目录名称 |
-| 查 看    | tar -jtv -f filename.tar.bz2                          |
-| 解压缩   | tar -jxv -f filename.tar.bz2 -C 要解压缩的目录        |
+| 使用方式 | 命令                                                 |
+| -------- | ---------------------------------------------------- |
+| 打包压缩 | tar  cvf filename.tar.bz2 ‘要被压缩的文件或目录名称’ |
+| 查 看    | tar tvf filename.tar.bz2                             |
+| 解压缩   | tar xvf filename.tar.bz2                             |
+
+[查看](https://www.cnblogs.com/luozeng/p/8674529.html)
 
 # bash
 
@@ -1608,7 +1626,7 @@ $ split [-bl] file PREFIX
 
 - 简单来说，正则表达式就是处理字符串的方法，他**以行为单位**来进行字符串的处理行为，可以让使用者轻易的达到“搜寻/删除/取代”某个特定字符串。
 
-g/re/p（globally search a regular expression and print)，**使用正则表示式进行全局查找并打印**。
+grep（globally search a regular expression and print)，**使用正则表示式进行全局查找并打印**。
 
 ```
 $ grep [-acinv] [--color=auto] 搜寻字符串 filename
@@ -1720,21 +1738,43 @@ dmtsai lines: 5 columns: 9
 
 示例：查看自己的进程
 
-```
-## ps -l
+```shell
+ps -l
 ```
 
 示例：查看系统所有进程
 
-```
-## ps aux
+```shell
+ps aux
 ```
 
-示例：查看特定的进程
+示例：查看含有threadx的进程 （**常用**）
 
+```shell
+ps aux | grep threadx
+#或则使用
+ps ef | grep thraad
 ```
-## ps aux | grep threadx
+
+```markdown
+ps [-aefFly] [-p pid] [-u userid]
+
+-a 与任何用户标识和终端相关的进程
+
+-e 所有进程（包括守护进程）
+
+-p pid 与指定PID相关的进程
+
+-u userid 与指定用户标识userid相关的进程
+
+-ef 显示所有用户进程，完整输出
+
+-a 显示所有非守护进程
+
+-t 仅显示所有守护进程
 ```
+
+
 
 #### 
 
@@ -1742,11 +1782,15 @@ dmtsai lines: 5 columns: 9
 
 查看进程树。
 
-示例：查看所有进程树
+示例：
 
+```shell
+pstree -A  #查看所有进程树
+pstree -p 22772  #查看进程22772中的线程数
+pstree -p 22772 | wc -l  #查看进程下的线程数量
 ```
-## pstree -A
-```
+
+
 
 #### 
 
@@ -1756,8 +1800,9 @@ dmtsai lines: 5 columns: 9
 
 示例：两秒钟刷新一次
 
-```
-## top -d 2
+```shell
+top -d 2
+top -H  #查看机器性能
 ```
 
 #### 
@@ -1769,10 +1814,12 @@ dmtsai lines: 5 columns: 9
 示例：查看特定端口的进程
 
 ```
-## netstat -anp | grep port
+## netstat -anp | grep 'port'
 ```
 
-
+- -a或--all 显示所有连线中的Socket。
+- -n或--numeric 直接使用IP地址，而不通过域名服务器。
+- -p或--programs 显示正在使用Socket的程序识别码和程序名称。
 
 ## 进程状态
 
@@ -1891,21 +1938,23 @@ test4@ssl-H310M-S2:~$ pwd
 test4@ssl-H310M-S2:~$
 ```
 
-可以看到登陆以后的用户test4当前所在目录仍为“/home”;**这种方式只能在控制台中互相切换用户**，一旦重启系统，用该用户还是无法登陆（只能用原来的用户或root登陆）。
+可以看到登陆以后的用户t 录仍为“/home”;**这种方式只能在控制台中互相切换用户**，一旦重启系统，用该用户还是无法登陆（只能用原来的用户或root登陆）。
 
 ## 新建可登录图形用户界面的用户
+
+**推荐使用这种方式**
 
 ```bash
 adduser [账号名]
 ---
 adduser [--home DIR] [--shell SHELL] [--no-create-home] [--uid ID]
 [--firstuid ID] [--lastuid ID] [--gecos GECOS] [--ingroup GROUP | --gid ID]
-[--disabled-password] [--disabled-login] [--encrypt-home] USER
+[--disabled-password] [--disabled-login] [--encrypt-home] UserName
    添加普通用户
 
 
 ---
-root@ssl-H310M-S2:/home# adduser test4
+root@ssl-H310M-S2:/home# adduser --home DIR test4     //使用--home指定新用户的家目录
 正在添加用户"test4"...
 正在添加新组"test4" (1003)...
 正在添加新用户"test4" (1003) 到组"test4"...
@@ -1936,6 +1985,47 @@ passwd：已成功更新密码
 /etc/default/useradd - 定 义 资 讯
 /etc/login.defs - 系 统 广 义 设 定
 /etc/skel - 内 含 定 义 档 的 目 录
+```
+
+## 常用命令
+
+### 赋予用户root权限
+
+[参考](https://blog.csdn.net/yzf279533105/article/details/88704233)
+
+```shell
+方法一： 修改 /etc/sudoers 文件，找到下面一行，把前面的注释（#）去掉
+
+## Allows people in group wheel to run all commands
+%wheel    ALL=(ALL)    ALL
+
+然后修改用户，使其属于root组（wheel），命令如下：
+
+#usermod -g root UserName
+
+修改完毕，现在可以用UserName帐号登录，然后用命令 su – ，即可获得root权限进行操作。
+
+方法二： 修改 /etc/sudoers 文件，找到下面一行，在root下面添加一行，如下所示：
+
+## Allow root to run any commands anywhere
+root    ALL=(ALL)     ALL
+UserName   ALL=(ALL)     ALL
+
+修改完毕，现在可以用UserName帐号登录，然后用命令 su – ，即可获得root权限进行操作。
+```
+
+
+
+### 查看系统中所有用户
+
+```shell
+grep bash /etc/passwd
+```
+
+### 用户切换
+
+```shell
+su UserName
 ```
 
 

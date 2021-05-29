@@ -33,7 +33,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/shilongshen.github.io\/pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/"
-        },"genre": "posts","wordcount":  6186 ,
+        },"genre": "posts","wordcount":  6265 ,
         "url": "https:\/\/shilongshen.github.io\/pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/","datePublished": "2020-11-15T13:26:17+08:00","dateModified": "2020-11-15T13:26:17+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -110,7 +110,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">pytorch学习笔记</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>shilongshen</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><i class="far fa-folder fa-fw"></i>深度学习论文阅读笔记</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;6186 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-15">2020-11-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;6265 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;30 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
@@ -1995,7 +1995,15 @@
 <h4 id="pytorch并行处理方法">pytorch并行处理方法</h4>
 <p><a href="https://pytorch.org/tutorials/beginner/blitz/data_parallel_tutorial.html" target="_blank" rel="noopener noreffer">参考</a></p>
 <p><a href="https://oldpan.me/archives/pytorch-to-use-multiple-gpus" target="_blank" rel="noopener noreffer">参考</a></p>
+<p><a href="https://pytorch.org/docs/stable/generated/torch.nn.DataParallel.html#torch.nn.DataParallel" target="_blank" rel="noopener noreffer">参考</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/102697821" target="_blank" rel="noopener noreffer">参考</a></p>
 <p>pytorch默认只使用一个GPU进行训练，如果想要使用多个GPU运行，需要使用<code>nn.DataParallel</code></p>
+<blockquote>
+<p>首先在前向过程中，你的输入数据会被划分成多个子部分（以下称为副本）送到不同的device中进行计算，而你的模型module是在每个device上进行复制一份，也就是说，输入的batch是会被平均分到每个device中去，但是你的模型module是要拷贝到每个devide中去的，每个模型module只需要处理每个副本即可，当然你要保证你的batch size大于你的gpu个数。然后在反向传播过程中，每个副本的梯度被累加到原始模块中。概括来说就是：DataParallel 会自动帮我们将数据切分 load 到相应 GPU，将模型复制到相应 GPU，进行正向传播计算梯度并汇总。</p>
+<p>注意还有一句话，官网中是这样描述的：</p>
+<p>The parallelized <code>module</code> must have its parameters and buffers on <code>device_ids[0]</code> before running this <code>DataParallel</code> module.</p>
+<p>意思就是：在运行此DataParallel模块之前，并行化模块必须在device_ids [0]上具有其参数和缓冲区。在执行DataParallel之前，会首先把其模型的参数放在device_ids[0]上，一看好像也没有什么毛病，其实有个小坑。我举个例子，服务器是八卡的服务器，刚好前面序号是0的卡被别人占用着，于是你只能用其他的卡来，比如你用2和3号卡，如果你直接指定device_ids=[2, 3]的话会出现模型初始化错误，类似于module没有复制到在device_ids[0]上去，这就需要CUDA_VISIBLE_DEVICES设置对程序可见的device</p>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -2054,6 +2062,16 @@
 </span><span class="lnt">44
 </span><span class="lnt">45
 </span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># CUDA_VISIBLE_DEVICES设置说明，设置device对程序可见</span>
@@ -2069,7 +2087,17 @@
 <span class="c1">#CUDA_VISIBLE_DEVICES=2,0,3 // 仅使用device0, device2和device3</span>
 
 
-<span class="c1">#device为用户	主机上从0号开始可用的GPU编号</span>
+<span class="c1">#设置临时的环境变量</span>
+<span class="n">Linux</span><span class="err">：</span> <span class="n">export</span> <span class="n">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span>
+<span class="n">windows</span><span class="p">:</span>  <span class="nb">set</span> <span class="n">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span>
+<span class="c1">#或者使用</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">CUDA_VISIBLE_DEVICES</span><span class="s2">&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;</span><span class="s2">2, 3</span><span class="s2">&#34;</span>
+<span class="c1">#设置上面两行代码后，那么对这个程序而言可见的只有2和3号卡，和其他的卡没有关系，这是物理上的号卡，逻辑上来说其实是对应0和1号卡，即device_ids[0]对应的就是第2号卡，device_ids[1]对应的就是第3号卡。（当然你要保证上面这两行代码需要定义在以下代码之前）</span>
+<span class="n">device_ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="n">device_ids</span><span class="p">)</span>
+
+
+<span class="c1">#device为程序可见的0号开始可用的GPU编号</span>
 <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">cuda:0</span><span class="s2">&#34;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="p">)</span> <span class="k">else</span> <span class="sa"></span><span class="s2">&#34;</span><span class="s2">cpu</span><span class="s2">&#34;</span><span class="p">)</span>
 
 <span class="c1">#Model为用户的网络模型</span>
@@ -2102,6 +2130,23 @@
 
 <span class="c1">#因此想要再次调用原model中的函数，需要将原本的model.load()函数变为model.module.load()形式。其中load()为我在model中自定义的函数，综上，在model与函数中间加入.module即可。</span>
 
+</code></pre></td></tr></table>
+</div>
+</div><p>小结：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">#并行训练</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">CUDA_VISIBLE_DEVICES</span><span class="s2">&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;</span><span class="s2">2, 3</span><span class="s2">&#34;</span><span class="c1">#指定程序可见GPU</span>
+<span class="n">device_ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="n">device_ids</span><span class="p">)</span><span class="c1">#将数据切分到device上</span>
+<span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="c1">#或者是model.cuda()</span>
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="matplotlib-画动态图以及pltion和pltioff的使用">matplotlib 画动态图以及plt.ion()和plt.ioff()的使用</h4>

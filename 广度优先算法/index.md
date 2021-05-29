@@ -22,7 +22,7 @@ class Solution {
         deque.offer(new int[]{0, 0});//添加坐标[0][0]
         int ans = 1;
         while (!deque.isEmpty()) {
-            int[] c = deque.poll();//将对头的元素poll
+            int[] c = deque.poll();//将队头的元素poll
             int cx = c[0];//获得其x坐标
             int cy = c[1];//获得其y坐标
             for (int i = 0; i < 2; i++) {//分别向右和向下进行查询

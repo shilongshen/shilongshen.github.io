@@ -188,7 +188,7 @@ public interface ProductB {
 
 //为每一个产品接口创建具体的产品类
 
-//产品A有两个具体产品A1，A2；/产品A有两个具体产品B1，B2
+//产品A有两个具体产品A1，A2；产品B有两个具体产品B1，B2
 
 ```java
 public class CreateProductA1  implements ProductA  {
@@ -417,11 +417,15 @@ class SRfarm implements Farm {
 
 ```
 
+小结
+
+<img src="https://gitee.com/shilongshen/xiaoxingimagebad/raw/master/img/20210412194542.png" style="zoom:80%;" />
+
 # 单例模式
 
 [参考](http://c.biancheng.net/view/1338.html)
 
-确保一个类只有一个实例，并提供该实例的全局访问点。
+**确保一个类只有一个实例，并提供一个该实例的全局访问点。**
 
 单例模式有 3 个特点：
 
@@ -444,7 +448,7 @@ class SRfarm implements Farm {
 
 单例模式的应用场景：
 
-- 例如，Windows 中只能打开一个任务管理器，这样可以避免因打开多个任务管理器窗口而造成内存资源的浪费，或出现各个窗口显示内容的不一致等错误。
+- 例如，**Windows 中只能打开一个任务管理器**，这样可以避免因打开多个任务管理器窗口而造成内存资源的浪费，或出现各个窗口显示内容的不一致等错误。
 
 - 在计算机系统中，还有 Windows 的回收站、操作系统中的文件系统、多线程中的线程池、显卡的驱动程序对象、打印机的后台处理服务、应用程序的日志对象、数据库的连接池、网站的计数器、Web 应用的配置对象、应用程序中的对话框、系统中的缓存等常常被设计成单例。
 
@@ -461,16 +465,16 @@ Singleton 模式通常有两种实现形式。
 
 ## 	第 1 种：懒汉式单例
 
-该模式的特点是**类加载时没有生成单例，只有当第一次调用 getlnstance 方法时才去创建这个单例**。代码如下：
+该模式的特点是**类加载时没有生成单例，只有当第一次调用 静态方法getlnstance 方法时才去创建这个单例**。代码如下：
 
 ```java
 public class LazySingleton {
     private static volatile LazySingleton instance = null;    //保证 instance 在所有线程中同步
 
-    private LazySingleton() {
+    private LazySingleton() {//私有构造函数
     }    //private 避免类在外部被实例化
 
-    public static synchronized LazySingleton getInstance() {
+    public static synchronized LazySingleton getInstance() {//静态方法，供外界获取它的静态实例
         //getInstance 方法前加同步，属于类方法，可以通过类名直接调用
         if (instance == null) {
             instance = new LazySingleton();//实例由类自行创建
@@ -483,6 +487,18 @@ public class LazySingleton {
 ```
 
 注意：如果编写的是多线程程序，则不要删除上例代码中的关键字 volatile 和 synchronized，否则将存在线程非安全的问题。如果不删除这两个关键字就能保证线程安全，但是每次访问时都要同步，会影响性能，且消耗更多的资源，这是懒汉式单例的缺点。
+
+> 为什么不能删除volatile关键字？
+>
+> 因为`instance = new LazySingleton();`不是原子操作，这段代码可以分为以下三个部分：
+>
+> - 为对象`LazySingleton`分配空间
+> - 对象初始化
+> - 将`instance`指向分配的地址空间
+>
+> 但是由于JVM具有指令重排的特性，执行顺序可能变成1->3->2。指令重排在单线程环境下不会出问题，但是在多线程环境下会导致一个线程获得还没有实例化的对象。例如线程a执行了1，3，此时线程b调用getInstance后发现instance不为空，因此返回instance，但是此时instance还没有被初始化，所以会导致空指针异常。
+>
+> 使用volatile关键字修饰变量可以避免JVM指令重排，使得变量在线程间具有可见性，这样就可以在多线程下使用了。
 
 ## 	第 2 种：饿汉式单例
 
@@ -501,7 +517,38 @@ public class HungrySingleton {
 }
 ```
 
-饿汉式单例在类创建的同时就已经创建好一个静态的对象供系统使用，以后不再改变，所以是线程安全的，可以直接用于多线程而不会出现问题。
+饿汉式单例在类创建的同时就已经创建好一个**静态**的对象供系统使用，以后不再改变，所以是线程安全的，可以直接用于多线程而不会出现问题。
+
+> 懒汉式：要加锁，效率较低
+>
+> 饿汉式：无论用不用都先实例化，会浪费内存
+
+## 第 3 种：双重校验锁
+
+> 执行双重检查是因为，如果多个线程同时了通过了第一次检查，并且其中一个线程首先通过了第二次检查并实例化了对象，那么剩余通过了第一次检查的线程就不会再去实例化对象。这样，除了初始化的时候会出现加锁的情况，后续的所有调用都会避免加锁而直接返回，解决了性能消耗的问题。
+>
+> 分析：第一次校验：由于单例模式只需要创建一次实例，如果后面再次调用getInstance方法时，则直接返回之前创建的实例，因此大部分时间不需要执行同步方法里面的代码，大大提高了性能。<u>如果不加第一次校验的话，那跟上面的懒汉模式没什么区别，每次都要去竞争锁。</u>
+>
+> 　　 第二次校验：如果没有第二次校验，假设线程t1执行了第一次校验后，判断为null，这时t2也获取了CPU执行权，也执行了第一次校验，判断也为null。接下来t2获得锁，创建实例。这时t1又获得CPU执行权，由于之前已经进行了第一次校验，结果为null（不会再次判断），获得锁后，直接创建实例。结果就会导致创建多个实例。所以需要在同步代码里面进行第二次校验，如果实例为空，则进行创建。
+
+```java
+public class Singleton{
+    private static volatile Singleton instance;//懒汉式
+    private Singleton(){};
+    public static Singleton Getinstance(){//仅可以通过Getinstance创建单例对象
+        if(instance==null){//首先校验对象是否为空，为空才进入加锁代码   --->第一次校验,避免
+            synchronized(Singleton.class){//获取类锁
+                if(instance==null){ // 第二次校验
+                    instance=new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+
 
 ## 单例模式的应用实例
 

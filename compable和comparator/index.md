@@ -12,7 +12,7 @@
 
 ---
 
-#### 首先来看第一种方式
+### 首先来看第一种方式
 
 类实现Comparable类中的compareTo方法，Arrays.sort传入对象数组
 
@@ -59,7 +59,7 @@ class Employee implements Comparable<Employee>{
 
 ```
 
-#### 第二种方式
+### 第二种方式
 
 在调用Arrays.sort时需要传入一个数组和一个比较器作为参数。比较器是实现了Comparator接口中compare方法的类的的实例。
 
@@ -206,7 +206,7 @@ class Employee {
 
 来看代码
 
-#### 1.TreeSet中的元素或TreeMap中的key部分需要实验Comparable接口
+### 1.TreeSet中的元素或TreeMap中的key部分需要实现Comparable接口
 
 ```java
 public class TreeMapTest03 {
@@ -271,7 +271,7 @@ class User implements Comparable<User> {//实现Comparable接口
 
 
 
-#### 2.给构造方法传入一个比较器
+### 2.给构造方法传入一个比较器
 
 ```java
 public class TreeMapTest05 {
@@ -340,16 +340,83 @@ class wuguicompare implements Comparator<wugui>{
 
 
 
-#### Collections.sort
+### Collections.sort
 
-Collections.sort能够给集合进行排序，其中集合需要自定义比较规则，也是一样的两种方式
+Collections.sort能够给List<T> list进行排序，其中集合需要自定义比较规则，也是一样的两种方式  -->Arrays.sort是对数组进行排序
 
 - 实现Comparable接口，并覆写compareTo方法。在调用Collections.sort只需要传入集合即可
 - 在调用Collections.sort时需要传入一个数组和一个比较器作为参数。比较器是实现了Comparator接口中compare方法的类的的实例。
 
 
 
+### HashMap按照key或value进行排序
 
+[参考](https://blog.csdn.net/xHibiki/article/details/82938480?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-2.control&dist_request_id=1328761.10591.16172379784854221&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-2.control)
+
+```java
+        Map phone=new HashMap();
+        phone.put("Apple",7299);
+        phone.put("SAMSUNG",6000);
+        phone.put("Meizu",2698);
+        phone.put("Xiaomi",2400);
+        System.out.println(phone);
+/*
+{Meizu=2698, Apple=7299, Xiaomi=2400, SAMSUNG=6000}
+*/
+```
+
+#### 按照key进行排序：
+
+对key进行排序,首先要得到HashMap中键的集合(keySet),并转换为数组,这样才能用Arrays.sort()进行排序
+
+```java
+        Set set=phone.keySet();//得到key集合
+        Object[] arr=set.toArray();//将key集合转换为数组
+        Arrays.sort(arr);//对数组进行排序
+        for(Object key:arr){
+            System.out.println(key);
+        }
+
+
+        for(Object key:arr){
+            System.out.println(key+": "+phone.get(key));
+        }
+
+
+```
+
+#### 按照value进行排序
+
+将entrySet转换为List,然后重写比较器比较即可.这里可以使用List.sort(comparator),也可以使用Collections.sort(list,comparato
+
+```java
+//将将entrySet转换为List
+List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(phone.entrySet()); //转换为list
+
+//重写比较器，使用list.sort()排序
+       list.sort(new Comparator<Map.Entry<String, Integer>>() {
+          @Override
+          public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+              return o2.getValue().compareTo(o1.getValue());//对value进行排序
+          }
+      });
+
+//或者使用Collections.sort()排序
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+           @Override
+           public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+               return o2.getValue().compareTo(o1.getValue());
+           }
+       });
+
+
+
+//for-each循环
+           for (Map.Entry<String, Integer> mapping : list){
+            System.out.println(mapping.getKey()+": "+mapping.getValue());
+        }   
+
+```
 
 
 
